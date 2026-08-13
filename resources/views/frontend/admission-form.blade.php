@@ -367,6 +367,121 @@
   .quote-who strong{display:block;font-size:14px;color:var(--teal-900);}
   .quote-who span{font-size:12px;color:#6b6555;}
 
+  /* ===== Admission Application Form ===== */
+  .form-shell{
+    background:#fff;
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    border:1px solid var(--line);
+    overflow:hidden;
+  }
+  .form-head{
+    background:linear-gradient(135deg, var(--teal-800), var(--teal-900));
+    padding:36px 40px;
+    display:flex;justify-content:space-between;align-items:center;gap:24px;
+    flex-wrap:wrap;
+    position:relative;
+  }
+  .form-head::after{
+    content:'';position:absolute;left:0;right:0;bottom:0;height:10px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='10' viewBox='0 0 34 34'%3E%3Cg fill='none' stroke='%23c6a15b' stroke-width='1.1'%3E%3Cpath d='M17 2 L21 9 L29 9 L23 14 L26 22 L17 17 L8 22 L11 14 L5 9 L13 9 Z'/%3E%3C/g%3E%3C/svg%3E");
+    background-repeat:repeat-x;background-size:34px 34px;opacity:.5;
+  }
+  .form-head .fh-text h4{color:#fbf6e8;font-size:24px;margin-bottom:6px;}
+  .form-head .fh-text p{color:rgba(246,241,228,.75);font-size:13.5px;}
+  .photo-box{
+    width:90px;height:110px;background:rgba(246,241,228,.08);
+    border:1.5px dashed var(--gold-light);border-radius:10px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    color:var(--gold-light);font-size:12px;text-align:center;flex-shrink:0;
+    gap:4px;
+  }
+  .photo-box .cam{font-size:20px;}
+
+  .form-body{padding:40px;}
+  .form-to{
+    background:var(--paper-2);border-radius:14px;padding:20px 24px;
+    margin-bottom:30px;font-size:14.5px;color:#3f3b30;
+    border-inline-start:4px solid var(--gold);
+  }
+  .form-to strong{color:var(--teal-900);display:block;font-family:'Noto Serif Bengali',serif;font-size:16px;margin:2px 0;}
+
+  .form-intro{
+    font-size:14.5px;color:#3f3b30;margin-bottom:32px;line-height:1.9;
+  }
+  .form-intro .inline-field{
+    display:inline-block;border-bottom:1.5px dotted var(--gold);min-width:130px;
+    padding:0 4px;
+  }
+
+  fieldset{border:none;margin-bottom:34px;}
+  fieldset legend{
+    font-family:'Noto Serif Bengali',serif;font-size:16px;color:var(--teal-900);
+    font-weight:700;margin-bottom:18px;padding-bottom:10px;
+    border-bottom:1px solid var(--line);width:100%;
+    display:flex;align-items:center;gap:10px;
+  }
+  fieldset legend .qn{
+    background:var(--teal-900);color:var(--gold-light);
+    width:26px;height:26px;border-radius:50%;
+    display:inline-flex;align-items:center;justify-content:center;
+    font-size:13px;flex-shrink:0;
+  }
+  .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
+  .field-grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
+  .field{display:flex;flex-direction:column;gap:8px;}
+  .field.full{grid-column:1 / -1;}
+  .field label{font-size:13.5px;font-weight:600;color:#4a4636;}
+  .field label .opt{font-weight:400;color:#8a836c;font-size:12px;}
+  .field input[type=text], .field input[type=tel], .field input[type=date], .field input[type=email], .field select{
+    border:1.5px solid var(--line);
+    border-radius:9px;
+    padding:12px 14px;
+    font-family:'Hind Siliguri', sans-serif;
+    font-size:14.5px;
+    background:var(--paper);
+    color:var(--ink);
+    transition:border-color .2s, box-shadow .2s;
+    width:100%;
+  }
+  .field input:focus, .field select:focus{
+    outline:none;border-color:var(--gold);
+    box-shadow:0 0 0 4px rgba(198,161,91,.18);
+    background:#fff;
+  }
+  .radio-row{display:flex;gap:22px;flex-wrap:wrap;padding-top:6px;}
+  .radio-chip{
+    display:flex;align-items:center;gap:8px;
+    border:1.5px solid var(--line);border-radius:30px;
+    padding:9px 18px;font-size:13.5px;cursor:pointer;
+    transition:border-color .2s, background .2s;
+  }
+  .radio-chip:has(input:checked){
+    border-color:var(--gold);background:rgba(198,161,91,.12);
+  }
+  .radio-chip input{accent-color:var(--maroon);}
+
+  .form-foot{
+    display:flex;justify-content:space-between;align-items:center;
+    flex-wrap:wrap;gap:16px;
+    padding-top:20px;border-top:1px dashed var(--line);
+  }
+  .form-foot p{font-size:12.5px;color:#8a836c;max-width:420px;}
+  .form-submit{
+    background:var(--maroon);color:#fdeee6;border:none;cursor:pointer;
+    padding:15px 34px;border-radius:9px;font-weight:700;font-size:15px;
+    font-family:'Hind Siliguri', sans-serif;
+    box-shadow:0 14px 26px -10px rgba(124,45,45,.5);
+    transition:transform .2s;
+  }
+  .form-submit:hover{transform:translateY(-2px);}
+
+  @media (max-width: 720px){
+    .field-grid, .field-grid.cols-3{grid-template-columns:1fr;}
+    .form-body{padding:26px 20px;}
+    .form-head{padding:26px;}
+  }
+
   /* ===== CTA banner ===== */
   .cta-banner{
     background:radial-gradient(ellipse at 30% 30%, rgba(198,161,91,.25), transparent 60%), var(--teal-900);
@@ -431,9 +546,9 @@
   <div class="container">
     <span class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
     <div class="contacts">
-      <span>📞 01713-260111</span>
-      <span>✉️ info@nidarul-madrasha.edu.bd</span>
-      <span>📍 ঢাকা, বাংলাদেশ</span>
+      <span>📞 ০১৭১৩ ২৬০ ১১১</span>
+      <span>✉️ info.nqm@gmail.com</span>
+      <span>📍 মাতুয়াইল, ডেমরা, ঢাকা</span>
     </div>
   </div>
 </div>
@@ -446,7 +561,7 @@
       </div>
       <div class="names">
         <h1>নিদাউল কুরআন মাদরাসা</h1>
-        <span>"সবার জন্য কুরআনের শিক্ষা" </span>
+        <span>"সবার জন্য কুরআনের শিক্ষা"</span>
       </div>
     </a>
 
@@ -484,7 +599,7 @@
             <li><a href="#admission">ভর্তি নিয়মাবলী</a></li>
             <li><a href="#admission">বেতন ও ফি কাঠামো</a></li>
             <li><a href="#admission">আবাসন ও বোর্ডিং</a></li>
-            <li><a href="#admission">ভর্তি ফরম ডাউনলোড</a></li>
+            <li><a href="#admission-form">অনলাইন আবেদন ফরম</a></li>
           </ul>
         </li>
 
@@ -511,228 +626,218 @@
       </ul>
     </nav>
 
-    <a href="{{ route('admission') }}" class="nav-cta">ভর্তি চলছে</a>
+    <a href="#admission" class="nav-cta">ভর্তি চলছে</a>
   </div>
 </header>
 
 <div class="star-divider"></div>
-
-<!-- ===== HERO ===== -->
-<section class="hero" id="top" style="padding-top:0;padding-bottom:0;">
-  <div class="container">
-    <div>
-      <span class="eyebrow">১৪৪৭ হিজরি শিক্ষাবর্ষে ভর্তি চলছে</span>
-      <h2>ইলম ও আমলের সম্মিলনে <em>গড়ি আগামীর</em> নির্ভরযোগ্য প্রজন্ম</h2>
-      <p class="lead">কুরআন-হাদিসের আলোকে চরিত্র গঠন এবং যুগোপযোগী শিক্ষার সমন্বয়ে নিদারুল মাদরাসা প্রতিটি শিক্ষার্থীকে গড়ে তোলে একজন দক্ষ আলেম ও দায়িত্বশীল নাগরিক হিসেবে।</p>
-      <div class="actions">
-        <a href="#admission" class="btn btn-gold">ভর্তি আবেদন করুন →</a>
-        <a href="#about" class="btn btn-outline">প্রতিষ্ঠান সম্পর্কে জানুন</a>
-      </div>
-    </div>
-
-    <div class="arch-frame">
-      <div class="arch">
-        <div class="glow"></div>
-        <div class="glyph">اقرأ<small>পড়ো, তোমার প্রভুর নামে</small></div>
-      </div>
-      <div class="stat-chip">
-        <div><strong>৫২০+</strong><span>শিক্ষার্থী</span></div>
-        <div><strong>৩৮</strong><span>শিক্ষক</span></div>
-        <div><strong>২২</strong><span>বছরের সেবা</span></div>
-      </div>
-    </div>
-  </div>
-  <div style="height:90px;"></div>
-</section>
-
-<div class="star-divider dark"></div>
-
-<!-- ===== PILLARS ===== -->
-<section id="about">
+ 
+<!-- ===== ADMISSION APPLICATION FORM ===== -->
+<section id="admission-form">
   <div class="container">
     <div class="section-head">
-      <span class="kicker">আমাদের ভিত্তি</span>
-      <h3>তিনটি স্তম্ভের উপর গড়া শিক্ষাদর্শন</h3>
-      <p>আমরা বিশ্বাস করি প্রকৃত শিক্ষা কেবল মুখস্থবিদ্যা নয়— এটি জ্ঞান, আমল ও চরিত্রের সমন্বিত রূপ।</p>
-    </div>
-    <div class="pillars">
-      <div class="pillar">
-        <div class="icon">📖</div>
-        <h4>কুরআন শিক্ষা</h4>
-        <p>শুদ্ধ তিলাওয়াত, তাজবীদ ও হিফজের মাধ্যমে প্রতিটি শিক্ষার্থীকে কুরআনের সাথে সম্পর্কযুক্ত করে তোলা আমাদের প্রথম অগ্রাধিকার।</p>
-      </div>
-      <div class="pillar">
-        <div class="icon">🕌</div>
-        <h4>হাদিস ও ফিকহ</h4>
-        <p>নির্ভরযোগ্য উস্তাদদের তত্ত্বাবধানে হাদিসশাস্ত্র ও ফিকহের মৌলিক ও উচ্চতর কিতাবাদি অধ্যয়ন করানো হয়।</p>
-      </div>
-      <div class="pillar">
-        <div class="icon">🎓</div>
-        <h4>আধুনিক শিক্ষা</h4>
-        <p>বাংলা, ইংরেজি, গণিত ও বিজ্ঞান বিষয়ে সাধারণ শিক্ষা কারিকুলাম, যাতে শিক্ষার্থীরা যুগের সাথে তাল মিলিয়ে চলতে পারে।</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== DEPARTMENTS ===== -->
-<section id="departments" style="background:var(--paper-2);">
-  <div class="container">
-    <div class="section-head">
-      <span class="kicker">শিক্ষা কার্যক্রম</span>
-      <h3>বয়স ও স্তরভেদে সাজানো বিভাগসমূহ</h3>
-    </div>
-    <div class="dept-grid">
-      <div class="dept-card">
-        <div class="num">বিভাগ ০১</div>
-        <div>
-          <h4>নূরানী ও মক্তব</h4>
-          <p>প্রাথমিক বয়সে শুদ্ধ উচ্চারণ ও বুনিয়াদি দ্বীনি শিক্ষার হাতেখড়ি।</p>
-        </div>
-      </div>
-      <div class="dept-card">
-        <div class="num">বিভাগ ০২</div>
-        <div>
-          <h4>হিফজুল কুরআন</h4>
-          <p>সম্পূর্ণ কুরআন মুখস্থকরণ, তাজবীদসহ শুদ্ধ তিলাওয়াতের প্রশিক্ষণ।</p>
-        </div>
-      </div>
-      <div class="dept-card">
-        <div class="num">বিভাগ ০৩</div>
-        <div>
-          <h4>কিতাব বিভাগ</h4>
-          <p>নাহু, সরফ, ফিকহ, হাদিস ও তাফসীরসহ দাওরায়ে হাদিস পর্যন্ত পাঠ্যক্রম।</p>
-        </div>
-      </div>
-      <div class="dept-card">
-        <div class="num">বিভাগ ০৪</div>
-        <div>
-          <h4>সাধারণ শিক্ষা</h4>
-          <p>জাতীয় সিলেবাস অনুসরণে বাংলা, ইংরেজি, গণিত ও বিজ্ঞান শিক্ষা।</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== STATS BAND ===== -->
-<div class="star-divider dark"></div>
-<div class="band">
-  <div class="container">
-    <div class="item"><strong>৯৮%</strong><span>দাওরায়ে হাদিস উত্তীর্ণের হার</span></div>
-    <div class="item"><strong>১২০+</strong><span>হাফেজে কুরআন তৈরি</span></div>
-    <div class="item"><strong>২২</strong><span>বছরের অভিজ্ঞতা</span></div>
-    <div class="item"><strong>৩৮</strong><span>যোগ্য শিক্ষক-উস্তাদ</span></div>
-  </div>
-</div>
-<div class="star-divider dark"></div>
-
-<!-- ===== NOTICE + ADMISSION ===== -->
-<section id="notice">
-  <div class="container">
-    <div class="section-head" style="margin-bottom:40px;">
-      <span class="kicker">হালনাগাদ তথ্য</span>
-      <h3>নোটিশ বোর্ড ও ভর্তি সহায়িকা</h3>
+      <span class="kicker">অনলাইনে আবেদন করুন</span>
+      <h3>ভর্তি আবেদন ফরম</h3>
+      <p>নিচের ফরমটি সঠিক ও সম্পূর্ণভাবে পূরণ করে জমা দিন। প্রতিটি তথ্য যাচাই করে নিন জমা দেওয়ার আগে।</p>
     </div>
 
-    <div class="notice-wrap">
-      <div>
-        <div class="notice-list">
-          <div class="notice-item">
-            <div class="notice-date"><strong>০৫</strong><span>শাওয়াল</span></div>
-            <div>
-              <h5>১৪৪৭ হিজরি শিক্ষাবর্ষের ভর্তি বিজ্ঞপ্তি প্রকাশ</h5>
-              <p>নূরানী থেকে কিতাব বিভাগ পর্যন্ত সকল স্তরে সীমিত আসনে ভর্তি চলছে। আসন সংখ্যা সীমিত।</p>
-              <span class="tag">ভর্তি</span>
+    <form class="form-shell" onsubmit="return false;">
+      <div class="form-head">
+        <div class="fh-text">
+          <h4>আবেদন ফরম</h4>
+          <p>নিদাউল কুরআন মাদরাসা — মাতুয়াইল, ডেমরা, ঢাকা</p>
+        </div>
+        <div class="photo-box">
+          <span class="cam">📷</span>
+          <span>পাসপোর্ট সাইজ<br>ছবি ২ কপি</span>
+        </div>
+      </div>
+
+      <div class="form-body">
+        <div class="form-to">
+          বরাবর,<br>
+          প্রিন্সিপাল<br>
+          <strong>নিদাউল কুরআন মাদরাসা</strong>
+          মাতুয়াইল, ডেমরা, ঢাকা
+        </div>
+
+        <p class="form-intro">
+          জনাব, আসসালামু আলাইকুম। আমি আপনার মাদরাসায়
+          <select class="inline-field" style="border:none;border-bottom:1.5px dotted var(--gold);border-radius:0;background:transparent;padding:2px 4px;font-size:14.5px;">
+            <option value="">— শ্রেণি নির্বাচন —</option>
+            <option>নূরানী</option><option>মক্তব</option><option>হিফজ</option>
+            <option>প্রথম</option><option>দ্বিতীয়</option><option>তৃতীয়</option>
+            <option>চতুর্থ</option><option>পঞ্চম</option><option>ষষ্ঠ</option>
+            <option>সপ্তম</option><option>অষ্টম</option><option>নবম</option><option>দশম</option>
+          </select>
+          শ্রেণিতে
+          <input type="text" class="inline-field" placeholder="১৪৪৭ হিজরি" style="border:none;border-bottom:1.5px dotted var(--gold);border-radius:0;background:transparent;padding:2px 4px;width:110px;">
+          শিক্ষাবর্ষে ভর্তির জন্য নিম্নোক্ত তথ্য প্রদান করলাম:
+        </p>
+
+        <fieldset>
+          <legend><span class="qn">১</span> শিক্ষার্থীর তথ্য</legend>
+          <div class="field-grid">
+            <div class="field">
+              <label>শিক্ষার্থীর নাম (বাংলায়)</label>
+              <input type="text" placeholder="পূর্ণ নাম লিখুন">
+            </div>
+            <div class="field">
+              <label>শিক্ষার্থীর নাম (ইংরেজিতে, বড় হাতের)</label>
+              <input type="text" placeholder="FULL NAME IN ENGLISH">
             </div>
           </div>
-          <div class="notice-item">
-            <div class="notice-date"><strong>২৮</strong><span>রমজান</span></div>
-            <div>
-              <h5>বার্ষিক পরীক্ষার সময়সূচি প্রকাশিত হয়েছে</h5>
-              <p>সকল বিভাগের শিক্ষার্থীদের জন্য চূড়ান্ত পরীক্ষার রুটিন নোটিশ বোর্ডে টাঙানো হয়েছে।</p>
-              <span class="tag">পরীক্ষা</span>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="qn">২</span> পিতার তথ্য</legend>
+          <div class="field-grid">
+            <div class="field">
+              <label>পিতার নাম (বাংলায়)</label>
+              <input type="text" placeholder="পিতার পূর্ণ নাম">
+            </div>
+            <div class="field">
+              <label>পিতার নাম (ইংরেজিতে, বড় হাতের)</label>
+              <input type="text" placeholder="FATHER'S NAME IN ENGLISH">
             </div>
           </div>
-          <div class="notice-item">
-            <div class="notice-date"><strong>১৪</strong><span>শাবান</span></div>
-            <div>
-              <h5>অভিভাবক সমাবেশ ও দস্তারবন্দী অনুষ্ঠান</h5>
-              <p>দাওরায়ে হাদিস সমাপনকারী শিক্ষার্থীদের সম্মানে দস্তারবন্দী মাহফিলের তারিখ ঘোষণা।</p>
-              <span class="tag">অনুষ্ঠান</span>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="qn">৩</span> মাতার তথ্য</legend>
+          <div class="field-grid">
+            <div class="field">
+              <label>মাতার নাম (বাংলায়)</label>
+              <input type="text" placeholder="মাতার পূর্ণ নাম">
+            </div>
+            <div class="field">
+              <label>মাতার নাম (ইংরেজিতে, বড় হাতের)</label>
+              <input type="text" placeholder="MOTHER'S NAME IN ENGLISH">
             </div>
           </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="qn">৪</span> জন্ম সংক্রান্ত তথ্য</legend>
+          <div class="field-grid cols-3">
+            <div class="field">
+              <label>জন্ম তারিখ</label>
+              <input type="date">
+            </div>
+            <div class="field">
+              <label>বয়স</label>
+              <input type="text" placeholder="যেমনঃ ১০ বছর">
+            </div>
+            <div class="field">
+              <label>জন্ম নিবন্ধন নং</label>
+              <input type="text" placeholder="জন্ম নিবন্ধন নম্বর">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="qn">৫</span> ব্যক্তিগত তথ্য</legend>
+          <div class="field-grid cols-3">
+            <div class="field">
+              <label>রক্তের গ্রুপ <span class="opt">(যদি জানা থাকে)</span></label>
+              <select>
+                <option value="">নির্বাচন করুন</option>
+                <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
+                <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>জাতীয়তা</label>
+              <input type="text" value="বাংলাদেশী">
+            </div>
+            <div class="field">
+              <label>ধর্ম</label>
+              <input type="text" value="ইসলাম">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="qn">৬</span> যোগাযোগের তথ্য</legend>
+          <div class="field-grid">
+            <div class="field">
+              <label>অভিভাবকের মোবাইল নম্বর</label>
+              <input type="tel" placeholder="০১xxxxxxxxx">
+            </div>
+            <div class="field">
+              <label>জরুরী যোগাযোগ নম্বর</label>
+              <input type="tel" placeholder="০১xxxxxxxxx">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="qn">৭</span> বর্তমান ঠিকানা</legend>
+          <div class="field-grid">
+            <div class="field full">
+              <label>বর্তমান ঠিকানা <span class="opt">(গ্রাম/বাসা, রোড, এলাকা, থানা, জেলা)</span></label>
+              <input type="text" placeholder="সম্পূর্ণ বর্তমান ঠিকানা লিখুন">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="qn">৮</span> স্থায়ী ঠিকানা</legend>
+          <div class="field-grid">
+            <div class="field full">
+              <label>স্থায়ী ঠিকানা <span class="opt">(গ্রাম/বাসা, রোড, এলাকা, থানা, জেলা)</span></label>
+              <input type="text" placeholder="সম্পূর্ণ স্থায়ী ঠিকানা লিখুন">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="qn">৯</span> ভর্তির স্তর</legend>
+          <div class="field-grid">
+            <div class="field">
+              <label>যে শ্রেণিতে ভর্তি হতে ইচ্ছুক</label>
+              <input type="text" placeholder="যেমনঃ ৬ষ্ঠ শ্রেণি">
+            </div>
+            <div class="field">
+              <label>বিভাগ</label>
+              <input type="text" placeholder="যেমনঃ হিফজ / কিতাব / সাধারণ">
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="qn">১০</span> ভর্তির ধরণ</legend>
+          <div class="radio-row">
+            <label class="radio-chip"><input type="radio" name="type" checked> দিন (Day)</label>
+            <label class="radio-chip"><input type="radio" name="type"> অনাবাসিক</label>
+            <label class="radio-chip"><input type="radio" name="type"> ফুল টাইম</label>
+            <label class="radio-chip"><input type="radio" name="type"> আবাসিক</label>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend><span class="qn">১১</span> পূর্ববর্তী প্রতিষ্ঠানের তথ্য <span class="opt" style="font-weight:400;color:#8a836c;">(যদি থাকে)</span></legend>
+          <div class="field-grid">
+            <div class="field">
+              <label>পূর্ববর্তী প্রতিষ্ঠানের নাম</label>
+              <input type="text" placeholder="প্রতিষ্ঠানের নাম">
+            </div>
+            <div class="field">
+              <label>ঠিকানা</label>
+              <input type="text" placeholder="প্রতিষ্ঠানের ঠিকানা">
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="form-foot">
+          <p>জমা দেওয়ার পূর্বে সকল তথ্য সঠিকভাবে যাচাই করে নিন। ভুল তথ্যের জন্য মাদরাসা কর্তৃপক্ষ দায়ী থাকবে না।</p>
+          <button type="submit" class="form-submit">আবেদন জমা দিন →</button>
         </div>
       </div>
-
-      <div class="admission-card" id="admission">
-        <h4>ভর্তি তথ্য এক নজরে</h4>
-        <p>নতুন শিক্ষাবর্ষে ভর্তি হতে নিচের ধাপগুলো অনুসরণ করুন। আসন সীমিত হওয়ায় দ্রুত আবেদন করার পরামর্শ দেওয়া হচ্ছে।</p>
-        <ul>
-          <li><span>আবেদন শুরু</span><span>০১ শাওয়াল</span></li>
-          <li><span>ভর্তি পরীক্ষা</span><span>১৫ শাওয়াল</span></li>
-          <li><span>ফলাফল প্রকাশ</span><span>২০ শাওয়াল</span></li>
-          <li><span>ক্লাস শুরু</span><span>০১ জিলকদ</span></li>
-        </ul>
-        <a href="#contact" class="btn btn-gold">আবেদন ফরম নিন</a>
-      </div>
-    </div>
+    </form>
   </div>
 </section>
-
-<!-- ===== GALLERY ===== -->
-<section id="gallery" style="background:var(--paper-2);">
-  <div class="container">
-    <div class="section-head">
-      <span class="kicker">প্রাণবন্ত ক্যাম্পাস</span>
-      <h3>মাদরাসার একঝলক</h3>
-    </div>
-    <div class="gallery-grid">
-      <div class="gtile g1 gt1"><span>দরসে কুরআন</span></div>
-      <div class="gtile gt2"><span>হিফজ বিভাগ</span></div>
-      <div class="gtile gt3"><span>বার্ষিক মাহফিল</span></div>
-      <div class="gtile gt4"><span>খেলাধুলা</span></div>
-      <div class="gtile gt5"><span>লাইব্রেরি</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ===== TESTIMONIALS ===== -->
-<section>
-  <div class="container">
-    <div class="section-head">
-      <span class="kicker">অভিভাবকদের কথা</span>
-      <h3>তারা যা বলেন</h3>
-    </div>
-    <div class="quote-grid">
-      <div class="quote-card">
-        <div class="stars">★★★★★</div>
-        <p>"আমার ছেলে এখানে ভর্তি হওয়ার পর থেকে দ্বীনি জ্ঞানের পাশাপাশি নৈতিকতায়ও অনেক পরিবর্তন এসেছে। শিক্ষকদের আন্তরিকতা প্রশংসনীয়।"</p>
-        <div class="quote-who">
-          <div class="av"></div>
-          <div><strong>মোঃ আব্দুল করিম</strong><span>অভিভাবক, হিফজ বিভাগ</span></div>
-        </div>
-      </div>
-      <div class="quote-card">
-        <div class="stars">★★★★★</div>
-        <p>"সাধারণ শিক্ষা ও দ্বীনি শিক্ষার চমৎকার সমন্বয় এখানে দেখেছি। আবাসন ব্যবস্থাও পরিচ্ছন্ন ও নিরাপদ।"</p>
-        <div class="quote-who">
-          <div class="av"></div>
-          <div><strong>রোকেয়া বেগম</strong><span>অভিভাবক, কিতাব বিভাগ</span></div>
-        </div>
-      </div>
-      <div class="quote-card">
-        <div class="stars">★★★★★</div>
-        <p>"এই মাদরাসা থেকে দাওরা সম্পন্ন করে আজ আমি একটি মসজিদে ইমামতি করছি। উস্তাদদের দোয়া ও শিক্ষা আজীবন কাজে লাগবে।"</p>
-        <div class="quote-who">
-          <div class="av"></div>
-          <div><strong>হাফেজ ইউসুফ আলী</strong><span>প্রাক্তন শিক্ষার্থী</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
+ 
 <!-- ===== CTA BANNER ===== -->
 <section style="padding-top:0;">
   <div class="cta-banner">
@@ -753,7 +858,7 @@
           <div class="mark">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M12 2 L12 22 M4 8 Q12 2 20 8 M4 8 L4 20 Q12 24 20 20 L20 8" stroke="#e3c988" stroke-width="1.4" fill="none"/></svg>
           </div>
-          <span>নিদারুল মাদরাসা</span>
+          <span>নিদাউল কুরআন মাদরাসা</span>
         </div>
         <p>দ্বীন ও দুনিয়ার সুষম শিক্ষার এক আদর্শ প্রতিষ্ঠান। কুরআন, হাদিস ও নৈতিক শিক্ষার মাধ্যমে আমরা গড়ে তুলি আগামীর নির্ভরযোগ্য নেতৃত্ব।</p>
       </div>
@@ -778,16 +883,16 @@
       <div>
         <h5>যোগাযোগ</h5>
         <ul>
-          <li>📍 Nidaul Quran Madrasah (General Campus), Momotaz Tower, Road 1, New Town R/A, Matuail, Dhaka 1362 </li>
+          <li>📍  Nidaul Quran Madrasah (General Campus), Momotaz Tower, Road 1, New Town R/A, Matuail, Dhaka 1362 </li>
           <li>📞 01713-260111</li>
-          <li>✉️ info@nidarul-madrasha.edu.bd</li>
+          <li>✉️ info@nqm.gmail.com</li>
         </ul>
       </div>
     </div>
   </div>
   <div class="star-divider dark"></div>
   <div class="bottom-bar">
-    © ২০২৬ নিদারুল মাদরাসা। সর্বস্বত্ব সংরক্ষিত।
+    © ২০২৬ নিদাউল কুরআন মাদরাসা। সর্বস্বত্ব সংরক্ষিত।
   </div>
 </footer>
 
