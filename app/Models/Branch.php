@@ -25,4 +25,30 @@ class Branch extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    public function academicSessions()
+    {
+        return $this->hasMany(AcademicSession::class);
+    }
+
+    public function classes()
+    {
+        return $this->hasMany(SchoolClass::class);
+    }
+
+    public function sections()
+    {
+        return $this->hasMany(Section::class);
+    }
+
+    public function subjects()
+    {
+        return $this->hasMany(Subject::class);
+    }
+
+    public function classSubjects()
+    {
+        return $this->hasMany(ClassSubject::class);
+    }
+
 }
