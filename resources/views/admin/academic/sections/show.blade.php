@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Class Details')
-@section('page-title', 'Class Details')
+@section('title', 'Section Details')
+@section('page-title', 'Section Details')
 
 @section('content')
 
@@ -14,21 +14,20 @@
         <div>
 
             <a
-                href="{{ route('admin.academic.classes.index') }}"
+                href="{{ route('admin.academic.sections.index') }}"
                 class="text-sm font-medium text-blue-600">
 
-                ← Back to Classes
+                ← Back to Sections
 
             </a>
 
             <div class="mt-3 flex flex-wrap items-center gap-3">
 
                 <h1 class="text-2xl font-bold text-slate-900 sm:text-3xl">
-                    {{ $class->name }}
+                    {{ $section->name }}
                 </h1>
 
-
-                @if($class->status)
+                @if($section->status)
 
                     <span class="rounded-full bg-green-100 px-3 py-1
                                  text-xs font-semibold text-green-700">
@@ -51,33 +50,29 @@
             </div>
 
             <p class="mt-1 text-sm text-slate-500">
-                Class details and branch information.
+                Section details and academic information.
             </p>
 
         </div>
 
 
         <a
-            href="{{ route('admin.academic.classes.edit', $class) }}"
+            href="{{ route('admin.academic.sections.edit', $section) }}"
+            class="inline-flex items-center justify-center rounded-xl
+                   bg-blue-600 px-5 py-2.5 text-sm font-semibold
+                   text-white hover:bg-blue-700">
 
-            class="inline-flex items-center justify-center gap-2
-                   rounded-xl bg-blue-600 px-5 py-2.5
-                   text-sm font-semibold text-white
-                   hover:bg-blue-700">
-
-            ✏️
-            Edit Class
+            Edit Section
 
         </a>
 
     </div>
 
 
-    {{-- Main --}}
     <div class="grid grid-cols-1 gap-6 xl:grid-cols-3">
 
 
-        {{-- Information --}}
+        {{-- Details --}}
         <div class="xl:col-span-2">
 
             <div class="overflow-hidden rounded-2xl border border-slate-200
@@ -87,11 +82,11 @@
                             px-5 py-5 sm:px-6 lg:px-8">
 
                     <h2 class="font-semibold text-slate-900">
-                        Class Information
+                        Section Information
                     </h2>
 
                     <p class="mt-1 text-sm text-slate-500">
-                        Basic information about this class.
+                        Basic information about this section.
                     </p>
 
                 </div>
@@ -104,11 +99,11 @@
                     <div>
 
                         <p class="text-xs font-bold uppercase tracking-wider text-slate-400">
-                            Class Name
+                            Section Name
                         </p>
 
                         <p class="mt-2 text-lg font-semibold text-slate-900">
-                            {{ $class->name }}
+                            {{ $section->name }}
                         </p>
 
                     </div>
@@ -117,11 +112,11 @@
                     <div>
 
                         <p class="text-xs font-bold uppercase tracking-wider text-slate-400">
-                            Class Code
+                            Section Code
                         </p>
 
                         <p class="mt-2 text-lg font-semibold text-slate-900">
-                            {{ $class->code ?? 'Not specified' }}
+                            {{ $section->code ?? '—' }}
                         </p>
 
                     </div>
@@ -134,7 +129,20 @@
                         </p>
 
                         <p class="mt-2 text-lg font-semibold text-slate-900">
-                            {{ $class->branch->name }}
+                            {{ $section->branch->name ?? '—' }}
+                        </p>
+
+                    </div>
+
+
+                    <div>
+
+                        <p class="text-xs font-bold uppercase tracking-wider text-slate-400">
+                            Class
+                        </p>
+
+                        <p class="mt-2 text-lg font-semibold text-slate-900">
+                            {{ $section->schoolClass->name ?? $section->class->name ?? '—' }}
                         </p>
 
                     </div>
@@ -147,41 +155,8 @@
                         </p>
 
                         <p class="mt-2 text-lg font-semibold text-slate-900">
-                            {{ $class->sort_order }}
+                            {{ $section->sort_order ?? 0 }}
                         </p>
-
-                    </div>
-
-
-                    <div>
-
-                        <p class="text-xs font-bold uppercase tracking-wider text-slate-400">
-                            Status
-                        </p>
-
-                        <div class="mt-2">
-
-                            @if($class->status)
-
-                                <span class="rounded-full bg-green-100 px-3 py-1.5
-                                             text-xs font-semibold text-green-700">
-
-                                    ● Active
-
-                                </span>
-
-                            @else
-
-                                <span class="rounded-full bg-red-100 px-3 py-1.5
-                                             text-xs font-semibold text-red-700">
-
-                                    ● Inactive
-
-                                </span>
-
-                            @endif
-
-                        </div>
 
                     </div>
 
@@ -193,7 +168,7 @@
                         </p>
 
                         <p class="mt-2 text-sm font-medium text-slate-700">
-                            {{ $class->created_at?->format('d M Y, h:i A') ?? '—' }}
+                            {{ $section->created_at?->format('d M Y, h:i A') ?? '—' }}
                         </p>
 
                     </div>
@@ -222,15 +197,27 @@
 
                 <div class="space-y-4 p-5">
 
-
                     <div class="rounded-xl bg-blue-50 p-4">
 
                         <p class="text-xs font-medium text-blue-600">
-                            Class
+                            Section
                         </p>
 
                         <p class="mt-1 text-xl font-bold text-blue-900">
-                            {{ $class->name }}
+                            {{ $section->name }}
+                        </p>
+
+                    </div>
+
+
+                    <div class="rounded-xl bg-purple-50 p-4">
+
+                        <p class="text-xs font-medium text-purple-600">
+                            Class
+                        </p>
+
+                        <p class="mt-1 font-semibold text-purple-900">
+                            {{ $section->schoolClass->name ?? $section->class->name ?? '—' }}
                         </p>
 
                     </div>
@@ -243,40 +230,14 @@
                         </p>
 
                         <p class="mt-1 font-semibold text-slate-900">
-                            {{ $class->branch->name }}
+                            {{ $section->branch->name ?? '—' }}
                         </p>
 
                     </div>
-
-
-                    <div class="rounded-xl bg-slate-50 p-4">
-
-                        <p class="text-xs font-medium text-slate-500">
-                            Sections
-                        </p>
-
-                        <p class="mt-1 text-2xl font-bold text-slate-900">
-                            {{ $class->sections->count() }}
-                        </p>
-
-                    </div>
-
-
-                    <a
-                        href="{{ route('admin.academic.classes.edit', $class) }}"
-
-                        class="flex w-full items-center justify-center
-                               rounded-xl bg-blue-600 px-4 py-3
-                               text-sm font-semibold text-white
-                               hover:bg-blue-700">
-
-                        Edit Class
-
-                    </a>
 
                 </div>
 
-            </div>
+            </div>  
 
         </div>
 
