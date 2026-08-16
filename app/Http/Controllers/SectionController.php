@@ -10,18 +10,38 @@ use Illuminate\Validation\Rule;
 
 class SectionController extends Controller
 {
-    public function index()
+  public function index(Request $request)
     {
         $sections = Section::with([
                 'branch',
                 'schoolClass',
             ])
+            ->when($request->filled('branch_id'), function ($query) use ($request) {
+                $query->where('branch_id', $request->branch_id);
+            })
+            ->when($request->filled('class_id'), function ($query) use ($request) {
+                $query->where('class_id', $request->class_id);
+            })
             ->latest()
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
+
+        $branches = Branch::where('status', true)
+            ->orderBy('name')
+            ->get();
+
+        $classes = SchoolClass::where('status', true)
+            ->orderBy('numeric_order')
+            ->orderBy('name')
+            ->get();
 
         return view(
             'admin.academic.sections.index',
-            compact('sections')
+            compact(
+                'sections',
+                'branches',
+                'classes'
+            )
         );
     }
 
@@ -61,10 +81,10 @@ class SectionController extends Controller
             ],
 
             'capacity' => [
-                'nullable',
-                'integer',
+                'nullable', 
                 'min:1',
             ],
+          
 
             'status' => ['nullable', 'boolean'],
         ]);
@@ -134,8 +154,7 @@ class SectionController extends Controller
             ],
 
             'capacity' => [
-                'nullable',
-                'integer',
+                'nullable', 
                 'min:1',
             ],
 

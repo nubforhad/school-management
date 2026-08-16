@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Edit Section')
-@section('page-title', 'Edit Section')
+@section('title', 'Edit Subject')
+@section('page-title', 'Edit Subject')
 
 @section('content')
 
@@ -10,19 +10,19 @@
     <div>
 
         <a
-            href="{{ route('admin.academic.sections.index') }}"
+            href="{{ route('admin.academic.subjects.index') }}"
             class="text-sm font-medium text-blue-600">
 
-            ← Back to Sections
+            ← Back to Subjects
 
         </a>
 
         <h1 class="mt-3 text-2xl font-bold text-slate-900 sm:text-3xl">
-            Edit Section
+            Edit Subject
         </h1>
 
         <p class="mt-1 text-sm text-slate-500">
-            Update section information.
+            Update subject information.
         </p>
 
     </div>
@@ -46,19 +46,20 @@
 
 
     <form
-        action="{{ route('admin.academic.sections.update', $section) }}"
+        action="{{ route('admin.academic.subjects.update', $subject) }}"
         method="POST"
-        class="w-full overflow-hidden rounded-2xl border
-               border-slate-200 bg-white shadow-sm">
+        class="overflow-hidden rounded-2xl border border-slate-200
+               bg-white shadow-sm">
 
         @csrf
         @method('PUT')
 
 
-        <div class="border-b border-slate-200 bg-slate-50 px-5 py-5 sm:px-6 lg:px-8">
+        <div class="border-b border-slate-200 bg-slate-50 px-5 py-5
+                    sm:px-6 lg:px-8">
 
             <h2 class="font-semibold text-slate-900">
-                Section Information
+                Subject Information
             </h2>
 
         </div>
@@ -69,6 +70,7 @@
             <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
 
 
+                {{-- Branch --}}
                 <div>
 
                     <label class="mb-2 block text-sm font-semibold text-slate-700">
@@ -85,7 +87,7 @@
 
                             <option
                                 value="{{ $branch->id }}"
-                                {{ old('branch_id', $section->branch_id) == $branch->id ? 'selected' : '' }}>
+                                {{ old('branch_id', $subject->branch_id) == $branch->id ? 'selected' : '' }}>
 
                                 {{ $branch->name }}
 
@@ -98,85 +100,144 @@
                 </div>
 
 
+                {{-- Name --}}
                 <div>
 
                     <label class="mb-2 block text-sm font-semibold text-slate-700">
-                        Class <span class="text-red-500">*</span>
-                    </label>
-
-                    <select
-                        name="class_id"
-                        required
-                        class="w-full rounded-xl border border-slate-300
-                               bg-white px-4 py-3 text-sm">
-
-                        @foreach($classes as $class)
-
-                            <option
-                                value="{{ $class->id }}"
-                                {{ old('class_id', $section->class_id) == $class->id ? 'selected' : '' }}>
-
-                                {{ $class->name }}
-
-                            </option>
-
-                        @endforeach
-
-                    </select>
-
-                </div>
-
-
-                <div>
-
-                    <label class="mb-2 block text-sm font-semibold text-slate-700">
-                        Section Name <span class="text-red-500">*</span>
+                        Subject Name <span class="text-red-500">*</span>
                     </label>
 
                     <input
                         type="text"
                         name="name"
                         required
-                        value="{{ old('name', $section->name) }}"
+                        maxlength="150"
+                        value="{{ old('name', $subject->name) }}"
                         class="w-full rounded-xl border border-slate-300
                                px-4 py-3 text-sm">
 
                 </div>
 
 
+                {{-- Bangla Name --}}
                 <div>
 
                     <label class="mb-2 block text-sm font-semibold text-slate-700">
-                        Section Code
+                        Subject Name (Bangla)
                     </label>
 
                     <input
                         type="text"
-                        name="capacity"
-                        value="{{ old('capacity', $section->capacity) }}"
+                        name="name_bn"
+                        maxlength="150"
+                        value="{{ old('name_bn', $subject->name_bn) }}"
                         class="w-full rounded-xl border border-slate-300
                                px-4 py-3 text-sm">
 
                 </div>
 
 
+                {{-- Code --}}
                 <div>
 
                     <label class="mb-2 block text-sm font-semibold text-slate-700">
-                        Sort Order
+                        Subject Code
+                    </label>
+
+                    <input
+                        type="text"
+                        name="code"
+                        maxlength="50"
+                        value="{{ old('code', $subject->code) }}"
+                        class="w-full rounded-xl border border-slate-300
+                               px-4 py-3 text-sm">
+
+                </div>
+
+
+                {{-- Type --}}
+                <div>
+
+                    <label class="mb-2 block text-sm font-semibold text-slate-700">
+                        Subject Type <span class="text-red-500">*</span>
+                    </label>
+
+                    <select
+                        name="type"
+                        required
+                        class="w-full rounded-xl border border-slate-300
+                               bg-white px-4 py-3 text-sm">
+
+                        <option
+                            value="theory"
+                            {{ old('type', $subject->type) === 'theory' ? 'selected' : '' }}>
+
+                            Theory
+
+                        </option>
+
+                        <option
+                            value="practical"
+                            {{ old('type', $subject->type) === 'practical' ? 'selected' : '' }}>
+
+                            Practical
+
+                        </option>
+
+                        <option
+                            value="both"
+                            {{ old('type', $subject->type) === 'both' ? 'selected' : '' }}>
+
+                            Theory + Practical
+
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                {{-- Full Marks --}}
+                <div>
+
+                    <label class="mb-2 block text-sm font-semibold text-slate-700">
+                        Full Marks <span class="text-red-500">*</span>
                     </label>
 
                     <input
                         type="number"
-                        name="sort_order"
-                        min="0"
-                        value="{{ old('sort_order', $section->sort_order) }}"
+                        name="full_marks"
+                        required
+                        min="1"
+                        step="0.01"
+                        value="{{ old('full_marks', $subject->full_marks) }}"
                         class="w-full rounded-xl border border-slate-300
                                px-4 py-3 text-sm">
 
                 </div>
 
 
+                {{-- Pass Marks --}}
+                <div>
+
+                    <label class="mb-2 block text-sm font-semibold text-slate-700">
+                        Pass Marks <span class="text-red-500">*</span>
+                    </label>
+
+                    <input
+                        type="number"
+                        name="pass_marks"
+                        required
+                        min="0"
+                        step="0.01"
+                        value="{{ old('pass_marks', $subject->pass_marks) }}"
+                        class="w-full rounded-xl border border-slate-300
+                               px-4 py-3 text-sm">
+
+                </div>
+
+
+                {{-- Status --}}
                 <div class="flex items-end">
 
                     <label class="flex w-full cursor-pointer items-center gap-3
@@ -187,7 +248,7 @@
                             type="checkbox"
                             name="status"
                             value="1"
-                            {{ old('status', $section->status) ? 'checked' : '' }}
+                            {{ old('status', $subject->status) ? 'checked' : '' }}
                             class="h-4 w-4 rounded border-slate-300 text-blue-600">
 
                         <span>
@@ -197,7 +258,7 @@
                             </span>
 
                             <span class="block text-xs text-slate-500">
-                                Enable this section.
+                                Make this subject available.
                             </span>
 
                         </span>
@@ -216,7 +277,7 @@
                     sm:px-6 lg:px-8">
 
             <a
-                href="{{ route('admin.academic.sections.index') }}"
+                href="{{ route('admin.academic.subjects.index') }}"
                 class="rounded-xl border border-slate-300 bg-white
                        px-5 py-2.5 text-center text-sm font-semibold text-slate-700">
 
@@ -229,7 +290,7 @@
                 class="rounded-xl bg-blue-600 px-6 py-2.5
                        text-sm font-semibold text-white hover:bg-blue-700">
 
-                Update Section
+                Update Subject
 
             </button>
 

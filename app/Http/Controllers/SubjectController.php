@@ -9,18 +9,32 @@ use Illuminate\Validation\Rule;
 
 class SubjectController extends Controller
 {
-    public function index()
+    /**
+     * Display subjects.
+     */
+    public function index(Request $request)
     {
         $subjects = Subject::with('branch')
+            ->when($request->filled('branch_id'), function ($query) use ($request) {
+                $query->where('branch_id', $request->branch_id);
+            })
             ->latest()
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
+
+        $branches = Branch::where('status', true)
+            ->orderBy('name')
+            ->get();
 
         return view(
             'admin.academic.subjects.index',
-            compact('subjects')
+            compact('subjects', 'branches')
         );
     }
 
+    /**
+     * Show create form.
+     */
     public function create()
     {
         $branches = Branch::where('status', true)
@@ -33,10 +47,16 @@ class SubjectController extends Controller
         );
     }
 
+    /**
+     * Store subject.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'branch_id' => ['required', 'exists:branches,id'],
+            'branch_id' => [
+                'required',
+                'exists:branches,id',
+            ],
 
             'name' => [
                 'required',
@@ -44,12 +64,19 @@ class SubjectController extends Controller
                 'max:150',
 
                 Rule::unique('subjects', 'name')
-                    ->where(fn ($query) =>
-                        $query->where('branch_id', $request->branch_id)
-                    ),
+                    ->where(function ($query) use ($request) {
+                        return $query->where(
+                            'branch_id',
+                            $request->branch_id
+                        );
+                    }),
             ],
 
-            'name_bn' => ['nullable', 'string', 'max:150'],
+            'name_bn' => [
+                'nullable',
+                'string',
+                'max:150',
+            ],
 
             'code' => [
                 'nullable',
@@ -79,7 +106,10 @@ class SubjectController extends Controller
                 'lte:full_marks',
             ],
 
-            'status' => ['nullable', 'boolean'],
+            'status' => [
+                'nullable',
+                'boolean',
+            ],
         ]);
 
         $validated['status'] = $request->boolean('status');
@@ -88,9 +118,15 @@ class SubjectController extends Controller
 
         return redirect()
             ->route('admin.academic.subjects.index')
-            ->with('success', 'Subject created successfully.');
+            ->with(
+                'success',
+                'Subject created successfully.'
+            );
     }
 
+    /**
+     * Display subject details.
+     */
     public function show(Subject $subject)
     {
         $subject->load([
@@ -104,6 +140,9 @@ class SubjectController extends Controller
         );
     }
 
+    /**
+     * Show edit form.
+     */
     public function edit(Subject $subject)
     {
         $branches = Branch::where('status', true)
@@ -112,16 +151,25 @@ class SubjectController extends Controller
 
         return view(
             'admin.academic.subjects.edit',
-            compact('subject', 'branches')
+            compact(
+                'subject',
+                'branches'
+            )
         );
     }
 
+    /**
+     * Update subject.
+     */
     public function update(
         Request $request,
         Subject $subject
     ) {
         $validated = $request->validate([
-            'branch_id' => ['required', 'exists:branches,id'],
+            'branch_id' => [
+                'required',
+                'exists:branches,id',
+            ],
 
             'name' => [
                 'required',
@@ -129,13 +177,20 @@ class SubjectController extends Controller
                 'max:150',
 
                 Rule::unique('subjects', 'name')
-                    ->where(fn ($query) =>
-                        $query->where('branch_id', $request->branch_id)
-                    )
+                    ->where(function ($query) use ($request) {
+                        return $query->where(
+                            'branch_id',
+                            $request->branch_id
+                        );
+                    })
                     ->ignore($subject->id),
             ],
 
-            'name_bn' => ['nullable', 'string', 'max:150'],
+            'name_bn' => [
+                'nullable',
+                'string',
+                'max:150',
+            ],
 
             'code' => [
                 'nullable',
@@ -165,7 +220,10 @@ class SubjectController extends Controller
                 'lte:full_marks',
             ],
 
-            'status' => ['nullable', 'boolean'],
+            'status' => [
+                'nullable',
+                'boolean',
+            ],
         ]);
 
         $validated['status'] = $request->boolean('status');
@@ -174,15 +232,24 @@ class SubjectController extends Controller
 
         return redirect()
             ->route('admin.academic.subjects.index')
-            ->with('success', 'Subject updated successfully.');
+            ->with(
+                'success',
+                'Subject updated successfully.'
+            );
     }
 
+    /**
+     * Delete subject.
+     */
     public function destroy(Subject $subject)
     {
         $subject->delete();
 
         return redirect()
             ->route('admin.academic.subjects.index')
-            ->with('success', 'Subject deleted successfully.');
+            ->with(
+                'success',
+                'Subject deleted successfully.'
+            );
     }
 }

@@ -1,7 +1,7 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Add Section')
-@section('page-title', 'Add Section')
+@section('title', 'Add Subject')
+@section('page-title', 'Add Subject')
 
 @section('content')
 
@@ -10,19 +10,19 @@
     <div>
 
         <a
-            href="{{ route('admin.academic.sections.index') }}"
+            href="{{ route('admin.academic.subjects.index') }}"
             class="text-sm font-medium text-blue-600 hover:text-blue-700">
 
-            ← Back to Sections
+            ← Back to Subjects
 
         </a>
 
         <h1 class="mt-3 text-2xl font-bold text-slate-900 sm:text-3xl">
-            Add Section
+            Add Subject
         </h1>
 
         <p class="mt-1 text-sm text-slate-500">
-            Create a new section under a class.
+            Create a new academic subject for a branch.
         </p>
 
     </div>
@@ -46,22 +46,23 @@
 
 
     <form
-        action="{{ route('admin.academic.sections.store') }}"
+        action="{{ route('admin.academic.subjects.store') }}"
         method="POST"
-        class="w-full overflow-hidden rounded-2xl border
-               border-slate-200 bg-white shadow-sm">
+        class="overflow-hidden rounded-2xl border border-slate-200
+               bg-white shadow-sm">
 
         @csrf
 
 
-        <div class="border-b border-slate-200 bg-slate-50 px-5 py-5 sm:px-6 lg:px-8">
+        <div class="border-b border-slate-200 bg-slate-50 px-5 py-5
+                    sm:px-6 lg:px-8">
 
             <h2 class="font-semibold text-slate-900">
-                Section Information
+                Subject Information
             </h2>
 
             <p class="mt-1 text-sm text-slate-500">
-                Enter section information below.
+                Enter the subject information below.
             </p>
 
         </div>
@@ -87,7 +88,9 @@
                                focus:border-blue-500 focus:outline-none
                                focus:ring-4 focus:ring-blue-500/10">
 
-                        <option value="">Select Branch</option>
+                        <option value="">
+                            Select Branch
+                        </option>
 
                         @foreach($branches as $branch)
 
@@ -104,55 +107,19 @@
                     </select>
 
                     @error('branch_id')
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-xs text-red-600">
+                            {{ $message }}
+                        </p>
                     @enderror
 
                 </div>
 
 
-                {{-- Class --}}
+                {{-- Subject Name --}}
                 <div>
 
                     <label class="mb-2 block text-sm font-semibold text-slate-700">
-                        Class <span class="text-red-500">*</span>
-                    </label>
-
-                    <select
-                        name="class_id"
-                        required
-                        class="w-full rounded-xl border border-slate-300
-                               bg-white px-4 py-3 text-sm
-                               focus:border-blue-500 focus:outline-none
-                               focus:ring-4 focus:ring-blue-500/10">
-
-                        <option value="">Select Class</option>
-
-                        @foreach($classes as $class)
-
-                            <option
-                                value="{{ $class->id }}"
-                                {{ old('class_id') == $class->id ? 'selected' : '' }}>
-
-                                {{ $class->name }}
-
-                            </option>
-
-                        @endforeach
-
-                    </select>
-
-                    @error('class_id')
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
-                    @enderror
-
-                </div>
-
-
-                {{-- Section Name --}}
-                <div>
-
-                    <label class="mb-2 block text-sm font-semibold text-slate-700">
-                        Section Name <span class="text-red-500">*</span>
+                        Subject Name <span class="text-red-500">*</span>
                     </label>
 
                     <input
@@ -160,15 +127,39 @@
                         name="name"
                         value="{{ old('name') }}"
                         required
-                        placeholder="Example: Section A"
+                        maxlength="150"
+                        placeholder="Example: Mathematics"
                         class="w-full rounded-xl border border-slate-300
                                px-4 py-3 text-sm
                                focus:border-blue-500 focus:outline-none
                                focus:ring-4 focus:ring-blue-500/10">
 
                     @error('name')
-                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-xs text-red-600">
+                            {{ $message }}
+                        </p>
                     @enderror
+
+                </div>
+
+
+                {{-- Bangla Name --}}
+                <div>
+
+                    <label class="mb-2 block text-sm font-semibold text-slate-700">
+                        Subject Name (Bangla)
+                    </label>
+
+                    <input
+                        type="text"
+                        name="name_bn"
+                        value="{{ old('name_bn') }}"
+                        maxlength="150"
+                        placeholder="উদাহরণ: গণিত"
+                        class="w-full rounded-xl border border-slate-300
+                               px-4 py-3 text-sm
+                               focus:border-blue-500 focus:outline-none
+                               focus:ring-4 focus:ring-blue-500/10">
 
                 </div>
 
@@ -177,14 +168,15 @@
                 <div>
 
                     <label class="mb-2 block text-sm font-semibold text-slate-700">
-                        Section Code
+                        Subject Code
                     </label>
 
                     <input
                         type="text"
-                        name="capacity"
-                        value="{{ old('capacity') }}"
-                        placeholder="Example: A"
+                        name="code"
+                        value="{{ old('code') }}"
+                        maxlength="50"
+                        placeholder="Example: MAT-101"
                         class="w-full rounded-xl border border-slate-300
                                px-4 py-3 text-sm
                                focus:border-blue-500 focus:outline-none
@@ -193,18 +185,98 @@
                 </div>
 
 
-                {{-- Sort Order --}}
+                {{-- Type --}}
                 <div>
 
                     <label class="mb-2 block text-sm font-semibold text-slate-700">
-                        Sort Order
+                        Subject Type <span class="text-red-500">*</span>
+                    </label>
+
+                    <select
+                        name="type"
+                        required
+                        class="w-full rounded-xl border border-slate-300
+                               bg-white px-4 py-3 text-sm
+                               focus:border-blue-500 focus:outline-none
+                               focus:ring-4 focus:ring-blue-500/10">
+
+                        <option value="">
+                            Select Type
+                        </option>
+
+                        <option
+                            value="theory"
+                            {{ old('type') === 'theory' ? 'selected' : '' }}>
+
+                            Theory
+
+                        </option>
+
+                        <option
+                            value="practical"
+                            {{ old('type') === 'practical' ? 'selected' : '' }}>
+
+                            Practical
+
+                        </option>
+
+                        <option
+                            value="both"
+                            {{ old('type') === 'both' ? 'selected' : '' }}>
+
+                            Theory + Practical
+
+                        </option>
+
+                    </select>
+
+                    @error('type')
+                        <p class="mt-1 text-xs text-red-600">
+                            {{ $message }}
+                        </p>
+                    @enderror
+
+                </div>
+
+
+                {{-- Full Marks --}}
+                <div>
+
+                    <label class="mb-2 block text-sm font-semibold text-slate-700">
+                        Full Marks <span class="text-red-500">*</span>
                     </label>
 
                     <input
                         type="number"
-                        name="sort_order"
-                        value="{{ old('sort_order', 0) }}"
+                        name="full_marks"
+                        value="{{ old('full_marks') }}"
+                        required
+                        min="1"
+                        step="0.01"
+                        placeholder="100"
+                        class="w-full rounded-xl border border-slate-300
+                               px-4 py-3 text-sm
+                               focus:border-blue-500 focus:outline-none
+                               focus:ring-4 focus:ring-blue-500/10">
+
+                </div>
+
+
+                {{-- Pass Marks --}}
+                <div>
+
+                    <label class="mb-2 block text-sm font-semibold text-slate-700">
+                        Pass Marks <span class="text-red-500">*</span>
+                    </label>
+
+                    <input
+                        type="number"
+                        name="pass_marks"
+                        value="{{ old('pass_marks') }}"
+                        required
                         min="0"
+                        step="0.01"
+                        placeholder="33"
                         class="w-full rounded-xl border border-slate-300
                                px-4 py-3 text-sm
                                focus:border-blue-500 focus:outline-none
@@ -234,7 +306,7 @@
                             </span>
 
                             <span class="block text-xs text-slate-500">
-                                Enable this section.
+                                Make this subject available.
                             </span>
 
                         </span>
@@ -253,7 +325,7 @@
                     sm:px-6 lg:px-8">
 
             <a
-                href="{{ route('admin.academic.sections.index') }}"
+                href="{{ route('admin.academic.subjects.index') }}"
                 class="rounded-xl border border-slate-300 bg-white
                        px-5 py-2.5 text-center text-sm font-semibold text-slate-700">
 
@@ -266,7 +338,7 @@
                 class="rounded-xl bg-blue-600 px-6 py-2.5
                        text-sm font-semibold text-white hover:bg-blue-700">
 
-                Create Section
+                Create Subject
 
             </button>
 
