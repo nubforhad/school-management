@@ -9,13 +9,24 @@ use Illuminate\Validation\Rule;
 
 class SchoolClassController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $classes = SchoolClass::with('branch')
+            ->when($request->filled('branch_id'), function ($query) use ($request) {
+                $query->where('branch_id', $request->branch_id);
+            })
             ->orderBy('numeric_order')
-            ->paginate(15);
+            ->paginate(15)
+            ->withQueryString();
 
-        return view('admin.academic.classes.index', compact('classes'));
+        $branches = Branch::where('status', true)
+            ->orderBy('name')
+            ->get();
+
+        return view(
+            'admin.academic.classes.index',
+            compact('classes', 'branches')
+        );
     }
 
     public function create()
