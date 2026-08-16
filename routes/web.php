@@ -26,11 +26,9 @@ Route::get('/addmission', [AdmissionController::class, 'admission'])->name('admi
 
 
 // admin 
-    Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('branches', BranchController::class);
-    });
-
-
+  
 
     Route::prefix('academic')->name('academic.')->group(function () {
         Route::resource('sessions', AcademicSessionController::class);
@@ -40,3 +38,4 @@ Route::get('/addmission', [AdmissionController::class, 'admission'])->name('admi
         Route::resource(  'class-subjects', ClassSubjectController::class);
 
     });
+});

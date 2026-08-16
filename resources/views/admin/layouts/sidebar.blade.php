@@ -68,6 +68,77 @@
 
         </nav>
 
+        <p class="px-3 mb-2 mt-7 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            Academic
+        </p>
+
+        <nav class="space-y-1">
+               <a
+                href="{{ route('admin.academic.sessions.index') }}"
+                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm
+                {{ request()->routeIs('admin.academic.sessions.*')
+                    ? 'bg-blue-600 text-white'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+
+                <span>📅</span>
+                <span>Academic Sessions</span>
+
+            </a>
+
+
+            <a
+                href="{{ route('admin.academic.classes.index') }}"
+                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm
+                {{ request()->routeIs('admin.academic.classes.*')
+                    ? 'bg-blue-600 text-white'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+
+                <span>🎓</span>
+                <span>Classes</span>
+
+            </a>
+
+
+            <a
+                href="{{ route('admin.academic.sections.index') }}"
+                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm
+                {{ request()->routeIs('admin.academic.sections.*')
+                    ? 'bg-blue-600 text-white'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+
+                <span>👥</span>
+                <span>Sections</span>
+
+            </a>
+
+
+            <a
+                href="{{ route('admin.academic.subjects.index') }}"
+                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm
+                {{ request()->routeIs('admin.academic.subjects.*')
+                    ? 'bg-blue-600 text-white'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+
+                <span>📚</span>
+                <span>Subjects</span>
+
+            </a>
+
+
+            <a
+                href="{{ route('admin.academic.class-subjects.index') }}"
+                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm
+                {{ request()->routeIs('admin.academic.class-subjects.*')
+                    ? 'bg-blue-600 text-white'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+
+                <span>🔗</span>
+                <span>Class Subjects</span>
+
+            </a>
+
+        </nav>
+
 
         <p class="px-3 mb-2 mt-7 text-xs font-semibold uppercase tracking-wider text-slate-500">
             Modules

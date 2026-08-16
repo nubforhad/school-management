@@ -23,10 +23,10 @@ return new class extends Migration
                 ->constrained('subjects')
                 ->cascadeOnDelete();
 
-            $table->foreignId('teacher_id')
-                ->nullable()
-                ->constrained('employees')
-                ->nullOnDelete();
+            // $table->foreignId('teacher_id')
+            //     ->nullable()
+            //     ->constrained('employees')
+            //     ->nullOnDelete();
 
             $table->unsignedInteger('sort_order')->default(0);
 
