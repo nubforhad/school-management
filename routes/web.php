@@ -11,6 +11,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ClassSubjectController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentEnrollmentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,4 +40,24 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource(  'class-subjects', ClassSubjectController::class);
 
     });
+
+    Route::prefix('students/enrollments')->name('students.enrollments.')->group(function () {
+
+        Route::get( '/',  [StudentEnrollmentController::class, 'index'])->name('index');
+        Route::get( '/create',   [StudentEnrollmentController::class, 'create'])->name('create');
+        Route::post( '/', [StudentEnrollmentController::class, 'store'] )->name('store');
+        Route::get( '/{enrollment}',  [StudentEnrollmentController::class, 'show'] )->name('show');
+        Route::get( '/{enrollment}/edit', [StudentEnrollmentController::class, 'edit'])->name('edit');
+        Route::put( '/{enrollment}', [StudentEnrollmentController::class, 'update'])->name('update');
+        Route::delete( '/{enrollment}',   [StudentEnrollmentController::class, 'destroy'] )->name('destroy');
+    });
+
 }); 
+
+
+/*
+|--------------------------------------------------------------------------
+| Student Enrollment
+|--------------------------------------------------------------------------
+*/
+

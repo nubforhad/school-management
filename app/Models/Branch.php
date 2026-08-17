@@ -50,5 +50,9 @@ class Branch extends Model
     {
         return $this->hasMany(ClassSubject::class);
     }
+    public function studentEnrollments()
+    {
+        return $this->hasMany(StudentEnrollment::class);
+    }
 
 }

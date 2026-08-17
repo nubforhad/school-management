@@ -2,99 +2,77 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Student extends Model
+class StudentEnrollment extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'branch_id',
-        'academic_session_id',
-        'admission_no',
         'student_id',
-        'name',
-        'name_bn',
-        'gender',
-        'date_of_birth',
-        'blood_group',
-        'religion',
-        'photo',
+        'academic_session_id',
         'class_id',
         'section_id',
         'roll_no',
-        'guardian_name',
-        'guardian_phone',
-        'guardian_email',
-        'address',
         'admission_date',
         'status',
+        'remarks',
     ];
 
     protected $casts = [
-        'date_of_birth' => 'date',
         'admission_date' => 'date',
-        'status' => 'boolean',
+        'roll_no' => 'integer',
     ];
-
 
     /*
     |--------------------------------------------------------------------------
     | Branch
     |--------------------------------------------------------------------------
     */
-
-    public function branch(): BelongsTo
+    public function branch()
     {
         return $this->belongsTo(Branch::class);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Student
+    |--------------------------------------------------------------------------
+    */
+    public function student()
+    {
+        return $this->belongsTo(Student::class);
+    }
 
     /*
     |--------------------------------------------------------------------------
     | Academic Session
     |--------------------------------------------------------------------------
     */
-
-    public function academicSession(): BelongsTo
+    public function academicSession()
     {
-        return $this->belongsTo(
-            AcademicSession::class
-        );
+        return $this->belongsTo(AcademicSession::class);
     }
-
 
     /*
     |--------------------------------------------------------------------------
     | Class
     |--------------------------------------------------------------------------
     */
-
-    public function schoolClass(): BelongsTo
+    public function schoolClass()
     {
-        return $this->belongsTo(
-            SchoolClass::class,
-            'class_id'
-        );
+        return $this->belongsTo(SchoolClass::class, 'class_id');
     }
-
 
     /*
     |--------------------------------------------------------------------------
     | Section
     |--------------------------------------------------------------------------
     */
-
-    public function section(): BelongsTo
+    public function section()
     {
-        return $this->belongsTo(
-            Section::class
-        );
+        return $this->belongsTo(Section::class);
     }
-
-    public function enrollments()
-    {
-        return $this->hasMany(StudentEnrollment::class);
-    }
-
-
 }

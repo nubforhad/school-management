@@ -30,4 +30,11 @@ class SchoolClass extends Model
     {
         return $this->hasMany(Section::class, 'class_id');
     }
+
+    public function studentEnrollments()
+    {
+        return $this->hasMany(StudentEnrollment::class, 'class_id');
+    }
+
+
 }

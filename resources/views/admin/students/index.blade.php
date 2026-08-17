@@ -655,6 +655,45 @@
                                             />
                                         </svg>
                                     </a>
+ 
+
+                                    <a  href="{{ route('admin.students.id-card', $student) }}"
+                                        title="Student ID Card"
+                                        class="inline-flex h-9 w-9 items-center justify-center
+                                            rounded-lg border border-purple-200
+                                            text-purple-600 transition
+                                            hover:bg-purple-50"
+                                    >
+                                        <svg
+                                            class="h-4 w-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <rect
+                                                x="3"
+                                                y="5"
+                                                width="18"
+                                                height="14"
+                                                rx="2"
+                                                stroke-width="2"
+                                            />
+
+                                            <circle
+                                                cx="8"
+                                                cy="10"
+                                                r="2"
+                                                stroke-width="2"
+                                            />
+
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M5.5 15c.7-1.5 1.7-2.2 2.5-2.2s1.8.7 2.5 2.2M13 9h5M13 13h5"
+                                            />
+                                        </svg>
+                                    </a>
 
 
                                     <a
@@ -680,6 +719,8 @@
                                             />
                                         </svg>
                                     </a>
+
+                                    
 
 
                                     <form
