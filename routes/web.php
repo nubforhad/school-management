@@ -17,11 +17,9 @@ Route::get('/', function () {
 });
 
 
-Route::get('/addmission', [AdmissionController::class, 'admission'])->name('admission');
-
-
- Route::get('/dashboard', [DashboardController::class,  'index' ])->name('dashboard');
-
+    Route::get('/addmission', [AdmissionController::class, 'admission'])->name('admission');
+    Route::get('/dashboard', [DashboardController::class,  'index' ])->name('dashboard');
+    Route::get('/students/{student}/id-card',  [StudentController::class, 'idCard'])->name('admin.students.id-card');
 
 
 

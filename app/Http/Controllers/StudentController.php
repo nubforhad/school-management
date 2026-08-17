@@ -564,4 +564,42 @@ class StudentController extends Controller
                 'Student deleted successfully.'
             );
     }
+
+
+
+
+    public function idCard(Student $student)
+    {
+        $student->load([
+            'branch',
+            'academicSession',
+            'schoolClass',
+            'section',
+        ]);
+
+        return view(
+            'admin.students.id-card',
+            compact('student')
+        );
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

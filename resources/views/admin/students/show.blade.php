@@ -674,7 +674,7 @@
 
 
             <a
-                href="#"
+                href="{{ route('admin.students.id-card', $student) }}"
                 class="rounded-xl border border-slate-200 p-4 text-center
                        transition hover:border-purple-300 hover:bg-purple-50"
             >
