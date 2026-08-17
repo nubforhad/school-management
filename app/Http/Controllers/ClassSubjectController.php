@@ -11,22 +11,49 @@ use Illuminate\Validation\Rule;
 
 class ClassSubjectController extends Controller
 {
-    public function index()
+    /**
+     * Display class subjects.
+     */
+    public function index(Request $request)
     {
         $classSubjects = ClassSubject::with([
                 'branch',
                 'schoolClass',
                 'subject',
             ])
+            ->when($request->filled('branch_id'), function ($query) use ($request) {
+                $query->where('branch_id', $request->branch_id);
+            })
+            ->when($request->filled('class_id'), function ($query) use ($request) {
+                $query->where('class_id', $request->class_id);
+            })
             ->latest()
-            ->paginate(20);
+            ->paginate(20)
+            ->withQueryString();
+
+        $branches = Branch::where('status', true)
+            ->orderBy('name')
+            ->get();
+
+        $classes = SchoolClass::where('status', true)
+            ->orderBy('numeric_order')
+            ->orderBy('name')
+            ->get();
 
         return view(
             'admin.academic.class-subjects.index',
-            compact('classSubjects')
+            compact(
+                'classSubjects',
+                'branches',
+                'classes'
+            )
         );
     }
 
+
+    /**
+     * Show create form.
+     */
     public function create()
     {
         $branches = Branch::where('status', true)
@@ -35,6 +62,7 @@ class ClassSubjectController extends Controller
 
         $classes = SchoolClass::where('status', true)
             ->orderBy('numeric_order')
+            ->orderBy('name')
             ->get();
 
         $subjects = Subject::where('status', true)
@@ -51,12 +79,27 @@ class ClassSubjectController extends Controller
         );
     }
 
+
+    /**
+     * Store class subject.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'branch_id' => ['required', 'exists:branches,id'],
-            'class_id' => ['required', 'exists:classes,id'],
-            'subject_id' => ['required', 'exists:subjects,id'],
+            'branch_id' => [
+                'required',
+                'exists:branches,id',
+            ],
+
+            'class_id' => [
+                'required',
+                'exists:classes,id',
+            ],
+
+            'subject_id' => [
+                'required',
+                'exists:subjects,id',
+            ],
 
             'sort_order' => [
                 'nullable',
@@ -64,9 +107,65 @@ class ClassSubjectController extends Controller
                 'min:0',
             ],
 
-            'is_optional' => ['nullable', 'boolean'],
-            'status' => ['nullable', 'boolean'],
+            'is_optional' => [
+                'nullable',
+                'boolean',
+            ],
+
+            'status' => [
+                'nullable',
+                'boolean',
+            ],
         ]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Check Class belongs to selected Branch
+        |--------------------------------------------------------------------------
+        */
+
+        $classExists = SchoolClass::where('id', $request->class_id)
+            ->where('branch_id', $request->branch_id)
+            ->exists();
+
+        if (!$classExists) {
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'class_id' =>
+                        'Selected class does not belong to the selected branch.'
+                ]);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Check Subject belongs to selected Branch
+        |--------------------------------------------------------------------------
+        */
+
+        $subjectExists = Subject::where('id', $request->subject_id)
+            ->where('branch_id', $request->branch_id)
+            ->exists();
+
+        if (!$subjectExists) {
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'subject_id' =>
+                        'Selected subject does not belong to the selected branch.'
+                ]);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Prevent Duplicate Assignment
+        |--------------------------------------------------------------------------
+        */
 
         $exists = ClassSubject::where('branch_id', $request->branch_id)
             ->where('class_id', $request->class_id)
@@ -74,6 +173,7 @@ class ClassSubjectController extends Controller
             ->exists();
 
         if ($exists) {
+
             return back()
                 ->withInput()
                 ->withErrors([
@@ -81,6 +181,7 @@ class ClassSubjectController extends Controller
                         'This subject is already assigned to this class.'
                 ]);
         }
+
 
         $validated['sort_order'] =
             $validated['sort_order'] ?? 0;
@@ -91,7 +192,9 @@ class ClassSubjectController extends Controller
         $validated['status'] =
             $request->boolean('status');
 
+
         ClassSubject::create($validated);
+
 
         return redirect()
             ->route('admin.academic.class-subjects.index')
@@ -101,6 +204,28 @@ class ClassSubjectController extends Controller
             );
     }
 
+
+    /**
+     * Display class subject details.
+     */
+    public function show(ClassSubject $classSubject)
+    {
+        $classSubject->load([
+            'branch',
+            'schoolClass',
+            'subject',
+        ]);
+
+        return view(
+            'admin.academic.class-subjects.show',
+            compact('classSubject')
+        );
+    }
+
+
+    /**
+     * Show edit form.
+     */
     public function edit(ClassSubject $classSubject)
     {
         $branches = Branch::where('status', true)
@@ -109,6 +234,7 @@ class ClassSubjectController extends Controller
 
         $classes = SchoolClass::where('status', true)
             ->orderBy('numeric_order')
+            ->orderBy('name')
             ->get();
 
         $subjects = Subject::where('status', true)
@@ -126,14 +252,29 @@ class ClassSubjectController extends Controller
         );
     }
 
+
+    /**
+     * Update class subject.
+     */
     public function update(
         Request $request,
         ClassSubject $classSubject
     ) {
         $validated = $request->validate([
-            'branch_id' => ['required', 'exists:branches,id'],
-            'class_id' => ['required', 'exists:classes,id'],
-            'subject_id' => ['required', 'exists:subjects,id'],
+            'branch_id' => [
+                'required',
+                'exists:branches,id',
+            ],
+
+            'class_id' => [
+                'required',
+                'exists:classes,id',
+            ],
+
+            'subject_id' => [
+                'required',
+                'exists:subjects,id',
+            ],
 
             'sort_order' => [
                 'nullable',
@@ -141,9 +282,65 @@ class ClassSubjectController extends Controller
                 'min:0',
             ],
 
-            'is_optional' => ['nullable', 'boolean'],
-            'status' => ['nullable', 'boolean'],
+            'is_optional' => [
+                'nullable',
+                'boolean',
+            ],
+
+            'status' => [
+                'nullable',
+                'boolean',
+            ],
         ]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Check Class belongs to selected Branch
+        |--------------------------------------------------------------------------
+        */
+
+        $classExists = SchoolClass::where('id', $request->class_id)
+            ->where('branch_id', $request->branch_id)
+            ->exists();
+
+        if (!$classExists) {
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'class_id' =>
+                        'Selected class does not belong to the selected branch.'
+                ]);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Check Subject belongs to selected Branch
+        |--------------------------------------------------------------------------
+        */
+
+        $subjectExists = Subject::where('id', $request->subject_id)
+            ->where('branch_id', $request->branch_id)
+            ->exists();
+
+        if (!$subjectExists) {
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'subject_id' =>
+                        'Selected subject does not belong to the selected branch.'
+                ]);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Prevent Duplicate Assignment
+        |--------------------------------------------------------------------------
+        */
 
         $exists = ClassSubject::where('branch_id', $request->branch_id)
             ->where('class_id', $request->class_id)
@@ -152,6 +349,7 @@ class ClassSubjectController extends Controller
             ->exists();
 
         if ($exists) {
+
             return back()
                 ->withInput()
                 ->withErrors([
@@ -159,6 +357,7 @@ class ClassSubjectController extends Controller
                         'This subject is already assigned to this class.'
                 ]);
         }
+
 
         $validated['sort_order'] =
             $validated['sort_order'] ?? 0;
@@ -169,7 +368,9 @@ class ClassSubjectController extends Controller
         $validated['status'] =
             $request->boolean('status');
 
+
         $classSubject->update($validated);
+
 
         return redirect()
             ->route('admin.academic.class-subjects.index')
@@ -179,6 +380,10 @@ class ClassSubjectController extends Controller
             );
     }
 
+
+    /**
+     * Delete class subject.
+     */
     public function destroy(ClassSubject $classSubject)
     {
         $classSubject->delete();
