@@ -9,6 +9,8 @@ use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SectionController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\ClassSubjectController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StudentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,7 +20,7 @@ Route::get('/', function () {
 Route::get('/addmission', [AdmissionController::class, 'admission'])->name('admission');
 
 
-
+ Route::get('/dashboard', [DashboardController::class,  'index' ])->name('dashboard');
 
 
 
@@ -28,6 +30,7 @@ Route::get('/addmission', [AdmissionController::class, 'admission'])->name('admi
 // admin 
 Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('branches', BranchController::class);
+        Route::resource('students', StudentController::class );
   
 
     Route::prefix('academic')->name('academic.')->group(function () {

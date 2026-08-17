@@ -44,7 +44,7 @@
 
         <nav class="space-y-1">
 
-            <a href="#"
+            <a href="{{ route('dashboard') }}"
                class="flex items-center gap-3 rounded-lg px-3 py-2.5
                       text-sm text-slate-300 hover:bg-slate-800 hover:text-white">
 
