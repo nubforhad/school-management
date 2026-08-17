@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 
-@section('title', 'New Student Enrollment')
+@section('title', 'Enroll / Promote Student')
 
 @section('content')
 
@@ -9,40 +9,47 @@
     {{-- =========================================================
         HEADER
     ========================================================== --}}
+
     <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 
         <div>
+
             <div class="flex items-center gap-2 text-sm text-slate-500">
+
                 <a
-                    href="{{ route('admin.students.enrollments.index') }}"
-                    class="hover:text-blue-600"
+                    href="{{ route('admin.students.enrollments.index', $student) }}"
+                    class="transition hover:text-blue-600"
                 >
-                    Enrollments
+                    Enrollment History
                 </a>
 
                 <span>/</span>
 
                 <span class="text-slate-700">
-                    New Enrollment
+                    Enroll / Promote
                 </span>
+
             </div>
 
             <h1 class="mt-2 text-2xl font-bold text-slate-800">
-                New Student Enrollment
+                Enroll / Promote Student
             </h1>
 
             <p class="mt-1 text-sm text-slate-500">
-                Enroll an existing student into a branch, session and class.
+                Assign this existing student to a new class, section or academic session.
             </p>
+
         </div>
 
+
         <a
-            href="{{ route('admin.students.enrollments.index') }}"
+            href="{{ route('admin.students.show', $student) }}"
             class="inline-flex items-center justify-center gap-2 rounded-xl
                    border border-slate-200 bg-white px-4 py-2.5
                    text-sm font-semibold text-slate-700
                    transition hover:bg-slate-50"
         >
+
             <svg
                 class="h-5 w-5"
                 fill="none"
@@ -57,15 +64,17 @@
                 />
             </svg>
 
-            Back
+            Back to Student
+
         </a>
 
     </div>
 
 
     {{-- =========================================================
-        ERRORS
+        VALIDATION ERRORS
     ========================================================== --}}
+
     @if($errors->any())
 
         <div class="rounded-2xl border border-red-200 bg-red-50 p-4">
@@ -111,34 +120,165 @@
     @endif
 
 
+
     {{-- =========================================================
-        FORM
+        STUDENT INFORMATION
     ========================================================== --}}
-    <form
-        method="POST"
-        action="{{ route('admin.students.enrollments.store') }}"
-        class="space-y-6"
-    >
 
-        @csrf
+    <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
 
+        <div class="border-b border-slate-100 px-5 py-4">
 
-        {{-- =====================================================
-            ACADEMIC INFORMATION
-        ====================================================== --}}
-        <div class="overflow-hidden rounded-2xl border border-slate-200
-                    bg-white shadow-sm">
+            <div class="flex items-center gap-3">
 
-            <div class="border-b border-slate-100 px-5 py-4">
+                <div
+                    class="flex h-10 w-10 items-center justify-center
+                           rounded-xl bg-blue-50 text-blue-600"
+                >
 
-                <div class="flex items-center gap-3">
-
-                    <div
-                        class="flex h-10 w-10 items-center justify-center
-                               rounded-xl bg-blue-50 text-blue-600"
+                    <svg
+                        class="h-5 w-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
                     >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"
+                        />
+
+                        <circle
+                            cx="9"
+                            cy="7"
+                            r="4"
+                            stroke-width="2"
+                        />
+
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"
+                        />
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <h2 class="font-semibold text-slate-800">
+                        Student Information
+                    </h2>
+
+                    <p class="text-xs text-slate-500">
+                        Existing student selected for enrollment.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="p-5">
+
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+
+                {{-- Student Name --}}
+
+                <div class="rounded-xl bg-slate-50 p-4">
+
+                    <p class="text-xs font-medium text-slate-500">
+                        Student Name
+                    </p>
+
+                    <p class="mt-1 font-semibold text-slate-800">
+                        {{ $student->name }}
+                    </p>
+
+                </div>
+
+
+                {{-- Student ID --}}
+
+                <div class="rounded-xl bg-slate-50 p-4">
+
+                    <p class="text-xs font-medium text-slate-500">
+                        Student ID
+                    </p>
+
+                    <p class="mt-1 font-semibold text-slate-800">
+                        {{ $student->student_id ?? 'N/A' }}
+                    </p>
+
+                </div>
+
+
+                {{-- Current Branch --}}
+
+                <div class="rounded-xl bg-slate-50 p-4">
+
+                    <p class="text-xs font-medium text-slate-500">
+                        Current Branch
+                    </p>
+
+                    <p class="mt-1 font-semibold text-slate-800">
+
+                        {{ $currentEnrollment?->branch?->name ?? 'Not Assigned' }}
+
+                    </p>
+
+                </div>
+
+
+                {{-- Current Class --}}
+
+                <div class="rounded-xl bg-slate-50 p-4">
+
+                    <p class="text-xs font-medium text-slate-500">
+                        Current Class
+                    </p>
+
+                    <p class="mt-1 font-semibold text-slate-800">
+
+                        @if($currentEnrollment)
+
+                            {{ $currentEnrollment->schoolClass?->name ?? 'N/A' }}
+
+                            @if($currentEnrollment->section)
+
+                                <span class="text-slate-500">
+                                    / {{ $currentEnrollment->section->name }}
+                                </span>
+
+                            @endif
+
+                        @else
+
+                            Not Assigned
+
+                        @endif
+
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {{-- Current Enrollment Alert --}}
+
+            @if($currentEnrollment)
+
+                <div class="mt-5 rounded-xl border border-blue-200 bg-blue-50 p-4">
+
+                    <div class="flex gap-3">
+
                         <svg
-                            class="h-5 w-5"
+                            class="mt-0.5 h-5 w-5 shrink-0 text-blue-600"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -147,31 +287,90 @@
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
                                 stroke-width="2"
-                                d="M12 14l9-5-9-5-9 5 9 5z"
-                            />
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M5 12v5c0 1.5 3.134 3 7 3s7-1.5 7-3v-5"
+                                d="M13 16h-1v-4h-1m1-4h.01M12 22a10 10 0 110-20 10 10 0 010 20z"
                             />
                         </svg>
-                    </div>
 
-                    <div>
+                        <div>
 
-                        <h2 class="font-semibold text-slate-800">
-                            Academic Information
-                        </h2>
+                            <p class="font-semibold text-blue-800">
+                                Current Enrollment
+                            </p>
 
-                        <p class="text-xs text-slate-500">
-                            Select branch, student and academic class information.
-                        </p>
+                            <p class="mt-1 text-sm leading-6 text-blue-700">
+
+                                This student is currently enrolled in
+
+                                <strong>
+                                    {{ $currentEnrollment->schoolClass?->name }}
+                                </strong>
+
+                                @if($currentEnrollment->section)
+
+                                    , Section
+                                    <strong>
+                                        {{ $currentEnrollment->section->name }}
+                                    </strong>
+
+                                @endif
+
+                                @if($currentEnrollment->roll_no)
+
+                                    , Roll
+                                    <strong>
+                                        {{ $currentEnrollment->roll_no }}
+                                    </strong>
+
+                                @endif
+
+                                .
+
+                                After saving the new enrollment, the current
+                                enrollment will be marked as completed.
+
+                            </p>
+
+                        </div>
 
                     </div>
 
                 </div>
+
+            @endif
+
+        </div>
+
+    </div>
+
+
+
+    {{-- =========================================================
+        NEW ENROLLMENT FORM
+    ========================================================== --}}
+
+    <form
+        method="POST"
+        action="{{ route('admin.students.enrollments.store', $student) }}"
+        class="space-y-6"
+    >
+
+        @csrf
+
+
+        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+
+
+            {{-- Header --}}
+
+            <div class="border-b border-slate-100 px-5 py-4">
+
+                <h2 class="font-semibold text-slate-800">
+                    New Enrollment Information
+                </h2>
+
+                <p class="mt-1 text-xs text-slate-500">
+                    Select where you want to move/promote this student.
+                </p>
 
             </div>
 
@@ -184,13 +383,14 @@
                     {{-- =================================================
                         BRANCH
                     ================================================== --}}
+
                     <div>
 
                         <label
                             for="branch_id"
                             class="mb-1.5 block text-sm font-semibold text-slate-700"
                         >
-                            Branch
+                            New Branch
                             <span class="text-red-500">*</span>
                         </label>
 
@@ -213,7 +413,12 @@
 
                                 <option
                                     value="{{ $branch->id }}"
-                                    @selected(old('branch_id') == $branch->id)
+                                    @selected(
+                                        old(
+                                            'branch_id',
+                                            $currentEnrollment?->branch_id
+                                        ) == $branch->id
+                                    )
                                 >
                                     {{ $branch->name }}
                                 </option>
@@ -233,68 +438,11 @@
                     </div>
 
 
-                    {{-- =================================================
-                        STUDENT
-                    ================================================== --}}
-                    <div>
-
-                        <label
-                            for="student_id"
-                            class="mb-1.5 block text-sm font-semibold text-slate-700"
-                        >
-                            Student
-                            <span class="text-red-500">*</span>
-                        </label>
-
-                        <select
-                            id="student_id"
-                            name="student_id"
-                            required
-                            class="w-full rounded-xl border border-slate-300
-                                   bg-white px-4 py-2.5 text-sm text-slate-700
-                                   outline-none transition
-                                   focus:border-blue-500
-                                   focus:ring-2 focus:ring-blue-500/20"
-                        >
-
-                            <option value="">
-                                Select Student
-                            </option>
-
-                            @foreach($students as $student)
-
-                                <option
-                                    value="{{ $student->id }}"
-                                    @selected(old('student_id') == $student->id)
-                                >
-                                    {{ $student->name }}
-                                    @if($student->student_id)
-                                        — {{ $student->student_id }}
-                                    @endif
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
-                        @error('student_id')
-
-                            <p class="mt-1 text-xs text-red-600">
-                                {{ $message }}
-                            </p>
-
-                        @enderror
-
-                        <p class="mt-1.5 text-xs text-slate-500">
-                            Select an existing student. Do not create a duplicate student.
-                        </p>
-
-                    </div>
-
 
                     {{-- =================================================
                         ACADEMIC SESSION
                     ================================================== --}}
+
                     <div>
 
                         <label
@@ -324,7 +472,9 @@
 
                                 <option
                                     value="{{ $session->id }}"
-                                    @selected(old('academic_session_id') == $session->id)
+                                    @selected(
+                                        old('academic_session_id') == $session->id
+                                    )
                                 >
                                     {{ $session->name }}
                                 </option>
@@ -344,16 +494,18 @@
                     </div>
 
 
+
                     {{-- =================================================
-                        CLASS
+                        NEW CLASS
                     ================================================== --}}
+
                     <div>
 
                         <label
                             for="class_id"
                             class="mb-1.5 block text-sm font-semibold text-slate-700"
                         >
-                            Class
+                            New Class
                             <span class="text-red-500">*</span>
                         </label>
 
@@ -369,14 +521,16 @@
                         >
 
                             <option value="">
-                                Select Class
+                                Select New Class
                             </option>
 
                             @foreach($classes as $class)
 
                                 <option
                                     value="{{ $class->id }}"
-                                    @selected(old('class_id') == $class->id)
+                                    @selected(
+                                        old('class_id') == $class->id
+                                    )
                                 >
                                     {{ $class->name }}
                                 </option>
@@ -396,16 +550,18 @@
                     </div>
 
 
+
                     {{-- =================================================
-                        SECTION
+                        NEW SECTION
                     ================================================== --}}
+
                     <div>
 
                         <label
                             for="section_id"
                             class="mb-1.5 block text-sm font-semibold text-slate-700"
                         >
-                            Section
+                            New Section
                         </label>
 
                         <select
@@ -419,14 +575,16 @@
                         >
 
                             <option value="">
-                                Select Section
+                                Select New Section
                             </option>
 
                             @foreach($sections as $section)
 
                                 <option
                                     value="{{ $section->id }}"
-                                    @selected(old('section_id') == $section->id)
+                                    @selected(
+                                        old('section_id') == $section->id
+                                    )
                                 >
                                     {{ $section->name }}
                                 </option>
@@ -446,16 +604,18 @@
                     </div>
 
 
+
                     {{-- =================================================
-                        ROLL
+                        NEW ROLL
                     ================================================== --}}
+
                     <div>
 
                         <label
                             for="roll_no"
                             class="mb-1.5 block text-sm font-semibold text-slate-700"
                         >
-                            Roll Number
+                            New Roll Number
                         </label>
 
                         <input
@@ -464,7 +624,7 @@
                             name="roll_no"
                             value="{{ old('roll_no') }}"
                             min="1"
-                            placeholder="Enter roll number"
+                            placeholder="Enter new roll number"
                             class="w-full rounded-xl border border-slate-300
                                    bg-white px-4 py-2.5 text-sm text-slate-700
                                    outline-none transition
@@ -484,9 +644,11 @@
                     </div>
 
 
+
                     {{-- =================================================
                         ENROLLMENT DATE
                     ================================================== --}}
+
                     <div>
 
                         <label
@@ -520,77 +682,14 @@
 
                     </div>
 
-
-                    {{-- =================================================
-                        STATUS
-                    ================================================== --}}
-                    <div>
-
-                        <label
-                            for="status"
-                            class="mb-1.5 block text-sm font-semibold text-slate-700"
-                        >
-                            Enrollment Status
-                            <span class="text-red-500">*</span>
-                        </label>
-
-                        <select
-                            id="status"
-                            name="status"
-                            required
-                            class="w-full rounded-xl border border-slate-300
-                                   bg-white px-4 py-2.5 text-sm text-slate-700
-                                   outline-none transition
-                                   focus:border-blue-500
-                                   focus:ring-2 focus:ring-blue-500/20"
-                        >
-
-                            <option
-                                value="active"
-                                @selected(old('status', 'active') === 'active')
-                            >
-                                Active
-                            </option>
-
-                            <option
-                                value="inactive"
-                                @selected(old('status') === 'inactive')
-                            >
-                                Inactive
-                            </option>
-
-                            <option
-                                value="completed"
-                                @selected(old('status') === 'completed')
-                            >
-                                Completed
-                            </option>
-
-                            <option
-                                value="transferred"
-                                @selected(old('status') === 'transferred')
-                            >
-                                Transferred
-                            </option>
-
-                        </select>
-
-                        @error('status')
-
-                            <p class="mt-1 text-xs text-red-600">
-                                {{ $message }}
-                            </p>
-
-                        @enderror
-
-                    </div>
-
                 </div>
+
 
 
                 {{-- =====================================================
                     REMARKS
                 ====================================================== --}}
+
                 <div class="mt-5">
 
                     <label
@@ -604,7 +703,7 @@
                         id="remarks"
                         name="remarks"
                         rows="4"
-                        placeholder="Optional enrollment remarks..."
+                        placeholder="Example: Promoted from Class Five to Class Six..."
                         class="w-full rounded-xl border border-slate-300
                                bg-white px-4 py-3 text-sm text-slate-700
                                outline-none transition
@@ -628,13 +727,12 @@
         </div>
 
 
+
         {{-- =========================================================
-            PAYMENT INFORMATION NOTE
+            IMPORTANT INFORMATION
         ========================================================== --}}
-        <div
-            class="rounded-2xl border border-amber-200
-                   bg-amber-50 p-5"
-        >
+
+        <div class="rounded-2xl border border-amber-200 bg-amber-50 p-5">
 
             <div class="flex gap-3">
 
@@ -655,13 +753,23 @@
                 <div>
 
                     <h3 class="font-semibold text-amber-800">
-                        Payment is handled separately
+                        Important
                     </h3>
 
                     <p class="mt-1 text-sm leading-6 text-amber-700">
-                        Enrollment only creates the student's academic enrollment.
-                        Fees and payments will be managed from the Fees/Payment module,
-                        where you can receive any amount as needed.
+
+                        This will create a new enrollment record for
+                        <strong>{{ $student->name }}</strong>.
+
+                        @if($currentEnrollment)
+
+                            The student's current active enrollment will be
+                            marked as completed.
+
+                        @endif
+
+                        Student information will not be duplicated.
+
                     </p>
 
                 </div>
@@ -671,15 +779,59 @@
         </div>
 
 
+
         {{-- =========================================================
-            FORM ACTIONS
+            PAYMENT NOTE
         ========================================================== --}}
+
+        <div class="rounded-2xl border border-blue-200 bg-blue-50 p-5">
+
+            <div class="flex gap-3">
+
+                <svg
+                    class="mt-0.5 h-5 w-5 shrink-0 text-blue-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                </svg>
+
+                <div>
+
+                    <h3 class="font-semibold text-blue-800">
+                        Payment is handled separately
+                    </h3>
+
+                    <p class="mt-1 text-sm leading-6 text-blue-700">
+                        Enrollment only changes the student's academic
+                        placement. Fees and payments will be handled
+                        separately in the Payment module.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        {{-- =========================================================
+            ACTIONS
+        ========================================================== --}}
+
         <div
             class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end"
         >
 
             <a
-                href="{{ route('admin.students.enrollments.index') }}"
+                href="{{ route('admin.students.show', $student) }}"
                 class="inline-flex items-center justify-center rounded-xl
                        border border-slate-200 bg-white px-5 py-2.5
                        text-sm font-semibold text-slate-700
@@ -713,7 +865,7 @@
                     />
                 </svg>
 
-                Save Enrollment
+                Confirm Enrollment
 
             </button>
 

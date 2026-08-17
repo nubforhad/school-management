@@ -40,18 +40,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource(  'class-subjects', ClassSubjectController::class);
 
     });
-
-    Route::prefix('students/enrollments')->name('students.enrollments.')->group(function () {
-
-        Route::get( '/',  [StudentEnrollmentController::class, 'index'])->name('index');
-        Route::get( '/create',   [StudentEnrollmentController::class, 'create'])->name('create');
-        Route::post( '/', [StudentEnrollmentController::class, 'store'] )->name('store');
-        Route::get( '/{enrollment}',  [StudentEnrollmentController::class, 'show'] )->name('show');
-        Route::get( '/{enrollment}/edit', [StudentEnrollmentController::class, 'edit'])->name('edit');
-        Route::put( '/{enrollment}', [StudentEnrollmentController::class, 'update'])->name('update');
-        Route::delete( '/{enrollment}',   [StudentEnrollmentController::class, 'destroy'] )->name('destroy');
-    });
-
 }); 
 
 
@@ -61,3 +49,25 @@ Route::prefix('admin')->name('admin.')->group(function () {
 |--------------------------------------------------------------------------
 */
 
+Route::prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get(
+            'students/{student}/enrollments',
+            [StudentEnrollmentController::class, 'index']
+        )->name('students.enrollments.index');
+
+
+        Route::get(
+            'students/{student}/enrollments/create',
+            [StudentEnrollmentController::class, 'create']
+        )->name('students.enrollments.create');
+
+
+        Route::post(
+            'students/{student}/enrollments',
+            [StudentEnrollmentController::class, 'store']
+        )->name('students.enrollments.store');
+
+    });
