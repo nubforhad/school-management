@@ -32,6 +32,14 @@ return new class extends Migration
             $table->string('name', 150);
             $table->string('name_bn', 150)->nullable();
 
+            $table->string('father_name', 150);
+            $table->string('father_name_bn', 150)->nullable();
+
+            $table->string('mother_name', 150);
+            $table->string('mother_name_bn', 150)->nullable();
+
+            $table->string('birth_reg_no', 30)->nullable();
+
             $table->enum('gender', [
                 'male',
                 'female',

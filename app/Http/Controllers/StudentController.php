@@ -183,6 +183,36 @@ class StudentController extends Controller
                 'max:150',
             ],
 
+            'father_name' => [
+                'nullable',
+                'string',
+                'max:150',
+            ],
+
+            'father_name_bn' => [
+                'nullable',
+                'string',
+                'max:150',
+            ],
+
+            'mother_name' => [
+                'nullable',
+                'string',
+                'max:150',
+            ],
+
+            'mother_name_bn' => [
+                'nullable',
+                'string',
+                'max:150',
+            ],
+
+            'birth_reg_no' => [
+                'nullable',
+                'string',
+                'max:30',
+            ],
+
             'gender' => [
                 'nullable',
                 Rule::in([
@@ -411,6 +441,36 @@ class StudentController extends Controller
                 'nullable',
                 'string',
                 'max:150',
+            ],
+
+            'father_name' => [
+                'nullable',
+                'string',
+                'max:150',
+            ],
+
+            'father_name_bn' => [
+                'nullable',
+                'string',
+                'max:150',
+            ],
+
+            'mother_name' => [
+                'nullable',
+                'string',
+                'max:150',
+            ],
+
+            'mother_name_bn' => [
+                'nullable',
+                'string',
+                'max:150',
+            ],
+
+            'birth_reg_no' => [
+                'nullable',
+                'string',
+                'max:30',
             ],
 
             'gender' => [

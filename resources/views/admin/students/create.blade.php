@@ -550,6 +550,77 @@
                 </div>
 
 
+                <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-slate-700">
+                        Father's Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="father_name"
+                        value="{{ old('father_name', $student->father_name ?? '') }}"
+                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm"
+                        placeholder="Father's Name"
+                    >
+                </div>
+
+                <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-slate-700">
+                        Father's Name (Bangla)  
+                    </label>
+
+                    <input
+                        type="text"
+                        name="father_name_bn"
+                        value="{{ old('father_name_bn', $student->father_name_bn ?? '') }}"
+                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm"
+                        placeholder="পিতার নাম"
+                    >
+                </div>
+
+                <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-slate-700">
+                        Mother's Name
+                    </label>
+
+                    <input
+                        type="text"
+                        name="mother_name"
+                        value="{{ old('mother_name', $student->mother_name ?? '') }}"
+                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm"
+                        placeholder="Mother's Name"
+                    >
+                </div>
+
+                <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-slate-700">
+                        Mother's Name (Bangla)
+                    </label>
+
+                    <input
+                        type="text"
+                        name="mother_name_bn"
+                        value="{{ old('mother_name_bn', $student->mother_name_bn ?? '') }}"
+                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm"
+                        placeholder="মাতার নাম"
+                    >
+                </div>
+
+                <div>
+                    <label class="mb-1.5 block text-sm font-semibold text-slate-700">
+                        Birth Registration No.
+                    </label>
+
+                    <input
+                        type="text"
+                        name="birth_reg_no"
+                        value="{{ old('birth_reg_no', $student->birth_reg_no ?? '') }}"
+                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm"
+                        placeholder="Birth Registration Number"
+                    >
+                </div>
+
+
                 {{-- Gender --}}
                 <div>
 
