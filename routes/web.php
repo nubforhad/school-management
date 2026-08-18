@@ -115,6 +115,10 @@ Route::prefix('admin')
 
     });
 
+    // bulk enrollment 
+    Route::get( 'student-enrollments/bulk/create', [BulkStudentEnrollmentController::class, 'create'])->name('student-enrollments.bulk.create');
+    Route::post('student-enrollments/bulk',  [BulkStudentEnrollmentController::class, 'store'])->name('student-enrollments.bulk.store');
+
     // Route::prefix('admin')->name('admin.')->group(function () {
     //     Route::get( 'students/{student}/enrollments', [StudentEnrollmentController::class, 'index'])->name('students.enrollments.index');
     //     Route::get( 'students/{student}/enrollments/create', [StudentEnrollmentController::class, 'create'])->name('students.enrollments.create');
