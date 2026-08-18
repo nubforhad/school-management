@@ -3,41 +3,81 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class StudentEnrollment extends Model
 {
     protected $fillable = [
+
         'branch_id',
         'student_id',
         'academic_session_id',
         'class_id',
         'section_id',
         'roll_no',
-        'admission_date',
+        'enrollment_date',
         'status',
         'remarks',
+
     ];
+
 
     protected $casts = [
-        'admission_date' => 'date',
+
+        'enrollment_date' => 'date',
+
     ];
 
-    public function branch()
+
+    /*
+    |--------------------------------------------------------------------------
+    | Branch
+    |--------------------------------------------------------------------------
+    */
+
+    public function branch(): BelongsTo
     {
-        return $this->belongsTo(Branch::class);
+        return $this->belongsTo(
+            Branch::class
+        );
     }
 
-    public function student()
+
+    /*
+    |--------------------------------------------------------------------------
+    | Student
+    |--------------------------------------------------------------------------
+    */
+
+    public function student(): BelongsTo
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(
+            Student::class
+        );
     }
 
-    public function academicSession()
+
+    /*
+    |--------------------------------------------------------------------------
+    | Academic Session
+    |--------------------------------------------------------------------------
+    */
+
+    public function academicSession(): BelongsTo
     {
-        return $this->belongsTo(AcademicSession::class);
+        return $this->belongsTo(
+            AcademicSession::class
+        );
     }
 
-    public function schoolClass()
+
+    /*
+    |--------------------------------------------------------------------------
+    | Class
+    |--------------------------------------------------------------------------
+    */
+
+    public function schoolClass(): BelongsTo
     {
         return $this->belongsTo(
             SchoolClass::class,
@@ -45,8 +85,17 @@ class StudentEnrollment extends Model
         );
     }
 
-    public function section()
+
+    /*
+    |--------------------------------------------------------------------------
+    | Section
+    |--------------------------------------------------------------------------
+    */
+
+    public function section(): BelongsTo
     {
-        return $this->belongsTo(Section::class);
+        return $this->belongsTo(
+            Section::class
+        );
     }
 }

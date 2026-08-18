@@ -9,12 +9,15 @@ use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\StudentEnrollment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class StudentEnrollmentController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
-    | Enrollment History
+    | INDEX
+    |--------------------------------------------------------------------------
+    | Student Enrollment History
     |--------------------------------------------------------------------------
     */
 
@@ -22,7 +25,11 @@ class StudentEnrollmentController extends Controller
     {
         $student->load([
             'branch',
+            'academicSession',
+            'schoolClass',
+            'section',
         ]);
+
 
         $enrollments = StudentEnrollment::with([
             'branch',
@@ -31,8 +38,10 @@ class StudentEnrollmentController extends Controller
             'section',
         ])
             ->where('student_id', $student->id)
-            ->latest()
+            ->latest('enrollment_date')
+            ->latest('id')
             ->get();
+
 
         return view(
             'admin.students.enrollments.index',
@@ -46,14 +55,26 @@ class StudentEnrollmentController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Create New Enrollment
+    | CREATE
+    |--------------------------------------------------------------------------
+    | New Enrollment / Promotion
     |--------------------------------------------------------------------------
     */
 
     public function create(Student $student)
     {
+        $student->load([
+            'branch',
+            'academicSession',
+            'schoolClass',
+            'section',
+        ]);
+
+
         /*
-        | Current active enrollment
+        |--------------------------------------------------------------------------
+        | Current Active Enrollment
+        |--------------------------------------------------------------------------
         */
 
         $currentEnrollment = StudentEnrollment::with([
@@ -64,12 +85,14 @@ class StudentEnrollmentController extends Controller
         ])
             ->where('student_id', $student->id)
             ->where('status', 'active')
-            ->latest()
+            ->latest('id')
             ->first();
 
 
         /*
-        | Branch
+        |--------------------------------------------------------------------------
+        | Branches
+        |--------------------------------------------------------------------------
         */
 
         $branches = Branch::where('status', true)
@@ -78,7 +101,9 @@ class StudentEnrollmentController extends Controller
 
 
         /*
+        |--------------------------------------------------------------------------
         | Academic Sessions
+        |--------------------------------------------------------------------------
         */
 
         $academicSessions = AcademicSession::where('status', true)
@@ -87,16 +112,21 @@ class StudentEnrollmentController extends Controller
 
 
         /*
+        |--------------------------------------------------------------------------
         | Classes
+        |--------------------------------------------------------------------------
         */
 
         $classes = SchoolClass::where('status', true)
             ->orderBy('numeric_order')
+            ->orderBy('name')
             ->get();
 
 
         /*
+        |--------------------------------------------------------------------------
         | Sections
+        |--------------------------------------------------------------------------
         */
 
         $sections = Section::where('status', true)
@@ -120,7 +150,9 @@ class StudentEnrollmentController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | Store New Enrollment
+    | STORE
+    |--------------------------------------------------------------------------
+    | Create New Enrollment
     |--------------------------------------------------------------------------
     */
 
@@ -128,6 +160,12 @@ class StudentEnrollmentController extends Controller
         Request $request,
         Student $student
     ) {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validation
+        |--------------------------------------------------------------------------
+        */
 
         $validated = $request->validate([
 
@@ -157,8 +195,8 @@ class StudentEnrollmentController extends Controller
                 'min:1',
             ],
 
-            'admission_date' => [
-                'nullable',
+            'enrollment_date' => [
+                'required',
                 'date',
             ],
 
@@ -173,6 +211,102 @@ class StudentEnrollmentController extends Controller
 
         /*
         |--------------------------------------------------------------------------
+        | Validate Branch
+        |--------------------------------------------------------------------------
+        */
+
+        $branchExists = Branch::where(
+            'id',
+            $validated['branch_id']
+        )
+            ->where('status', true)
+            ->exists();
+
+
+        if (!$branchExists) {
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'branch_id' =>
+                        'Selected branch is not active.'
+                ]);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validate Class Belongs To Branch
+        |--------------------------------------------------------------------------
+        */
+
+        $classValid = SchoolClass::where(
+            'id',
+            $validated['class_id']
+        )
+            ->where(
+                'branch_id',
+                $validated['branch_id']
+            )
+            ->where(
+                'status',
+                true
+            )
+            ->exists();
+
+
+        if (!$classValid) {
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'class_id' =>
+                        'Selected class does not belong to the selected branch.'
+                ]);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Validate Section
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($validated['section_id'])) {
+
+            $sectionValid = Section::where(
+                'id',
+                $validated['section_id']
+            )
+                ->where(
+                    'branch_id',
+                    $validated['branch_id']
+                )
+                ->where(
+                    'class_id',
+                    $validated['class_id']
+                )
+                ->where(
+                    'status',
+                    true
+                )
+                ->exists();
+
+
+            if (!$sectionValid) {
+
+                return back()
+                    ->withInput()
+                    ->withErrors([
+                        'section_id' =>
+                            'Selected section does not belong to the selected branch/class.'
+                    ]);
+            }
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
         | Current Active Enrollment
         |--------------------------------------------------------------------------
         */
@@ -181,8 +315,11 @@ class StudentEnrollmentController extends Controller
             'student_id',
             $student->id
         )
-            ->where('status', 'active')
-            ->latest()
+            ->where(
+                'status',
+                'active'
+            )
+            ->latest('id')
             ->first();
 
 
@@ -210,6 +347,7 @@ class StudentEnrollmentController extends Controller
             )
             ->exists();
 
+
         if ($alreadyExists) {
 
             return back()
@@ -217,6 +355,359 @@ class StudentEnrollmentController extends Controller
                 ->withErrors([
                     'class_id' =>
                         'This student is already enrolled in this class for the selected academic session.'
+                ]);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Duplicate Roll Check
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($validated['roll_no'])) {
+
+            $rollExists = StudentEnrollment::where(
+                'branch_id',
+                $validated['branch_id']
+            )
+                ->where(
+                    'academic_session_id',
+                    $validated['academic_session_id']
+                )
+                ->where(
+                    'class_id',
+                    $validated['class_id']
+                )
+                ->where(
+                    'roll_no',
+                    $validated['roll_no']
+                )
+                ->where(
+                    'status',
+                    'active'
+                )
+                ->when(
+                    !empty($validated['section_id']),
+                    function ($query) use ($validated) {
+
+                        $query->where(
+                            'section_id',
+                            $validated['section_id']
+                        );
+
+                    }
+                )
+                ->exists();
+
+
+            if ($rollExists) {
+
+                return back()
+                    ->withInput()
+                    ->withErrors([
+                        'roll_no' =>
+                            'This roll number is already assigned to another active student in the selected class/section.'
+                    ]);
+            }
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Save Everything In Transaction
+        |--------------------------------------------------------------------------
+        */
+
+        DB::transaction(function () use (
+            $student,
+            $currentEnrollment,
+            $validated
+        ) {
+
+            /*
+            | Previous Enrollment
+            */
+
+            if ($currentEnrollment) {
+
+                $status =
+                    $currentEnrollment->branch_id !=
+                    $validated['branch_id']
+
+                        ? 'transferred'
+
+                        : 'completed';
+
+
+                $currentEnrollment->update([
+                    'status' => $status,
+                ]);
+            }
+
+
+            /*
+            | Create New Enrollment
+            */
+
+            StudentEnrollment::create([
+
+                'branch_id' =>
+                    $validated['branch_id'],
+
+                'student_id' =>
+                    $student->id,
+
+                'academic_session_id' =>
+                    $validated['academic_session_id'],
+
+                'class_id' =>
+                    $validated['class_id'],
+
+                'section_id' =>
+                    $validated['section_id'] ?? null,
+
+                'roll_no' =>
+                    $validated['roll_no'] ?? null,
+
+                'enrollment_date' =>
+                    $validated['enrollment_date'],
+
+                'status' =>
+                    'active',
+
+                'remarks' =>
+                    $validated['remarks'] ?? null,
+
+            ]);
+
+
+            /*
+            | Update Student Current Academic Placement
+            */
+
+            $student->update([
+
+                'branch_id' =>
+                    $validated['branch_id'],
+
+                'academic_session_id' =>
+                    $validated['academic_session_id'],
+
+                'class_id' =>
+                    $validated['class_id'],
+
+                'section_id' =>
+                    $validated['section_id'] ?? null,
+
+                'roll_no' =>
+                    $validated['roll_no'] ?? null,
+
+            ]);
+        });
+
+
+        return redirect()
+            ->route(
+                'admin.students.enrollments.index',
+                $student
+            )
+            ->with(
+                'success',
+                'Student enrolled/promoted successfully.'
+            );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | SHOW
+    |--------------------------------------------------------------------------
+    */
+
+    public function show(
+        Student $student,
+        StudentEnrollment $enrollment
+    ) {
+
+        $this->validateEnrollmentStudent(
+            $student,
+            $enrollment
+        );
+
+
+        $enrollment->load([
+            'student',
+            'branch',
+            'academicSession',
+            'schoolClass',
+            'section',
+        ]);
+
+
+        return view(
+            'admin.students.enrollments.show',
+            compact(
+                'student',
+                'enrollment'
+            )
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | EDIT
+    |--------------------------------------------------------------------------
+    */
+
+    public function edit(
+        Student $student,
+        StudentEnrollment $enrollment
+    ) {
+
+        $this->validateEnrollmentStudent(
+            $student,
+            $enrollment
+        );
+
+
+        $student->load([
+            'branch',
+            'academicSession',
+            'schoolClass',
+            'section',
+        ]);
+
+
+        $branches = Branch::where('status', true)
+            ->orderBy('name')
+            ->get();
+
+
+        $academicSessions = AcademicSession::where('status', true)
+            ->orderByDesc('id')
+            ->get();
+
+
+        $classes = SchoolClass::where('status', true)
+            ->orderBy('numeric_order')
+            ->orderBy('name')
+            ->get();
+
+
+        $sections = Section::where('status', true)
+            ->orderBy('name')
+            ->get();
+
+
+        return view(
+            'admin.students.enrollments.edit',
+            compact(
+                'student',
+                'enrollment',
+                'branches',
+                'academicSessions',
+                'classes',
+                'sections'
+            )
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | UPDATE
+    |--------------------------------------------------------------------------
+    */
+
+    public function update(
+        Request $request,
+        Student $student,
+        StudentEnrollment $enrollment
+    ) {
+
+        $this->validateEnrollmentStudent(
+            $student,
+            $enrollment
+        );
+
+
+        $validated = $request->validate([
+
+            'branch_id' => [
+                'required',
+                'exists:branches,id',
+            ],
+
+            'academic_session_id' => [
+                'required',
+                'exists:academic_sessions,id',
+            ],
+
+            'class_id' => [
+                'required',
+                'exists:classes,id',
+            ],
+
+            'section_id' => [
+                'nullable',
+                'exists:sections,id',
+            ],
+
+            'roll_no' => [
+                'nullable',
+                'integer',
+                'min:1',
+            ],
+
+            'enrollment_date' => [
+                'required',
+                'date',
+            ],
+
+            'status' => [
+                'required',
+                'in:active,completed,transferred,inactive',
+            ],
+
+            'remarks' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
+
+        ]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Class Branch Validation
+        |--------------------------------------------------------------------------
+        */
+
+        $classValid = SchoolClass::where(
+            'id',
+            $validated['class_id']
+        )
+            ->where(
+                'branch_id',
+                $validated['branch_id']
+            )
+            ->where(
+                'status',
+                true
+            )
+            ->exists();
+
+
+        if (!$classValid) {
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'class_id' =>
+                        'Selected class does not belong to the selected branch.'
                 ]);
         }
 
@@ -241,7 +732,12 @@ class StudentEnrollmentController extends Controller
                     'class_id',
                     $validated['class_id']
                 )
+                ->where(
+                    'status',
+                    true
+                )
                 ->exists();
+
 
             if (!$sectionValid) {
 
@@ -249,7 +745,7 @@ class StudentEnrollmentController extends Controller
                     ->withInput()
                     ->withErrors([
                         'section_id' =>
-                            'Selected section does not belong to this branch/class.'
+                            'Selected section does not belong to the selected branch/class.'
                     ]);
             }
         }
@@ -257,53 +753,115 @@ class StudentEnrollmentController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Previous Enrollment Complete
+        | Duplicate Enrollment
         |--------------------------------------------------------------------------
         */
 
-        if ($currentEnrollment) {
+        $alreadyExists = StudentEnrollment::where(
+            'student_id',
+            $student->id
+        )
+            ->where(
+                'academic_session_id',
+                $validated['academic_session_id']
+            )
+            ->where(
+                'branch_id',
+                $validated['branch_id']
+            )
+            ->where(
+                'class_id',
+                $validated['class_id']
+            )
+            ->where(
+                'id',
+                '!=',
+                $enrollment->id
+            )
+            ->exists();
 
-            $currentEnrollment->update([
-                'status' => 'completed',
-            ]);
+
+        if ($alreadyExists) {
+
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'class_id' =>
+                        'Another enrollment already exists for this student in the selected session, branch and class.'
+                ]);
         }
 
 
         /*
         |--------------------------------------------------------------------------
-        | Create New Enrollment
+        | Update
         |--------------------------------------------------------------------------
         */
 
-        StudentEnrollment::create([
+        DB::transaction(function () use (
+            $student,
+            $enrollment,
+            $validated
+        ) {
 
-            'branch_id' =>
-                $validated['branch_id'],
+            $enrollment->update([
 
-            'student_id' =>
-                $student->id,
+                'branch_id' =>
+                    $validated['branch_id'],
 
-            'academic_session_id' =>
-                $validated['academic_session_id'],
+                'academic_session_id' =>
+                    $validated['academic_session_id'],
 
-            'class_id' =>
-                $validated['class_id'],
+                'class_id' =>
+                    $validated['class_id'],
 
-            'section_id' =>
-                $validated['section_id'] ?? null,
+                'section_id' =>
+                    $validated['section_id'] ?? null,
 
-            'roll_no' =>
-                $validated['roll_no'] ?? null,
+                'roll_no' =>
+                    $validated['roll_no'] ?? null,
 
-            'admission_date' =>
-                $validated['admission_date'] ?? now()->toDateString(),
+                'enrollment_date' =>
+                    $validated['enrollment_date'],
 
-            'status' =>
-                'active',
+                'status' =>
+                    $validated['status'],
 
-            'remarks' =>
-                $validated['remarks'] ?? null,
-        ]);
+                'remarks' =>
+                    $validated['remarks'] ?? null,
+
+            ]);
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | If this is active enrollment,
+            | update student's current placement
+            |--------------------------------------------------------------------------
+            */
+
+            if ($validated['status'] === 'active') {
+
+                $student->update([
+
+                    'branch_id' =>
+                        $validated['branch_id'],
+
+                    'academic_session_id' =>
+                        $validated['academic_session_id'],
+
+                    'class_id' =>
+                        $validated['class_id'],
+
+                    'section_id' =>
+                        $validated['section_id'] ?? null,
+
+                    'roll_no' =>
+                        $validated['roll_no'] ?? null,
+
+                ]);
+            }
+        });
 
 
         return redirect()
@@ -313,7 +871,121 @@ class StudentEnrollmentController extends Controller
             )
             ->with(
                 'success',
-                'Student enrolled/promoted successfully.'
+                'Enrollment updated successfully.'
             );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DELETE
+    |--------------------------------------------------------------------------
+    */
+
+    public function destroy(
+        Student $student,
+        StudentEnrollment $enrollment
+    ) {
+
+        $this->validateEnrollmentStudent(
+            $student,
+            $enrollment
+        );
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Do not delete active enrollment directly
+        |--------------------------------------------------------------------------
+        */
+
+        if ($enrollment->status === 'active') {
+
+            return back()
+                ->withErrors([
+                    'enrollment' =>
+                        'Active enrollment cannot be deleted. Please change its status first.'
+                ]);
+        }
+
+
+        $enrollment->delete();
+
+
+        return redirect()
+            ->route(
+                'admin.students.enrollments.index',
+                $student
+            )
+            ->with(
+                'success',
+                'Enrollment deleted successfully.'
+            );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | DYNAMIC SECTIONS
+    |--------------------------------------------------------------------------
+    */
+
+    public function sections(Request $request)
+    {
+        $request->validate([
+
+            'branch_id' => [
+                'required',
+                'exists:branches,id',
+            ],
+
+            'class_id' => [
+                'required',
+                'exists:classes,id',
+            ],
+
+        ]);
+
+
+        $sections = Section::where(
+            'branch_id',
+            $request->branch_id
+        )
+            ->where(
+                'class_id',
+                $request->class_id
+            )
+            ->where(
+                'status',
+                true
+            )
+            ->orderBy('name')
+            ->get([
+                'id',
+                'name',
+            ]);
+
+
+        return response()->json(
+            $sections
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Validate Enrollment Belongs To Student
+    |--------------------------------------------------------------------------
+    */
+
+    private function validateEnrollmentStudent(
+        Student $student,
+        StudentEnrollment $enrollment
+    ): void {
+
+        abort_if(
+            $enrollment->student_id != $student->id,
+            404
+        );
     }
 }
