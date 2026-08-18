@@ -49,75 +49,31 @@ Route::prefix('admin')->name('admin.')->group(function () {
 |--------------------------------------------------------------------------
 */
  
-Route::prefix('admin')
-    ->name('admin.')
-    ->group(function () {
- 
+Route::prefix('admin')->name('admin.')->group(function () { 
         // Enrollment History
-        Route::get(
-            'students/{student}/enrollments',
-            [StudentEnrollmentController::class, 'index']
-        )->name('students.enrollments.index');
-
-
+        Route::get( 'students/{student}/enrollments', [StudentEnrollmentController::class, 'index'] )->name('students.enrollments.index');
         // Create / Promote
-        Route::get(
-            'students/{student}/enrollments/create',
-            [StudentEnrollmentController::class, 'create']
-        )->name('students.enrollments.create');
-
-
+        Route::get( 'students/{student}/enrollments/create', [StudentEnrollmentController::class, 'create'])->name('students.enrollments.create');
         // Store
-        Route::post(
-            'students/{student}/enrollments',
-            [StudentEnrollmentController::class, 'store']
-        )->name('students.enrollments.store');
-
-
+        Route::post( 'students/{student}/enrollments', [StudentEnrollmentController::class, 'store'])->name('students.enrollments.store');
         // View
-        Route::get(
-            'students/{student}/enrollments/{enrollment}',
-            [StudentEnrollmentController::class, 'show']
-        )->name('students.enrollments.show');
-
-
+        Route::get('students/{student}/enrollments/{enrollment}',  [StudentEnrollmentController::class, 'show'])->name('students.enrollments.show');
         // Edit
-        Route::get(
-            'students/{student}/enrollments/{enrollment}/edit',
-            [StudentEnrollmentController::class, 'edit']
-        )->name('students.enrollments.edit');
-
-
+        Route::get('students/{student}/enrollments/{enrollment}/edit',  [StudentEnrollmentController::class, 'edit'])->name('students.enrollments.edit');
         // Update
-        Route::put(
-            'students/{student}/enrollments/{enrollment}',
-            [StudentEnrollmentController::class, 'update']
-        )->name('students.enrollments.update');
-
-
+        Route::put( 'students/{student}/enrollments/{enrollment}', [StudentEnrollmentController::class, 'update'])->name('students.enrollments.update');
         // Delete
-        Route::delete(
-            'students/{student}/enrollments/{enrollment}',
-            [StudentEnrollmentController::class, 'destroy']
-        )->name('students.enrollments.destroy');
+        Route::delete( 'students/{student}/enrollments/{enrollment}', [StudentEnrollmentController::class, 'destroy'])->name('students.enrollments.destroy');
+        //Dynamic Sections 
+        Route::get(  'enrollments/sections',  [StudentEnrollmentController::class, 'sections'])->name('students.enrollments.sections');
 
-
-        /*
-        |--------------------------------------------------------------------------
-        | Dynamic Sections
-        |--------------------------------------------------------------------------
-        */
-
-        Route::get(
-            'enrollments/sections',
-            [StudentEnrollmentController::class, 'sections']
-        )->name('students.enrollments.sections');
+    // bulk enrollment 
+    Route::get( 'student-enrollments/bulk/create', [StudentEnrollmentController::class, 'create'])->name('student-enrollments.bulk.create');
+    Route::post('student-enrollments/bulk',  [StudentEnrollmentController::class, 'store'])->name('student-enrollments.bulk.store');
 
     });
 
-    // bulk enrollment 
-    Route::get( 'student-enrollments/bulk/create', [BulkStudentEnrollmentController::class, 'create'])->name('student-enrollments.bulk.create');
-    Route::post('student-enrollments/bulk',  [BulkStudentEnrollmentController::class, 'store'])->name('student-enrollments.bulk.store');
+
 
     // Route::prefix('admin')->name('admin.')->group(function () {
     //     Route::get( 'students/{student}/enrollments', [StudentEnrollmentController::class, 'index'])->name('students.enrollments.index');
