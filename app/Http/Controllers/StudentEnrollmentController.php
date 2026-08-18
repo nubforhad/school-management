@@ -988,4 +988,94 @@ class StudentEnrollmentController extends Controller
             404
         );
     }
+
+
+
+
+
+    // Bulk enrollment function 
+   
+
+    public function bulkCreate()
+    {
+        $branches = Branch::where('status', true)
+            ->orderBy('name')
+            ->get();
+
+        $academicSessions = AcademicSession::where('status', true)
+            ->orderByDesc('id')
+            ->get();
+
+        $classes = SchoolClass::where('status', true)
+            ->orderBy('numeric_order')
+            ->get();
+
+        $sections = Section::where('status', true)
+            ->orderBy('name')
+            ->get();
+
+        return view(
+            'admin.students.enrollments.bulk-create',
+            compact(
+                'branches',
+                'academicSessions',
+                'classes',
+                'sections'
+            )
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Get Students For Bulk Enrollment
+    |--------------------------------------------------------------------------
+    */
+
+    public function bulkStudents(Request $request)
+    {
+        $request->validate([
+            'branch_id' => [
+                'required',
+                'exists:branches,id',
+            ],
+
+            'academic_session_id' => [
+                'required',
+                'exists:academic_sessions,id',
+            ],
+
+            'class_id' => [
+                'required',
+                'exists:classes,id',
+            ],
+        ]);
+
+        $students = Student::with([
+            'branch',
+            'academicSession',
+            'schoolClass',
+            'section',
+        ])
+            ->where('branch_id', $request->branch_id)
+            ->where('academic_session_id', $request->academic_session_id)
+            ->where('class_id', $request->class_id)
+            ->where('status', true)
+            ->orderBy('name')
+            ->get();
+
+        return response()->json([
+            'students' => $students,
+        ]);
+    }
+
+
+
+
+
+
+
+
+
+
+
 }
