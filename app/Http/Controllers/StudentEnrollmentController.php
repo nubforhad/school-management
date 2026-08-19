@@ -938,15 +938,11 @@ class StudentEnrollmentController extends Controller
                 'required',
                 'exists:branches,id',
             ],
-
             'class_id' => [
                 'required',
                 'exists:classes,id',
             ],
-
         ]);
-
-
         $sections = Section::where(
             'branch_id',
             $request->branch_id
@@ -964,59 +960,37 @@ class StudentEnrollmentController extends Controller
                 'id',
                 'name',
             ]);
-
-
         return response()->json(
             $sections
         );
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | Validate Enrollment Belongs To Student
-    |--------------------------------------------------------------------------
-    */
-
+    // Validate Enrollment Belongs To Student
     private function validateEnrollmentStudent(
         Student $student,
         StudentEnrollment $enrollment
     ): void {
-
         abort_if(
             $enrollment->student_id != $student->id,
             404
         );
     }
-
-
-
-
-
     // Bulk enrollment function 
-   
-
     public function bulkCreate()
     {
         $branches = Branch::where('status', true)
             ->orderBy('name')
             ->get();
-
         $academicSessions = AcademicSession::where('status', true)
             ->orderByDesc('id')
             ->get();
-
         $classes = SchoolClass::where('status', true)
             ->orderBy('numeric_order')
             ->get();
-
         $sections = Section::where('status', true)
             ->orderBy('name')
             ->get();
-
-        return view(
-            'admin.students.enrollments.bulk-create',
-            compact(
+        return view('admin.students.enrollments.bulk-create', compact(
                 'branches',
                 'academicSessions',
                 'classes',

@@ -67,9 +67,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         //Dynamic Sections 
         Route::get(  'enrollments/sections',  [StudentEnrollmentController::class, 'sections'])->name('students.enrollments.sections');
 
-    // bulk enrollment 
-    Route::get( 'student-enrollments/bulk/create', [StudentEnrollmentController::class, 'create'])->name('student-enrollments.bulk.create');
-    Route::post('student-enrollments/bulk',  [StudentEnrollmentController::class, 'store'])->name('student-enrollments.bulk.store');
+        // bulk enrollment 
+        Route::get( 'student-enrollments/bulk/create', [StudentEnrollmentController::class, 'create'])->name('student-enrollments.bulk.create');
+        Route::post('student-enrollments/bulk',  [StudentEnrollmentController::class, 'store'])->name('student-enrollments.bulk.store');
 
     });
 
