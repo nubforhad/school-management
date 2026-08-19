@@ -155,7 +155,7 @@
 
             </a>
  
-            <a href=""
+            <a href="{{ route('admin.student-enrollments.bulk.create') }}"
                class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-400 hover:bg-slate-800 hover:text-white">
 
                 <span>🎓</span>

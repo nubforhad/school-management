@@ -22,16 +22,12 @@ Route::get('/', function () {
     Route::get('/dashboard', [DashboardController::class,  'index' ])->name('dashboard');
     Route::get('/students/{student}/id-card',  [StudentController::class, 'idCard'])->name('admin.students.id-card');
 
-
-
-
-
 // admin 
 Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('branches', BranchController::class);
         Route::resource('students', StudentController::class );
-  
 
+        
     Route::prefix('academic')->name('academic.')->group(function () {
         Route::resource('sessions', AcademicSessionController::class);
         Route::resource('classes', SchoolClassController::class );
@@ -73,13 +69,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post( 'student-enrollments/bulk', [StudentEnrollmentController::class, 'bulkStore'])->name('student-enrollments.bulk.store');
         Route::get(  'student-enrollments/sections', [StudentEnrollmentController::class, 'sections'])->name('student-enrollments.sections');
         
- 
-
-
-    // Route::prefix('admin')->name('admin.')->group(function () {
-    //     Route::get( 'students/{student}/enrollments', [StudentEnrollmentController::class, 'index'])->name('students.enrollments.index');
-    //     Route::get( 'students/{student}/enrollments/create', [StudentEnrollmentController::class, 'create'])->name('students.enrollments.create');
-    //     Route::post('students/{student}/enrollments', [StudentEnrollmentController::class, 'store'])->name('students.enrollments.store');
-    // });
 
 });
