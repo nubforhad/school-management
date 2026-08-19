@@ -990,7 +990,7 @@ class StudentEnrollmentController extends Controller
         $sections = Section::where('status', true)
             ->orderBy('name')
             ->get();
-        return view('admin.students.enrollments.bulk-create', compact(
+        return view('admin.students.enrollments.bulk-create',compact(
                 'branches',
                 'academicSessions',
                 'classes',
