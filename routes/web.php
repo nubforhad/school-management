@@ -12,6 +12,7 @@ use App\Http\Controllers\ClassSubjectController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentEnrollmentController;
+use App\Http\Controllers\AttendanceController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -68,6 +69,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get( 'student-enrollments/bulk/students', [StudentEnrollmentController::class, 'bulkStudents'])->name('student-enrollments.bulk.students');
         Route::post( 'student-enrollments/bulk', [StudentEnrollmentController::class, 'bulkStore'])->name('student-enrollments.bulk.store');
         Route::get(  'student-enrollments/sections', [StudentEnrollmentController::class, 'sections'])->name('student-enrollments.sections');
+
+
+        Route::prefix('attendance')->name('attendance.')->group(function () { Route::get('/', [AttendanceController::class, 'index'])->name('index');
+        Route::post('/store', [ AttendanceController::class, 'store'])->name('store');
+    });
         
 
 });

@@ -1,0 +1,195 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Attendance;
+use App\Models\Branch;
+use App\Models\AcademicSession;
+use App\Models\SchoolClass;
+use App\Models\Section;
+use App\Models\Student;
+use App\Models\StudentEnrollment;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class AttendanceController extends Controller
+{
+    /**
+     * Attendance index / daily attendance page
+     */
+    public function index(Request $request)
+    {
+        $branches = Branch::orderBy('name')->get();
+
+        $academicSessions = AcademicSession::orderByDesc('id')->get();
+
+        $classes = collect();
+        $sections = collect();
+        $students = collect();
+
+        if ($request->filled('branch_id')) {
+            $classes = SchoolClass::orderBy('name')->get();
+        }
+
+        if ($request->filled('school_class_id')) {
+            $sections = Section::where(
+                'school_class_id',
+                $request->school_class_id
+            )
+                ->orderBy('name')
+                ->get();
+        }
+
+        if (
+            $request->filled('branch_id') &&
+            $request->filled('academic_session_id') &&
+            $request->filled('school_class_id') &&
+            $request->filled('section_id')
+        ) {
+            $students = StudentEnrollment::with('student')
+                ->where('branch_id', $request->branch_id)
+                ->where(
+                    'academic_session_id',
+                    $request->academic_session_id
+                )
+                ->where(
+                    'school_class_id',
+                    $request->school_class_id
+                )
+                ->where(
+                    'section_id',
+                    $request->section_id
+                )
+                ->where('status', 'active')
+                ->get()
+                ->pluck('student');
+        }
+
+        return view('attendance.index', compact(
+            'branches',
+            'academicSessions',
+            'classes',
+            'sections',
+            'students'
+        ));
+    }
+
+    /**
+     * Save daily attendance
+     */
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'branch_id' => [
+                'required',
+                'exists:branches,id',
+            ],
+
+            'academic_session_id' => [
+                'required',
+                'exists:academic_sessions,id',
+            ],
+
+            'school_class_id' => [
+                'required',
+                'exists:school_classes,id',
+            ],
+
+            'section_id' => [
+                'required',
+                'exists:sections,id',
+            ],
+
+            'date' => [
+                'required',
+                'date',
+            ],
+
+            'attendance' => [
+                'required',
+                'array',
+            ],
+
+            'attendance.*.student_id' => [
+                'required',
+                'exists:students,id',
+            ],
+
+            'attendance.*.status' => [
+                'required',
+                'in:present,absent,late,leave',
+            ],
+
+            'attendance.*.in_time' => [
+                'nullable',
+                'date_format:H:i',
+            ],
+
+            'attendance.*.out_time' => [
+                'nullable',
+                'date_format:H:i',
+            ],
+
+            'attendance.*.remarks' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
+        ]);
+
+        DB::transaction(function () use ($validated) {
+
+            foreach ($validated['attendance'] as $item) {
+
+                Attendance::updateOrCreate(
+                    [
+                        'student_id' => $item['student_id'],
+                        'date' => $validated['date'],
+                    ],
+                    [
+                        'branch_id' => $validated['branch_id'],
+                        'academic_session_id' =>
+                            $validated['academic_session_id'],
+                        'school_class_id' =>
+                            $validated['school_class_id'],
+                        'section_id' =>
+                            $validated['section_id'],
+
+                        'status' => $item['status'],
+
+                        'in_time' =>
+                            $item['in_time'] ?? null,
+
+                        'out_time' =>
+                            $item['out_time'] ?? null,
+
+                        'remarks' =>
+                            $item['remarks'] ?? null,
+                    ]
+                );
+            }
+        });
+
+        return redirect()
+            ->route('attendance.index', [
+                'branch_id' =>
+                    $validated['branch_id'],
+
+                'academic_session_id' =>
+                    $validated['academic_session_id'],
+
+                'school_class_id' =>
+                    $validated['school_class_id'],
+
+                'section_id' =>
+                    $validated['section_id'],
+
+                'date' =>
+                    $validated['date'],
+            ])
+            ->with(
+                'success',
+                'Attendance saved successfully.'
+            );
+    }
+}
