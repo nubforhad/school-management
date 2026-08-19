@@ -922,6 +922,32 @@ class StudentEnrollmentController extends Controller
                 'Enrollment deleted successfully.'
             );
     }
+ 
+
+    public function bulkCreate()
+    {
+        $branches = Branch::where('status', true)
+            ->orderBy('name')
+            ->get();
+
+        $academicSessions = AcademicSession::where('status', true)
+            ->orderByDesc('id')
+            ->get();
+
+        $classes = SchoolClass::where('status', true)
+            ->orderBy('numeric_order')
+            ->orderBy('name')
+            ->get();
+
+        return view(
+            'admin.students.enrollments.bulk-create',
+            compact(
+                'branches',
+                'academicSessions',
+                'classes'
+            )
+        );
+    }
 
 
     /*
@@ -933,16 +959,17 @@ class StudentEnrollmentController extends Controller
     public function sections(Request $request)
     {
         $request->validate([
-
             'branch_id' => [
                 'required',
                 'exists:branches,id',
             ],
+
             'class_id' => [
                 'required',
                 'exists:classes,id',
             ],
         ]);
+
         $sections = Section::where(
             'branch_id',
             $request->branch_id
@@ -951,63 +978,26 @@ class StudentEnrollmentController extends Controller
                 'class_id',
                 $request->class_id
             )
-            ->where(
-                'status',
-                true
-            )
+            ->where('status', true)
             ->orderBy('name')
             ->get([
                 'id',
                 'name',
             ]);
-        return response()->json(
-            $sections
-        );
+
+        return response()->json($sections);
     }
 
-    // Validate Enrollment Belongs To Student
-    private function validateEnrollmentStudent(
-        Student $student,
-        StudentEnrollment $enrollment
-    ): void {
-        abort_if(
-            $enrollment->student_id != $student->id,
-            404
-        );
-    }
-    // Bulk enrollment function 
-    public function bulkCreate()
-    {
-        $branches = Branch::where('status', true)
-            ->orderBy('name')
-            ->get();
-        $academicSessions = AcademicSession::where('status', true)
-            ->orderByDesc('id')
-            ->get();
-        $classes = SchoolClass::where('status', true)
-            ->orderBy('numeric_order')
-            ->get();
-        $sections = Section::where('status', true)
-            ->orderBy('name')
-            ->get();
-        return view('admin.students.enrollments.bulk-create',compact(
-                'branches',
-                'academicSessions',
-                'classes',
-                'sections'
-            )
-        );
-    }
 
     /*
     |--------------------------------------------------------------------------
-    | Get Students For Bulk Enrollment
+    | GET STUDENTS FOR BULK ENROLLMENT
     |--------------------------------------------------------------------------
     */
 
     public function bulkStudents(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'branch_id' => [
                 'required',
                 'exists:branches,id',
@@ -1030,9 +1020,9 @@ class StudentEnrollmentController extends Controller
             'schoolClass',
             'section',
         ])
-            ->where('branch_id', $request->branch_id)
-            ->where('academic_session_id', $request->academic_session_id)
-            ->where('class_id', $request->class_id)
+            ->where('branch_id', $validated['branch_id'])
+            ->where('academic_session_id', $validated['academic_session_id'])
+            ->where('class_id', $validated['class_id'])
             ->where('status', true)
             ->orderBy('name')
             ->get();
@@ -1044,84 +1034,105 @@ class StudentEnrollmentController extends Controller
 
 
     /*
-        |--------------------------------------------------------------------------
-        | Store Bulk Enrollment
-        |--------------------------------------------------------------------------
-        */
+    |--------------------------------------------------------------------------
+    | STORE BULK ENROLLMENT
+    |--------------------------------------------------------------------------
+    */
 
-        public function bulkStore(Request $request)
-        {
-            $validated = $request->validate([
+    public function bulkStore(Request $request)
+    {
+        $validated = $request->validate([
 
-                'branch_id' => [
-                    'required',
-                    'exists:branches,id',
-                ],
+            'branch_id' => [
+                'required',
+                'exists:branches,id',
+            ],
 
-                'academic_session_id' => [
-                    'required',
-                    'exists:academic_sessions,id',
-                ],
+            'academic_session_id' => [
+                'required',
+                'exists:academic_sessions,id',
+            ],
 
-                'class_id' => [
-                    'required',
-                    'exists:classes,id',
-                ],
+            'class_id' => [
+                'required',
+                'exists:classes,id',
+            ],
 
-                'section_id' => [
-                    'nullable',
-                    'exists:sections,id',
-                ],
+            'section_id' => [
+                'nullable',
+                'exists:sections,id',
+            ],
 
-                'enrollment_date' => [
-                    'required',
-                    'date',
-                ],
+            'enrollment_date' => [
+                'required',
+                'date',
+            ],
 
-                'students' => [
-                    'required',
-                    'array',
-                    'min:1',
-                ],
+            'students' => [
+                'required',
+                'array',
+                'min:1',
+            ],
 
-                'students.*' => [
-                    'required',
-                    'exists:students,id',
-                ],
+            'students.*' => [
+                'required',
+                'exists:students,id',
+            ],
 
-                'roll_nos' => [
-                    'nullable',
-                    'array',
-                ],
+            'roll_nos' => [
+                'nullable',
+                'array',
+            ],
 
-                'roll_nos.*' => [
-                    'nullable',
-                    'integer',
-                    'min:1',
-                ],
+            'roll_nos.*' => [
+                'nullable',
+                'integer',
+                'min:1',
+            ],
 
-                'remarks' => [
-                    'nullable',
-                    'string',
-                    'max:1000',
-                ],
-            ]);
+            'remarks' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
+        ]);
 
-            //  Process Each Student
-        
+
+        $successCount = 0;
+        $skipCount = 0;
+
+
+        DB::transaction(function () use (
+            $validated,
+            &$successCount,
+            &$skipCount
+        ) {
 
             foreach ($validated['students'] as $studentId) {
 
-                $student = Student::findOrFail($studentId);
+                /*
+                |--------------------------------------------------------------------------
+                | Get Student
+                |--------------------------------------------------------------------------
+                */
+
+                $student = Student::find($studentId);
+
+                if (!$student) {
+                    continue;
+                }
 
 
                 /*
                 |--------------------------------------------------------------------------
-                | Validate Student Branch
+                | Student Must Belong To Selected Branch
                 |--------------------------------------------------------------------------
                 */
 
-                if ($student->branch_id != $validated['branch_id']) {
+                if (
+                    (int) $student->branch_id !==
+                    (int) $validated['branch_id']
+                ) {
                     continue;
                 }
 
@@ -1130,6 +1141,10 @@ class StudentEnrollmentController extends Controller
                 |--------------------------------------------------------------------------
                 | Check Existing Enrollment
                 |--------------------------------------------------------------------------
+                |
+                | One student should normally have one enrollment
+                | in one academic session.
+                |
                 */
 
                 $alreadyExists = StudentEnrollment::where(
@@ -1140,25 +1155,20 @@ class StudentEnrollmentController extends Controller
                         'academic_session_id',
                         $validated['academic_session_id']
                     )
-                    ->where(
-                        'branch_id',
-                        $validated['branch_id']
-                    )
-                    ->where(
-                        'class_id',
-                        $validated['class_id']
-                    )
                     ->exists();
 
 
                 if ($alreadyExists) {
+
+                    $skipCount++;
+
                     continue;
                 }
 
 
                 /*
                 |--------------------------------------------------------------------------
-                | Current Active Enrollment
+                | Find Current Active Enrollment
                 |--------------------------------------------------------------------------
                 */
 
@@ -1166,8 +1176,11 @@ class StudentEnrollmentController extends Controller
                     'student_id',
                     $student->id
                 )
-                    ->where('status', 'active')
-                    ->latest()
+                    ->where(
+                        'status',
+                        'active'
+                    )
+                    ->latest('id')
                     ->first();
 
 
@@ -1220,17 +1233,42 @@ class StudentEnrollmentController extends Controller
                     'remarks' =>
                         $validated['remarks'] ?? null,
                 ]);
+
+
+                $successCount++;
             }
+        });
 
 
-            return redirect()
-                ->route('admin.students.enrollments.bulk.create')
-                ->with(
-                    'success',
-                    'Selected students enrolled successfully.'
-                );
+        /*
+        |--------------------------------------------------------------------------
+        | Success Message
+        |--------------------------------------------------------------------------
+        */
+
+        $message =
+            $successCount .
+            ' student(s) enrolled successfully.';
+
+
+        if ($skipCount > 0) {
+
+            $message .=
+                ' ' .
+                $skipCount .
+                ' student(s) were already enrolled in this academic session.';
         }
 
+
+        return redirect()
+            ->route(
+                'admin.students.enrollments.bulk.create'
+            )
+            ->with(
+                'success',
+                $message
+            );
+    } 
 
 
 

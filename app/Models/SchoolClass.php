@@ -36,5 +36,13 @@ class SchoolClass extends Model
         return $this->hasMany(StudentEnrollment::class, 'class_id');
     }
 
+    public function schoolClass(): BelongsTo
+    {
+        return $this->belongsTo(
+            SchoolClass::class,
+            'class_id'
+        );
+    }
+
 
 }

@@ -71,9 +71,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get( 'student-enrollments/bulk/create', [StudentEnrollmentController::class, 'bulkCreate'])->name('student-enrollments.bulk.create');
         Route::get( 'student-enrollments/bulk/students', [StudentEnrollmentController::class, 'bulkStudents'])->name('student-enrollments.bulk.students');
         Route::post( 'student-enrollments/bulk', [StudentEnrollmentController::class, 'bulkStore'])->name('student-enrollments.bulk.store');
-
-    });
-
+        Route::get(  'student-enrollments/sections', [StudentEnrollmentController::class, 'sections'])->name('student-enrollments.sections');
+        
+ 
 
 
     // Route::prefix('admin')->name('admin.')->group(function () {
@@ -81,3 +81,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
     //     Route::get( 'students/{student}/enrollments/create', [StudentEnrollmentController::class, 'create'])->name('students.enrollments.create');
     //     Route::post('students/{student}/enrollments', [StudentEnrollmentController::class, 'store'])->name('students.enrollments.store');
     // });
+
+});
