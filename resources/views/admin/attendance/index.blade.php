@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
 
@@ -13,7 +13,7 @@
         <p class="text-sm text-slate-500 mt-1">
             Take and manage student attendance
         </p>
-    </div>
+    </div> 
 
 
     {{-- Success Message --}}
@@ -44,7 +44,7 @@
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-6">
 
         <form method="GET"
-              action="{{ route('attendance.index') }}">
+              action="{{ route('admin.attendance.index') }}">
 
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
 
@@ -92,52 +92,30 @@
                         <option value="">
                             Select Session
                         </option>
-
                         @foreach($academicSessions as $session)
-
                             <option value="{{ $session->id }}"
                                 {{ request('academic_session_id') == $session->id ? 'selected' : '' }}>
-
                                 {{ $session->name }}
-
                             </option>
-
                         @endforeach
-
                     </select>
                 </div>
-
-
                 {{-- Class --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">
-                        Class
-                    </label>
+                    <label class="block text-sm font-medium text-slate-700 mb-1"> Class </label>
 
-                    <select name="school_class_id"
-                            class="w-full rounded-lg border border-slate-300
-                                   px-3 py-2.5"
-                            required>
-
+                    <select name="school_class_id"   class="w-full rounded-lg border border-slate-300  px-3 py-2.5" required>
                         <option value="">
                             Select Class
                         </option>
-
                         @foreach($classes as $class)
-
                             <option value="{{ $class->id }}"
                                 {{ request('school_class_id') == $class->id ? 'selected' : '' }}>
-
                                 {{ $class->name }}
-
                             </option>
-
                         @endforeach
-
                     </select>
                 </div>
-
-
                 {{-- Section --}}
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">
@@ -195,7 +173,7 @@
 
                 </button>
 
-                <a href="{{ route('attendance.index') }}"
+                <a href="{{ route('admin.attendance.index') }}"
                    class="px-5 py-2.5 rounded-lg bg-slate-100
                           text-slate-700 font-medium hover:bg-slate-200">
 
@@ -214,7 +192,7 @@
     @if($students->count())
 
         <form method="POST"
-              action="{{ route('attendance.store') }}">
+              action="{{ route('admin.attendance.store') }}">
 
             @csrf
 
@@ -310,87 +288,40 @@
 
 
                         <tbody class="divide-y divide-slate-100">
-
                             @foreach($students as $index => $student)
-
                                 <tr>
-
+                                    <td class="px-4 py-3">  {{ $index + 1 }}</td>
                                     <td class="px-4 py-3">
-                                        {{ $index + 1 }}
-                                    </td>
-
-
-                                    <td class="px-4 py-3">
-
                                         <div class="font-medium text-slate-800">
                                             {{ $student->name }}
                                         </div>
-
                                         <div class="text-xs text-slate-500">
                                             ID: {{ $student->student_id ?? $student->id }}
                                         </div>
-
                                     </td>
-
-
                                     {{-- Status --}}
                                     <td class="px-4 py-3">
-
                                         <input type="hidden"
                                                name="attendance[{{ $index }}][student_id]"
                                                value="{{ $student->id }}">
-
-                                        <select name="attendance[{{ $index }}][status]"
-                                                class="attendance-status w-32 rounded-lg
-                                                       border border-slate-300
-                                                       px-3 py-2">
-
-                                            <option value="present">
-                                                Present
-                                            </option>
-
-                                            <option value="absent">
-                                                Absent
-                                            </option>
-
-                                            <option value="late">
-                                                Late
-                                            </option>
-
-                                            <option value="leave">
-                                                Leave
-                                            </option>
-
+                                        <select name="attendance[{{ $index }}][status]"    class="attendance-status w-32 rounded-lg  border border-slate-300  px-3 py-2">
+                                            <option value="present">  Present  </option>
+                                            <option value="absent">  Absent </option>
+                                            <option value="late">  Late </option>
+                                            <option value="leave">  Leave  </option>
                                         </select>
-
                                     </td>
-
-
                                     {{-- In --}}
                                     <td class="px-4 py-3">
-
-                                        <input type="time"
-                                               name="attendance[{{ $index }}][in_time]"
-                                               class="w-32 rounded-lg border
-                                                      border-slate-300 px-3 py-2">
-
+                                        <input type="time"  name="attendance[{{ $index }}][in_time]"
+                                               class="w-32 rounded-lg border   border-slate-300 px-3 py-2">
                                     </td>
-
-
                                     {{-- Out --}}
                                     <td class="px-4 py-3">
-
-                                        <input type="time"
-                                               name="attendance[{{ $index }}][out_time]"
-                                               class="w-32 rounded-lg border
-                                                      border-slate-300 px-3 py-2">
-
+                                        <input type="time" name="attendance[{{ $index }}][out_time]" class="w-32 rounded-lg border  border-slate-300 px-3 py-2">
                                     </td>
-
-
                                     {{-- Remarks --}}
                                     <td class="px-4 py-3">
-
                                         <input type="text"
                                                name="attendance[{{ $index }}][remarks]"
                                                placeholder="Remarks"
@@ -398,17 +329,11 @@
                                                       border-slate-300 px-3 py-2">
 
                                     </td>
-
                                 </tr>
-
                             @endforeach
-
                         </tbody>
-
                     </table>
-
                 </div>
-
 
                 {{-- Submit --}}
                 <div class="p-5 border-t border-slate-200

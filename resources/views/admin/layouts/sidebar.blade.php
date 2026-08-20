@@ -163,6 +163,14 @@
 
             </a>
  
+            <a href="{{ route('admin.attendance.index') }}"
+               class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-400 hover:bg-slate-800 hover:text-white">
+
+                <span>🎓</span>
+                <span>Attendance</span>
+
+            </a>
+ 
 
 
             <a href="#"

@@ -17,62 +17,110 @@ class AttendanceController extends Controller
     /**
      * Attendance index / daily attendance page
      */
-    public function index(Request $request)
-    {
-        $branches = Branch::orderBy('name')->get();
+     public function index(Request $request)
+{
+    // Branches 
+    $branches = Branch::orderBy('name')->get();
+    /*
+    |--------------------------------------------------------------------------
+    | Academic Sessions
+    |--------------------------------------------------------------------------
+    */
+    $academicSessions = AcademicSession::orderByDesc('id')->get();
 
-        $academicSessions = AcademicSession::orderByDesc('id')->get();
+    // Default Collections    
+    $classes = collect();
+    $sections = collect();
+    $students = collect();
 
-        $classes = collect();
-        $sections = collect();
-        $students = collect();
 
-        if ($request->filled('branch_id')) {
-            $classes = SchoolClass::orderBy('name')->get();
-        }
+    /*
+    |--------------------------------------------------------------------------
+    | Classes - Branch Wise
+    |--------------------------------------------------------------------------
+    */
 
-        if ($request->filled('school_class_id')) {
-            $sections = Section::where(
+    if ($request->filled('branch_id')) {
+
+        $classes = SchoolClass::where(
+                'branch_id',
+                $request->branch_id
+            )
+            ->orderBy('name')
+            ->get();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sections - Branch + Class Wise
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        $request->filled('branch_id') &&
+        $request->filled('school_class_id')
+    ) {
+
+        $sections = Section::where(
+                'branch_id',
+                $request->branch_id
+            )
+            ->where(
                 'school_class_id',
                 $request->school_class_id
             )
-                ->orderBy('name')
-                ->get();
-        }
+            ->orderBy('name')
+            ->get();
+    }
 
-        if (
-            $request->filled('branch_id') &&
-            $request->filled('academic_session_id') &&
-            $request->filled('school_class_id') &&
-            $request->filled('section_id')
-        ) {
-            $students = StudentEnrollment::with('student')
-                ->where('branch_id', $request->branch_id)
-                ->where(
-                    'academic_session_id',
-                    $request->academic_session_id
-                )
-                ->where(
-                    'school_class_id',
-                    $request->school_class_id
-                )
-                ->where(
-                    'section_id',
-                    $request->section_id
-                )
-                ->where('status', 'active')
-                ->get()
-                ->pluck('student');
-        }
 
-        return view('attendance.index', compact(
+    /*
+    |--------------------------------------------------------------------------
+    | Students - Branch + Session + Class + Section Wise
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        $request->filled('branch_id') &&
+        $request->filled('academic_session_id') &&
+        $request->filled('school_class_id') &&
+        $request->filled('section_id')
+    ) {
+
+        $students = StudentEnrollment::with('student')
+            ->where(
+                'branch_id',
+                $request->branch_id
+            )
+            ->where(
+                'academic_session_id',
+                $request->academic_session_id
+            )
+            ->where(
+                'school_class_id',
+                $request->school_class_id
+            )
+            ->where(
+                'section_id',
+                $request->section_id
+            )
+            ->where(
+                'status',
+                'active'
+            )
+            ->get()
+            ->pluck('student');
+    }
+
+    return view(  'admin.attendance.index', compact(
             'branches',
             'academicSessions',
             'classes',
             'sections',
             'students'
-        ));
-    }
+        )
+    );
+}
 
     /**
      * Save daily attendance

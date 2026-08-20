@@ -71,7 +71,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get(  'student-enrollments/sections', [StudentEnrollmentController::class, 'sections'])->name('student-enrollments.sections');
 
 
-        Route::prefix('attendance')->name('attendance.')->group(function () { Route::get('/', [AttendanceController::class, 'index'])->name('index');
+        Route::prefix('attendance')->name('attendance.')->group(function () { 
+            Route::get('/', [AttendanceController::class, 'index'])->name('index');
         Route::post('/store', [ AttendanceController::class, 'store'])->name('store');
     });
         
