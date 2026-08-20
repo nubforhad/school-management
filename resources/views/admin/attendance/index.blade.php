@@ -2,15 +2,15 @@
 
 @section('content')
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+<div class="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
 
     {{-- Header --}}
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-slate-800">
+    <div class="mb-4 sm:mb-6">
+        <h1 class="text-xl sm:text-2xl font-bold text-slate-800">
             Daily Attendance
         </h1>
 
-        <p class="text-sm text-slate-500 mt-1">
+        <p class="text-xs sm:text-sm text-slate-500 mt-1">
             Take and manage student attendance
         </p>
     </div> 
@@ -18,8 +18,8 @@
 
     {{-- Success Message --}}
     @if(session('success'))
-        <div class="mb-5 rounded-lg bg-green-50 border border-green-200
-                    px-4 py-3 text-green-700">
+        <div class="mb-4 sm:mb-5 rounded-lg bg-green-50 border border-green-200
+                    px-3 sm:px-4 py-2.5 sm:py-3 text-sm text-green-700">
             {{ session('success') }}
         </div>
     @endif
@@ -27,10 +27,10 @@
 
     {{-- Validation Errors --}}
     @if($errors->any())
-        <div class="mb-5 rounded-lg bg-red-50 border border-red-200
-                    px-4 py-3 text-red-700">
+        <div class="mb-4 sm:mb-5 rounded-lg bg-red-50 border border-red-200
+                    px-3 sm:px-4 py-2.5 sm:py-3 text-red-700">
 
-            <ul class="list-disc list-inside text-sm">
+            <ul class="list-disc list-inside text-xs sm:text-sm">
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -41,22 +41,23 @@
 
 
     {{-- Filter --}}
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-6">
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-3 sm:p-5 mb-4 sm:mb-6">
 
         <form method="GET"
               action="{{ route('admin.attendance.index') }}">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+            <div class="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
 
                 {{-- Branch --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">
+                    <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">
                         Branch
                     </label>
 
                     <select name="branch_id"
+                            onchange="this.form.submit()"
                             class="w-full rounded-lg border border-slate-300
-                                   px-3 py-2.5"
+                                   px-3 py-2 sm:py-2.5 text-sm"
                             required>
 
                         <option value="">
@@ -80,13 +81,14 @@
 
                 {{-- Academic Session --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">
+                    <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">
                         Academic Session
                     </label>
 
                     <select name="academic_session_id"
+                            onchange="this.form.submit()"
                             class="w-full rounded-lg border border-slate-300
-                                   px-3 py-2.5"
+                                   px-3 py-2 sm:py-2.5 text-sm"
                             required>
 
                         <option value="">
@@ -102,9 +104,11 @@
                 </div>
                 {{-- Class --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1"> Class </label>
+                    <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1"> Class </label>
 
-                    <select name="school_class_id"   class="w-full rounded-lg border border-slate-300  px-3 py-2.5" required>
+                    <select name="school_class_id"
+                            onchange="this.form.submit()"
+                            class="w-full rounded-lg border border-slate-300 px-3 py-2 sm:py-2.5 text-sm" required>
                         <option value="">
                             Select Class
                         </option>
@@ -118,13 +122,13 @@
                 </div>
                 {{-- Section --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">
+                    <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">
                         Section
                     </label>
 
                     <select name="section_id"
                             class="w-full rounded-lg border border-slate-300
-                                   px-3 py-2.5"
+                                   px-3 py-2 sm:py-2.5 text-sm"
                             required>
 
                         <option value="">
@@ -148,7 +152,7 @@
 
                 {{-- Date --}}
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 mb-1">
+                    <label class="block text-xs sm:text-sm font-medium text-slate-700 mb-1">
                         Date
                     </label>
 
@@ -156,26 +160,26 @@
                            name="date"
                            value="{{ request('date', now()->format('Y-m-d')) }}"
                            class="w-full rounded-lg border border-slate-300
-                                  px-3 py-2.5"
+                                  px-3 py-2 sm:py-2.5 text-sm"
                            required>
                 </div>
 
             </div>
 
 
-            <div class="flex flex-wrap gap-3 mt-5">
+            <div class="flex flex-col xs:flex-row flex-wrap gap-2.5 sm:gap-3 mt-4 sm:mt-5">
 
                 <button type="submit"
-                        class="px-5 py-2.5 rounded-lg bg-blue-600
-                               text-white font-medium hover:bg-blue-700">
+                        class="w-full xs:w-auto px-5 py-2.5 rounded-lg bg-blue-600
+                               text-sm text-white font-medium hover:bg-blue-700 text-center">
 
                     Load Students
 
                 </button>
 
                 <a href="{{ route('admin.attendance.index') }}"
-                   class="px-5 py-2.5 rounded-lg bg-slate-100
-                          text-slate-700 font-medium hover:bg-slate-200">
+                   class="w-full xs:w-auto px-5 py-2.5 rounded-lg bg-slate-100
+                          text-sm text-slate-700 font-medium hover:bg-slate-200 text-center">
 
                     Reset
 
@@ -221,16 +225,16 @@
                         border border-slate-200 overflow-hidden">
 
                 {{-- Table Header --}}
-                <div class="p-5 border-b border-slate-200
+                <div class="p-3 sm:p-5 border-b border-slate-200
                             flex flex-col sm:flex-row
                             sm:items-center sm:justify-between gap-3">
 
                     <div>
-                        <h2 class="text-lg font-semibold text-slate-800">
+                        <h2 class="text-base sm:text-lg font-semibold text-slate-800">
                             Student Attendance
                         </h2>
 
-                        <p class="text-sm text-slate-500">
+                        <p class="text-xs sm:text-sm text-slate-500">
                             {{ $students->count() }} students
                         </p>
                     </div>
@@ -238,8 +242,8 @@
 
                     <button type="button"
                             onclick="markAllPresent()"
-                            class="px-4 py-2 rounded-lg
-                                   bg-green-600 text-white
+                            class="w-full sm:w-auto px-4 py-2 rounded-lg
+                                   bg-green-600 text-sm text-white
                                    hover:bg-green-700">
 
                         Mark All Present
@@ -250,35 +254,35 @@
 
 
                 {{-- Table --}}
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto -mx-px">
 
-                    <table class="w-full text-sm">
+                    <table class="w-full text-xs sm:text-sm min-w-[720px]">
 
                         <thead class="bg-slate-50">
 
                             <tr>
 
-                                <th class="px-4 py-3 text-left">
+                                <th class="px-2 sm:px-4 py-2.5 sm:py-3 text-left whitespace-nowrap">
                                     #
                                 </th>
 
-                                <th class="px-4 py-3 text-left">
+                                <th class="px-2 sm:px-4 py-2.5 sm:py-3 text-left whitespace-nowrap">
                                     Student
                                 </th>
 
-                                <th class="px-4 py-3 text-left">
+                                <th class="px-2 sm:px-4 py-2.5 sm:py-3 text-left whitespace-nowrap">
                                     Status
                                 </th>
 
-                                <th class="px-4 py-3 text-left">
+                                <th class="px-2 sm:px-4 py-2.5 sm:py-3 text-left whitespace-nowrap">
                                     In Time
                                 </th>
 
-                                <th class="px-4 py-3 text-left">
+                                <th class="px-2 sm:px-4 py-2.5 sm:py-3 text-left whitespace-nowrap">
                                     Out Time
                                 </th>
 
-                                <th class="px-4 py-3 text-left">
+                                <th class="px-2 sm:px-4 py-2.5 sm:py-3 text-left whitespace-nowrap">
                                     Remarks
                                 </th>
 
@@ -290,8 +294,8 @@
                         <tbody class="divide-y divide-slate-100">
                             @foreach($students as $index => $student)
                                 <tr>
-                                    <td class="px-4 py-3">  {{ $index + 1 }}</td>
-                                    <td class="px-4 py-3">
+                                    <td class="px-2 sm:px-4 py-2.5 sm:py-3">{{ $index + 1 }}</td>
+                                    <td class="px-2 sm:px-4 py-2.5 sm:py-3">
                                         <div class="font-medium text-slate-800">
                                             {{ $student->name }}
                                         </div>
@@ -300,11 +304,11 @@
                                         </div>
                                     </td>
                                     {{-- Status --}}
-                                    <td class="px-4 py-3">
+                                    <td class="px-2 sm:px-4 py-2.5 sm:py-3">
                                         <input type="hidden"
                                                name="attendance[{{ $index }}][student_id]"
                                                value="{{ $student->id }}">
-                                        <select name="attendance[{{ $index }}][status]"    class="attendance-status w-32 rounded-lg  border border-slate-300  px-3 py-2">
+                                        <select name="attendance[{{ $index }}][status]"    class="attendance-status w-28 sm:w-32 rounded-lg  border border-slate-300  px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm">
                                             <option value="present">  Present  </option>
                                             <option value="absent">  Absent </option>
                                             <option value="late">  Late </option>
@@ -312,21 +316,21 @@
                                         </select>
                                     </td>
                                     {{-- In --}}
-                                    <td class="px-4 py-3">
+                                    <td class="px-2 sm:px-4 py-2.5 sm:py-3">
                                         <input type="time"  name="attendance[{{ $index }}][in_time]"
-                                               class="w-32 rounded-lg border   border-slate-300 px-3 py-2">
+                                               class="w-28 sm:w-32 rounded-lg border border-slate-300 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm">
                                     </td>
                                     {{-- Out --}}
-                                    <td class="px-4 py-3">
-                                        <input type="time" name="attendance[{{ $index }}][out_time]" class="w-32 rounded-lg border  border-slate-300 px-3 py-2">
+                                    <td class="px-2 sm:px-4 py-2.5 sm:py-3">
+                                        <input type="time" name="attendance[{{ $index }}][out_time]" class="w-28 sm:w-32 rounded-lg border border-slate-300 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm">
                                     </td>
                                     {{-- Remarks --}}
-                                    <td class="px-4 py-3">
+                                    <td class="px-2 sm:px-4 py-2.5 sm:py-3">
                                         <input type="text"
                                                name="attendance[{{ $index }}][remarks]"
                                                placeholder="Remarks"
-                                               class="w-48 rounded-lg border
-                                                      border-slate-300 px-3 py-2">
+                                               class="w-36 sm:w-48 rounded-lg border
+                                                      border-slate-300 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm">
 
                                     </td>
                                 </tr>
@@ -336,12 +340,12 @@
                 </div>
 
                 {{-- Submit --}}
-                <div class="p-5 border-t border-slate-200
-                            flex justify-end">
+                <div class="p-3 sm:p-5 border-t border-slate-200
+                            flex justify-stretch sm:justify-end">
 
                     <button type="submit"
-                            class="px-6 py-2.5 rounded-lg
-                                   bg-blue-600 text-white
+                            class="w-full sm:w-auto px-6 py-2.5 rounded-lg
+                                   bg-blue-600 text-sm text-white
                                    font-medium hover:bg-blue-700">
 
                         Save Attendance
@@ -362,7 +366,7 @@
     )
 
         <div class="bg-yellow-50 border border-yellow-200
-                    text-yellow-700 rounded-xl p-5">
+                    text-yellow-700 rounded-xl p-4 sm:p-5 text-sm">
 
             No active students found for this class and section.
 

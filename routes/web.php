@@ -70,11 +70,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post( 'student-enrollments/bulk', [StudentEnrollmentController::class, 'bulkStore'])->name('student-enrollments.bulk.store');
         Route::get(  'student-enrollments/sections', [StudentEnrollmentController::class, 'sections'])->name('student-enrollments.sections');
 
-
+        // attendance route 
         Route::prefix('attendance')->name('attendance.')->group(function () { 
             Route::get('/', [AttendanceController::class, 'index'])->name('index');
-        Route::post('/store', [ AttendanceController::class, 'store'])->name('store');
-    });
+            Route::post('/store', [ AttendanceController::class, 'store'])->name('store');
+        });
         
 
 });

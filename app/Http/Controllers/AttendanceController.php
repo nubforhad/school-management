@@ -66,7 +66,7 @@ class AttendanceController extends Controller
                 $request->branch_id
             )
             ->where(
-                'school_class_id',
+                'class_id',
                 $request->school_class_id
             )
             ->orderBy('name')
@@ -97,7 +97,7 @@ class AttendanceController extends Controller
                 $request->academic_session_id
             )
             ->where(
-                'school_class_id',
+                'class_id',
                 $request->school_class_id
             )
             ->where(
@@ -140,7 +140,7 @@ class AttendanceController extends Controller
 
             'school_class_id' => [
                 'required',
-                'exists:school_classes,id',
+                'exists:classes,id',  
             ],
 
             'section_id' => [
@@ -218,26 +218,14 @@ class AttendanceController extends Controller
             }
         });
 
-        return redirect()
-            ->route('attendance.index', [
-                'branch_id' =>
-                    $validated['branch_id'],
-
-                'academic_session_id' =>
-                    $validated['academic_session_id'],
-
-                'school_class_id' =>
-                    $validated['school_class_id'],
-
-                'section_id' =>
-                    $validated['section_id'],
-
-                'date' =>
-                    $validated['date'],
-            ])
-            ->with(
-                'success',
-                'Attendance saved successfully.'
-            );
+            return redirect()
+       ->route('admin.attendance.index', [
+           'branch_id' => $validated['branch_id'],
+           'academic_session_id' => $validated['academic_session_id'],
+           'school_class_id' => $validated['school_class_id'],
+           'section_id' => $validated['section_id'],
+           'date' => $validated['date'],
+       ])
+       ->with('success', 'Attendance saved successfully.');
     }
 }
