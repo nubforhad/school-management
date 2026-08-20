@@ -326,12 +326,8 @@
                                     </td>
                                     {{-- Remarks --}}
                                     <td class="px-2 sm:px-4 py-2.5 sm:py-3">
-                                        <input type="text"
-                                               name="attendance[{{ $index }}][remarks]"
-                                               placeholder="Remarks"
-                                               class="w-36 sm:w-48 rounded-lg border
-                                                      border-slate-300 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm">
-
+                                        <input type="text" name="attendance[{{ $index }}][remarks]"  placeholder="Remarks"
+                                               class="w-36 sm:w-48 rounded-lg border  border-slate-300 px-2 sm:px-3 py-1.5 sm:py-2 text-xs sm:text-sm">
                                     </td>
                                 </tr>
                             @endforeach
@@ -340,22 +336,12 @@
                 </div>
 
                 {{-- Submit --}}
-                <div class="p-3 sm:p-5 border-t border-slate-200
-                            flex justify-stretch sm:justify-end">
-
-                    <button type="submit"
-                            class="w-full sm:w-auto px-6 py-2.5 rounded-lg
-                                   bg-blue-600 text-sm text-white
-                                   font-medium hover:bg-blue-700">
-
+                <div class="p-3 sm:p-5 border-t border-slate-200 flex justify-stretch sm:justify-end">
+                    <button type="submit"  class="w-full sm:w-auto px-6 py-2.5 rounded-lg bg-blue-600 text-sm text-white font-medium hover:bg-blue-700">
                         Save Attendance
-
                     </button>
-
                 </div>
-
             </div>
-
         </form>
 
     @elseif(
