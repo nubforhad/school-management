@@ -39,12 +39,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 }); 
 
-
-/*
-|--------------------------------------------------------------------------
-| Student Enrollment
-|--------------------------------------------------------------------------
-*/
+//Student Enrollment 
  
 Route::prefix('admin')->name('admin.')->group(function () { 
         // Enrollment History

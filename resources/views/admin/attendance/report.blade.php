@@ -1,300 +1,503 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('content')
 
-<div class="container-fluid">
+<style>
 
-    {{-- Header --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
+/* ========================================
+   Attendance Report
+======================================== */
 
-        <div>
-            <h4 class="mb-1">
-                <i class="bi bi-bar-chart-line"></i>
-                Attendance Report
-            </h4>
+.attendance-report {
+    padding-bottom: 30px;
+}
 
-            <small class="text-muted">
-                Attendance summary and detailed report
-            </small>
-        </div>
 
-        <div>
-            <a href="{{ route('attendances.index') }}"
-               class="btn btn-secondary">
-                <i class="bi bi-arrow-left"></i>
-                Back
-            </a>
+/* Header */
 
-            <button onclick="window.print()"
-                    class="btn btn-dark">
-                <i class="bi bi-printer"></i>
-                Print
-            </button>
-        </div>
+.report-header h4 {
+    font-size: 1.25rem;
+    color: #212529;
+}
 
+.report-header small {
+    font-size: 13px;
+}
+
+
+/* Cards */
+
+.attendance-report .card {
+    border-radius: 10px;
+}
+
+.attendance-report .card-header {
+    border-bottom: 1px solid #edf0f2;
+}
+
+.summary-card {
+    border: 1px solid #edf0f2 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
+    transition: all .2s ease;
+}
+
+.summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .07);
+}
+
+.summary-card .card-body {
+    padding: 20px;
+}
+
+.summary-label {
+    color: #6c757d;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.summary-number {
+    font-size: 27px;
+    font-weight: 600;
+}
+
+.summary-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+    background: #f5f7fa;
+}
+
+
+/* Form */
+
+.attendance-report .form-label {
+    font-size: 13px;
+    color: #495057;
+    margin-bottom: 6px;
+}
+
+.attendance-report .form-control,
+.attendance-report .form-select {
+    min-height: 40px;
+    border-radius: 7px;
+    border-color: #dfe3e7;
+    font-size: 14px;
+}
+
+.attendance-report .form-control:focus,
+.attendance-report .form-select:focus {
+    border-color: #86b7fe;
+    box-shadow: 0 0 0 .15rem rgba(13, 110, 253, .10);
+}
+
+
+/* Buttons */
+
+.attendance-report .btn {
+    border-radius: 7px;
+    font-size: 14px;
+    min-height: 40px;
+}
+
+
+/* Table */
+
+.attendance-table-card {
+    overflow: hidden;
+}
+
+.attendance-table {
+    font-size: 13px;
+}
+
+.attendance-table thead th {
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .2px;
+    white-space: nowrap;
+    border-bottom: 1px solid #dee2e6;
+    padding: 13px 12px;
+}
+
+.attendance-table tbody td {
+    padding: 13px 12px;
+    white-space: nowrap;
+    border-color: #eef0f2;
+}
+
+.attendance-table tbody tr:hover {
+    background: #fafbfc;
+}
+
+.student-name {
+    font-weight: 600;
+    color: #212529;
+}
+
+.time-text {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+/* Status */
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 9px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-present {
+    background: #e8f7ee;
+    color: #198754;
+}
+
+.status-late {
+    background: #fff4d6;
+    color: #9a6700;
+}
+
+.status-absent {
+    background: #fdeaea;
+    color: #dc3545;
+}
+
+.status-other {
+    background: #eef0f2;
+    color: #6c757d;
+}
+
+
+/* Empty */
+
+.empty-state i {
+    font-size: 42px;
+    color: #adb5bd;
+}
+
+.empty-state h6 {
+    color: #495057;
+}
+
+
+/* ========================================
+   Responsive
+======================================== */
+
+@media (max-width: 767.98px) {
+
+    .report-header {
+        align-items: flex-start !important;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .report-header > div:last-child {
+        width: 100%;
+    }
+
+    .report-header .btn {
+        flex: 1;
+    }
+
+    .summary-card .card-body {
+        padding: 16px;
+    }
+
+    .summary-number {
+        font-size: 23px;
+    }
+
+    .attendance-table {
+        min-width: 1050px;
+    }
+
+}
+
+
+/* ========================================
+   Print
+======================================== */
+
+@media print {
+
+    @page {
+        size: landscape;
+        margin: 10mm;
+    }
+
+    body {
+        background: #fff !important;
+    }
+
+    .sidebar,
+    .navbar,
+    .btn,
+    form {
+        display: none !important;
+    }
+
+    .report-header {
+        display: flex !important;
+    }
+
+    .report-header > div:last-child {
+        display: none !important;
+    }
+
+    .container-fluid {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+
+    .attendance-report .card {
+        border: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .summary-card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+
+    .attendance-table {
+        font-size: 10px;
+    }
+
+    .attendance-table thead th,
+    .attendance-table tbody td {
+        padding: 6px;
+    }
+
+}
+
+</style>
+<div class="container-fluid attendance-report">
+ 
+{{-- Header --}}
+<div class="d-flex justify-content-between align-items-center mb-4 report-header">
+
+    <div>
+        <h4 class="mb-1 fw-semibold">
+            <i class="bi bi-bar-chart-line me-1"></i>
+            Attendance Report
+        </h4>
+
+        <small class="text-muted">
+            Attendance summary and detailed report
+        </small>
     </div>
 
+    <div class="d-flex gap-2">
+        <a href="{{ route('admin.attendance.index') }}"
+           class="btn btn-secondary">
+            <i class="bi bi-arrow-left me-1"></i>
+            Back
+        </a>
 
-    {{-- Filter --}}
-    <div class="card shadow-sm mb-4">
+        <button type="button"
+                onclick="window.print()"
+                class="btn btn-dark">
+            <i class="bi bi-printer me-1"></i>
+            Print
+        </button>
+    </div>
 
-        <div class="card-header">
-            <strong>
-                <i class="bi bi-funnel"></i>
-                Filter Attendance
-            </strong>
-        </div>
-
-        <div class="card-body">
-
-            <form method="GET"
-                  action="{{ route('attendances.report') }}">
-
-                <div class="row g-3">
-
-                    {{-- From Date --}}
-                    <div class="col-md-3">
-
-                        <label class="form-label">
-                            From Date
-                        </label>
-
-                        <input type="date"
-                               name="from_date"
-                               value="{{ request('from_date') }}"
-                               class="form-control">
-
-                    </div>
+</div>
 
 
-                    {{-- To Date --}}
-                    <div class="col-md-3">
+{{-- Filter --}}
+<div class="card shadow-sm border-0 mb-4">
 
-                        <label class="form-label">
-                            To Date
-                        </label>
+    <div class="card-header bg-white py-3">
+        <strong>
+            <i class="bi bi-funnel me-1"></i>
+            Filter Attendance
+        </strong>
+    </div>
 
-                        <input type="date"
-                               name="to_date"
-                               value="{{ request('to_date') }}"
-                               class="form-control">
+    <div class="card-body">
 
-                    </div>
+        <form method="GET"
+              action="{{ route('admin.attendances.report') }}">
+
+            <div class="row g-3">
+
+                {{-- Date --}}
+                <div class="col-xl-3 col-md-6">
+
+                    <label class="form-label fw-medium">
+                        Date
+                    </label>
+
+                    <input type="date"
+                           name="date"
+                           value="{{ request('date') }}"
+                           class="form-control">
+
+                </div>
 
 
-                    {{-- Branch --}}
-                    <div class="col-md-3">
+                {{-- From Date --}}
+                <div class="col-xl-3 col-md-6">
 
-                        <label class="form-label">
-                            Branch
-                        </label>
+                    <label class="form-label fw-medium">
+                        From Date
+                    </label>
 
-                        <select name="branch_id"
-                                class="form-select">
+                    <input type="date"
+                           name="from_date"
+                           value="{{ request('from_date') }}"
+                           class="form-control">
 
-                            <option value="">
-                                All Branches
+                </div>
+
+
+                {{-- To Date --}}
+                <div class="col-xl-3 col-md-6">
+
+                    <label class="form-label fw-medium">
+                        To Date
+                    </label>
+
+                    <input type="date"
+                           name="to_date"
+                           value="{{ request('to_date') }}"
+                           class="form-control">
+
+                </div>
+
+
+                {{-- Branch --}}
+                <div class="col-xl-3 col-md-6">
+
+                    <label class="form-label fw-medium">
+                        Branch
+                    </label>
+
+                    <select name="branch_id"
+                            class="form-select">
+
+                        <option value="">
+                            All Branches
+                        </option>
+
+                        @foreach($branches as $branch)
+
+                            <option value="{{ $branch->id }}"
+                                {{ request('branch_id') == $branch->id ? 'selected' : '' }}>
+
+                                {{ $branch->name }}
+
                             </option>
 
-                            @foreach($branches as $branch)
+                        @endforeach
 
-                                <option value="{{ $branch->id }}"
-                                    {{ request('branch_id') == $branch->id ? 'selected' : '' }}>
+                    </select>
 
-                                    {{ $branch->name }}
-
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
-                    </div>
+                </div>
 
 
-                    {{-- Employee --}}
-                    <div class="col-md-3">
+                {{-- Student --}}
+                <div class="col-xl-4 col-md-6">
 
-                        <label class="form-label">
-                            Employee
-                        </label>
+                    <label class="form-label fw-medium">
+                        Student
+                    </label>
 
-                        <select name="employee_id"
-                                class="form-select">
+                    <select name="student_id"
+                            class="form-select">
 
-                            <option value="">
-                                All Employees
+                        <option value="">
+                            All Students
+                        </option>
+
+                        @foreach($students as $student)
+
+                            <option value="{{ $student->id }}"
+                                {{ request('student_id') == $student->id ? 'selected' : '' }}>
+
+                                {{ $student->name }}
+
                             </option>
 
-                            @foreach($employees as $employee)
+                        @endforeach
 
-                                <option value="{{ $employee->id }}"
-                                    {{ request('employee_id') == $employee->id ? 'selected' : '' }}>
-
-                                    {{ $employee->name }}
-
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
-                    </div>
-
-
-                    {{-- Buttons --}}
-                    <div class="col-12">
-
-                        <button type="submit"
-                                class="btn btn-primary">
-
-                            <i class="bi bi-search"></i>
-                            Search
-
-                        </button>
-
-
-                        <a href="{{ route('attendances.report') }}"
-                           class="btn btn-outline-secondary">
-
-                            <i class="bi bi-arrow-clockwise"></i>
-                            Reset
-
-                        </a>
-
-                    </div>
+                    </select>
 
                 </div>
 
-            </form>
 
-        </div>
+                {{-- Buttons --}}
+                <div class="col-xl-8 col-md-6 d-flex align-items-end">
+
+                    <button type="submit"
+                            class="btn btn-primary me-2">
+
+                        <i class="bi bi-search me-1"></i>
+                        Search
+
+                    </button>
+
+                    <a href="{{ route('admin.attendances.report') }}"
+                       class="btn btn-outline-secondary">
+
+                        <i class="bi bi-arrow-clockwise me-1"></i>
+                        Reset
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </form>
 
     </div>
 
+</div>
 
-    {{-- Summary Cards --}}
-    <div class="row g-3 mb-4">
 
-        {{-- Total --}}
-        <div class="col-md-3">
+{{-- Summary Cards --}}
+<div class="row g-3 mb-4">
 
-            <div class="card shadow-sm border-0">
+    {{-- Total --}}
+    <div class="col-xl-3 col-md-6">
 
-                <div class="card-body">
+        <div class="card summary-card total-card h-100">
 
-                    <div class="d-flex justify-content-between">
+            <div class="card-body">
 
-                        <div>
-                            <small class="text-muted">
-                                Total Attendance
-                            </small>
+                <div class="d-flex justify-content-between align-items-center">
 
-                            <h3 class="mb-0">
-                                {{ $total }}
-                            </h3>
+                    <div>
+
+                        <div class="summary-label">
+                            Total Attendance
                         </div>
 
-                        <div class="fs-2 text-primary">
-                            <i class="bi bi-calendar-check"></i>
-                        </div>
+                        <h3 class="summary-number mb-0">
+                            {{ $total }}
+                        </h3>
 
                     </div>
 
-                </div>
-
-            </div>
-
-        </div>
-
-
-        {{-- Present --}}
-        <div class="col-md-3">
-
-            <div class="card shadow-sm border-0">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between">
-
-                        <div>
-                            <small class="text-muted">
-                                Present
-                            </small>
-
-                            <h3 class="mb-0 text-success">
-                                {{ $present }}
-                            </h3>
-                        </div>
-
-                        <div class="fs-2 text-success">
-                            <i class="bi bi-check-circle"></i>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        {{-- Late --}}
-        <div class="col-md-3">
-
-            <div class="card shadow-sm border-0">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between">
-
-                        <div>
-                            <small class="text-muted">
-                                Late
-                            </small>
-
-                            <h3 class="mb-0 text-warning">
-                                {{ $late }}
-                            </h3>
-                        </div>
-
-                        <div class="fs-2 text-warning">
-                            <i class="bi bi-clock"></i>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        {{-- Absent --}}
-        <div class="col-md-3">
-
-            <div class="card shadow-sm border-0">
-
-                <div class="card-body">
-
-                    <div class="d-flex justify-content-between">
-
-                        <div>
-                            <small class="text-muted">
-                                Absent
-                            </small>
-
-                            <h3 class="mb-0 text-danger">
-                                {{ $absent }}
-                            </h3>
-                        </div>
-
-                        <div class="fs-2 text-danger">
-                            <i class="bi bi-x-circle"></i>
-                        </div>
-
+                    <div class="summary-icon text-primary">
+                        <i class="bi bi-calendar-check"></i>
                     </div>
 
                 </div>
@@ -306,182 +509,100 @@
     </div>
 
 
-    {{-- Attendance Table --}}
-    <div class="card shadow-sm">
+    {{-- Present --}}
+    <div class="col-xl-3 col-md-6">
 
-        <div class="card-header d-flex justify-content-between">
+        <div class="card summary-card h-100">
 
-            <strong>
-                Attendance Details
-            </strong>
+            <div class="card-body">
 
-            <span class="text-muted">
-                {{ $attendances->count() }} Records
-            </span>
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <div class="summary-label">
+                            Present
+                        </div>
+
+                        <h3 class="summary-number text-success mb-0">
+                            {{ $present }}
+                        </h3>
+
+                    </div>
+
+                    <div class="summary-icon text-success">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+
+                </div>
+
+            </div>
 
         </div>
 
+    </div>
 
-        <div class="card-body p-0">
 
-            <div class="table-responsive">
+    {{-- Late --}}
+    <div class="col-xl-3 col-md-6">
 
-                <table class="table table-hover table-bordered mb-0">
+        <div class="card summary-card h-100">
 
-                    <thead class="table-light">
+            <div class="card-body">
 
-                        <tr>
+                <div class="d-flex justify-content-between align-items-center">
 
-                            <th>#</th>
+                    <div>
 
-                            <th>Date</th>
+                        <div class="summary-label">
+                            Late
+                        </div>
 
-                            <th>Employee</th>
+                        <h3 class="summary-number text-warning mb-0">
+                            {{ $late }}
+                        </h3>
 
-                            <th>Branch</th>
+                    </div>
 
-                            <th>In Time</th>
+                    <div class="summary-icon text-warning">
+                        <i class="bi bi-clock"></i>
+                    </div>
 
-                            <th>Out Time</th>
+                </div>
 
-                            <th>Working Hours</th>
+            </div>
 
-                            <th>Late</th>
+        </div>
 
-                            <th>Status</th>
+    </div>
 
-                        </tr>
 
-                    </thead>
+    {{-- Absent --}}
+    <div class="col-xl-3 col-md-6">
 
+        <div class="card summary-card h-100">
 
-                    <tbody>
+            <div class="card-body">
 
-                        @forelse($attendances as $attendance)
+                <div class="d-flex justify-content-between align-items-center">
 
-                            <tr>
+                    <div>
 
-                                <td>
-                                    {{ $loop->iteration }}
-                                </td>
+                        <div class="summary-label">
+                            Absent
+                        </div>
 
-                                <td>
-                                    {{ \Carbon\Carbon::parse($attendance->date)->format('d M Y') }}
-                                </td>
+                        <h3 class="summary-number text-danger mb-0">
+                            {{ $absent }}
+                        </h3>
 
-                                <td>
+                    </div>
 
-                                    <strong>
-                                        {{ $attendance->employee->name ?? 'N/A' }}
-                                    </strong>
+                    <div class="summary-icon text-danger">
+                        <i class="bi bi-x-circle"></i>
+                    </div>
 
-                                    @if(isset($attendance->employee->finger_id))
-
-                                        <br>
-
-                                        <small class="text-muted">
-                                            Finger ID:
-                                            {{ $attendance->employee->finger_id }}
-                                        </small>
-
-                                    @endif
-
-                                </td>
-
-
-                                <td>
-                                    {{ $attendance->employee->branch->name ?? 'N/A' }}
-                                </td>
-
-
-                                <td>
-                                    {{ $attendance->in_time ?? '-' }}
-                                </td>
-
-
-                                <td>
-                                    {{ $attendance->out_time ?? '-' }}
-                                </td>
-
-
-                                <td>
-                                    {{ $attendance->working_hours ?? '-' }}
-                                </td>
-
-
-                                <td>
-
-                                    @if(($attendance->late_minutes ?? 0) > 0)
-
-                                        <span class="badge bg-warning text-dark">
-                                            {{ $attendance->late_minutes }} min
-                                        </span>
-
-                                    @else
-
-                                        <span class="text-muted">
-                                            -
-                                        </span>
-
-                                    @endif
-
-                                </td>
-
-
-                                <td>
-
-                                    @if($attendance->status === 'Present')
-
-                                        <span class="badge bg-success">
-                                            Present
-                                        </span>
-
-                                    @elseif($attendance->status === 'Late')
-
-                                        <span class="badge bg-warning text-dark">
-                                            Late
-                                        </span>
-
-                                    @elseif($attendance->status === 'Absent')
-
-                                        <span class="badge bg-danger">
-                                            Absent
-                                        </span>
-
-                                    @else
-
-                                        <span class="badge bg-secondary">
-                                            {{ $attendance->status ?? 'N/A' }}
-                                        </span>
-
-                                    @endif
-
-                                </td>
-
-                            </tr>
-
-                        @empty
-
-                            <tr>
-
-                                <td colspan="9"
-                                    class="text-center py-4">
-
-                                    <i class="bi bi-inbox fs-1 text-muted"></i>
-
-                                    <p class="mb-0 text-muted">
-                                        No attendance records found.
-                                    </p>
-
-                                </td>
-
-                            </tr>
-
-                        @endforelse
-
-                    </tbody>
-
-                </table>
+                </div>
 
             </div>
 
@@ -492,34 +613,231 @@
 </div>
 
 
-{{-- Print CSS --}}
-<style>
+{{-- Attendance Table --}}
+<div class="card shadow-sm border-0 attendance-table-card">
 
-@media print {
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
 
-    .sidebar,
-    .navbar,
-    .btn,
-    form,
-    .card-header {
-        display: none !important;
-    }
+        <strong>
+            <i class="bi bi-table me-1"></i>
+            Attendance Details
+        </strong>
 
-    body {
-        background: #fff !important;
-    }
+        <span class="badge bg-light text-dark border">
+            {{ $attendances->count() }} Records
+        </span>
 
-    .container-fluid {
-        width: 100% !important;
-    }
+    </div>
 
-    .card {
-        border: none !important;
-        box-shadow: none !important;
-    }
 
-}
+    <div class="card-body p-0">
 
-</style>
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle mb-0 attendance-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Student</th>
+                        <th>Branch</th>
+                        <th>Class</th>
+                        <th>Section</th>
+                        <th>In Time</th>
+                        <th>Out Time</th>
+                        <th>Status</th>
+                        <th>Remarks</th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    @forelse($attendances as $attendance)
+
+                        <tr>
+
+                            {{-- Serial --}}
+                            <td class="text-muted">
+                                {{ $loop->iteration }}
+                            </td>
+
+
+                            {{-- Date --}}
+                            <td>
+                                <span class="fw-medium">
+                                    {{ $attendance->date
+                                        ? $attendance->date->format('d M Y')
+                                        : '-' }}
+                                </span>
+                            </td>
+
+
+                            {{-- Student --}}
+                            <td>
+
+                                @if($attendance->student)
+
+                                    <div class="student-name">
+                                        {{ $attendance->student->name }}
+                                    </div>
+
+                                    @if(isset($attendance->student->student_id))
+
+                                        <small class="text-muted">
+                                            ID:
+                                            {{ $attendance->student->student_id }}
+                                        </small>
+
+                                    @endif
+
+                                @else
+
+                                    <span class="text-muted">
+                                        N/A
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+
+                            {{-- Branch --}}
+                            <td>
+                                {{ $attendance->student->branch->name
+                                    ?? $attendance->branch->name
+                                    ?? 'N/A' }}
+                            </td>
+
+
+                            {{-- Class --}}
+                            <td>
+                                {{ $attendance->schoolClass->name ?? 'N/A' }}
+                            </td>
+
+
+                            {{-- Section --}}
+                            <td>
+                                {{ $attendance->section->name ?? 'N/A' }}
+                            </td>
+
+
+                            {{-- In Time --}}
+                            <td>
+                                <span class="time-text">
+                                    {{ $attendance->in_time ?? '-' }}
+                                </span>
+                            </td>
+
+
+                            {{-- Out Time --}}
+                            <td>
+                                <span class="time-text">
+                                    {{ $attendance->out_time ?? '-' }}
+                                </span>
+                            </td>
+
+
+                            {{-- Status --}}
+                            <td>
+
+                                @if($attendance->status === 'Present')
+
+                                    <span class="status-badge status-present">
+                                        <i class="bi bi-check-circle me-1"></i>
+                                        Present
+                                    </span>
+
+                                @elseif($attendance->status === 'Late')
+
+                                    <span class="status-badge status-late">
+                                        <i class="bi bi-clock me-1"></i>
+                                        Late
+                                    </span>
+
+                                @elseif($attendance->status === 'Absent')
+
+                                    <span class="status-badge status-absent">
+                                        <i class="bi bi-x-circle me-1"></i>
+                                        Absent
+                                    </span>
+
+                                @else
+
+                                    <span class="status-badge status-other">
+                                        {{ $attendance->status ?? 'N/A' }}
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+
+                            {{-- Remarks --}}
+                            <td>
+
+                                @if($attendance->remarks)
+
+                                    <span title="{{ $attendance->remarks }}">
+                                        {{ \Illuminate\Support\Str::limit($attendance->remarks, 30) }}
+                                    </span>
+
+                                @else
+
+                                    <span class="text-muted">
+                                        -
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+
+                            <td colspan="10"
+                                class="text-center py-5">
+
+                                <div class="empty-state">
+
+                                    <i class="bi bi-inbox"></i>
+
+                                    <h6 class="mt-3 mb-1">
+                                        No attendance records found
+                                    </h6>
+
+                                    <p class="text-muted mb-0">
+                                        Try changing your filters and search again.
+                                    </p>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+```
+
+</div>
+
 
 @endsection

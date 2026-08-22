@@ -233,71 +233,76 @@ class AttendanceController extends Controller
 
 
 
+ public function report(Request $request)
+{
+    $query = Attendance::with([
+        'student.branch',
+        'academicSession',
+        'schoolClass',
+        'section',
+    ]);
 
-
-
-    public function report(Request $request)
-    {
-        $query = Attendance::with([
-            'employee.branch',
-        ]);
-
-        // Date filter
-        if ($request->filled('date')) {
-            $query->whereDate('date', $request->date);
-        }
-
-        // Date range
-        if ($request->filled('from_date')) {
-            $query->whereDate('date', '>=', $request->from_date);
-        }
-
-        if ($request->filled('to_date')) {
-            $query->whereDate('date', '<=', $request->to_date);
-        }
-
-        // Branch filter
-        if ($request->filled('branch_id')) {
-            $query->whereHas('employee', function ($q) use ($request) {
-                $q->where('branch_id', $request->branch_id);
-            });
-        }
-
-        // Employee filter
-        if ($request->filled('employee_id')) {
-            $query->where('employee_id', $request->employee_id);
-        }
-
-        $attendances = $query
-            ->latest('date')
-            ->latest('in_time')
-            ->get();
-
-        // Summary
-        $total = $attendances->count();
-
-        $present = $attendances->where('status', 'Present')->count();
-
-        $absent = $attendances->where('status', 'Absent')->count();
-
-        $late = $attendances->where('status', 'Late')->count();
-
-        $branches = Branch::orderBy('name')->get();
-
-        $employees = Employee::orderBy('name')->get();
-
-        return view('admin.attendance.report', compact(
-            'attendances',
-            'branches',
-            'employees',
-            'total',
-            'present',
-            'absent',
-            'late'
-        ));
+    // Date filter
+    if ($request->filled('date')) {
+        $query->whereDate('date', $request->date);
     }
 
+    // Date range
+    if ($request->filled('from_date')) {
+        $query->whereDate('date', '>=', $request->from_date);
+    }
 
+    if ($request->filled('to_date')) {
+        $query->whereDate('date', '<=', $request->to_date);
+    }
+
+    // Branch filter
+    if ($request->filled('branch_id')) {
+        $query->where('branch_id', $request->branch_id);
+    }
+
+    // Student filter
+    if ($request->filled('student_id')) {
+        $query->where('student_id', $request->student_id);
+    }
+
+    // Attendance records
+    $attendances = $query
+        ->latest('date')
+        ->latest('in_time')
+        ->get();
+
+    // Summary
+    $total = $attendances->count();
+
+    $present = $attendances
+        ->where('status', 'Present')
+        ->count();
+
+    $absent = $attendances
+        ->where('status', 'Absent')
+        ->count();
+
+    $late = $attendances
+        ->where('status', 'Late')
+        ->count();
+
+    // Branches
+    $branches = Branch::orderBy('name')->get();
+
+    // Students
+    $students = Student::orderBy('name')->get();
+
+    return view('admin.attendance.report', compact(
+        'attendances',
+        'branches',
+        'students',
+        'total',
+        'present',
+        'absent',
+        'late'
+    ));
+}
 
 
 
