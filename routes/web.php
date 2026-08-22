@@ -72,6 +72,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
         Route::get(  'attendances/report', [AttendanceController::class, 'report'])->name('attendances.report');
         Route::get( 'attendance/analytics', [AttendanceController::class, 'analytics'])->name('attendance.analytics');
+        Route::get( 'attendance/student-history', [AttendanceController::class, 'studentHistory'])->name('attendance.student-history');
+        Route::get('attendance/{attendance}/edit',  [AttendanceController::class, 'edit'])->name('attendance.edit');
+        Route::put( 'attendance/{attendance}',  [AttendanceController::class, 'update'])->name('attendance.update');
         
 
 });

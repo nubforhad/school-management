@@ -186,6 +186,14 @@
                 <span>Attendance Analytics</span>
 
             </a>
+
+            <a href="{{ route('admin.attendance.student-history') }}"
+               class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-slate-400 hover:bg-slate-800 hover:text-white">
+
+                <i class="bi bi-bar-chart-line"></i>
+                <span>Attendance student History</span>
+
+            </a>
  
 
 

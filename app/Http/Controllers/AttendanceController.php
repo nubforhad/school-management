@@ -230,8 +230,164 @@ class AttendanceController extends Controller
        ->with('success', 'Attendance saved successfully.');
     }
 
+public function edit(Attendance $attendance)
+{
+    $attendance->load([
+        'student',
+        'branch',
+        'academicSession',
+        'schoolClass',
+        'section',
+    ]);
+
+    $branches = Branch::orderBy('name')->get();
+
+    $academicSessions = AcademicSession::orderByDesc('id')->get();
+
+    $schoolClasses = SchoolClass::orderBy('name')->get();
+
+    $sections = Section::orderBy('name')->get();
+
+    return view('admin.attendance.edit', compact(
+        'attendance',
+        'branches',
+        'academicSessions',
+        'schoolClasses',
+        'sections'
+    ));
+}
+
+public function update(Request $request, Attendance $attendance)
+{
+    $validated = $request->validate([
+        'branch_id' => [
+            'required',
+            'exists:branches,id',
+        ],
+
+        'academic_session_id' => [
+            'required',
+            'exists:academic_sessions,id',
+        ],
+
+        'school_class_id' => [
+            'required',
+            'exists:classes,id',
+        ],
+
+        'section_id' => [
+            'required',
+            'exists:sections,id',
+        ],
+
+        'date' => [
+            'required',
+            'date',
+        ],
+
+        'status' => [
+            'required',
+            'in:present,absent,late,leave',
+        ],
+
+        'in_time' => [
+            'nullable',
+            'date_format:H:i',
+        ],
+
+        'out_time' => [
+            'nullable',
+            'date_format:H:i',
+        ],
+
+        'remarks' => [
+            'nullable',
+            'string',
+            'max:1000',
+        ],
+    ]);
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | Duplicate Attendance Check
+    |--------------------------------------------------------------------------
+    */
+
+    $duplicate = Attendance::where('student_id', $attendance->student_id)
+        ->where('branch_id', $validated['branch_id'])
+        ->where(
+            'academic_session_id',
+            $validated['academic_session_id']
+        )
+        ->where(
+            'school_class_id',
+            $validated['school_class_id']
+        )
+        ->where(
+            'section_id',
+            $validated['section_id']
+        )
+        ->whereDate('date', $validated['date'])
+        ->where('id', '!=', $attendance->id)
+        ->exists();
+
+
+    if ($duplicate) {
+
+        return back()
+            ->withInput()
+            ->withErrors([
+                'date' =>
+                    'Attendance already exists for this student on the selected date.',
+            ]);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Update Attendance
+    |--------------------------------------------------------------------------
+    */
+
+    $attendance->update([
+        'branch_id' => $validated['branch_id'],
+
+        'academic_session_id' =>
+            $validated['academic_session_id'],
+
+        'school_class_id' =>
+            $validated['school_class_id'],
+
+        'section_id' =>
+            $validated['section_id'],
+
+        'date' =>
+            $validated['date'],
+
+        'status' =>
+            $validated['status'],
+
+        'in_time' =>
+            $validated['in_time'] ?? null,
+
+        'out_time' =>
+            $validated['out_time'] ?? null,
+
+        'remarks' =>
+            $validated['remarks'] ?? null,
+    ]);
+
+
+    return redirect()
+        ->route('admin.attendance.student-history', [
+            'student_id' => $attendance->student_id,
+        ])
+        ->with(
+            'success',
+            'Attendance updated successfully.'
+        );
+}
 
  public function report(Request $request)
 {
@@ -488,6 +644,209 @@ public function analytics(Request $request)
             'academicSessions',
             'schoolClasses',
             'sections'
+        )
+    );
+}
+
+
+public function studentHistory(Request $request)
+{
+    $students = Student::orderBy('name')->get();
+
+    $branches = Branch::orderBy('name')->get();
+
+    $academicSessions = AcademicSession::orderByDesc('id')->get();
+
+    $schoolClasses = SchoolClass::orderBy('name')->get();
+
+    $sections = Section::orderBy('name')->get();
+
+    $attendances = collect();
+
+    $selectedStudent = null;
+
+    $totalDays = 0;
+    $present = 0;
+    $absent = 0;
+    $late = 0;
+    $leave = 0;
+    $attendancePercentage = 0;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Student History
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('student_id')) {
+
+        $selectedStudent = Student::with('branch')
+            ->find($request->student_id);
+
+        if ($selectedStudent) {
+
+            $query = Attendance::with([
+                'student',
+                'branch',
+                'academicSession',
+                'schoolClass',
+                'section',
+            ])
+            ->where('student_id', $selectedStudent->id);
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Branch Filter
+            |--------------------------------------------------------------------------
+            */
+
+            if ($request->filled('branch_id')) {
+                $query->where('branch_id', $request->branch_id);
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Academic Session
+            |--------------------------------------------------------------------------
+            */
+
+            if ($request->filled('academic_session_id')) {
+                $query->where(
+                    'academic_session_id',
+                    $request->academic_session_id
+                );
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Class
+            |--------------------------------------------------------------------------
+            */
+
+            if ($request->filled('school_class_id')) {
+                $query->where(
+                    'school_class_id',
+                    $request->school_class_id
+                );
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Section
+            |--------------------------------------------------------------------------
+            */
+
+            if ($request->filled('section_id')) {
+                $query->where(
+                    'section_id',
+                    $request->section_id
+                );
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | From Date
+            |--------------------------------------------------------------------------
+            */
+
+            if ($request->filled('from_date')) {
+
+                $query->whereDate(
+                    'date',
+                    '>=',
+                    $request->from_date
+                );
+
+            }
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | To Date
+            |--------------------------------------------------------------------------
+            */
+
+            if ($request->filled('to_date')) {
+
+                $query->whereDate(
+                    'date',
+                    '<=',
+                    $request->to_date
+                );
+
+            }
+
+
+            $attendances = $query
+                ->latest('date')
+                ->latest('in_time')
+                ->get();
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Summary
+            |--------------------------------------------------------------------------
+            */
+
+            $totalDays = $attendances->count();
+
+            $present = $attendances
+                ->where('status', 'present')
+                ->count();
+
+            $absent = $attendances
+                ->where('status', 'absent')
+                ->count();
+
+            $late = $attendances
+                ->where('status', 'late')
+                ->count();
+
+            $leave = $attendances
+                ->where('status', 'leave')
+                ->count();
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Attendance Percentage
+            |--------------------------------------------------------------------------
+            */
+
+            if ($totalDays > 0) {
+
+                $attendancePercentage = round(
+                    (($present + $late) / $totalDays) * 100,
+                    2
+                );
+
+            }
+        }
+    }
+
+
+    return view(
+        'admin.attendance.student-history',
+        compact(
+            'students',
+            'branches',
+            'academicSessions',
+            'schoolClasses',
+            'sections',
+            'attendances',
+            'selectedStudent',
+            'totalDays',
+            'present',
+            'absent',
+            'late',
+            'leave',
+            'attendancePercentage'
         )
     );
 }
