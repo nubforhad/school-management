@@ -306,6 +306,194 @@ class AttendanceController extends Controller
 
 
 
+public function analytics(Request $request)
+{
+    $query = Attendance::with([
+        'student.branch',
+        'student.schoolClass',
+        'student.section',
+    ]);
+
+    // Branch
+    if ($request->filled('branch_id')) {
+        $query->where('branch_id', $request->branch_id);
+    }
+
+    // Academic Session
+    if ($request->filled('academic_session_id')) {
+        $query->where(
+            'academic_session_id',
+            $request->academic_session_id
+        );
+    }
+
+    // Class
+    if ($request->filled('school_class_id')) {
+        $query->where(
+            'school_class_id',
+            $request->school_class_id
+        );
+    }
+
+    // Section
+    if ($request->filled('section_id')) {
+        $query->where(
+            'section_id',
+            $request->section_id
+        );
+    }
+
+    // Date range
+    if ($request->filled('from_date')) {
+        $query->whereDate(
+            'date',
+            '>=',
+            $request->from_date
+        );
+    }
+
+    if ($request->filled('to_date')) {
+        $query->whereDate(
+            'date',
+            '<=',
+            $request->to_date
+        );
+    }
+
+    $attendances = $query
+        ->orderBy('student_id')
+        ->orderBy('date')
+        ->get();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Student Analytics
+    |--------------------------------------------------------------------------
+    */
+
+    $studentAnalytics = $attendances
+        ->groupBy('student_id')
+        ->map(function ($records) {
+
+            $totalDays = $records->count();
+
+            $present = $records
+                ->where('status', 'Present')
+                ->count();
+
+            $absent = $records
+                ->where('status', 'Absent')
+                ->count();
+
+            $late = $records
+                ->where('status', 'Late')
+                ->count();
+
+            $percentage = $totalDays > 0
+                ? round(($present / $totalDays) * 100, 2)
+                : 0;
+
+            return [
+                'student' => $records->first()->student,
+
+                'total_days' => $totalDays,
+
+                'present' => $present,
+
+                'absent' => $absent,
+
+                'late' => $late,
+
+                'percentage' => $percentage,
+            ];
+        })
+        ->values();
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Overall Analytics
+    |--------------------------------------------------------------------------
+    */
+
+    $totalStudents = $studentAnalytics->count();
+
+    $totalAttendanceDays = $attendances->count();
+
+    $totalPresent = $attendances
+        ->where('status', 'Present')
+        ->count();
+
+    $totalAbsent = $attendances
+        ->where('status', 'Absent')
+        ->count();
+
+    $totalLate = $attendances
+        ->where('status', 'Late')
+        ->count();
+
+    $averagePercentage = $totalAttendanceDays > 0
+        ? round(
+            ($totalPresent / $totalAttendanceDays) * 100,
+            2
+        )
+        : 0;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Performance Groups
+    |--------------------------------------------------------------------------
+    */
+
+    $above90 = $studentAnalytics
+        ->where('percentage', '>=', 90)
+        ->count();
+
+    $between75And89 = $studentAnalytics
+        ->filter(function ($student) {
+            return $student['percentage'] >= 75
+                && $student['percentage'] < 90;
+        })
+        ->count();
+
+    $below75 = $studentAnalytics
+        ->where('percentage', '<', 75)
+        ->count();
+
+
+    $branches = Branch::orderBy('name')->get();
+
+    $academicSessions = AcademicSession::orderByDesc('id')->get();
+
+    $schoolClasses = SchoolClass::orderBy('name')->get();
+
+    $sections = Section::orderBy('name')->get();
+
+
+    return view(
+        'admin.attendance.analytics',
+        compact(
+            'studentAnalytics',
+            'totalStudents',
+            'totalAttendanceDays',
+            'totalPresent',
+            'totalAbsent',
+            'totalLate',
+            'averagePercentage',
+            'above90',
+            'between75And89',
+            'below75',
+            'branches',
+            'academicSessions',
+            'schoolClasses',
+            'sections'
+        )
+    );
+}
+
+
+
 
 
 }

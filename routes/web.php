@@ -71,6 +71,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('/store', [ AttendanceController::class, 'store'])->name('store');
         });
         Route::get(  'attendances/report', [AttendanceController::class, 'report'])->name('attendances.report');
+        Route::get( 'attendance/analytics', [AttendanceController::class, 'analytics'])->name('attendance.analytics');
         
 
 });
