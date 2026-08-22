@@ -2,395 +2,213 @@
 
 @section('content')
 
-<style>
-
-/* ========================================
-   Attendance Report
-======================================== */
+<div class="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
 
-.attendance-report {
-    padding-bottom: 30px;
-}
+    {{-- =========================================================
+        Header
+    ========================================================== --}}
 
+    <div class="mb-4 sm:mb-6">
 
-/* Header */
+        <div class="flex flex-col sm:flex-row
+                    sm:items-center sm:justify-between gap-3">
 
-.report-header h4 {
-    font-size: 1.25rem;
-    color: #212529;
-}
-
-.report-header small {
-    font-size: 13px;
-}
-
-
-/* Cards */
-
-.attendance-report .card {
-    border-radius: 10px;
-}
-
-.attendance-report .card-header {
-    border-bottom: 1px solid #edf0f2;
-}
-
-.summary-card {
-    border: 1px solid #edf0f2 !important;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .04);
-    transition: all .2s ease;
-}
-
-.summary-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, .07);
-}
-
-.summary-card .card-body {
-    padding: 20px;
-}
-
-.summary-label {
-    color: #6c757d;
-    font-size: 13px;
-    margin-bottom: 5px;
-}
-
-.summary-number {
-    font-size: 27px;
-    font-weight: 600;
-}
-
-.summary-icon {
-    width: 46px;
-    height: 46px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 23px;
-    background: #f5f7fa;
-}
-
-
-/* Form */
-
-.attendance-report .form-label {
-    font-size: 13px;
-    color: #495057;
-    margin-bottom: 6px;
-}
-
-.attendance-report .form-control,
-.attendance-report .form-select {
-    min-height: 40px;
-    border-radius: 7px;
-    border-color: #dfe3e7;
-    font-size: 14px;
-}
-
-.attendance-report .form-control:focus,
-.attendance-report .form-select:focus {
-    border-color: #86b7fe;
-    box-shadow: 0 0 0 .15rem rgba(13, 110, 253, .10);
-}
-
-
-/* Buttons */
-
-.attendance-report .btn {
-    border-radius: 7px;
-    font-size: 14px;
-    min-height: 40px;
-}
-
-
-/* Table */
-
-.attendance-table-card {
-    overflow: hidden;
-}
-
-.attendance-table {
-    font-size: 13px;
-}
-
-.attendance-table thead th {
-    background: #f8f9fa;
-    color: #495057;
-    font-weight: 600;
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: .2px;
-    white-space: nowrap;
-    border-bottom: 1px solid #dee2e6;
-    padding: 13px 12px;
-}
-
-.attendance-table tbody td {
-    padding: 13px 12px;
-    white-space: nowrap;
-    border-color: #eef0f2;
-}
+            <div>
 
-.attendance-table tbody tr:hover {
-    background: #fafbfc;
-}
+                <h1 class="text-xl sm:text-2xl font-bold text-slate-800">
+                    Attendance Report
+                </h1>
 
-.student-name {
-    font-weight: 600;
-    color: #212529;
-}
+                <p class="text-xs sm:text-sm text-slate-500 mt-1">
+                    Attendance summary and detailed attendance report
+                </p>
 
-.time-text {
-    font-size: 13px;
-    font-weight: 500;
-}
+            </div>
 
-
-/* Status */
-
-.status-badge {
-    display: inline-flex;
-    align-items: center;
-    padding: 5px 9px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.status-present {
-    background: #e8f7ee;
-    color: #198754;
-}
-
-.status-late {
-    background: #fff4d6;
-    color: #9a6700;
-}
-
-.status-absent {
-    background: #fdeaea;
-    color: #dc3545;
-}
-
-.status-other {
-    background: #eef0f2;
-    color: #6c757d;
-}
-
-
-/* Empty */
-
-.empty-state i {
-    font-size: 42px;
-    color: #adb5bd;
-}
-
-.empty-state h6 {
-    color: #495057;
-}
-
-
-/* ========================================
-   Responsive
-======================================== */
-
-@media (max-width: 767.98px) {
-
-    .report-header {
-        align-items: flex-start !important;
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .report-header > div:last-child {
-        width: 100%;
-    }
-
-    .report-header .btn {
-        flex: 1;
-    }
-
-    .summary-card .card-body {
-        padding: 16px;
-    }
-
-    .summary-number {
-        font-size: 23px;
-    }
-
-    .attendance-table {
-        min-width: 1050px;
-    }
-
-}
-
-
-/* ========================================
-   Print
-======================================== */
-
-@media print {
-
-    @page {
-        size: landscape;
-        margin: 10mm;
-    }
-
-    body {
-        background: #fff !important;
-    }
-
-    .sidebar,
-    .navbar,
-    .btn,
-    form {
-        display: none !important;
-    }
-
-    .report-header {
-        display: flex !important;
-    }
-
-    .report-header > div:last-child {
-        display: none !important;
-    }
-
-    .container-fluid {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 0 !important;
-    }
-
-    .attendance-report .card {
-        border: 0 !important;
-        box-shadow: none !important;
-    }
-
-    .summary-card {
-        box-shadow: none !important;
-        border: 1px solid #ddd !important;
-    }
-
-    .attendance-table {
-        font-size: 10px;
-    }
-
-    .attendance-table thead th,
-    .attendance-table tbody td {
-        padding: 6px;
-    }
-
-}
-
-</style>
-<div class="container-fluid attendance-report">
- 
-{{-- Header --}}
-<div class="d-flex justify-content-between align-items-center mb-4 report-header">
-
-    <div>
-        <h4 class="mb-1 fw-semibold">
-            <i class="bi bi-bar-chart-line me-1"></i>
-            Attendance Report
-        </h4>
-
-        <small class="text-muted">
-            Attendance summary and detailed report
-        </small>
+            <div class="flex flex-col xs:flex-row gap-2">
+
+                <a href="{{ route('admin.attendance.index') }}"
+                   class="w-full xs:w-auto
+                          inline-flex items-center justify-center gap-2
+                          px-4 py-2.5 rounded-lg
+                          bg-slate-100 text-slate-700
+                          text-sm font-medium
+                          hover:bg-slate-200 transition">
+
+                    <i class="bi bi-arrow-left"></i>
+
+                    Back
+
+                </a>
+
+                <button type="button"
+                        onclick="window.print()"
+                        class="w-full xs:w-auto
+                               inline-flex items-center justify-center gap-2
+                               px-4 py-2.5 rounded-lg
+                               bg-slate-800 text-white
+                               text-sm font-medium
+                               hover:bg-slate-900 transition">
+
+                    <i class="bi bi-printer"></i>
+
+                    Print
+
+                </button>
+
+            </div>
+
+        </div>
+
     </div>
 
-    <div class="d-flex gap-2">
-        <a href="{{ route('admin.attendance.index') }}"
-           class="btn btn-secondary">
-            <i class="bi bi-arrow-left me-1"></i>
-            Back
-        </a>
 
-        <button type="button"
-                onclick="window.print()"
-                class="btn btn-dark">
-            <i class="bi bi-printer me-1"></i>
-            Print
-        </button>
-    </div>
+    {{-- =========================================================
+        Filter
+    ========================================================== --}}
 
-</div>
+    <div class="bg-white rounded-xl shadow-sm
+                border border-slate-200
+                p-3 sm:p-5 mb-4 sm:mb-6">
 
+        <div class="flex items-center gap-2 mb-4">
 
-{{-- Filter --}}
-<div class="card shadow-sm border-0 mb-4">
+            <div class="w-8 h-8 rounded-lg bg-blue-50
+                        flex items-center justify-center">
 
-    <div class="card-header bg-white py-3">
-        <strong>
-            <i class="bi bi-funnel me-1"></i>
-            Filter Attendance
-        </strong>
-    </div>
+                <i class="bi bi-funnel text-blue-600"></i>
 
-    <div class="card-body">
+            </div>
+
+            <div>
+
+                <h2 class="text-sm sm:text-base
+                           font-semibold text-slate-800">
+
+                    Attendance Filter
+
+                </h2>
+
+                <p class="text-xs text-slate-500">
+                    Filter attendance records by date, branch and student
+                </p>
+
+            </div>
+
+        </div>
+
 
         <form method="GET"
               action="{{ route('admin.attendances.report') }}">
 
-            <div class="row g-3">
+            <div class="grid grid-cols-1
+                        sm:grid-cols-2
+                        lg:grid-cols-4
+                        gap-3 sm:gap-4">
+
 
                 {{-- Date --}}
-                <div class="col-xl-3 col-md-6">
 
-                    <label class="form-label fw-medium">
+                <div>
+
+                    <label class="block text-xs sm:text-sm
+                                  font-medium text-slate-700 mb-1">
+
                         Date
+
                     </label>
 
                     <input type="date"
                            name="date"
                            value="{{ request('date') }}"
-                           class="form-control">
+                           class="w-full rounded-lg
+                                  border border-slate-300
+                                  bg-white
+                                  px-3 py-2 sm:py-2.5
+                                  text-xs sm:text-sm
+                                  focus:border-blue-500
+                                  focus:ring-2
+                                  focus:ring-blue-100
+                                  outline-none">
 
                 </div>
 
 
                 {{-- From Date --}}
-                <div class="col-xl-3 col-md-6">
 
-                    <label class="form-label fw-medium">
+                <div>
+
+                    <label class="block text-xs sm:text-sm
+                                  font-medium text-slate-700 mb-1">
+
                         From Date
+
                     </label>
 
                     <input type="date"
                            name="from_date"
                            value="{{ request('from_date') }}"
-                           class="form-control">
+                           class="w-full rounded-lg
+                                  border border-slate-300
+                                  bg-white
+                                  px-3 py-2 sm:py-2.5
+                                  text-xs sm:text-sm
+                                  focus:border-blue-500
+                                  focus:ring-2
+                                  focus:ring-blue-100
+                                  outline-none">
 
                 </div>
 
 
                 {{-- To Date --}}
-                <div class="col-xl-3 col-md-6">
 
-                    <label class="form-label fw-medium">
+                <div>
+
+                    <label class="block text-xs sm:text-sm
+                                  font-medium text-slate-700 mb-1">
+
                         To Date
+
                     </label>
 
                     <input type="date"
                            name="to_date"
                            value="{{ request('to_date') }}"
-                           class="form-control">
+                           class="w-full rounded-lg
+                                  border border-slate-300
+                                  bg-white
+                                  px-3 py-2 sm:py-2.5
+                                  text-xs sm:text-sm
+                                  focus:border-blue-500
+                                  focus:ring-2
+                                  focus:ring-blue-100
+                                  outline-none">
 
                 </div>
 
 
                 {{-- Branch --}}
-                <div class="col-xl-3 col-md-6">
 
-                    <label class="form-label fw-medium">
+                <div>
+
+                    <label class="block text-xs sm:text-sm
+                                  font-medium text-slate-700 mb-1">
+
                         Branch
+
                     </label>
 
                     <select name="branch_id"
-                            class="form-select">
+                            class="w-full rounded-lg
+                                   border border-slate-300
+                                   bg-white
+                                   px-3 py-2 sm:py-2.5
+                                   text-xs sm:text-sm
+                                   focus:border-blue-500
+                                   focus:ring-2
+                                   focus:ring-blue-100
+                                   outline-none">
 
                         <option value="">
                             All Branches
@@ -413,14 +231,26 @@
 
 
                 {{-- Student --}}
-                <div class="col-xl-4 col-md-6">
 
-                    <label class="form-label fw-medium">
+                <div class="lg:col-span-2">
+
+                    <label class="block text-xs sm:text-sm
+                                  font-medium text-slate-700 mb-1">
+
                         Student
+
                     </label>
 
                     <select name="student_id"
-                            class="form-select">
+                            class="w-full rounded-lg
+                                   border border-slate-300
+                                   bg-white
+                                   px-3 py-2 sm:py-2.5
+                                   text-xs sm:text-sm
+                                   focus:border-blue-500
+                                   focus:ring-2
+                                   focus:ring-blue-100
+                                   outline-none">
 
                         <option value="">
                             All Students
@@ -433,6 +263,10 @@
 
                                 {{ $student->name }}
 
+                                @if($student->student_id)
+                                    — {{ $student->student_id }}
+                                @endif
+
                             </option>
 
                         @endforeach
@@ -441,27 +275,44 @@
 
                 </div>
 
+            </div>
 
-                {{-- Buttons --}}
-                <div class="col-xl-8 col-md-6 d-flex align-items-end">
 
-                    <button type="submit"
-                            class="btn btn-primary me-2">
+            {{-- Buttons --}}
 
-                        <i class="bi bi-search me-1"></i>
-                        Search
+            <div class="flex flex-col xs:flex-row
+                        gap-2.5 sm:gap-3 mt-4 sm:mt-5">
 
-                    </button>
+                <button type="submit"
+                        class="w-full xs:w-auto
+                               inline-flex items-center
+                               justify-center gap-2
+                               px-5 py-2.5 rounded-lg
+                               bg-blue-600 text-white
+                               text-sm font-medium
+                               hover:bg-blue-700 transition">
 
-                    <a href="{{ route('admin.attendances.report') }}"
-                       class="btn btn-outline-secondary">
+                    <i class="bi bi-search"></i>
 
-                        <i class="bi bi-arrow-clockwise me-1"></i>
-                        Reset
+                    Search
 
-                    </a>
+                </button>
 
-                </div>
+
+                <a href="{{ route('admin.attendances.report') }}"
+                   class="w-full xs:w-auto
+                          inline-flex items-center
+                          justify-center gap-2
+                          px-5 py-2.5 rounded-lg
+                          bg-slate-100 text-slate-700
+                          text-sm font-medium
+                          hover:bg-slate-200 transition">
+
+                    <i class="bi bi-arrow-clockwise"></i>
+
+                    Reset
+
+                </a>
 
             </div>
 
@@ -469,36 +320,161 @@
 
     </div>
 
-</div>
+
+    {{-- =========================================================
+        Summary Cards
+    ========================================================== --}}
+
+    <div class="grid grid-cols-2
+                lg:grid-cols-4
+                gap-3 sm:gap-4
+                mb-4 sm:mb-6">
 
 
-{{-- Summary Cards --}}
-<div class="row g-3 mb-4">
+        {{-- Total --}}
 
-    {{-- Total --}}
-    <div class="col-xl-3 col-md-6">
+        <div class="bg-white rounded-xl shadow-sm
+                    border border-slate-200 p-4 sm:p-5">
 
-        <div class="card summary-card total-card h-100">
+            <div class="flex items-center
+                        justify-between gap-3">
 
-            <div class="card-body">
+                <div>
 
-                <div class="d-flex justify-content-between align-items-center">
+                    <p class="text-xs text-slate-500">
+                        Total Attendance
+                    </p>
 
-                    <div>
+                    <h3 class="text-2xl sm:text-3xl
+                               font-bold text-slate-800 mt-1">
 
-                        <div class="summary-label">
-                            Total Attendance
-                        </div>
+                        {{ $total }}
 
-                        <h3 class="summary-number mb-0">
-                            {{ $total }}
-                        </h3>
+                    </h3>
 
-                    </div>
+                </div>
 
-                    <div class="summary-icon text-primary">
-                        <i class="bi bi-calendar-check"></i>
-                    </div>
+                <div class="w-10 h-10 sm:w-11 sm:h-11
+                            rounded-lg bg-blue-50
+                            flex items-center justify-center
+                            flex-shrink-0">
+
+                    <i class="bi bi-calendar-check
+                              text-xl text-blue-600"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- Present --}}
+
+        <div class="bg-white rounded-xl shadow-sm
+                    border border-slate-200 p-4 sm:p-5">
+
+            <div class="flex items-center
+                        justify-between gap-3">
+
+                <div>
+
+                    <p class="text-xs text-slate-500">
+                        Present
+                    </p>
+
+                    <h3 class="text-2xl sm:text-3xl
+                               font-bold text-green-600 mt-1">
+
+                        {{ $present }}
+
+                    </h3>
+
+                </div>
+
+                <div class="w-10 h-10 sm:w-11 sm:h-11
+                            rounded-lg bg-green-50
+                            flex items-center justify-center
+                            flex-shrink-0">
+
+                    <i class="bi bi-check-circle
+                              text-xl text-green-600"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- Late --}}
+
+        <div class="bg-white rounded-xl shadow-sm
+                    border border-slate-200 p-4 sm:p-5">
+
+            <div class="flex items-center
+                        justify-between gap-3">
+
+                <div>
+
+                    <p class="text-xs text-slate-500">
+                        Late
+                    </p>
+
+                    <h3 class="text-2xl sm:text-3xl
+                               font-bold text-yellow-600 mt-1">
+
+                        {{ $late }}
+
+                    </h3>
+
+                </div>
+
+                <div class="w-10 h-10 sm:w-11 sm:h-11
+                            rounded-lg bg-yellow-50
+                            flex items-center justify-center
+                            flex-shrink-0">
+
+                    <i class="bi bi-clock
+                              text-xl text-yellow-600"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- Absent --}}
+
+        <div class="bg-white rounded-xl shadow-sm
+                    border border-slate-200 p-4 sm:p-5">
+
+            <div class="flex items-center
+                        justify-between gap-3">
+
+                <div>
+
+                    <p class="text-xs text-slate-500">
+                        Absent
+                    </p>
+
+                    <h3 class="text-2xl sm:text-3xl
+                               font-bold text-red-600 mt-1">
+
+                        {{ $absent }}
+
+                    </h3>
+
+                </div>
+
+                <div class="w-10 h-10 sm:w-11 sm:h-11
+                            rounded-lg bg-red-50
+                            flex items-center justify-center
+                            flex-shrink-0">
+
+                    <i class="bi bi-x-circle
+                              text-xl text-red-600"></i>
 
                 </div>
 
@@ -509,30 +485,49 @@
     </div>
 
 
-    {{-- Present --}}
-    <div class="col-xl-3 col-md-6">
+    {{-- =========================================================
+        Attendance Details
+    ========================================================== --}}
 
-        <div class="card summary-card h-100">
+    <div class="bg-white rounded-xl shadow-sm
+                border border-slate-200 overflow-hidden">
 
-            <div class="card-body">
 
-                <div class="d-flex justify-content-between align-items-center">
+        {{-- Table Header --}}
 
-                    <div>
+        <div class="p-3 sm:p-5
+                    border-b border-slate-200">
 
-                        <div class="summary-label">
-                            Present
-                        </div>
+            <div class="flex flex-col sm:flex-row
+                        sm:items-center sm:justify-between gap-2">
 
-                        <h3 class="summary-number text-success mb-0">
-                            {{ $present }}
-                        </h3>
+                <div>
 
-                    </div>
+                    <h2 class="text-base sm:text-lg
+                               font-semibold text-slate-800">
 
-                    <div class="summary-icon text-success">
-                        <i class="bi bi-check-circle"></i>
-                    </div>
+                        Attendance Details
+
+                    </h2>
+
+                    <p class="text-xs sm:text-sm
+                              text-slate-500 mt-1">
+
+                        Detailed date-wise attendance records
+
+                    </p>
+
+                </div>
+
+
+                <div class="inline-flex items-center
+                            w-fit
+                            px-2.5 py-1 rounded-full
+                            bg-slate-100
+                            text-slate-600
+                            text-xs font-medium">
+
+                    {{ $attendances->count() }} Records
 
                 </div>
 
@@ -540,165 +535,127 @@
 
         </div>
 
-    </div>
 
+        {{-- Table --}}
 
-    {{-- Late --}}
-    <div class="col-xl-3 col-md-6">
+        <div class="overflow-x-auto">
 
-        <div class="card summary-card h-100">
+            <table class="w-full text-xs sm:text-sm
+                          min-w-[1050px]">
 
-            <div class="card-body">
-
-                <div class="d-flex justify-content-between align-items-center">
-
-                    <div>
-
-                        <div class="summary-label">
-                            Late
-                        </div>
-
-                        <h3 class="summary-number text-warning mb-0">
-                            {{ $late }}
-                        </h3>
-
-                    </div>
-
-                    <div class="summary-icon text-warning">
-                        <i class="bi bi-clock"></i>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    {{-- Absent --}}
-    <div class="col-xl-3 col-md-6">
-
-        <div class="card summary-card h-100">
-
-            <div class="card-body">
-
-                <div class="d-flex justify-content-between align-items-center">
-
-                    <div>
-
-                        <div class="summary-label">
-                            Absent
-                        </div>
-
-                        <h3 class="summary-number text-danger mb-0">
-                            {{ $absent }}
-                        </h3>
-
-                    </div>
-
-                    <div class="summary-icon text-danger">
-                        <i class="bi bi-x-circle"></i>
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-{{-- Attendance Table --}}
-<div class="card shadow-sm border-0 attendance-table-card">
-
-    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
-
-        <strong>
-            <i class="bi bi-table me-1"></i>
-            Attendance Details
-        </strong>
-
-        <span class="badge bg-light text-dark border">
-            {{ $attendances->count() }} Records
-        </span>
-
-    </div>
-
-
-    <div class="card-body p-0">
-
-        <div class="table-responsive">
-
-            <table class="table table-hover align-middle mb-0 attendance-table">
-
-                <thead>
+                <thead class="bg-slate-50
+                              border-b border-slate-200">
 
                     <tr>
 
-                        <th>#</th>
-                        <th>Date</th>
-                        <th>Student</th>
-                        <th>Branch</th>
-                        <th>Class</th>
-                        <th>Section</th>
-                        <th>In Time</th>
-                        <th>Out Time</th>
-                        <th>Status</th>
-                        <th>Remarks</th>
+                        <th class="px-3 sm:px-4 py-3 text-left
+                                   font-semibold text-slate-600">
+                            #
+                        </th>
+
+                        <th class="px-3 sm:px-4 py-3 text-left
+                                   font-semibold text-slate-600">
+                            Date
+                        </th>
+
+                        <th class="px-3 sm:px-4 py-3 text-left
+                                   font-semibold text-slate-600">
+                            Student
+                        </th>
+
+                        <th class="px-3 sm:px-4 py-3 text-left
+                                   font-semibold text-slate-600">
+                            Branch
+                        </th>
+
+                        <th class="px-3 sm:px-4 py-3 text-left
+                                   font-semibold text-slate-600">
+                            Class
+                        </th>
+
+                        <th class="px-3 sm:px-4 py-3 text-left
+                                   font-semibold text-slate-600">
+                            Section
+                        </th>
+
+                        <th class="px-3 sm:px-4 py-3 text-left
+                                   font-semibold text-slate-600">
+                            In Time
+                        </th>
+
+                        <th class="px-3 sm:px-4 py-3 text-left
+                                   font-semibold text-slate-600">
+                            Out Time
+                        </th>
+
+                        <th class="px-3 sm:px-4 py-3 text-left
+                                   font-semibold text-slate-600">
+                            Status
+                        </th>
+
+                        <th class="px-3 sm:px-4 py-3 text-left
+                                   font-semibold text-slate-600">
+                            Remarks
+                        </th>
 
                     </tr>
 
                 </thead>
 
 
-                <tbody>
+                <tbody class="divide-y divide-slate-100">
 
                     @forelse($attendances as $attendance)
 
-                        <tr>
+                        <tr class="hover:bg-slate-50 transition">
+
 
                             {{-- Serial --}}
-                            <td class="text-muted">
+
+                            <td class="px-3 sm:px-4 py-3
+                                       text-slate-500">
+
                                 {{ $loop->iteration }}
+
                             </td>
 
 
                             {{-- Date --}}
-                            <td>
-                                <span class="fw-medium">
-                                    {{ $attendance->date
-                                        ? $attendance->date->format('d M Y')
-                                        : '-' }}
-                                </span>
+
+                            <td class="px-3 sm:px-4 py-3
+                                       font-medium text-slate-700">
+
+                                {{ $attendance->date?->format('d M Y') ?? '—' }}
+
                             </td>
 
 
                             {{-- Student --}}
-                            <td>
+
+                            <td class="px-3 sm:px-4 py-3">
 
                                 @if($attendance->student)
 
-                                    <div class="student-name">
+                                    <div class="font-semibold text-slate-800">
+
                                         {{ $attendance->student->name }}
+
                                     </div>
 
-                                    @if(isset($attendance->student->student_id))
+                                    @if($attendance->student->student_id)
 
-                                        <small class="text-muted">
+                                        <div class="text-xs text-slate-500 mt-0.5">
+
                                             ID:
                                             {{ $attendance->student->student_id }}
-                                        </small>
+
+                                        </div>
 
                                     @endif
 
                                 @else
 
-                                    <span class="text-muted">
+                                    <span class="text-slate-400">
                                         N/A
                                     </span>
 
@@ -708,69 +665,175 @@
 
 
                             {{-- Branch --}}
-                            <td>
-                                {{ $attendance->student->branch->name
-                                    ?? $attendance->branch->name
-                                    ?? 'N/A' }}
+
+                            <td class="px-3 sm:px-4 py-3">
+
+                                {{ $attendance->branch->name
+                                    ?? $attendance->student->branch->name
+                                    ?? 'N/A'
+                                }}
+
                             </td>
 
 
                             {{-- Class --}}
-                            <td>
+
+                            <td class="px-3 sm:px-4 py-3">
+
                                 {{ $attendance->schoolClass->name ?? 'N/A' }}
+
                             </td>
 
 
                             {{-- Section --}}
-                            <td>
+
+                            <td class="px-3 sm:px-4 py-3">
+
                                 {{ $attendance->section->name ?? 'N/A' }}
+
                             </td>
 
 
                             {{-- In Time --}}
-                            <td>
-                                <span class="time-text">
-                                    {{ $attendance->in_time ?? '-' }}
-                                </span>
+
+                            <td class="px-3 sm:px-4 py-3">
+
+                                @if($attendance->in_time)
+
+                                    {{ \Carbon\Carbon::parse(
+                                        $attendance->in_time
+                                    )->format('h:i A') }}
+
+                                @else
+
+                                    <span class="text-slate-400">
+                                        —
+                                    </span>
+
+                                @endif
+
                             </td>
 
 
                             {{-- Out Time --}}
-                            <td>
-                                <span class="time-text">
-                                    {{ $attendance->out_time ?? '-' }}
-                                </span>
+
+                            <td class="px-3 sm:px-4 py-3">
+
+                                @if($attendance->out_time)
+
+                                    {{ \Carbon\Carbon::parse(
+                                        $attendance->out_time
+                                    )->format('h:i A') }}
+
+                                @else
+
+                                    <span class="text-slate-400">
+                                        —
+                                    </span>
+
+                                @endif
+
                             </td>
 
 
                             {{-- Status --}}
-                            <td>
 
-                                @if($attendance->status === 'Present')
+                            <td class="px-3 sm:px-4 py-3">
 
-                                    <span class="status-badge status-present">
+                                @php
+                                    $status = strtolower(
+                                        trim($attendance->status ?? '')
+                                    );
+                                @endphp
+
+
+                                @if($status === 'present')
+
+                                    <span class="inline-flex
+                                                 items-center
+                                                 px-2.5 py-1
+                                                 rounded-full
+                                                 bg-green-50
+                                                 text-green-700
+                                                 border border-green-200
+                                                 text-xs font-medium">
+
                                         <i class="bi bi-check-circle me-1"></i>
+
                                         Present
+
                                     </span>
 
-                                @elseif($attendance->status === 'Late')
 
-                                    <span class="status-badge status-late">
+                                @elseif($status === 'late')
+
+                                    <span class="inline-flex
+                                                 items-center
+                                                 px-2.5 py-1
+                                                 rounded-full
+                                                 bg-yellow-50
+                                                 text-yellow-700
+                                                 border border-yellow-200
+                                                 text-xs font-medium">
+
                                         <i class="bi bi-clock me-1"></i>
+
                                         Late
+
                                     </span>
 
-                                @elseif($attendance->status === 'Absent')
 
-                                    <span class="status-badge status-absent">
+                                @elseif($status === 'absent')
+
+                                    <span class="inline-flex
+                                                 items-center
+                                                 px-2.5 py-1
+                                                 rounded-full
+                                                 bg-red-50
+                                                 text-red-700
+                                                 border border-red-200
+                                                 text-xs font-medium">
+
                                         <i class="bi bi-x-circle me-1"></i>
+
                                         Absent
+
                                     </span>
+
+
+                                @elseif($status === 'leave')
+
+                                    <span class="inline-flex
+                                                 items-center
+                                                 px-2.5 py-1
+                                                 rounded-full
+                                                 bg-purple-50
+                                                 text-purple-700
+                                                 border border-purple-200
+                                                 text-xs font-medium">
+
+                                        <i class="bi bi-calendar-x me-1"></i>
+
+                                        Leave
+
+                                    </span>
+
 
                                 @else
 
-                                    <span class="status-badge status-other">
-                                        {{ $attendance->status ?? 'N/A' }}
+                                    <span class="inline-flex
+                                                 items-center
+                                                 px-2.5 py-1
+                                                 rounded-full
+                                                 bg-slate-100
+                                                 text-slate-700
+                                                 text-xs font-medium">
+
+                                        {{ $attendance->status
+                                            ? ucfirst($attendance->status)
+                                            : 'N/A'
+                                        }}
+
                                     </span>
 
                                 @endif
@@ -779,18 +842,25 @@
 
 
                             {{-- Remarks --}}
-                            <td>
+
+                            <td class="px-3 sm:px-4 py-3
+                                       text-slate-500 max-w-xs">
 
                                 @if($attendance->remarks)
 
                                     <span title="{{ $attendance->remarks }}">
-                                        {{ \Illuminate\Support\Str::limit($attendance->remarks, 30) }}
+
+                                        {{ \Illuminate\Support\Str::limit(
+                                            $attendance->remarks,
+                                            40
+                                        ) }}
+
                                     </span>
 
                                 @else
 
-                                    <span class="text-muted">
-                                        -
+                                    <span class="text-slate-400">
+                                        —
                                     </span>
 
                                 @endif
@@ -799,23 +869,42 @@
 
                         </tr>
 
+
                     @empty
 
                         <tr>
 
                             <td colspan="10"
-                                class="text-center py-5">
+                                class="px-4 py-12 text-center">
 
-                                <div class="empty-state">
+                                <div class="flex flex-col
+                                            items-center">
 
-                                    <i class="bi bi-inbox"></i>
+                                    <div class="w-14 h-14
+                                                rounded-full
+                                                bg-slate-100
+                                                flex items-center
+                                                justify-center mb-3">
 
-                                    <h6 class="mt-3 mb-1">
-                                        No attendance records found
-                                    </h6>
+                                        <i class="bi bi-calendar-x
+                                                  text-2xl
+                                                  text-slate-400"></i>
 
-                                    <p class="text-muted mb-0">
-                                        Try changing your filters and search again.
+                                    </div>
+
+                                    <h3 class="text-sm font-semibold
+                                               text-slate-700">
+
+                                        No Attendance Records
+
+                                    </h3>
+
+                                    <p class="text-xs sm:text-sm
+                                              text-slate-500 mt-1">
+
+                                        No attendance data found
+                                        for the selected filters.
+
                                     </p>
 
                                 </div>
@@ -835,9 +924,99 @@
     </div>
 
 </div>
-```
 
-</div>
 
+{{-- =============================================================
+    Print CSS
+============================================================= --}}
+
+<style>
+
+@media print {
+
+    @page {
+        size: landscape;
+        margin: 10mm;
+    }
+
+    body {
+        background: white !important;
+    }
+
+    /*
+     * Hide common admin layout elements.
+     * This keeps the report itself clean when printing.
+     */
+
+    aside,
+    nav,
+    .sidebar,
+    .navbar {
+        display: none !important;
+    }
+
+    /*
+     * Hide buttons and filter section.
+     */
+
+    button,
+    a,
+    form {
+        display: none !important;
+    }
+
+    /*
+     * Keep report container full width.
+     */
+
+    .max-w-screen-2xl {
+        max-width: 100% !important;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    /*
+     * Remove card shadows.
+     */
+
+    .shadow-sm {
+        box-shadow: none !important;
+    }
+
+    /*
+     * Keep white background.
+     */
+
+    .bg-white {
+        background: white !important;
+    }
+
+    /*
+     * Table should fit landscape page.
+     */
+
+    table {
+        width: 100% !important;
+        min-width: 0 !important;
+        font-size: 9px !important;
+    }
+
+    th,
+    td {
+        padding: 5px 6px !important;
+    }
+
+    /*
+     * Prevent rows from breaking.
+     */
+
+    tr {
+        page-break-inside: avoid;
+    }
+
+}
+
+</style>
 
 @endsection

@@ -853,6 +853,342 @@ public function studentHistory(Request $request)
 
 
 
+public function monthlyReport(Request $request)
+{
+    $branches = Branch::orderBy('name')->get();
+
+    $academicSessions = AcademicSession::orderByDesc('id')->get();
+
+    $schoolClasses = SchoolClass::orderBy('name')->get();
+
+    $sections = Section::orderBy('name')->get();
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Default Month
+    |--------------------------------------------------------------------------
+    */
+
+    $month = $request->input(
+        'month',
+        now()->format('Y-m')
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Students
+    |--------------------------------------------------------------------------
+    */
+
+    $students = collect();
+
+    $summary = [
+        'total_students' => 0,
+        'working_days' => 0,
+        'present' => 0,
+        'absent' => 0,
+        'late' => 0,
+        'leave' => 0,
+        'average_percentage' => 0,
+    ];
+
+
+    $studentAnalytics = collect();
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Load Report Only When Filters Are Selected
+    |--------------------------------------------------------------------------
+    */
+
+    if (
+        $request->filled('branch_id') ||
+        $request->filled('academic_session_id') ||
+        $request->filled('school_class_id') ||
+        $request->filled('section_id')
+    ) {
+
+        $attendanceQuery = Attendance::with([
+            'student.branch',
+        ]);
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Branch
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('branch_id')) {
+
+            $attendanceQuery->where(
+                'branch_id',
+                $request->branch_id
+            );
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Academic Session
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('academic_session_id')) {
+
+            $attendanceQuery->where(
+                'academic_session_id',
+                $request->academic_session_id
+            );
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Class
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('school_class_id')) {
+
+            $attendanceQuery->where(
+                'school_class_id',
+                $request->school_class_id
+            );
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Section
+        |--------------------------------------------------------------------------
+        */
+
+        if ($request->filled('section_id')) {
+
+            $attendanceQuery->where(
+                'section_id',
+                $request->section_id
+            );
+
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Month Filter
+        |--------------------------------------------------------------------------
+        */
+
+        try {
+
+            $startDate = \Carbon\Carbon::createFromFormat(
+                'Y-m',
+                $month
+            )->startOfMonth();
+
+            $endDate = \Carbon\Carbon::createFromFormat(
+                'Y-m',
+                $month
+            )->endOfMonth();
+
+        } catch (\Exception $e) {
+
+            $startDate = now()->startOfMonth();
+
+            $endDate = now()->endOfMonth();
+
+            $month = now()->format('Y-m');
+        }
+
+
+        $attendanceQuery
+            ->whereBetween('date', [
+                $startDate->format('Y-m-d'),
+                $endDate->format('Y-m-d'),
+            ]);
+
+
+        $attendances = $attendanceQuery
+            ->orderBy('date')
+            ->get();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Group By Student
+        |--------------------------------------------------------------------------
+        */
+
+        $grouped = $attendances->groupBy('student_id');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Student Analytics
+        |--------------------------------------------------------------------------
+        */
+
+        foreach ($grouped as $studentId => $records) {
+
+            $student = $records->first()->student;
+
+
+            $present = $records
+                ->where('status', 'present')
+                ->count();
+
+
+            $absent = $records
+                ->where('status', 'absent')
+                ->count();
+
+
+            $late = $records
+                ->where('status', 'late')
+                ->count();
+
+
+            $leave = $records
+                ->where('status', 'leave')
+                ->count();
+
+
+            $totalDays = $records->count();
+
+
+            $attendanceDays =
+                $present + $late;
+
+
+            $percentage = $totalDays > 0
+                ? round(
+                    ($attendanceDays / $totalDays) * 100,
+                    2
+                )
+                : 0;
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Daily Status Map
+            |--------------------------------------------------------------------------
+            */
+
+            $daily = [];
+
+            foreach ($records as $record) {
+
+                $day = \Carbon\Carbon::parse(
+                    $record->date
+                )->day;
+
+                $daily[$day] = $record->status;
+            }
+
+
+            $studentAnalytics->push([
+
+                'student' => $student,
+
+                'student_id' => $studentId,
+
+                'present' => $present,
+
+                'absent' => $absent,
+
+                'late' => $late,
+
+                'leave' => $leave,
+
+                'total_days' => $totalDays,
+
+                'percentage' => $percentage,
+
+                'daily' => $daily,
+
+            ]);
+        }
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Summary
+        |--------------------------------------------------------------------------
+        */
+
+        $summary['total_students'] =
+            $studentAnalytics->count();
+
+
+        $summary['working_days'] =
+            $attendances
+                ->groupBy(
+                    fn ($attendance) =>
+                        \Carbon\Carbon::parse(
+                            $attendance->date
+                        )->format('Y-m-d')
+                )
+                ->count();
+
+
+        $summary['present'] =
+            $attendances
+                ->where('status', 'present')
+                ->count();
+
+
+        $summary['absent'] =
+            $attendances
+                ->where('status', 'absent')
+                ->count();
+
+
+        $summary['late'] =
+            $attendances
+                ->where('status', 'late')
+                ->count();
+
+
+        $summary['leave'] =
+            $attendances
+                ->where('status', 'leave')
+                ->count();
+
+
+        $summary['average_percentage'] =
+            $studentAnalytics->count() > 0
+                ? round(
+                    $studentAnalytics->avg(
+                        'percentage'
+                    ),
+                    2
+                )
+                : 0;
+    }
+
+
+    return view(
+        'admin.attendance.monthly-report',
+        compact(
+            'branches',
+            'academicSessions',
+            'schoolClasses',
+            'sections',
+            'month',
+            'studentAnalytics',
+            'summary'
+        )
+    );
+}
+
+
 
 
 }

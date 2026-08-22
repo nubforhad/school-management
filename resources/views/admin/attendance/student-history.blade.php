@@ -801,7 +801,7 @@
                                     title="Edit Attendance">
 
                                         <i class="bi bi-pencil-square"></i>
-
+                                    Edit
                                     </a>
 
                                 </td>
