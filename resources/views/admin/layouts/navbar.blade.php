@@ -1,51 +1,28 @@
 <header class="sticky top-0 z-30 h-16 border-b border-slate-200 bg-white">
-
     <div class="flex h-full items-center justify-between px-4 sm:px-6">
-
         <div class="flex items-center gap-3">
-
             <button
                 onclick="openSidebar()"
                 class="rounded-lg p-2 text-slate-600 hover:bg-slate-100 lg:hidden">
-
                 ☰
-
             </button>
-
-
             <div>
-
                 <h2 class="text-lg font-semibold text-slate-800">
                     @yield('page-title', 'Dashboard')
                 </h2>
-
                 <p class="hidden text-xs text-slate-500 sm:block">
                     School Management ERP
                 </p>
-
             </div>
-
         </div>
-
-
         <div class="flex items-center gap-3">
-
             {{-- Notification --}}
-
-            <button
-                class="relative rounded-lg p-2 text-slate-500 hover:bg-slate-100">
-
-                🔔
-
+            <button  class="relative rounded-lg p-2 text-slate-500 hover:bg-slate-100"> 🔔
                 <span
                     class="absolute right-1 top-1 h-2 w-2 rounded-full bg-red-500">
                 </span>
-
             </button>
-
-
             {{-- User --}}
-
             <div class="hidden items-center gap-3 sm:flex">
                 {{-- User Info --}}
                 <div class="text-right">

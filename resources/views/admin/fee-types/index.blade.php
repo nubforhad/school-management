@@ -4,9 +4,7 @@
 
 <div class="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
 
-    {{-- =========================================================
-        Header
-    ========================================================== --}}
+     <!-- Header  -->
 
     <div class="mb-4 sm:mb-6">
 
@@ -69,9 +67,7 @@
     @endif
 
 
-    {{-- =========================================================
-        Error Message
-    ========================================================== --}}
+    {{-- ==========  Error Message ====================================== --}}
 
     @if($errors->any())
 
@@ -105,15 +101,9 @@
         Fee Type Table
     ========================================================== --}}
 
-    <div class="bg-white rounded-xl shadow-sm
-                border border-slate-200
-                overflow-hidden">
-
-
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
         {{-- Table Header --}}
-
-        <div class="p-3 sm:p-5
-                    border-b border-slate-200">
+        <div class="p-3 sm:p-5 border-b border-slate-200">
 
             <div class="flex flex-col sm:flex-row
                         sm:items-center sm:justify-between gap-2">

@@ -13,12 +13,23 @@ class FeeTypeController extends Controller
      */
     public function index()
     {
-      
+        $user = auth()->user();
+        // User login করা না থাকলে
+        if (!$user) {
+            return redirect()
+                ->route('login')
+                ->with('error', 'Please login first.');
+        }
+        // User-এর branch না থাকলে
+        if (!$user->branch_id) {
+            return redirect()
+                ->route('dashboard')
+                ->with('error', 'Your account is not assigned to any branch.');
+        }
         $feeTypes = FeeType::with('branch')
-            ->where('branch_id')
+            ->where('branch_id', $user->branch_id)
             ->latest()
             ->get();
-
         return view('admin.fee-types.index', compact('feeTypes'));
     }
 
