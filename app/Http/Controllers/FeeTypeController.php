@@ -9,14 +9,18 @@ use Illuminate\Validation\Rule;
 class FeeTypeController extends Controller
 {
     /**
-     * Display fee types.
+     * Display fee types - branch wise.
      */
     public function index()
     {
-        $feeTypes = FeeType::latest()->get();
+      
+        $feeTypes = FeeType::with('branch')
+            ->where('branch_id')
+            ->latest()
+            ->get();
+
         return view('admin.fee-types.index', compact('feeTypes'));
     }
-
 
     /**
      * Show create form.
@@ -26,72 +30,98 @@ class FeeTypeController extends Controller
         return view('admin.fee-types.create');
     }
 
-
     /**
-     * Store fee type.
+     * Store fee type - current user's branch.
      */
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => [
-                'required',
-                'string',
-                'max:100',
-                'unique:fee_types,name',
-            ],
+{
+    $branchId = auth()->user()->branch_id;
 
-            'code' => [
-                'nullable',
-                'string',
-                'max:50',
-                'unique:fee_types,code',
-            ],
-
-            'description' => [
-                'nullable',
-                'string',
-                'max:1000',
-            ],
-
-            'status' => [
-                'nullable',
-                'boolean',
-            ],
-        ]);
-
-        FeeType::create([
-            'name' => $validated['name'],
-            'code' => $validated['code'] ?? null,
-            'description' => $validated['description'] ?? null,
-            'status' => $request->boolean('status', true),
-        ]);
-
-        return redirect()
-            ->route('admin.fee-types.index')
-            ->with('success', 'Fee type created successfully.');
+    // User-এর branch না থাকলে
+    if (!$branchId) {
+        return back()
+            ->withInput()
+            ->with('error', 'Your account is not assigned to any branch.');
     }
 
+    $validated = $request->validate([
 
+        'name' => [
+            'required',
+            'string',
+            'max:100',
+
+            Rule::unique('fee_types', 'name')
+                ->where(function ($query) use ($branchId) {
+                    return $query->where('branch_id', $branchId);
+                }),
+        ],
+
+        'code' => [
+            'nullable',
+            'string',
+            'max:50',
+
+            Rule::unique('fee_types', 'code')
+                ->where(function ($query) use ($branchId) {
+                    return $query->where('branch_id', $branchId);
+                }),
+        ],
+
+        'description' => [
+            'nullable',
+            'string',
+            'max:1000',
+        ],
+
+        'status' => [
+            'nullable',
+            'boolean',
+        ],
+    ]);
+
+
+    FeeType::create([
+        'branch_id'  => $branchId,
+        'name'       => $validated['name'],
+        'code'       => $validated['code'] ?? null,
+        'description'=> $validated['description'] ?? null,
+        'status'     => $request->boolean('status', true),
+    ]);
+
+
+    return redirect()
+        ->route('admin.fee-types.index')
+        ->with('success', 'Fee type created successfully.');
+}
     /**
      * Show edit form.
      */
     public function edit(FeeType $feeType)
     {
+        $this->authorizeBranch($feeType);
+
         return view('admin.fee-types.edit', compact('feeType'));
     }
-
 
     /**
      * Update fee type.
      */
     public function update(Request $request, FeeType $feeType)
     {
+        $this->authorizeBranch($feeType);
+
+        $user = auth()->user();
+
         $validated = $request->validate([
             'name' => [
                 'required',
                 'string',
                 'max:100',
                 Rule::unique('fee_types', 'name')
+                    ->where(fn ($query) =>
+                        $query->where('branch_id', $user->branch_id)
+                    )
                     ->ignore($feeType->id),
             ],
 
@@ -100,6 +130,9 @@ class FeeTypeController extends Controller
                 'string',
                 'max:50',
                 Rule::unique('fee_types', 'code')
+                    ->where(fn ($query) =>
+                        $query->where('branch_id', $user->branch_id)
+                    )
                     ->ignore($feeType->id),
             ],
 
@@ -127,18 +160,12 @@ class FeeTypeController extends Controller
             ->with('success', 'Fee type updated successfully.');
     }
 
-
     /**
      * Delete fee type.
      */
     public function destroy(FeeType $feeType)
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Later, when student_fees table exists, we can prevent deletion
-        | if this fee type has already been used.
-        |--------------------------------------------------------------------------
-        */
+        $this->authorizeBranch($feeType);
 
         $feeType->delete();
 
@@ -147,9 +174,13 @@ class FeeTypeController extends Controller
             ->with('success', 'Fee type deleted successfully.');
     }
 
-    //  Toggle status. 
+    /**
+     * Toggle status.
+     */
     public function toggleStatus(FeeType $feeType)
     {
+        $this->authorizeBranch($feeType);
+
         $feeType->update([
             'status' => ! $feeType->status,
         ]);
@@ -158,5 +189,17 @@ class FeeTypeController extends Controller
             'success',
             'Fee type status updated successfully.'
         );
+    }
+
+    /**
+     * Ensure fee type belongs to current user's branch.
+     */
+    private function authorizeBranch(FeeType $feeType): void
+    {
+        $user = auth()->user();
+
+        if (!$user || $feeType->branch_id != $user->branch_id) {
+            abort(403, 'Unauthorized access.');
+        }
     }
 }

@@ -47,31 +47,29 @@
             {{-- User --}}
 
             <div class="hidden items-center gap-3 sm:flex">
-
+                {{-- User Info --}}
                 <div class="text-right">
-
                     <p class="text-sm font-medium text-slate-800">
                         {{ auth()->user()->name ?? 'Administrator' }}
                     </p>
-
                     <p class="text-xs text-slate-500">
                         Administrator
                     </p>
-
                 </div>
-
-
-                <div
-                    class="flex h-9 w-9 items-center justify-center rounded-full bg-blue-600 text-sm font-semibold text-white">
-
+                {{-- Avatar --}}
+                <div  class="flex h-9 w-9 items-center justify-center
+                        rounded-full bg-blue-600
+                        text-sm font-semibold text-white">
                     {{ strtoupper(substr(auth()->user()->name ?? 'A', 0, 1)) }}
-
                 </div>
-
+                {{-- Logout --}}
+                <form  method="POST"  action="{{ route('logout') }}" class="ml-1">
+                    @csrf
+                    <button type="submit"  title="Logout" class="flex h-9 w-9 items-center justify-center  rounded-lg  text-slate-500 transition  hover:bg-red-50   hover:text-red-600">
+                        <i class="bi bi-box-arrow-right text-lg"></i> 
+                    </button>
+                </form>
             </div>
-
         </div>
-
     </div>
-
 </header>

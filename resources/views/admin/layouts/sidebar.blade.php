@@ -149,11 +149,7 @@
             </a>
 
         </nav>
-
-
-        {{-- =================================================
-            ACADEMIC
-        ================================================== --}}
+<!-- //  ACADEMIC  -->
 
         <p class="px-3 mb-2 mt-7
                   text-[10px]
@@ -242,94 +238,40 @@
                                     : 'bg-slate-800 text-amber-400 group-hover:text-amber-300' }}">
                     <i class="bi bi-book-half"></i>
                 </span>
-
-                <span>
-                    Subjects
-                </span>
-
+                <span>  Subjects </span>
             </a>
-
-
             {{-- Class Subjects --}}
 
-            <a href="{{ route('admin.academic.class-subjects.index') }}"
-               class="nav-link group
-                      {{ request()->routeIs('admin.academic.class-subjects.*') ? 'nav-link-active' : '' }}">
-
-                <span class="nav-icon
-                             {{ request()->routeIs('admin.academic.class-subjects.*')
-                                    ? 'bg-white/15 text-white'
-                                    : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}">
+            <a href="{{ route('admin.academic.class-subjects.index') }}"  class="nav-link group   {{ request()->routeIs('admin.academic.class-subjects.*') ? 'nav-link-active' : '' }}">
+                <span class="nav-icon {{ request()->routeIs('admin.academic.class-subjects.*') ? 'bg-white/15 text-white'  : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}">
                     <i class="bi bi-diagram-3"></i>
                 </span>
-
-                <span>
-                    Class Subjects
-                </span>
-
+                <span>  Class Subjects </span>
             </a>
-
         </nav>
 
 
-        {{-- =================================================
-            STUDENT MANAGEMENT
-        ================================================== --}}
+         <!-- STUDENT MANAGEMENT  -->
 
-        <p class="px-3 mb-2 mt-7
-                  text-[10px]
-                  font-semibold
-                  uppercase
-                  tracking-[0.12em]
-                  text-slate-500">
-
+        <p class="px-3 mb-2 mt-7 text-[10px]  font-semibold  uppercase  tracking-[0.12em]  text-slate-500">
             Student Management
-
         </p>
-
-
         <nav class="space-y-1">
-
-
             {{-- Students --}}
-
-            <a href="{{ route('admin.students.index') }}"
-               class="nav-link group
-                      {{ request()->routeIs('admin.students.*') ? 'nav-link-active' : '' }}">
-
-                <span class="nav-icon
-                             {{ request()->routeIs('admin.students.*')
-                                    ? 'bg-white/15 text-white'
-                                    : 'bg-slate-800 text-cyan-400 group-hover:text-cyan-300' }}">
+            <a href="{{ route('admin.students.index') }}" class="nav-link group  {{ request()->routeIs('admin.students.*') ? 'nav-link-active' : '' }}">
+                <span class="nav-icon   {{ request()->routeIs('admin.students.*')   ? 'bg-white/15 text-white'  : 'bg-slate-800 text-cyan-400 group-hover:text-cyan-300' }}">
                     <i class="bi bi-people"></i>
                 </span>
-
-                <span>
-                    Students
-                </span>
-
+                <span>  Students </span>
             </a>
-
-
             {{-- Enrollments --}}
+            <a href="{{ route('admin.student-enrollments.bulk.create') }}" class="nav-link group {{ request()->routeIs('admin.student-enrollments.*') ? 'nav-link-active' : '' }}">
 
-            <a href="{{ route('admin.student-enrollments.bulk.create') }}"
-               class="nav-link group
-                      {{ request()->routeIs('admin.student-enrollments.*') ? 'nav-link-active' : '' }}">
-
-                <span class="nav-icon
-                             {{ request()->routeIs('admin.student-enrollments.*')
-                                    ? 'bg-white/15 text-white'
-                                    : 'bg-slate-800 text-emerald-400 group-hover:text-emerald-300' }}">
+                <span class="nav-icon  {{ request()->routeIs('admin.student-enrollments.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-emerald-400 group-hover:text-emerald-300' }}">
                     <i class="bi bi-person-check-fill"></i>
                 </span>
-
-                <span>
-                    Enrollments
-                </span>
-
+                <span>  Enrollments  </span>
             </a>
-
         </nav>
 
 
@@ -510,6 +452,166 @@
             </div>
 
         </nav>
+
+      {{-- =========================================================
+    Fee Management
+========================================================= --}}
+
+<p class="px-3 mb-2 mt-7
+          text-[10px]
+          font-semibold
+          uppercase
+          tracking-[0.12em]
+          text-slate-500">
+
+    Fee Management
+
+</p>
+
+
+<nav class="space-y-1">
+
+    {{-- Fee Management Parent --}}
+    <div
+        x-data="{
+            open: {{ request()->routeIs('admin.fee-types.*')
+                        ? 'true'
+                        : 'false' }}
+        }">
+
+
+        {{-- Parent Button --}}
+        <button
+            type="button"
+            @click="open = !open"
+            class="w-full flex items-center
+                   justify-between
+                   gap-3
+                   rounded-lg px-2.5 py-2
+                   text-sm font-medium
+                   transition-colors duration-150
+
+                   {{ request()->routeIs('admin.fee-types.*')
+                        ? 'bg-slate-800 text-white'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+
+
+            <span class="flex items-center gap-3">
+
+                {{-- Icon --}}
+                <span
+                    class="nav-icon
+                           {{ request()->routeIs('admin.fee-types.*')
+                                ? 'bg-white/15 text-white'
+                                : 'bg-slate-800 text-orange-400' }}">
+
+                    <i class="bi bi-cash-stack"></i>
+
+                </span>
+
+
+                {{-- Title --}}
+                <span>
+                    Fee
+                </span>
+
+            </span>
+
+
+            {{-- Arrow --}}
+            <i
+                class="bi text-xs text-slate-500
+                       transition-transform duration-200"
+                :class="open
+                    ? 'bi-chevron-up'
+                    : 'bi-chevron-down'">
+            </i>
+
+        </button>
+
+
+        {{-- =====================================================
+            Submenu
+        ====================================================== --}}
+
+        <div
+            x-show="open"
+            x-transition:enter="transition ease-out duration-200"
+            x-transition:enter-start="opacity-0 -translate-y-1"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"
+            x-transition:leave-start="opacity-100"
+            x-transition:leave-end="opacity-0"
+
+            class="mt-1 ml-[18px] pl-4
+                   border-l border-slate-700
+                   space-y-0.5">
+
+
+            {{-- Fee Types --}}
+            <a
+                href="{{ route('admin.fee-types.index') }}"
+                class="sub-link
+                       {{ request()->routeIs('admin.fee-types.index')
+                            ? 'sub-link-active'
+                            : '' }}">
+
+                <i class="bi bi-tags w-4 text-center"></i>
+
+                <span>
+                    Fee Types
+                </span>
+
+            </a>
+
+
+            {{-- Future: Fee Assignment --}}
+            {{--
+
+            <a
+                href="{{ route('admin.student-fees.index') }}"
+                class="sub-link
+                       {{ request()->routeIs('admin.student-fees.*')
+                            ? 'sub-link-active'
+                            : '' }}">
+
+                <i class="bi bi-person-check w-4 text-center"></i>
+
+                <span>
+                    Student Fees
+                </span>
+
+            </a>
+
+            --}}
+
+
+            {{-- Future: Fee Collection --}}
+            {{--
+
+            <a
+                href="{{ route('admin.fee-collections.index') }}"
+                class="sub-link
+                       {{ request()->routeIs('admin.fee-collections.*')
+                            ? 'sub-link-active'
+                            : '' }}">
+
+                <i class="bi bi-wallet2 w-4 text-center"></i>
+
+                <span>
+                    Fee Collection
+                </span>
+
+            </a>
+
+            --}}
+
+
+        </div>
+
+    </div>
+
+</nav>
 
 
         {{-- =================================================
