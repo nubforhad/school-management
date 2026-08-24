@@ -123,6 +123,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/payment/{payment}/receipt', [ FeeCollectionController::class, 'receipt'])->name('receipt');
 
         });
+
+        // Fee Payment History
+    Route::get( 'fee-payment-history', [FeePaymentController::class, 'history'])->name('fee-payment-history.index');
+    Route::get('fee-payment-history/{feePayment}', [FeePaymentController::class, 'show'])->name('fee-payment-history.show');
         
  
 

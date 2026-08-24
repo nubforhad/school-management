@@ -250,7 +250,7 @@
                     <p class="mt-1 text-xl font-bold
                               text-blue-800">
 
-                        ৳ {{ number_format($studentFeeAssignment->amount, 2) }}
+                        ৳ {{ number_format($studentFeeAssignment->payable_amount, 2) }}
 
                     </p>
 
@@ -286,11 +286,8 @@
                         Already Paid
                     </p>
 
-                    <p class="mt-1 text-xl font-bold
-                              text-green-700">
-
+                    <p class="mt-1 text-xl font-bold text-green-700">
                         ৳ {{ number_format($studentFeeAssignment->paid_amount, 2) }}
-
                     </p>
 
                 </div>

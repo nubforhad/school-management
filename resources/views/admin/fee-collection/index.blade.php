@@ -232,133 +232,72 @@
         TABLE
     ========================================================== --}}
 
-    <div class="bg-white rounded-xl
-                shadow-sm border border-slate-200
-                overflow-hidden">
-
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
         {{-- Table Header --}}
-
-        <div class="p-4 sm:p-5
-                    border-b border-slate-200">
-
-            <div class="flex flex-col sm:flex-row
-                        sm:items-center sm:justify-between gap-2">
-
+        <div class="p-4 sm:p-5  border-b border-slate-200">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                 <div>
-
-                    <h2 class="text-base sm:text-lg
-                               font-semibold text-slate-800">
-
+                    <h2 class="text-base sm:text-lg font-semibold text-slate-800">
                         Student Fee List
-
                     </h2>
-
                     <p class="text-xs sm:text-sm text-slate-500 mt-1">
-
                         Assigned fees available for collection
-
                     </p>
-
                 </div>
-
                 <div class="text-xs sm:text-sm text-slate-500">
-
                     Total Assignments:
-
                     <span class="font-semibold text-slate-700">
-
                         {{ $assignments->count() }}
-
                     </span>
-
                 </div>
-
             </div>
-
         </div>
 
-
         {{-- Responsive Table --}}
-
         <div class="overflow-x-auto">
-
-            <table class="w-full min-w-[1050px]
-                          text-xs sm:text-sm">
-
-                <thead class="bg-slate-50
-                              border-b border-slate-200">
-
+            <table class="w-full min-w-[1050px]  text-xs sm:text-sm">
+                <thead class="bg-slate-50  border-b border-slate-200">
                     <tr>
-
-                        <th class="px-4 py-3 text-left
-                                   font-semibold text-slate-600">
+                        <th class="px-4 py-3 text-left  font-semibold text-slate-600">
                             #
                         </th>
-
-                        <th class="px-4 py-3 text-left
-                                   font-semibold text-slate-600">
+                        <th class="px-4 py-3 text-left  font-semibold text-slate-600">
                             Student
                         </th>
-
-                        <th class="px-4 py-3 text-left
-                                   font-semibold text-slate-600">
+                        <th class="px-4 py-3 text-left font-semibold text-slate-600">
                             Fee Type
                         </th>
-
-                        <th class="px-4 py-3 text-right
-                                   font-semibold text-slate-600">
+                        <th class="px-4 py-3 text-right font-semibold text-slate-600">
                             Assigned
                         </th>
 
-                        <th class="px-4 py-3 text-right
-                                   font-semibold text-slate-600">
+                        <th class="px-4 py-3 text-right font-semibold text-slate-600">
                             Paid
                         </th>
-
-                        <th class="px-4 py-3 text-right
-                                   font-semibold text-slate-600">
+                        <th class="px-4 py-3 text-right font-semibold text-slate-600">
                             Due
                         </th>
-
-                        <th class="px-4 py-3 text-center
-                                   font-semibold text-slate-600">
+                        <th class="px-4 py-3 text-center font-semibold text-slate-600">
                             Status
                         </th>
-
-                        <th class="px-4 py-3 text-right
-                                   font-semibold text-slate-600">
+                        <th class="px-4 py-3 text-right font-semibold text-slate-600">
                             Action
                         </th>
-
                     </tr>
-
                 </thead>
-
-
                 <tbody class="divide-y divide-slate-100">
-
                     @forelse($assignments as $assignment)
-
                         <tr class="hover:bg-slate-50 transition">
-
-
                             {{-- Serial --}}
-
                             <td class="px-4 py-3 text-slate-500">
-
                                 {{ $loop->iteration }}
-
                             </td>
 
-
                             {{-- Student --}}
-
                             <td class="px-4 py-3">
-
                                 <div class="flex items-center gap-3">
-
                                     <div class="flex h-9 w-9
-                                                shrink-0
+                                               shrink-0
                                                 items-center
                                                 justify-center
                                                 rounded-full
@@ -437,7 +376,7 @@
                                              text-slate-700">
 
                                     ৳ {{ number_format(
-                                        $assignment->amount,
+                                        $assignment->payable_amount,
                                         2
                                     ) }}
 
@@ -587,53 +526,28 @@
                                                  px-3 py-2
                                                  text-xs font-medium
                                                  text-slate-500">
-
                                         <i class="bi bi-check-circle"></i>
-
                                         Fully Paid
-
                                     </span>
-
                                 @endif
-
                             </td>
-
                         </tr>
-
                     @empty
-
                         <tr>
-
-                            <td colspan="8"
-                                class="px-4 py-14 text-center">
-
-                                <div class="flex flex-col
-                                            items-center">
-
+                            <td colspan="8"  class="px-4 py-14 text-center">
+                                <div class="flex flex-col items-center">
                                     <div class="flex h-16 w-16
                                                 items-center
                                                 justify-center
                                                 rounded-full
                                                 bg-blue-50
                                                 text-blue-600">
-
-                                        <i class="bi bi-cash-stack
-                                                  text-3xl"></i>
-
+                                        <i class="bi bi-cash-stack text-3xl"></i>
                                     </div>
-
-                                    <h3 class="mt-4
-                                               text-sm sm:text-base
-                                               font-semibold
-                                               text-slate-700">
-
+                                    <h3 class="mt-4 text-sm sm:text-base font-semibold  text-slate-700">
                                         No Fee Assignments Found
-
                                     </h3>
-
-                                    <p class="mt-1
-                                              text-xs sm:text-sm
-                                              text-slate-500">
+                                    <p class="mt-1  text-xs sm:text-sm  text-slate-500">
 
                                         Assign fees to students first
                                         before collecting payments.
@@ -655,25 +569,15 @@
                                         <i class="bi bi-receipt"></i>
 
                                         Student Fee Assignment
-
                                     </a>
-
                                 </div>
-
                             </td>
-
                         </tr>
-
                     @endforelse
-
                 </tbody>
-
             </table>
-
         </div>
-
     </div>
-
 </div>
 
 @endsection

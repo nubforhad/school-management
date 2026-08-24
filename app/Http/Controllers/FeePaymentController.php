@@ -122,38 +122,14 @@ class FeePaymentController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $paidAmount = FeePayment::where(
-            'student_fee_assignment_id',
-            $studentFeeAssignment->id
-        )->sum('amount');
-
-        $dueAmount = max(
-            0,
-            $studentFeeAssignment->amount - $paidAmount
+        $paidAmount = FeePayment::where('student_fee_assignment_id',  $studentFeeAssignment->id)->sum('amount');
+        $dueAmount = max( 0, $studentFeeAssignment->amount - $paidAmount
         );
-
-        /*
-        |--------------------------------------------------------------------------
-        | Already Fully Paid
-        |--------------------------------------------------------------------------
-        */
 
         if ($dueAmount <= 0) {
 
-            return back()
-                ->withInput()
-                ->with(
-                    'error',
-                    'This fee has already been fully paid.'
-                );
+            return back()->withInput()->with('error', 'This fee has already been fully paid.');
         }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Validation
-        |--------------------------------------------------------------------------
-        */
 
         $validated = $request->validate([
 
@@ -201,8 +177,7 @@ class FeePaymentController extends Controller
 
             return FeePayment::create([
 
-                'branch_id' =>
-                    $studentFeeAssignment->branch_id,
+                'branch_id' => $studentFeeAssignment->branch_id,
 
                 'student_fee_assignment_id' =>
                     $studentFeeAssignment->id,
@@ -242,7 +217,7 @@ class FeePaymentController extends Controller
 
         return redirect()
             ->route(
-                'admin.fee-collection.receipt',
+                'admin.fee-collection.index',
                 $payment->id
             )
             ->with(
@@ -328,4 +303,83 @@ class FeePaymentController extends Controller
             abort(403, 'Unauthorized access.');
         }
     }
+
+
+    /**
+ * Payment Details
+ */
+public function show(FeePayment $feePayment)
+{
+    $branchId = auth()->user()->branch_id;
+
+    if (!$branchId) {
+        abort(403, 'Your account is not assigned to any branch.');
+    }
+
+    if ($feePayment->branch_id != $branchId) {
+        abort(403, 'Unauthorized access.');
+    }
+
+    $feePayment->load([
+        'student',
+        'feeType',
+        'branch',
+        'collector',
+        'studentFeeAssignment',
+    ]);
+
+    return view(
+        'admin.fee-payment-history.show',
+        compact('feePayment')
+    );
+}
+
+/**
+ * Fee Payment History
+ */
+public function history()
+{
+    $branchId = auth()->user()->branch_id;
+
+    if (!$branchId) {
+        abort(403, 'Your account is not assigned to any branch.');
+    }
+
+    $payments = FeePayment::with([
+        'student',
+        'feeType',
+        'branch',
+        'collector',
+        'studentFeeAssignment',
+    ])
+        ->where('branch_id', $branchId)
+        ->latest('payment_date')
+        ->latest('id')
+        ->get();
+
+    return view(
+        'admin.fee-payment-history.index',
+        compact('payments')
+    );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

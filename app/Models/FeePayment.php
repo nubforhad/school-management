@@ -33,7 +33,7 @@ class FeePayment extends Model
     public function studentFeeAssignment(): BelongsTo
     {
         return $this->belongsTo(
-            StudentFeeAssignment::class,
+            StudentFee::class,
             'student_fee_assignment_id'
         );
     }
