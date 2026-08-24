@@ -23,4 +23,8 @@ class FeeType extends Model
     {
         return $this->belongsTo(Branch::class);
     }
+    public function studentFees()
+    {
+        return $this->hasMany(StudentFee::class);
+    }
 }

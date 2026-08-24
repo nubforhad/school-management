@@ -35,8 +35,12 @@ class AcademicSession extends Model
     }
 
     public function studentEnrollments()
-{
-    return $this->hasMany(StudentEnrollment::class);
-}
+    {
+        return $this->hasMany(StudentEnrollment::class);
+    }
+    public function studentFees()
+    {
+        return $this->hasMany(StudentFee::class);
+    }
 
 }

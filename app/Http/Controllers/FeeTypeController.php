@@ -111,7 +111,6 @@ class FeeTypeController extends Controller
     public function edit(FeeType $feeType)
     {
         $this->authorizeBranch($feeType);
-
         return view('admin.fee-types.edit', compact('feeType'));
     }
 
@@ -121,9 +120,7 @@ class FeeTypeController extends Controller
     public function update(Request $request, FeeType $feeType)
     {
         $this->authorizeBranch($feeType);
-
         $user = auth()->user();
-
         $validated = $request->validate([
             'name' => [
                 'required',
@@ -135,28 +132,15 @@ class FeeTypeController extends Controller
                     )
                     ->ignore($feeType->id),
             ],
-
-            'code' => [
-                'nullable',
-                'string',
-                'max:50',
+            'code' => ['nullable', 'string', 'max:50',
                 Rule::unique('fee_types', 'code')
                     ->where(fn ($query) =>
                         $query->where('branch_id', $user->branch_id)
                     )
                     ->ignore($feeType->id),
             ],
-
-            'description' => [
-                'nullable',
-                'string',
-                'max:1000',
-            ],
-
-            'status' => [
-                'nullable',
-                'boolean',
-            ],
+            'description' => [  'nullable',  'string',  'max:1000',  ],
+            'status' => [  'nullable', 'boolean',],
         ]);
 
         $feeType->update([
@@ -166,9 +150,7 @@ class FeeTypeController extends Controller
             'status' => $request->boolean('status'),
         ]);
 
-        return redirect()
-            ->route('admin.fee-types.index')
-            ->with('success', 'Fee type updated successfully.');
+        return redirect()->route('admin.fee-types.index')->with('success', 'Fee type updated successfully.');
     }
 
     /**

@@ -15,6 +15,7 @@ use App\Http\Controllers\StudentController;
 use App\Http\Controllers\StudentEnrollmentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\FeeTypeController;
+use App\Http\Controllers\StudentFeeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -118,6 +119,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // fee type date 23 08 26 Forhad
         Route::resource('fee-types', FeeTypeController::class)->except(['show'])->names('fee-types');
         Route::patch('fee-types/{feeType}/toggle-status',  [FeeTypeController::class, 'toggleStatus'])->name('fee-types.toggle-status');
+        // Student Fee Assignment
+        Route::resource( 'student-fees',  StudentFeeController::class)->names('student-fees');
         
  
 
