@@ -119,6 +119,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get( '/', [FeePaymentController::class, 'index'])->name('index');
             Route::get( '/{studentFeeAssignment}/create',  [FeePaymentController::class, 'create'])->name('create');
             Route::post( '/{studentFeeAssignment}',  [FeePaymentController::class, 'store'] )->name('store');
+            // Payment receipt
+            Route::get('/payment/{payment}/receipt', [ FeeCollectionController::class, 'receipt'])->name('receipt');
 
         });
         

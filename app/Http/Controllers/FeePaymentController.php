@@ -20,16 +20,13 @@ class FeePaymentController extends Controller
             abort(403, 'Your account is not assigned to any branch.');
         }
 
-        $assignments = StudentFee::with([ 'student',  'feeType', ])
+        $assignments = StudentFee::with([
+            'student',
+            'feeType',
+        ])
             ->where('branch_id', $branchId)
             ->latest()
             ->get();
-
-        /*
-        |--------------------------------------------------------------------------
-        | Calculate Paid & Due
-        |--------------------------------------------------------------------------
-        */
 
         $assignments->each(function ($assignment) {
 
@@ -40,17 +37,21 @@ class FeePaymentController extends Controller
 
             $assignment->paid_amount = $paidAmount;
 
-            $assignment->due_amount =
-                max(
-                    0,
-                    $assignment->amount - $paidAmount
-                );
+            $assignment->due_amount = max(
+                0,
+                $assignment->amount - $paidAmount
+            );
 
             if ($assignment->due_amount <= 0) {
+
                 $assignment->payment_status = 'paid';
+
             } elseif ($paidAmount > 0) {
+
                 $assignment->payment_status = 'partial';
+
             } else {
+
                 $assignment->payment_status = 'unpaid';
             }
         });
@@ -72,6 +73,7 @@ class FeePaymentController extends Controller
         $studentFeeAssignment->load([
             'student',
             'feeType',
+            'branch',
         ]);
 
         $paidAmount = FeePayment::where(
@@ -84,13 +86,8 @@ class FeePaymentController extends Controller
             $studentFeeAssignment->amount - $paidAmount
         );
 
-        /*
-        |--------------------------------------------------------------------------
-        | Already Paid
-        |--------------------------------------------------------------------------
-        */
-
         if ($dueAmount <= 0) {
+
             return redirect()
                 ->route('admin.fee-collection.index')
                 ->with(
@@ -113,12 +110,15 @@ class FeePaymentController extends Controller
     /**
      * Store Payment
      */
-    public function store( Request $request,  StudentFee $studentFeeAssignment) {
+    public function store(
+        Request $request,
+        StudentFee $studentFeeAssignment
+    ) {
         $this->authorizeBranch($studentFeeAssignment);
 
         /*
         |--------------------------------------------------------------------------
-        | Calculate Current Due
+        | Current Paid Amount
         |--------------------------------------------------------------------------
         */
 
@@ -132,7 +132,14 @@ class FeePaymentController extends Controller
             $studentFeeAssignment->amount - $paidAmount
         );
 
+        /*
+        |--------------------------------------------------------------------------
+        | Already Fully Paid
+        |--------------------------------------------------------------------------
+        */
+
         if ($dueAmount <= 0) {
+
             return back()
                 ->withInput()
                 ->with(
@@ -140,6 +147,7 @@ class FeePaymentController extends Controller
                     'This fee has already been fully paid.'
                 );
         }
+
 
         /*
         |--------------------------------------------------------------------------
@@ -182,16 +190,16 @@ class FeePaymentController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Store Payment
+        | Create Payment
         |--------------------------------------------------------------------------
         */
 
-        DB::transaction(function () use (
+        $payment = DB::transaction(function () use (
             $validated,
             $studentFeeAssignment
         ) {
 
-            FeePayment::create([
+            return FeePayment::create([
 
                 'branch_id' =>
                     $studentFeeAssignment->branch_id,
@@ -226,8 +234,17 @@ class FeePaymentController extends Controller
         });
 
 
+        /*
+        |--------------------------------------------------------------------------
+        | Redirect To Receipt
+        |--------------------------------------------------------------------------
+        */
+
         return redirect()
-            ->route('admin.fee-collection.index')
+            ->route(
+                'admin.fee-collection.receipt',
+                $payment->id
+            )
             ->with(
                 'success',
                 'Fee payment collected successfully.'
@@ -236,7 +253,47 @@ class FeePaymentController extends Controller
 
 
     /**
-     * Branch Security
+     * Payment Receipt
+     */
+    public function receipt(FeePayment $payment)
+    {
+        $this->authorizePaymentBranch($payment);
+
+        $payment->load([
+            'student',
+            'feeType',
+            'branch',
+            'collector',
+        ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Generate Receipt Number
+        |--------------------------------------------------------------------------
+        */
+
+        $receiptNo = 'RCPT-' .
+            date('Ymd', strtotime($payment->payment_date)) .
+            '-' .
+            str_pad(
+                $payment->id,
+                5,
+                '0',
+                STR_PAD_LEFT
+            );
+
+        return view(
+            'admin.fee-collection.receipt',
+            compact(
+                'payment',
+                'receiptNo'
+            )
+        );
+    }
+
+
+    /**
+     * Branch Security For Student Fee
      */
     private function authorizeBranch(
         StudentFee $studentFeeAssignment
@@ -248,6 +305,25 @@ class FeePaymentController extends Controller
             !$user ||
             !$user->branch_id ||
             $studentFeeAssignment->branch_id != $user->branch_id
+        ) {
+            abort(403, 'Unauthorized access.');
+        }
+    }
+
+
+    /**
+     * Branch Security For Payment
+     */
+    private function authorizePaymentBranch(
+        FeePayment $payment
+    ): void {
+
+        $user = auth()->user();
+
+        if (
+            !$user ||
+            !$user->branch_id ||
+            $payment->branch_id != $user->branch_id
         ) {
             abort(403, 'Unauthorized access.');
         }
