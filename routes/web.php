@@ -16,6 +16,7 @@ use App\Http\Controllers\StudentEnrollmentController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\FeeTypeController;
 use App\Http\Controllers\StudentFeeController;
+use App\Http\Controllers\FeePaymentController; 
 
 Route::get('/', function () {
     return view('welcome');
@@ -27,18 +28,10 @@ Route::get('/', function () {
 // ==============================
 
 Route::middleware('guest')->group(function () {
-
-    Route::get('/register', [AuthController::class, 'showRegister'])
-        ->name('register');
-
-    Route::post('/register', [AuthController::class, 'register'])
-        ->name('register.store');
-
-    Route::get('/login', [AuthController::class, 'showLogin'])
-        ->name('login');
-
-    Route::post('/login', [AuthController::class, 'login'])
-        ->name('login.store');
+    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register', [AuthController::class, 'register'])->name('register.store');
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login'])->name('login.store');
 });
 
 
@@ -121,6 +114,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::patch('fee-types/{feeType}/toggle-status',  [FeeTypeController::class, 'toggleStatus'])->name('fee-types.toggle-status');
         // Student Fee Assignment
         Route::resource( 'student-fees',  StudentFeeController::class)->names('student-fees');
+        // Fee Collection
+        Route::prefix('fee-collection')->name('fee-collection.')->group(function () {
+            Route::get( '/', [FeePaymentController::class, 'index'])->name('index');
+            Route::get( '/{studentFeeAssignment}/create',  [FeePaymentController::class, 'create'])->name('create');
+            Route::post( '/{studentFeeAssignment}',  [FeePaymentController::class, 'store'] )->name('store');
+
+        });
         
  
 

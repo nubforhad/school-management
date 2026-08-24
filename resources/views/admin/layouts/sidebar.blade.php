@@ -566,7 +566,7 @@
 
 
             {{-- Future: Fee Assignment --}}
-            {{--
+            
 
             <a
                 href="{{ route('admin.student-fees.index') }}"
@@ -582,17 +582,16 @@
                 </span>
 
             </a>
-
-            --}}
+ 
 
 
             {{-- Future: Fee Collection --}}
-            {{--
+           
 
             <a
-                href="{{ route('admin.fee-collections.index') }}"
+                href="{{ route('admin.fee-collection.index') }}"
                 class="sub-link
-                       {{ request()->routeIs('admin.fee-collections.*')
+                       {{ request()->routeIs('admin.fee-collection.*')
                             ? 'sub-link-active'
                             : '' }}">
 
@@ -603,10 +602,6 @@
                 </span>
 
             </a>
-
-            --}}
-
-
         </div>
 
     </div>
