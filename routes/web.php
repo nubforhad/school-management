@@ -18,6 +18,8 @@ use App\Http\Controllers\FeeTypeController;
 use App\Http\Controllers\StudentFeeController;
 use App\Http\Controllers\FeePaymentController; 
 use App\Http\Controllers\FeeReportController;
+use App\Http\Controllers\ExamController;
+use App\Http\Controllers\ExamScheduleController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -129,13 +131,26 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get( 'fee-payment-history', [FeePaymentController::class, 'history'])->name('fee-payment-history.index');
     Route::get('fee-payment-history/{feePayment}', [FeePaymentController::class, 'show'])->name('fee-payment-history.show');
     Route::get('fee-payment-history/{feePayment}/receipt',  [FeePaymentController::class, 'receipt'])->name('fee-payment-history.receipt');    
-    
+
     Route::get('/fee-reports/collection',  [FeeReportController::class, 'collection'])->name('fee-reports.collection');
     Route::get('fee-collection/report', [FeePaymentController::class, 'report'])->name('fee-collection.report');
 
+    Route::get('/fee-collection/due-report', [FeePaymentController::class, 'dueReport'])->name('fee-collection.due-report');
 
-        
-        
+
+    Route::resource('exams', ExamController::class);
+
+     
  
 
 });
+
+
+    Route::prefix('exams/{exam}')->name('admin.exams.')->group(function () {
+        Route::get( 'schedules',  [ExamScheduleController::class, 'index'])->name('schedules.index');
+        Route::get('schedules/create',  [ExamScheduleController::class, 'create'])->name('schedules.create');
+        Route::post( 'schedules',  [ExamScheduleController::class, 'store'])->name('schedules.store');
+        Route::get('schedules/{schedule}/edit',   [ExamScheduleController::class, 'edit'])->name('schedules.edit');
+        Route::put(  'schedules/{schedule}',   [ExamScheduleController::class, 'update'])->name('schedules.update');
+        Route::delete('schedules/{schedule}',  [ExamScheduleController::class, 'destroy'])->name('schedules.destroy');
+    });

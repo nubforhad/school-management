@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\FeePayment;
 use App\Models\StudentFee;
 use App\Models\Student;
+use App\Models\SchoolClass;
+use App\Models\Section;
 use App\Models\FeeType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
