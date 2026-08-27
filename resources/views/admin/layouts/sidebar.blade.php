@@ -605,17 +605,20 @@
 
             <a href="{{ route('admin.fee-payment-history.index') }}" class="flex items-center gap-3 px-3 py-2.5
                     rounded-lg text-sm  text-slate-600  hover:bg-slate-100 hover:text-slate-800 transition">
-
                 <i class="bi bi-clock-history"></i>
-
                 <span>
                     Payment History
                 </span>
-
             </a>
 
-
-
+            <a href="{{ route('admin.fee-collection.report') }}" class="flex items-center gap-3 px-3 py-2.5
+                    rounded-lg text-sm  text-slate-600  hover:bg-slate-100 hover:text-slate-800 transition">
+                <i class="bi bi-clock-history"></i>
+                <span>
+                    Fee Collection Report
+                </span>
+            </a>
+ 
 
         </div>
 

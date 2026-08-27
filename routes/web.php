@@ -17,6 +17,7 @@ use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\FeeTypeController;
 use App\Http\Controllers\StudentFeeController;
 use App\Http\Controllers\FeePaymentController; 
+use App\Http\Controllers\FeeReportController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -127,8 +128,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Fee Payment History
     Route::get( 'fee-payment-history', [FeePaymentController::class, 'history'])->name('fee-payment-history.index');
     Route::get('fee-payment-history/{feePayment}', [FeePaymentController::class, 'show'])->name('fee-payment-history.show');
+    Route::get('fee-payment-history/{feePayment}/receipt',  [FeePaymentController::class, 'receipt'])->name('fee-payment-history.receipt');    
+    
+    Route::get('/fee-reports/collection',  [FeeReportController::class, 'collection'])->name('fee-reports.collection');
+    Route::get('fee-collection/report', [FeePaymentController::class, 'report'])->name('fee-collection.report');
 
-    Route::get('fee-payment-history/{feePayment}/receipt',  [FeePaymentController::class, 'receipt'])->name('fee-payment-history.receipt');
+
+        
         
  
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\FeePayment;
 use App\Models\StudentFee;
+use App\Models\Student;
+use App\Models\FeeType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -441,13 +443,341 @@ public function history()
 
 
 
+ public function report(Request $request)
+{
+    $user = auth()->user();
+
+    $query = FeePayment::with([
+        'student',
+        'feeType',
+        'branch',
+        'collector',
+    ]);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Branch Wise Access
+    |--------------------------------------------------------------------------
+    */
+
+    if ($user->branch_id) {
+        $query->where('branch_id', $user->branch_id);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Date Filter
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('from_date')) {
+        $query->whereDate(
+            'payment_date',
+            '>=',
+            $request->from_date
+        );
+    }
+
+    if ($request->filled('to_date')) {
+        $query->whereDate(
+            'payment_date',
+            '<=',
+            $request->to_date
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Student Filter
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('student_id')) {
+        $query->where(
+            'student_id',
+            $request->student_id
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Fee Type Filter
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('fee_type_id')) {
+        $query->where(
+            'fee_type_id',
+            $request->fee_type_id
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Payment Method Filter
+    |--------------------------------------------------------------------------
+    */
+
+    if ($request->filled('payment_method')) {
+        $query->where(
+            'payment_method',
+            $request->payment_method
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Get Payments
+    |--------------------------------------------------------------------------
+    */
+
+    $payments = $query
+        ->orderBy('payment_date', 'desc')
+        ->orderBy('id', 'desc')
+        ->get();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Total Transactions
+    |--------------------------------------------------------------------------
+    */
+
+    $totalTransactions = $payments->count();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Total Collection
+    |--------------------------------------------------------------------------
+    */
+
+    $totalCollected = $payments->sum('amount');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Payment Method Totals
+    |--------------------------------------------------------------------------
+    */
+
+    $cashTotal = $payments
+        ->where('payment_method', 'cash')
+        ->sum('amount');
+
+    $bankTotal = $payments
+        ->where('payment_method', 'bank')
+        ->sum('amount');
+
+    $mobileBankingTotal = $payments
+        ->where('payment_method', 'mobile_banking')
+        ->sum('amount');
+
+    $otherTotal = $payments
+        ->where('payment_method', 'other')
+        ->sum('amount');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Students
+    |--------------------------------------------------------------------------
+    */
+
+    $students = Student::query()
+        ->when($user->branch_id, function ($q) use ($user) {
+            $q->where('branch_id', $user->branch_id);
+        })
+        ->orderBy('name')
+        ->get();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Fee Types
+    |--------------------------------------------------------------------------
+    */
+
+    $feeTypes = FeeType::orderBy('name')->get();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Return Report
+    |--------------------------------------------------------------------------
+    */
+
+    return view('admin.fee-collection.report', compact(
+        'payments',
+        'students',
+        'feeTypes',
+        'totalTransactions',
+        'totalCollected',
+        'cashTotal',
+        'bankTotal',
+        'mobileBankingTotal',
+        'otherTotal'
+    ));
+}
 
 
 
+public function dueReport(Request $request)
+{
+    $user = auth()->user();
 
+    $studentsQuery = Student::query();
 
+    // Branch-wise access
+    if ($user->branch_id) {
+        $studentsQuery->where('branch_id', $user->branch_id);
+    }
 
+    // Student filter
+    if ($request->filled('student_id')) {
+        $studentsQuery->where('id', $request->student_id);
+    }
 
+    // Class filter
+    if ($request->filled('school_class_id')) {
+        $studentsQuery->where('school_class_id', $request->school_class_id);
+    }
+
+    // Section filter
+    if ($request->filled('section_id')) {
+        $studentsQuery->where('section_id', $request->section_id);
+    }
+
+    $students = $studentsQuery
+        ->with([
+            'branch',
+            'schoolClass',
+            'section',
+        ])
+        ->orderBy('name')
+        ->get();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Fee Types
+    |--------------------------------------------------------------------------
+    */
+
+    $feeTypes = FeeType::query()
+        ->orderBy('name')
+        ->get();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Calculate Student Due
+    |--------------------------------------------------------------------------
+    */
+
+    $studentDue = collect();
+
+    foreach ($students as $student) {
+
+        $paymentsQuery = FeePayment::where(
+            'student_id',
+            $student->id
+        );
+
+        // Date filter
+        if ($request->filled('from_date')) {
+            $paymentsQuery->whereDate(
+                'payment_date',
+                '>=',
+                $request->from_date
+            );
+        }
+
+        if ($request->filled('to_date')) {
+            $paymentsQuery->whereDate(
+                'payment_date',
+                '<=',
+                $request->to_date
+            );
+        }
+
+        // Fee Type filter
+        if ($request->filled('fee_type_id')) {
+            $paymentsQuery->where(
+                'fee_type_id',
+                $request->fee_type_id
+            );
+        }
+
+        $paidAmount = $paymentsQuery->sum('amount');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Total Fee
+        |--------------------------------------------------------------------------
+        |
+        | এখানে তোমার actual fee assignment table অনুযায়ী
+        | total fee calculation বসবে।
+        |
+        */
+
+        $totalFee = 0;
+
+        $dueAmount = $totalFee - $paidAmount;
+
+        if ($dueAmount < 0) {
+            $dueAmount = 0;
+        }
+
+        $studentDue->push([
+            'student'       => $student,
+            'total_fee'     => $totalFee,
+            'paid_amount'   => $paidAmount,
+            'due_amount'    => $dueAmount,
+        ]);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Summary
+    |--------------------------------------------------------------------------
+    */
+
+    $totalStudents = $studentDue->count();
+
+    $totalFee = $studentDue->sum('total_fee');
+
+    $totalPaid = $studentDue->sum('paid_amount');
+
+    $totalDue = $studentDue->sum('due_amount');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Classes
+    |--------------------------------------------------------------------------
+    */
+
+    $classes = SchoolClass::query()
+        ->orderBy('name')
+        ->get();
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sections
+    |--------------------------------------------------------------------------
+    */
+
+    $sections = Section::query()
+        ->orderBy('name')
+        ->get();
+
+    return view(
+        'admin.fee-collection.due-report',
+        compact(
+            'studentDue',
+            'students',
+            'feeTypes',
+            'classes',
+            'sections',
+            'totalStudents',
+            'totalFee',
+            'totalPaid',
+            'totalDue'
+        )
+    );
+}
 
 
 
