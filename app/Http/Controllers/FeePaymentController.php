@@ -227,45 +227,7 @@ class FeePaymentController extends Controller
     }
 
 
-    /**
-     * Payment Receipt
-     */
-    public function receipt(FeePayment $payment)
-    {
-        $this->authorizePaymentBranch($payment);
-
-        $payment->load([
-            'student',
-            'feeType',
-            'branch',
-            'collector',
-        ]);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Generate Receipt Number
-        |--------------------------------------------------------------------------
-        */
-
-        $receiptNo = 'RCPT-' .
-            date('Ymd', strtotime($payment->payment_date)) .
-            '-' .
-            str_pad(
-                $payment->id,
-                5,
-                '0',
-                STR_PAD_LEFT
-            );
-
-        return view(
-            'admin.fee-collection.receipt',
-            compact(
-                'payment',
-                'receiptNo'
-            )
-        );
-    }
-
+    
 
     /**
      * Branch Security For Student Fee
@@ -331,6 +293,120 @@ public function show(FeePayment $feePayment)
     return view(
         'admin.fee-payment-history.show',
         compact('feePayment')
+    );
+}
+
+/**
+ * Payment Receipt
+ */
+public function receipt(FeePayment $feePayment)
+{
+    $branchId = auth()->user()->branch_id;
+
+    if (!$branchId) {
+        abort(
+            403,
+            'Your account is not assigned to any branch.'
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Branch Security
+    |--------------------------------------------------------------------------
+    */
+
+    if ($feePayment->branch_id != $branchId) {
+        abort(403, 'Unauthorized access.');
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Load Relations
+    |--------------------------------------------------------------------------
+    */
+
+    $feePayment->load([
+        'student',
+        'feeType',
+        'branch',
+        'collector',
+        'studentFeeAssignment',
+    ]);
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assignment
+    |--------------------------------------------------------------------------
+    */
+
+    $assignment = $feePayment->studentFeeAssignment;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Previous Payments
+    |--------------------------------------------------------------------------
+    */
+
+    $previousPaid = FeePayment::where(
+        'student_fee_assignment_id',
+        $feePayment->student_fee_assignment_id
+    )
+        ->where(
+            'id',
+            '<',
+            $feePayment->id
+        )
+        ->sum('amount');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Assigned Amount
+    |--------------------------------------------------------------------------
+    */
+
+    $assignedAmount = $assignment
+        ? $assignment->payable_amount
+        : 0;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Current Payment
+    |--------------------------------------------------------------------------
+    */
+
+    $currentPayment = $feePayment->amount;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Total Paid After This Payment
+    |--------------------------------------------------------------------------
+    */
+
+    $totalPaid = $previousPaid + $currentPayment;
+
+    /*
+    |--------------------------------------------------------------------------
+    | Remaining Due
+    |--------------------------------------------------------------------------
+    */
+
+    $remainingDue = max(
+        0,
+        $assignedAmount - $totalPaid
+    );
+
+    return view(
+        'admin.fee-collection.receipt',
+        compact(
+            'feePayment',
+            'assignment',
+            'assignedAmount',
+            'previousPaid',
+            'currentPayment',
+            'totalPaid',
+            'remainingDue'
+        )
     );
 }
 

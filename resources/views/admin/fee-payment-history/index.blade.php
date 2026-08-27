@@ -383,111 +383,61 @@
 
                             {{-- Date --}}
                             <td class="px-4 py-3 text-center">
-
                                 <span class="text-slate-700">
-
-                                    {{
-                                        $payment->payment_date
-                                            ? $payment->payment_date
-                                                ->format('d M Y')
-                                            : 'N/A'
-                                    }}
-
+                                    {{ $payment->payment_date  ? $payment->payment_date  ->format('d M Y') : 'N/A'  }}
                                 </span>
-
                             </td>
-
-
                             {{-- Collector --}}
                             <td class="px-4 py-3">
-
                                 {{ $payment->collector->name ?? 'N/A' }}
-
                             </td>
-
-
                             {{-- Action --}}
                             <td class="px-4 py-3 text-right">
-
                                 <a href="{{ route(
                                     'admin.fee-payment-history.show',
                                     $payment->id
                                 ) }}"
-                                class="inline-flex
-                                       items-center gap-2
-                                       rounded-lg
-                                       bg-blue-50
+                                class="inline-flex items-center gap-2   rounded-lg  bg-blue-50
                                        px-3 py-2
                                        text-xs font-semibold
                                        text-blue-600
                                        hover:bg-blue-100
                                        transition">
-
                                     <i class="bi bi-eye"></i>
-
                                     View
-
                                 </a>
-
                             </td>
-
                         </tr>
-
                     @empty
 
                         <tr>
-
-                            <td colspan="8"
-                                class="px-4 py-14 text-center">
-
-                                <div class="flex flex-col
-                                            items-center">
-
-                                    <div class="flex h-16 w-16
-                                                items-center justify-center
-                                                rounded-full
-                                                bg-blue-50
-                                                text-blue-600">
-
-                                        <i class="bi bi-receipt
-                                                  text-3xl"></i>
-
+                            <td colspan="8" class="px-4 py-14 text-center">
+                                <div class="flex flex-col  items-center">
+                                    <div class="flex h-16 w-16   items-center justify-center  rounded-full  bg-blue-50  text-blue-600">
+                                        <i class="bi bi-receipt  text-3xl"></i>
                                     </div>
-
                                     <h3 class="mt-4
                                                text-sm sm:text-base
                                                font-semibold
                                                text-slate-700">
-
                                         No Payment History Found
-
                                     </h3>
 
-                                    <p class="mt-1
-                                              text-xs sm:text-sm
+                                    <p class="mt-1   text-xs sm:text-sm
                                               text-slate-500">
 
                                         No fee payment has been collected
                                         yet.
 
                                     </p>
-
                                 </div>
-
                             </td>
-
                         </tr>
-
                     @endforelse
-
                 </tbody>
-
             </table>
-
         </div>
-
     </div>
-
 </div>
 
 @endsection

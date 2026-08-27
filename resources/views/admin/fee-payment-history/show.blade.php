@@ -45,6 +45,7 @@
 
                 </a>
 
+               
 
                 {{-- Print --}}
                 <button type="button"
@@ -71,9 +72,7 @@
     </div>
 
 
-    {{-- =========================================================
-        RECEIPT / PAYMENT CARD
-    ========================================================== --}}
+    {{-- ========= RECEIPT / PAYMENT CARD ====================== --}}
 
     <div id="print-area"
          class="bg-white rounded-xl
@@ -81,9 +80,7 @@
                 shadow-sm overflow-hidden">
 
 
-        {{-- =====================================================
-            SCHOOL HEADER
-        ====================================================== --}}
+        {{-- ========  SCHOOL HEADER ============= --}}
 
         <div class="border-b border-slate-200
                     px-5 sm:px-8 py-6">
@@ -626,11 +623,46 @@
 </div>
 
 
-{{-- =============================================================
-    PRINT CSS
-============================================================== --}}
+{{-- ==== PRINT CSS ===================== --}}
 
 <style>
+ 
+
+#print-area {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Watermark */
+#print-area::before {
+    content: "";
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    width: 280px;
+    height: 280px;
+
+    transform: translate(-50%, -50%);
+
+    background-image: url('{{ asset('asset/image/images.png') }}');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+
+    opacity: 0.08;
+
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Content above watermark */
+#print-area > * {
+    position: relative;
+    z-index: 1;
+}
+
 
 @media print {
 
@@ -652,10 +684,43 @@
         left: 0;
         top: 0;
         width: 100%;
+
         margin: 0;
+
         border: none !important;
         box-shadow: none !important;
         border-radius: 0 !important;
+
+        overflow: hidden;
+    }
+
+    /* Print watermark */
+    #print-area::before {
+        display: block;
+
+        position: absolute;
+
+        top: 50%;
+        left: 50%;
+
+        width: 300px;
+        height: 300px;
+
+        transform: translate(-50%, -50%);
+
+        background-image: url('{{ asset('images/logo.png') }}');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+
+        opacity: 0.08;
+
+        z-index: 0;
+    }
+
+    #print-area > * {
+        position: relative;
+        z-index: 1;
     }
 
     @page {
@@ -666,5 +731,6 @@
 }
 
 </style>
+ 
 
 @endsection

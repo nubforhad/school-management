@@ -9,219 +9,290 @@
           content="width=device-width, initial-scale=1.0">
 
     <title>
-        Receipt - {{ $payment->receipt_no }}
+        Receipt #{{ str_pad($feePayment->id, 6, '0', STR_PAD_LEFT) }}
     </title>
 
-    @vite(['resources/css/app.css'])
-
-    <style>
-
-        @media print {
-
-            body {
-                background: white !important;
-            }
-
-            .no-print {
-                display: none !important;
-            }
-
-            .receipt-wrapper {
-                margin: 0 !important;
-                padding: 0 !important;
-            }
-
-            .receipt {
-                box-shadow: none !important;
-                border: 1px solid #ddd !important;
-            }
-
-        }
-
-    </style>
+    @vite([
+        'resources/css/app.css',
+        'resources/js/app.js'
+    ])
 
 </head>
 
 
-<body class="bg-slate-100">
+<body class="min-h-screen bg-slate-100">
 
 
-<div class="receipt-wrapper max-w-3xl
-            mx-auto
-            px-4
-            py-6
-            sm:py-10">
+<div class="max-w-3xl mx-auto px-4 py-6 sm:py-10">
 
 
-    {{-- Actions --}}
+    {{-- =========================================================
+        ACTION BUTTONS
+    ========================================================== --}}
 
-    <div class="no-print
-                flex flex-col
+    <div class="mb-5 flex flex-col
                 sm:flex-row
-                sm:justify-between
-                gap-3
-                mb-5">
+                sm:items-center
+                sm:justify-between gap-3
+                print:hidden">
 
-        <a href="{{ route('admin.fee-collection.index') }}"
-           class="inline-flex
-                  items-center
-                  justify-center
-                  gap-2
-                  rounded-lg
-                  border border-slate-300
-                  bg-white
-                  px-4 py-2.5
-                  text-sm
-                  font-medium
-                  text-slate-700
-                  hover:bg-slate-50">
+        <a href="{{ route(
+            'admin.fee-payment-history.index'
+        ) }}"
+        class="inline-flex items-center
+               justify-center gap-2
+               rounded-lg
+               border border-slate-300
+               bg-white
+               px-4 py-2.5
+               text-sm font-medium
+               text-slate-700
+               hover:bg-slate-50">
 
-            ← Back
+            <i class="bi bi-arrow-left"></i>
+
+            Payment History
 
         </a>
 
 
-        <button onclick="window.print()"
-                class="inline-flex
-                       items-center
-                       justify-center
-                       gap-2
+        <button type="button"
+                onclick="window.print()"
+                class="inline-flex items-center
+                       justify-center gap-2
                        rounded-lg
                        bg-blue-600
-                       px-5 py-2.5
-                       text-sm
-                       font-semibold
+                       px-4 py-2.5
+                       text-sm font-semibold
                        text-white
                        hover:bg-blue-700">
 
-            🖨 Print Receipt
+            <i class="bi bi-printer"></i>
+
+            Print Receipt
 
         </button>
 
     </div>
 
 
+    {{-- =========================================================
+        RECEIPT
+    ========================================================== --}}
 
-    {{-- Receipt --}}
-
-    <div class="receipt
+    <div id="receipt"
+         class="bg-white
+                border border-slate-200
                 rounded-xl
-                border
-                border-slate-200
-                bg-white
                 shadow-sm
                 overflow-hidden">
 
 
-        {{-- Header --}}
+        {{-- =====================================================
+            HEADER
+        ====================================================== --}}
 
-        <div class="border-b
-                    border-slate-200
-                    px-6 py-6
-                    text-center">
+        <div class="px-6 sm:px-8 py-7
+                    border-b border-slate-200">
 
-
-            <div class="flex
-                        h-14 w-14
-                        mx-auto
-                        items-center
-                        justify-center
-                        rounded-xl
-                        bg-blue-600
-                        text-white
-                        text-2xl">
-
-                🏫
-
-            </div>
+            <div class="flex flex-col
+                        sm:flex-row
+                        sm:items-start
+                        sm:justify-between gap-5">
 
 
-            <h1 class="mt-3
-                       text-xl
-                       sm:text-2xl
-                       font-bold
-                       text-slate-800">
+                {{-- School --}}
+                <div class="flex items-center gap-4">
 
-                {{ $payment->branch->name ?? 'School Management System' }}
+                    <div class="flex h-14 w-14
+                                shrink-0
+                                items-center
+                                justify-center
+                                rounded-xl
+                                bg-blue-600
+                                text-white">
 
-            </h1>
+                        <i class="bi bi-mortarboard-fill
+                                  text-2xl"></i>
 
-
-            <p class="mt-1
-                      text-sm
-                      text-slate-500">
-
-                Fee Payment Receipt
-
-            </p>
+                    </div>
 
 
-            <div class="mt-4
-                        inline-flex
-                        rounded-lg
-                        bg-slate-100
-                        px-4 py-2">
+                    <div>
 
-                <span class="text-xs
-                             font-medium
-                             text-slate-500">
+                        <h1 class="text-xl sm:text-2xl
+                                   font-bold
+                                   text-slate-800">
 
-                    Receipt No:
+                            School Management System
 
-                </span>
+                        </h1>
 
-                <span class="ml-2
-                             text-xs
-                             font-bold
-                             text-slate-800">
+                        <p class="mt-1 text-sm
+                                  text-slate-500">
 
-                    {{ $payment->receipt_no }}
+                            {{ $feePayment->branch->name ?? 'Branch' }}
 
-                </span>
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                {{-- Receipt --}}
+                <div class="sm:text-right">
+
+                    <p class="text-xs uppercase
+                              tracking-widest
+                              text-slate-400">
+
+                        Fee Payment Receipt
+
+                    </p>
+
+                    <p class="mt-1 text-xl
+                              font-bold
+                              text-slate-800">
+
+                        #{{ str_pad(
+                            $feePayment->id,
+                            6,
+                            '0',
+                            STR_PAD_LEFT
+                        ) }}
+
+                    </p>
+
+                    <p class="mt-1 text-xs
+                              text-slate-500">
+
+                        {{ $feePayment->payment_date
+                            ? $feePayment->payment_date
+                                ->format('d M Y')
+                            : 'N/A'
+                        }}
+
+                    </p>
+
+                </div>
 
             </div>
 
         </div>
 
 
+        {{-- =====================================================
+            PAYMENT SUCCESS
+        ====================================================== --}}
 
-        {{-- Student Information --}}
+        <div class="px-6 sm:px-8 pt-6">
 
-        <div class="p-6">
+            <div class="rounded-xl
+                        border border-green-200
+                        bg-green-50
+                        p-4">
 
-            <h2 class="mb-4
-                       text-sm
-                       font-bold
-                       uppercase
-                       tracking-wide
-                       text-slate-500">
+                <div class="flex items-center
+                            justify-between gap-4">
+
+                    <div class="flex items-center gap-3">
+
+                        <div class="flex h-10 w-10
+                                    items-center
+                                    justify-center
+                                    rounded-full
+                                    bg-green-100
+                                    text-green-600">
+
+                            <i class="bi bi-check-lg
+                                      text-lg"></i>
+
+                        </div>
+
+                        <div>
+
+                            <p class="text-xs
+                                      text-green-600">
+
+                                Payment Status
+
+                            </p>
+
+                            <p class="font-semibold
+                                      text-green-700">
+
+                                Payment Received
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="text-right">
+
+                        <p class="text-xs
+                                  text-green-600">
+
+                            Current Payment
+
+                        </p>
+
+                        <p class="text-xl
+                                  font-bold
+                                  text-green-700">
+
+                            ৳ {{ number_format(
+                                $currentPayment,
+                                2
+                            ) }}
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- =====================================================
+            STUDENT INFORMATION
+        ====================================================== --}}
+
+        <div class="px-6 sm:px-8 py-6">
+
+            <h2 class="mb-4 text-base
+                       font-semibold
+                       text-slate-800">
 
                 Student Information
 
             </h2>
 
 
-            <div class="grid
-                        grid-cols-1
-                        sm:grid-cols-2
-                        gap-x-8
-                        gap-y-4">
+            <div class="grid grid-cols-1
+                        sm:grid-cols-2 gap-4">
 
 
                 <div>
 
-                    <p class="text-xs
+                    <p class="text-xs uppercase
+                              tracking-wide
                               text-slate-400">
 
                         Student Name
 
                     </p>
 
-                    <p class="mt-1
-                              font-semibold
+                    <p class="mt-1 font-semibold
                               text-slate-800">
 
-                        {{ $payment->student->name ?? 'N/A' }}
+                        {{ $feePayment->student->name ?? 'N/A' }}
 
                     </p>
 
@@ -230,19 +301,22 @@
 
                 <div>
 
-                    <p class="text-xs
+                    <p class="text-xs uppercase
+                              tracking-wide
                               text-slate-400">
 
                         Student ID
 
                     </p>
 
-                    <p class="mt-1
-                              font-semibold
+                    <p class="mt-1 font-semibold
                               text-slate-800">
 
-                        {{ $payment->student->student_id
-                            ?? $payment->student_id }}
+                        {{
+                            $feePayment->student->student_id
+                            ?? $feePayment->student_id
+                            ?? 'N/A'
+                        }}
 
                     </p>
 
@@ -251,18 +325,18 @@
 
                 <div>
 
-                    <p class="text-xs
+                    <p class="text-xs uppercase
+                              tracking-wide
                               text-slate-400">
 
                         Fee Type
 
                     </p>
 
-                    <p class="mt-1
-                              font-semibold
+                    <p class="mt-1 font-semibold
                               text-slate-800">
 
-                        {{ $payment->feeType->name ?? 'N/A' }}
+                        {{ $feePayment->feeType->name ?? 'N/A' }}
 
                     </p>
 
@@ -271,18 +345,18 @@
 
                 <div>
 
-                    <p class="text-xs
+                    <p class="text-xs uppercase
+                              tracking-wide
                               text-slate-400">
 
-                        Payment Date
+                        Branch
 
                     </p>
 
-                    <p class="mt-1
-                              font-semibold
+                    <p class="mt-1 font-semibold
                               text-slate-800">
 
-                        {{ $payment->payment_date?->format('d M Y') }}
+                        {{ $feePayment->branch->name ?? 'N/A' }}
 
                     </p>
 
@@ -293,85 +367,289 @@
         </div>
 
 
+        {{-- =====================================================
+            PAYMENT SUMMARY
+        ====================================================== --}}
 
-        {{-- Payment Details --}}
+        <div class="border-t border-slate-200
+                    px-6 sm:px-8 py-6">
 
-        <div class="border-t
-                    border-slate-200
-                    p-6">
+            <h2 class="mb-4 text-base
+                       font-semibold
+                       text-slate-800">
+
+                Payment Summary
+
+            </h2>
 
 
-            <h2 class="mb-4
-                       text-sm
-                       font-bold
-                       uppercase
-                       tracking-wide
-                       text-slate-500">
+            <div class="overflow-hidden
+                        rounded-xl
+                        border border-slate-200">
+
+                <div class="divide-y
+                            divide-slate-200">
+
+
+                    {{-- Assigned --}}
+                    <div class="flex items-center
+                                justify-between
+                                gap-4 px-4 py-3">
+
+                        <span class="text-sm
+                                     text-slate-500">
+
+                            Assigned Amount
+
+                        </span>
+
+                        <span class="font-semibold
+                                     text-slate-800">
+
+                            ৳ {{ number_format(
+                                $assignedAmount,
+                                2
+                            ) }}
+
+                        </span>
+
+                    </div>
+
+
+                    {{-- Previous Paid --}}
+                    <div class="flex items-center
+                                justify-between
+                                gap-4 px-4 py-3">
+
+                        <span class="text-sm
+                                     text-slate-500">
+
+                            Previous Paid
+
+                        </span>
+
+                        <span class="font-semibold
+                                     text-slate-700">
+
+                            ৳ {{ number_format(
+                                $previousPaid,
+                                2
+                            ) }}
+
+                        </span>
+
+                    </div>
+
+
+                    {{-- Current Payment --}}
+                    <div class="flex items-center
+                                justify-between
+                                gap-4 px-4 py-3
+                                bg-green-50">
+
+                        <span class="text-sm
+                                     font-medium
+                                     text-green-700">
+
+                            Current Payment
+
+                        </span>
+
+                        <span class="text-lg
+                                     font-bold
+                                     text-green-700">
+
+                            ৳ {{ number_format(
+                                $currentPayment,
+                                2
+                            ) }}
+
+                        </span>
+
+                    </div>
+
+
+                    {{-- Total Paid --}}
+                    <div class="flex items-center
+                                justify-between
+                                gap-4 px-4 py-3">
+
+                        <span class="text-sm
+                                     text-slate-500">
+
+                            Total Paid
+
+                        </span>
+
+                        <span class="font-semibold
+                                     text-slate-800">
+
+                            ৳ {{ number_format(
+                                $totalPaid,
+                                2
+                            ) }}
+
+                        </span>
+
+                    </div>
+
+
+                    {{-- Remaining --}}
+                    <div class="flex items-center
+                                justify-between
+                                gap-4 px-4 py-3
+                                bg-red-50">
+
+                        <span class="text-sm
+                                     font-medium
+                                     text-red-700">
+
+                            Remaining Due
+
+                        </span>
+
+                        <span class="text-lg
+                                     font-bold
+                                     text-red-700">
+
+                            ৳ {{ number_format(
+                                $remainingDue,
+                                2
+                            ) }}
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- =====================================================
+            PAYMENT DETAILS
+        ====================================================== --}}
+
+        <div class="border-t border-slate-200
+                    px-6 sm:px-8 py-6">
+
+            <h2 class="mb-4 text-base
+                       font-semibold
+                       text-slate-800">
 
                 Payment Details
 
             </h2>
 
 
-            <div class="overflow-hidden
-                        rounded-lg
-                        border border-slate-200">
+            <div class="grid grid-cols-1
+                        sm:grid-cols-2 gap-4">
 
 
-                <div class="flex
-                            items-center
-                            justify-between
-                            border-b
-                            border-slate-200
-                            px-4 py-3">
+                {{-- Method --}}
+                <div>
 
-                    <span class="text-sm
-                                 text-slate-500">
+                    <p class="text-xs uppercase
+                              tracking-wide
+                              text-slate-400">
 
                         Payment Method
 
-                    </span>
+                    </p>
 
-                    <span class="text-sm
-                                 font-semibold
-                                 capitalize
-                                 text-slate-800">
+                    @php
 
-                        {{ str_replace(
-                            '_',
-                            ' ',
-                            $payment->payment_method
-                        ) }}
+                        $methodLabels = [
+                            'cash' => 'Cash',
+                            'bank' => 'Bank',
+                            'mobile_banking' => 'Mobile Banking',
+                            'other' => 'Other',
+                        ];
 
-                    </span>
+                    @endphp
+
+                    <p class="mt-1 font-semibold
+                              text-slate-800">
+
+                        {{
+                            $methodLabels[
+                                $feePayment->payment_method
+                            ] ?? ucfirst(
+                                $feePayment->payment_method
+                            )
+                        }}
+
+                    </p>
 
                 </div>
 
 
-                <div class="flex
-                            items-center
-                            justify-between
-                            bg-green-50
-                            px-4 py-4">
+                {{-- Date --}}
+                <div>
 
-                    <span class="text-sm
-                                 font-semibold
-                                 text-green-700">
+                    <p class="text-xs uppercase
+                              tracking-wide
+                              text-slate-400">
 
-                        Amount Paid
+                        Payment Date
 
-                    </span>
+                    </p>
 
-                    <span class="text-xl
-                                 font-bold
-                                 text-green-700">
+                    <p class="mt-1 font-semibold
+                              text-slate-800">
 
-                        ৳ {{ number_format(
-                            $payment->amount,
-                            2
-                        ) }}
+                        {{
+                            $feePayment->payment_date
+                                ? $feePayment->payment_date
+                                    ->format('d M Y')
+                                : 'N/A'
+                        }}
 
-                    </span>
+                    </p>
+
+                </div>
+
+
+                {{-- Reference --}}
+                <div>
+
+                    <p class="text-xs uppercase
+                              tracking-wide
+                              text-slate-400">
+
+                        Reference No.
+
+                    </p>
+
+                    <p class="mt-1 font-semibold
+                              text-slate-800">
+
+                        {{ $feePayment->reference_no ?? 'N/A' }}
+
+                    </p>
+
+                </div>
+
+
+                {{-- Collected By --}}
+                <div>
+
+                    <p class="text-xs uppercase
+                              tracking-wide
+                              text-slate-400">
+
+                        Collected By
+
+                    </p>
+
+                    <p class="mt-1 font-semibold
+                              text-slate-800">
+
+                        {{ $feePayment->collector->name ?? 'N/A' }}
+
+                    </p>
 
                 </div>
 
@@ -380,113 +658,60 @@
         </div>
 
 
+        {{-- =====================================================
+            REMARKS
+        ====================================================== --}}
 
-        {{-- Remarks --}}
+        @if($feePayment->remarks)
 
-        @if($payment->remarks)
+            <div class="border-t border-slate-200
+                        px-6 sm:px-8 py-6">
 
-            <div class="border-t
-                        border-slate-200
-                        px-6 py-5">
-
-                <p class="text-xs
-                          font-medium
-                          text-slate-400">
+                <h2 class="mb-3 text-base
+                           font-semibold
+                           text-slate-800">
 
                     Remarks
 
-                </p>
+                </h2>
 
-                <p class="mt-1
-                          text-sm
-                          text-slate-700">
+                <div class="rounded-lg
+                            bg-slate-50
+                            border border-slate-200
+                            px-4 py-3">
 
-                    {{ $payment->remarks }}
+                    <p class="text-sm
+                              text-slate-600">
 
-                </p>
+                        {{ $feePayment->remarks }}
+
+                    </p>
+
+                </div>
 
             </div>
 
         @endif
 
 
+        {{-- =====================================================
+            FOOTER
+        ====================================================== --}}
 
-        {{-- Footer --}}
-
-        <div class="border-t
-                    border-slate-200
+        <div class="border-t border-slate-200
                     bg-slate-50
-                    px-6 py-5">
+                    px-6 sm:px-8 py-6">
 
+            <div class="text-center">
 
-            <div class="flex
-                        flex-col
-                        sm:flex-row
-                        sm:items-end
-                        sm:justify-between
-                        gap-5">
-
-
-                <div>
-
-                    <p class="text-xs
-                              text-slate-400">
-
-                        Collected By
-
-                    </p>
-
-                    <p class="mt-1
-                              text-sm
-                              font-semibold
-                              text-slate-700">
-
-                        {{ $payment->collectedBy->name ?? 'Administrator' }}
-
-                    </p>
-
-                </div>
-
-
-                <div class="text-left sm:text-right">
-
-                    <p class="text-xs
-                              text-slate-400">
-
-                        Generated At
-
-                    </p>
-
-                    <p class="mt-1
-                              text-sm
-                              font-semibold
-                              text-slate-700">
-
-                        {{ $payment->created_at?->format('d M Y, h:i A') }}
-
-                    </p>
-
-                </div>
-
-            </div>
-
-
-            <div class="mt-6
-                        border-t
-                        border-dashed
-                        border-slate-300
-                        pt-4
-                        text-center">
-
-                <p class="text-xs
-                          text-slate-400">
+                <p class="text-sm font-medium
+                          text-slate-700">
 
                     Thank you for your payment.
 
                 </p>
 
-                <p class="mt-1
-                          text-[10px]
+                <p class="mt-1 text-xs
                           text-slate-400">
 
                     This is a computer generated receipt.
@@ -501,6 +726,48 @@
     </div>
 
 </div>
+
+
+{{-- =============================================================
+    PRINT CSS
+============================================================== --}}
+
+<style>
+
+@media print {
+
+    body {
+        background: #ffffff !important;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    #receipt,
+    #receipt * {
+        visibility: visible;
+    }
+
+    #receipt {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        border: none !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    @page {
+        size: A4;
+        margin: 12mm;
+    }
+
+}
+
+</style>
 
 
 </body>
