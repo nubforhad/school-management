@@ -724,6 +724,17 @@
                     Exams Schedules
                 </span>
             </a>
+
+            <a href="{{ route('admin.exam-marks.index') }}"
+                class="sub-link
+                       {{ request()->routeIs('admin.exam-marks.*')
+                            ? 'sub-link-active'
+                            : '' }}">
+                <i class="bi bi-person-check w-4 text-center"></i>
+                <span>
+                    exam marks
+                </span>
+            </a>
         </div>
     </div>
 </nav>
