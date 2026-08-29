@@ -250,4 +250,30 @@ class ExamScheduleController extends Controller
             ->route('admin.exams.schedules.index', $exam)
             ->with('success', 'Exam schedule deleted successfully.');
     }
+
+
+    public function show(Exam $exam, ExamSchedule $schedule)
+    {
+        abort_if(
+            $schedule->exam_id != $exam->id,
+            404
+        );
+
+        $schedule->load([
+            'subject',
+            'exam.branch',
+            'exam.academicSession',
+        ]);
+
+        return view('admin.exam-schedules.show', compact(
+            'exam',
+            'schedule'
+        ));
+    }
+
+
+
+
+
+
 }

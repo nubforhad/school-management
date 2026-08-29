@@ -634,10 +634,102 @@
 
 </nav>
 
+<nav class="space-y-1">
 
-        {{-- =================================================
-            OTHER MODULES
-        ================================================== --}}
+    {{-- Fee Management Parent --}}
+    <div
+        x-data="{
+            open: {{ request()->routeIs('admin.fee-types.*')
+                        ? 'true'
+                        : 'false' }}
+        }">
+
+
+        {{-- Parent Button --}}
+        <button
+            type="button"
+            @click="open = !open"
+            class="w-full flex items-center
+                   justify-between
+                   gap-3
+                   rounded-lg px-2.5 py-2
+                   text-sm font-medium
+                   transition-colors duration-150
+
+                   {{ request()->routeIs('admin.fee-types.*')
+                        ? 'bg-slate-800 text-white'
+                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+
+
+            <span class="flex items-center gap-3">
+
+                {{-- Icon --}}
+                <span
+                    class="nav-icon
+                           {{ request()->routeIs('admin.fee-types.*')
+                                ? 'bg-white/15 text-white'
+                                : 'bg-slate-800 text-orange-400' }}">
+
+                    <i class="bi bi-cash-stack"></i>
+
+                </span>
+
+
+                {{-- Title --}}
+                <span>
+                    Exams
+                </span>
+
+            </span>
+
+
+            {{-- Arrow --}}
+            <i
+                class="bi text-xs text-slate-500
+                       transition-transform duration-200"
+                :class="open
+                    ? 'bi-chevron-up'
+                    : 'bi-chevron-down'">
+            </i>
+
+        </button>
+
+
+        {{-- =====================================================
+            Submenu
+        ====================================================== --}}
+
+        <div x-show="open" x-transition:enter="transition ease-out duration-200"  x-transition:enter-start="opacity-0 -translate-y-1"  x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-150"  x-transition:leave-start="opacity-100"  x-transition:leave-end="opacity-0" class="mt-1 ml-[18px] pl-4 border-l border-slate-700  space-y-0.5">
+            {{--  Exams --}}
+            <a href="{{ route('admin.exams.index') }}"
+                class="sub-link
+                       {{ request()->routeIs('admin.exams.index')
+                            ? 'sub-link-active'
+                            : '' }}">
+
+                <i class="bi bi-tags w-4 text-center"></i>
+                <span>
+                    Exam
+                </span>
+            </a>
+            {{-- Future: Exams Schedules --}} 
+            <a href="{{ route('admin.exams.schedules.index') }}"
+                class="sub-link
+                       {{ request()->routeIs('admin.exams.schedules.*')
+                            ? 'sub-link-active'
+                            : '' }}">
+                <i class="bi bi-person-check w-4 text-center"></i>
+                <span>
+                    Exams Schedules
+                </span>
+            </a>
+        </div>
+    </div>
+</nav>
+
+
+        {{-- =======  OTHER MODULES ==== --}}
 
         <p class="px-3 mb-2 mt-7
                   text-[10px]

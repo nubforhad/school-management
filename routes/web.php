@@ -140,13 +140,15 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('exams', ExamController::class);
 
+    Route::resource( 'exams.schedules', ExamScheduleController::class)->names('exams.schedules');
+
      
  
 
 });
 
 
-    Route::prefix('exams/{exam}')->name('admin.exams.')->group(function () {
+    Route::prefix('exams')->name('admin.exams.')->group(function () {
         Route::get( 'schedules',  [ExamScheduleController::class, 'index'])->name('schedules.index');
         Route::get('schedules/create',  [ExamScheduleController::class, 'create'])->name('schedules.create');
         Route::post( 'schedules',  [ExamScheduleController::class, 'store'])->name('schedules.store');
@@ -154,3 +156,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put(  'schedules/{schedule}',   [ExamScheduleController::class, 'update'])->name('schedules.update');
         Route::delete('schedules/{schedule}',  [ExamScheduleController::class, 'destroy'])->name('schedules.destroy');
     });
+
+    
+
+
