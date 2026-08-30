@@ -802,36 +802,23 @@
 
 
         <!-- Designations -->
-        <a href=""
-           class="nav-link group">
+        <a href="{{ route('admin.designations.index') }}"  class="nav-link group">
 
-            <span class="nav-icon bg-slate-800 text-slate-400
-                         group-hover:bg-blue-600
-                         group-hover:text-white">
-
+            <span class="nav-icon bg-slate-800 text-slate-400  group-hover:bg-blue-600  group-hover:text-white">
                 <i class="bi bi-person-badge"></i>
-
             </span>
-
             <span>
                 Designations
             </span>
-
         </a>
-
-
         <!-- Teachers & Staff -->
-        <a href=""
-           class="nav-link group">
-
+        <a href=""   class="nav-link group">
             <span class="nav-icon bg-slate-800 text-slate-400
                          group-hover:bg-blue-600
                          group-hover:text-white">
 
                 <i class="bi bi-people"></i>
-
             </span>
-
             <span>
                 Teachers & Staff
             </span>
