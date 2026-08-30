@@ -61,6 +61,34 @@
     </div>
 
     @stack('scripts')
+<script>
 
+function toggleNavGroup(button) {
+
+    const submenu = button.nextElementSibling;
+    const isOpen = !submenu.classList.contains('hidden');
+
+    // Close all other groups
+    document.querySelectorAll('.nav-submenu').forEach(menu => {
+        menu.classList.add('hidden');
+    });
+
+    document.querySelectorAll('.nav-group-title').forEach(title => {
+        title.classList.remove('active');
+    });
+
+
+    // Open selected group
+    if (!isOpen) {
+
+        submenu.classList.remove('hidden');
+
+        button.classList.add('active');
+
+    }
+
+}
+
+</script>
 </body>
 </html>

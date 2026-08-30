@@ -21,6 +21,7 @@ use App\Http\Controllers\FeeReportController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExamScheduleController;
 use App\Http\Controllers\ExamMarkController;
+use App\Http\Controllers\DepartmentController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -142,6 +143,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('exams', ExamController::class);
 
     Route::resource( 'exams.schedules', ExamScheduleController::class)->names('exams.schedules');
+
+    //  departments
+    Route::resource('departments', DepartmentController::class)->except(['show']);
 
      
  

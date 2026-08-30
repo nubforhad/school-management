@@ -6,7 +6,7 @@
 
 @section('content')
 
-<div class="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
+<div class="max-w-screen-5xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
 
     {{-- =========================================================
         HEADER
@@ -673,10 +673,15 @@
 
                             <td class="px-4 py-3">
 
-                                <div class="flex items-center
-                                            justify-end gap-1.5">
+                                <div class="flex items-center  justify-end gap-1.5">
+ 
+                                    {{-- Schedule --}}
 
-
+                                    <a href="{{ route('admin.exams.schedules.index', $exam) }}"  title="Exam Schedule"
+                                    class="inline-flex h-9 w-9  items-center justify-center  rounded-lg  border border-slate-200
+                                            bg-white text-slate-600  hover:bg-blue-50  hover:text-blue-600  transition">
+                                        <i class="bi bi-calendar2-week"></i>
+                                    </a> 
                                     {{-- View --}}
 
                                     <a href="{{ route('admin.exams.show', $exam) }}"

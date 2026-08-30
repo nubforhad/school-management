@@ -6,7 +6,7 @@
 
 @section('content')
 
-<div class="max-w-5xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
+<div class="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
 
     {{-- Header --}}
     <div class="mb-5 sm:mb-6">

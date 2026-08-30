@@ -8,6 +8,7 @@ use App\Models\ExamSchedule;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Models\ClassSubject;
 
 class ExamScheduleController extends Controller
 {
@@ -40,7 +41,11 @@ class ExamScheduleController extends Controller
 
     public function create(Exam $exam)
     {
-        $subjects = Subject::orderBy('name')->get();
+        $subjects = ClassSubject::with('subject')
+            ->where('school_class_id', $exam->school_class_id)
+            ->get()
+            ->pluck('subject')
+            ->filter();
 
         return view('admin.exam-schedules.create', compact(
             'exam',

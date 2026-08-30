@@ -756,6 +756,225 @@
 
         <nav class="space-y-1">
 
+       <!-- Teachers & Staff -->
+<div class="nav-group">
+
+    <!-- Group Header -->
+    <button type="button"
+            onclick="toggleNavGroup(this)"
+            class="nav-group-title w-full flex items-center justify-between text-left">
+
+        <div class="flex items-center gap-3">
+            <span class="nav-icon bg-slate-800 text-slate-300">
+                <i class="bi bi-person-workspace"></i>
+            </span>
+
+            <span>
+                Teachers & Staff
+            </span>
+        </div>
+
+        <i class="bi bi-chevron-down nav-group-arrow text-slate-500 transition-transform duration-300"></i>
+
+    </button>
+
+
+    <!-- Submenu -->
+    <div class="nav-submenu hidden">
+
+        <!-- Departments -->
+        <a href="{{ route('admin.departments.index') }}"
+           class="nav-link group">
+
+            <span class="nav-icon bg-slate-800 text-slate-400
+                         group-hover:bg-blue-600
+                         group-hover:text-white">
+
+                <i class="bi bi-diagram-3"></i>
+
+            </span>
+
+            <span>
+                Departments
+            </span>
+
+        </a>
+
+
+        <!-- Designations -->
+        <a href=""
+           class="nav-link group">
+
+            <span class="nav-icon bg-slate-800 text-slate-400
+                         group-hover:bg-blue-600
+                         group-hover:text-white">
+
+                <i class="bi bi-person-badge"></i>
+
+            </span>
+
+            <span>
+                Designations
+            </span>
+
+        </a>
+
+
+        <!-- Teachers & Staff -->
+        <a href=""
+           class="nav-link group">
+
+            <span class="nav-icon bg-slate-800 text-slate-400
+                         group-hover:bg-blue-600
+                         group-hover:text-white">
+
+                <i class="bi bi-people"></i>
+
+            </span>
+
+            <span>
+                Teachers & Staff
+            </span>
+
+        </a>
+
+
+        <!-- Teacher Assignment -->
+        <a href=""
+           class="nav-link group">
+
+            <span class="nav-icon bg-slate-800 text-slate-400
+                         group-hover:bg-blue-600
+                         group-hover:text-white">
+
+                <span class="nav-icon bg-slate-800 text-slate-400
+                             group-hover:bg-blue-600
+                             group-hover:text-white">
+
+                    <i class="bi bi-person-lines-fill"></i>
+
+                </span>
+
+            </span>
+
+            <span>
+                Teacher Assignment
+            </span>
+
+        </a>
+
+    </div>
+
+</div>
+<style>
+    /* ================================
+   NAV GROUP
+================================ */
+
+.nav-group-title {
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    padding: 10px 12px;
+    color: #cbd5e1;
+    transition: all .25s ease;
+    border-radius: 10px;
+}
+
+.nav-group-title:hover {
+    background: rgba(30, 41, 59, .7);
+    color: #fff;
+}
+
+
+/* Arrow */
+
+.nav-group-arrow {
+    font-size: 12px;
+}
+
+
+/* ================================
+   SUBMENU
+================================ */
+
+.nav-submenu {
+    margin-left: 12px;
+    padding-left: 14px;
+    border-left: 1px solid rgba(148, 163, 184, .15);
+
+    overflow: hidden;
+
+    transition:
+        max-height .3s ease,
+        opacity .25s ease;
+
+    animation: submenuOpen .25s ease;
+}
+
+
+/* Submenu links */
+
+.nav-submenu .nav-link {
+    position: relative;
+    margin-top: 3px;
+    padding-left: 10px;
+}
+
+
+/* Small line before submenu item */
+
+.nav-submenu .nav-link::before {
+    content: "";
+    position: absolute;
+    left: -15px;
+    top: 50%;
+
+    width: 8px;
+    height: 1px;
+
+    background: rgba(148, 163, 184, .25);
+
+    transition: all .2s ease;
+}
+
+.nav-submenu .nav-link:hover::before {
+    width: 14px;
+    background: #3b82f6;
+}
+
+
+/* Open arrow */
+
+.nav-group-title.active .nav-group-arrow {
+    transform: rotate(180deg);
+}
+
+
+/* Active group */
+
+.nav-group-title.active {
+    background: rgba(30, 41, 59, .8);
+    color: #fff;
+}
+
+
+/* Animation */
+
+@keyframes submenuOpen {
+
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+</style>
 
             {{-- Teachers --}}
 
