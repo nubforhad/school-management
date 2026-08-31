@@ -45,7 +45,7 @@ return new class extends Migration
             |--------------------------------------------------------------------------
             */
             $table->foreignId('school_class_id')
-                ->constrained('school_classes')
+                ->constrained('classes')
                 ->cascadeOnDelete();
 
             /*

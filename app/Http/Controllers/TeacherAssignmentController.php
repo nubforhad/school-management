@@ -138,7 +138,7 @@ class TeacherAssignmentController extends Controller
 
             'school_class_id' => [
                 'required',
-                'exists:school_classes,id',
+                'exists:classes,id',
             ],
 
             'section_id' => [
@@ -326,7 +326,7 @@ class TeacherAssignmentController extends Controller
 
             'school_class_id' => [
                 'required',
-                'exists:school_classes,id',
+                'exists:classes,id',
             ],
 
             'section_id' => [
