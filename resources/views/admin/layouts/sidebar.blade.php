@@ -874,8 +874,23 @@
 
         </a>
 
+        <!-- salary structures -->
+        <a href="{{ route('admin.salary-payments.index') }}"
+           class="nav-link group">
+            <span class="nav-icon bg-slate-800 text-slate-400
+                         group-hover:bg-blue-600
+                         group-hover:text-white">
+                <span class="nav-icon bg-slate-800 text-slate-400
+                             group-hover:bg-blue-600
+                             group-hover:text-white">
+                    <i class="bi bi-person-lines-fill"></i>
+                </span>
+            </span>
+            <span>
+              salary payments
+            </span>
+        </a>
     </div>
-
 </div>
 <style>
     /* ================================

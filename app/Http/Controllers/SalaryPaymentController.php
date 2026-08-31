@@ -88,193 +88,252 @@ class SalaryPaymentController extends Controller
         );
     }
 
+ 
+/**
+ * Store salary payment.
+ */
+public function store(Request $request)
+{
+    $branchId = auth()->user()->branch_id;
 
-    /**
-     * Store salary payment.
-     */
-    public function store(Request $request)
-    {
-        $branchId = auth()->user()->branch_id;
+    $validated = $request->validate([
 
-        $validated = $request->validate([
+        'teacher_staff_id' => [
+            'required',
+            Rule::exists('teacher_staff', 'id')
+                ->where('branch_id', $branchId),
+        ],
 
-            'teacher_staff_id' => [
-                'required',
-                Rule::exists('teacher_staff', 'id')
-                    ->where('branch_id', $branchId),
-            ],
+        'salary_month' => [
+            'required',
+            'integer',
+            'between:1,12',
+        ],
 
-            'salary_month' => [
-                'required',
-                'integer',
-                'between:1,12',
-            ],
+        'salary_year' => [
+            'required',
+            'integer',
+            'min:2000',
+            'max:2100',
+        ],
 
-            'salary_year' => [
-                'required',
-                'integer',
-                'min:2000',
-                'max:2100',
-            ],
+        'paid_amount' => [
+            'required',
+            'numeric',
+            'min:0',
+        ],
 
-            'paid_amount' => [
-                'required',
-                'numeric',
-                'min:0',
-            ],
+        'payment_date' => [
+            'nullable',
+            'date',
+        ],
 
-            'payment_date' => [
-                'nullable',
-                'date',
-            ],
+        'payment_method' => [
+            'nullable',
+            'string',
+            'max:50',
+        ],
 
-            'payment_method' => [
-                'nullable',
-                'string',
-                'max:50',
-            ],
+        'status' => [
+            'nullable',
+            Rule::in([
+                'Pending',
+                'Paid',
+                'Partial',
+                'Cancelled',
+            ]),
+        ],
 
-            'status' => [
-                'required',
-                Rule::in([
-                    'Pending',
-                    'Paid',
-                    'Partial',
-                    'Cancelled',
-                ]),
-            ],
+        'remarks' => [
+            'nullable',
+            'string',
+            'max:1000',
+        ],
+    ]);
 
-            'remarks' => [
-                'nullable',
-                'string',
-                'max:1000',
-            ],
-        ]);
 
+    /*
+    |--------------------------------------------------------------------------
+    | Get Active Salary Structure
+    |--------------------------------------------------------------------------
+    */
+
+    $salaryStructure = SalaryStructure::where(
+            'teacher_staff_id',
+            $validated['teacher_staff_id']
+        )
+        ->where('branch_id', $branchId)
+        ->where('status', true)
+        ->latest()
+        ->first();
+
+
+    if (!$salaryStructure) {
+
+        return back()
+            ->withInput()
+            ->withErrors([
+                'teacher_staff_id' =>
+                    'No active salary structure found for this teacher/staff.',
+            ]);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Salary Calculation
+    |--------------------------------------------------------------------------
+    */
+
+    $basicSalary =
+        (float) $salaryStructure->basic_salary;
+
+    $grossSalary =
+        (float) $salaryStructure->basic_salary
+        + (float) $salaryStructure->house_rent
+        + (float) $salaryStructure->medical_allowance
+        + (float) $salaryStructure->transport_allowance
+        + (float) $salaryStructure->special_allowance
+        + (float) $salaryStructure->other_allowance;
+
+    $totalDeduction =
+        (float) $salaryStructure->provident_fund
+        + (float) $salaryStructure->tax
+        + (float) $salaryStructure->other_deduction;
+
+    $netSalary =
+        $grossSalary - $totalDeduction;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Get Existing Salary Payment
+    |--------------------------------------------------------------------------
+    |
+    | Same employee + same month + same year
+    |
+    */
+
+    $existingPayment = SalaryPayment::where([
+        'branch_id' => $branchId,
+        'teacher_staff_id' => $validated['teacher_staff_id'],
+        'salary_month' => $validated['salary_month'],
+        'salary_year' => $validated['salary_year'],
+    ])->first();
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Already Fully Paid Check
+    |--------------------------------------------------------------------------
+    */
+
+    if ($existingPayment) {
+
+        $alreadyPaid = (float) $existingPayment->paid_amount;
+
+        $remainingAmount = $netSalary - $alreadyPaid;
 
         /*
-        |--------------------------------------------------------------------------
-        | Get Salary Structure
-        |--------------------------------------------------------------------------
+        | Fully Paid
         */
 
-        $salaryStructure = SalaryStructure::where(
-                'teacher_staff_id',
-                $validated['teacher_staff_id']
-            )
-            ->where('branch_id', $branchId)
-            ->where('status', true)
-            ->latest()
-            ->first();
+        if ($alreadyPaid >= $netSalary) {
 
-
-        if (!$salaryStructure) {
             return back()
                 ->withInput()
                 ->withErrors([
                     'teacher_staff_id' =>
-                        'No active salary structure found for this teacher/staff.',
+                        'Salary for the selected month is already fully paid.',
                 ]);
         }
 
 
         /*
-        |--------------------------------------------------------------------------
-        | Duplicate Salary Check
-        |--------------------------------------------------------------------------
+        | Cancelled payment protection
         */
 
-        $exists = SalaryPayment::where([
-            'branch_id' => $branchId,
-            'teacher_staff_id' =>
-                $validated['teacher_staff_id'],
-            'salary_month' =>
-                $validated['salary_month'],
-            'salary_year' =>
-                $validated['salary_year'],
-        ])->exists();
+        if ($existingPayment->status === 'Cancelled') {
 
-
-        if ($exists) {
             return back()
                 ->withInput()
                 ->withErrors([
                     'teacher_staff_id' =>
-                        'Salary payment already exists for this employee for the selected month.',
+                        'This salary payment is cancelled. Please manage the existing payment first.',
                 ]);
         }
+    } else {
+
+        $alreadyPaid = 0;
+        $remainingAmount = $netSalary;
+    }
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Salary Calculation
-        |--------------------------------------------------------------------------
-        */
+    /*
+    |--------------------------------------------------------------------------
+    | New Paid Amount
+    |--------------------------------------------------------------------------
+    */
 
-        $basicSalary =
-            (float) $salaryStructure->basic_salary;
-
-        $grossSalary =
-            (float) $salaryStructure->basic_salary
-            + (float) $salaryStructure->house_rent
-            + (float) $salaryStructure->medical_allowance
-            + (float) $salaryStructure->transport_allowance
-            + (float) $salaryStructure->special_allowance
-            + (float) $salaryStructure->other_allowance;
-
-        $totalDeduction =
-            (float) $salaryStructure->provident_fund
-            + (float) $salaryStructure->tax
-            + (float) $salaryStructure->other_deduction;
-
-        $netSalary =
-            $grossSalary - $totalDeduction;
+    $paidAmount =
+        (float) $validated['paid_amount'];
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Paid Amount Validation
-        |--------------------------------------------------------------------------
-        */
+    /*
+    |--------------------------------------------------------------------------
+    | Prevent Over Payment
+    |--------------------------------------------------------------------------
+    */
 
-        $paidAmount =
-            (float) $validated['paid_amount'];
+    if ($paidAmount > $remainingAmount) {
 
-        if ($paidAmount > $netSalary) {
-            return back()
-                ->withInput()
-                ->withErrors([
-                    'paid_amount' =>
-                        'Paid amount cannot be greater than net salary.',
-                ]);
-        }
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | Auto Status
-        |--------------------------------------------------------------------------
-        */
-
-        if ($paidAmount <= 0) {
-
-            $status = 'Pending';
-
-        } elseif ($paidAmount < $netSalary) {
-
-            $status = 'Partial';
-
-        } else {
-
-            $status = 'Paid';
-        }
+        return back()
+            ->withInput()
+            ->withErrors([
+                'paid_amount' =>
+                    'Paid amount cannot be greater than remaining salary amount. Remaining amount is ৳'
+                    . number_format($remainingAmount, 2),
+            ]);
+    }
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | Create Payment
-        |--------------------------------------------------------------------------
-        */
+    /*
+    |--------------------------------------------------------------------------
+    | Total Paid After This Payment
+    |--------------------------------------------------------------------------
+    */
+
+    $totalPaid =
+        $alreadyPaid + $paidAmount;
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Auto Status
+    |--------------------------------------------------------------------------
+    */
+
+    if ($totalPaid <= 0) {
+
+        $status = 'Pending';
+
+    } elseif ($totalPaid < $netSalary) {
+
+        $status = 'Partial';
+
+    } else {
+
+        $status = 'Paid';
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Create First Payment
+    |--------------------------------------------------------------------------
+    */
+
+    if (!$existingPayment) {
 
         SalaryPayment::create([
 
@@ -321,14 +380,66 @@ class SalaryPaymentController extends Controller
                 $validated['remarks'] ?? null,
         ]);
 
+    } else {
 
-        return redirect()
-            ->route('admin.salary-payments.index')
-            ->with(
-                'success',
-                'Salary payment created successfully.'
-            );
+        /*
+        |--------------------------------------------------------------------------
+        | Add Payment To Existing Salary
+        |--------------------------------------------------------------------------
+        */
+
+        $existingPayment->update([
+
+            'paid_amount' =>
+                $totalPaid,
+
+            'payment_date' =>
+                $validated['payment_date'] ?? $existingPayment->payment_date,
+
+            'payment_method' =>
+                $validated['payment_method'] ?? $existingPayment->payment_method,
+
+            'status' =>
+                $status,
+
+            'remarks' =>
+                $validated['remarks'] ?? $existingPayment->remarks,
+        ]);
     }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Success Message
+    |--------------------------------------------------------------------------
+    */
+
+    if ($status === 'Paid') {
+
+        $message =
+            'Salary fully paid successfully. Total paid: ৳'
+            . number_format($totalPaid, 2);
+
+    } elseif ($status === 'Partial') {
+
+        $remaining =
+            $netSalary - $totalPaid;
+
+        $message =
+            'Salary payment added successfully. Remaining: ৳'
+            . number_format($remaining, 2);
+
+    } else {
+
+        $message =
+            'Salary payment created successfully.';
+    }
+
+
+    return redirect()
+        ->route('admin.salary-payments.index')
+        ->with('success', $message);
+} 
 
 
     /**
@@ -494,4 +605,47 @@ class SalaryPaymentController extends Controller
             403
         );
     }
+
+
+
+public function salaryStructure($teacherStaffId)
+{
+    $branchId = auth()->user()->branch_id;
+
+    $salaryStructure = SalaryStructure::where('branch_id', $branchId)
+        ->where('teacher_staff_id', $teacherStaffId)
+        ->where('status', true)
+        ->latest()
+        ->first();
+
+    if (!$salaryStructure) {
+        return response()->json([
+            'success' => false,
+            'message' => 'No active salary structure found.'
+        ]);
+    }
+
+    return response()->json([
+        'success' => true,
+        'salary_structure' => [
+            'basic_salary'       => $salaryStructure->basic_salary,
+            'house_rent'         => $salaryStructure->house_rent,
+            'medical_allowance'  => $salaryStructure->medical_allowance,
+            'transport_allowance'=> $salaryStructure->transport_allowance,
+            'special_allowance'  => $salaryStructure->special_allowance,
+            'other_allowance'    => $salaryStructure->other_allowance,
+            'provident_fund'     => $salaryStructure->provident_fund,
+            'tax'                => $salaryStructure->tax,
+            'other_deduction'    => $salaryStructure->other_deduction,
+            'gross_salary'       => $salaryStructure->gross_salary,
+            'total_deduction'   => $salaryStructure->total_deduction,
+            'net_salary'        => $salaryStructure->net_salary,
+        ]
+    ]);
+}
+
+
+
+
+
 }

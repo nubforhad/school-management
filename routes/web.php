@@ -157,6 +157,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('teacher-assignment', TeacherAssignmentController::class)->except(['show'])->names('teacher-assignment');
     Route::resource( 'salary-structures',  SalaryStructureController::class)->except(['show'])->names('salary-structures');
     Route::resource( 'salary-payments', SalaryPaymentController::class)->names('salary-payments');
+    Route::get('/salary-payments/salary-structure/{teacherStaffId}',[SalaryPaymentController::class, 'salaryStructure'])->name('salary-payments.salary-structure');
      
  
 
