@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class TeacherStaff extends Model
 {
@@ -49,4 +50,15 @@ class TeacherStaff extends Model
     {
         return $this->belongsTo(Designation::class);
     }
+
+    public function salaryPayments(): HasMany
+{
+    return $this->hasMany(
+        SalaryPayment::class,
+        'teacher_staff_id'
+    );
+}
+
+
+
 }

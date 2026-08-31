@@ -26,6 +26,7 @@ use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\TeacherStaffController;
 use App\Http\Controllers\TeacherAssignmentController;
 use App\Http\Controllers\SalaryStructureController;
+use App\Http\Controllers\SalaryPaymentController;
 
 
 Route::get('/', function () {
@@ -154,7 +155,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('designations', DesignationController::class)->names('designations');
     Route::resource('teacher-staff', TeacherStaffController::class)->names('teacher-staff');
     Route::resource('teacher-assignment', TeacherAssignmentController::class)->except(['show'])->names('teacher-assignment');
-    Route::resource( 'salary-structures',  SalaryStructureController::class)->except(['show'])->names('admin.salary-structures');
+    Route::resource( 'salary-structures',  SalaryStructureController::class)->except(['show'])->names('salary-structures');
+    Route::resource( 'salary-payments', SalaryPaymentController::class)->names('salary-payments');
      
  
 

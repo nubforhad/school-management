@@ -850,6 +850,30 @@
 
         </a>
 
+        <!-- salary structures -->
+        <a href="{{ route('admin.salary-structures.index') }}"
+           class="nav-link group">
+
+            <span class="nav-icon bg-slate-800 text-slate-400
+                         group-hover:bg-blue-600
+                         group-hover:text-white">
+
+                <span class="nav-icon bg-slate-800 text-slate-400
+                             group-hover:bg-blue-600
+                             group-hover:text-white">
+
+                    <i class="bi bi-person-lines-fill"></i>
+
+                </span>
+
+            </span>
+
+            <span>
+               salary structures
+            </span>
+
+        </a>
+
     </div>
 
 </div>
