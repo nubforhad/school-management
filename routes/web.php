@@ -23,6 +23,7 @@ use App\Http\Controllers\ExamScheduleController;
 use App\Http\Controllers\ExamMarkController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
+use App\Http\Controllers\TeacherStaffController;
 
 
 Route::get('/', function () {
@@ -149,6 +150,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     //  departments
     Route::resource('departments', DepartmentController::class)->except(['show']);
     Route::resource('designations', DesignationController::class)->names('designations');
+    Route::resource('teacher-staff', TeacherStaffController::class)->names('teacher-staff');
 
      
  
