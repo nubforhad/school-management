@@ -398,9 +398,13 @@
 
                                 <div class="flex items-center  justify-end gap-2">
 
-                                <a href="{{ route('admin.teacher-staff.show', $teacherStaff->id) }}">
-                                    <i class="bi bi-eye"></i>
-                                </a>
+                                @foreach($teacherStaff as $staff)
+
+    <a href="{{ route('admin.teacher-staff.show', $staff->id) }}">
+        <i class="bi bi-eye"></i>
+    </a>
+
+@endforeach
 
 
                                     {{-- Edit --}}

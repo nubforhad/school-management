@@ -22,9 +22,7 @@ class TeacherStaffController extends Controller
             ->latest()
             ->paginate(15);
 
-        return view(
-            'admin.teacher-staff.index',
-            compact('teacherStaff')
+        return view('admin.teacher-staff.index', compact('teacherStaff')
         );
     }
 
