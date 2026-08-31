@@ -329,37 +329,25 @@
 
                 {{-- Medical --}}
                 <div>
-
                     <label class="block text-sm font-medium text-slate-700 mb-1.5">
                         Medical Allowance
                     </label>
-
-                    <input type="number"
-                           id="medical_allowance"
-                           readonly
-                           value="0"
-                           class="salary-field w-full rounded-lg border border-slate-300
-                                  bg-slate-50 px-3 py-2.5 text-sm text-slate-700">
-
+                    <input type="number" id="medical_allowance" readonly   value="0"  class="salary-field w-full rounded-lg border border-slate-300  bg-slate-50 px-3 py-2.5 text-sm text-slate-700">
                 </div>
 
 
                 {{-- Transport --}}
                 <div>
-
                     <label class="block text-sm font-medium text-slate-700 mb-1.5">
                         Transport Allowance
                     </label>
-
                     <input type="number"
                            id="transport_allowance"
                            readonly
                            value="0"
                            class="salary-field w-full rounded-lg border border-slate-300
                                   bg-slate-50 px-3 py-2.5 text-sm text-slate-700">
-
                 </div>
-
 
                 {{-- Special --}}
                 <div>
