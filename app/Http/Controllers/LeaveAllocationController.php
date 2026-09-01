@@ -117,6 +117,11 @@ class LeaveAllocationController extends Controller
                 Rule::exists('leave_types', 'id')
                     ->where('branch_id', $branchId),
             ],
+            'academic_session_id' => [
+                'required',
+                Rule::exists('academic_sessions', 'id')
+                    ->where('branch_id', $branchId),
+            ],
 
             'year' => [
                 'required',
@@ -179,6 +184,8 @@ class LeaveAllocationController extends Controller
 
             'leave_type_id' =>
                 $validated['leave_type_id'],
+            
+            'academic_session_id' => $validated['academic_session_id'],
 
             'year' =>
                 $validated['year'],

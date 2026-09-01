@@ -19,10 +19,15 @@ class LeaveApplicationController extends Controller
 
     public function index(Request $request)
 {
+    $branchId = auth()->user()->branch_id;
+
     $query = LeaveApplication::with([
         'teacherStaff',
         'leaveType',
-    ]);
+        'academicSession',
+    ])
+    ->where('branch_id', $branchId);
+
 
     if ($request->filled('search')) {
         $search = $request->search;
@@ -53,7 +58,10 @@ class LeaveApplicationController extends Controller
         ->latest()
         ->paginate(15);
 
-    $leaveTypes = LeaveType::orderBy('name')->get();
+    // $leaveTypes = LeaveType::orderBy('name')->get();
+    $leaveTypes = LeaveType::where('branch_id', $branchId)
+    ->orderBy('name')
+    ->get();
 
     return view('admin.leave-applications.index', compact(
         'applications',

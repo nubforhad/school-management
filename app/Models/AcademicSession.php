@@ -43,4 +43,12 @@ class AcademicSession extends Model
         return $this->hasMany(StudentFee::class);
     }
 
+    public function academicSession(): BelongsTo
+    {
+        return $this->belongsTo(
+            AcademicSession::class,
+            'academic_session_id'
+        );
+    }
+
 }

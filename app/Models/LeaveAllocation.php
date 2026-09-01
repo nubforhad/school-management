@@ -11,6 +11,7 @@ class LeaveAllocation extends Model
         'branch_id',
         'teacher_staff_id',
         'leave_type_id',
+        'academic_session_id',
         'year',
         'allocated_days',
         'used_days',
