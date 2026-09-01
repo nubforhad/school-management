@@ -27,6 +27,8 @@ use App\Http\Controllers\TeacherStaffController;
 use App\Http\Controllers\TeacherAssignmentController;
 use App\Http\Controllers\SalaryStructureController;
 use App\Http\Controllers\SalaryPaymentController;
+use App\Http\Controllers\LeaveTypeController;
+use App\Http\Controllers\LeaveAllocationController;
 
 
 Route::get('/', function () {
@@ -158,6 +160,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource( 'salary-structures',  SalaryStructureController::class)->except(['show'])->names('salary-structures');
     Route::resource( 'salary-payments', SalaryPaymentController::class)->names('salary-payments');
     Route::get('/salary-payments/salary-structure/{teacherStaffId}',[SalaryPaymentController::class, 'salaryStructure'])->name('salary-payments.salary-structure');
+
+    Route::resource('leave-types',  LeaveTypeController::class)->names('leave-types');
+    Route::resource('leave-allocations',  LeaveAllocationController::class)->names('leave-allocations');
      
  
 

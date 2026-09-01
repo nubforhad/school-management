@@ -25,4 +25,13 @@ class LeaveType extends Model
     {
         return $this->belongsTo(Branch::class);
     }
+    public function leaveAllocations()
+    {
+        return $this->hasMany(
+            LeaveAllocation::class,
+            'leave_type_id'
+        );
+    }
+
+
 }

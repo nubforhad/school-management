@@ -52,12 +52,20 @@ class TeacherStaff extends Model
     }
 
     public function salaryPayments(): HasMany
-{
-    return $this->hasMany(
-        SalaryPayment::class,
-        'teacher_staff_id'
-    );
-}
+    {
+        return $this->hasMany(
+            SalaryPayment::class,
+            'teacher_staff_id'
+        );
+    }
+
+    public function leaveAllocations()
+    {
+        return $this->hasMany(
+            LeaveAllocation::class,
+            'teacher_staff_id'
+        );
+    }
 
 
 
