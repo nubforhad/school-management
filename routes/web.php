@@ -29,7 +29,7 @@ use App\Http\Controllers\SalaryStructureController;
 use App\Http\Controllers\SalaryPaymentController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\LeaveAllocationController;
-
+use App\Http\Controllers\LeaveApplicationController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -164,9 +164,23 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('leave-types',  LeaveTypeController::class)->names('leave-types');
     Route::resource('leave-allocations',  LeaveAllocationController::class)->names('leave-allocations');
      
- 
+    Route::prefix('leave-applications')
+        ->name('leave-applications.') ->group(function () {
+
+            Route::get('/', [ LeaveApplicationController::class, 'index' ])->name('index');
+            Route::get('/create', [ LeaveApplicationController::class, 'create' ])->name('create');
+            Route::post('/', [  LeaveApplicationController::class, 'store' ])->name('store');
+            Route::get('/{leaveApplication}', [  LeaveApplicationController::class, 'show' ])->name('show');
+            Route::get('/{leaveApplication}/edit', [  LeaveApplicationController::class,  'edit'])->name('edit');
+            Route::put('/{leaveApplication}', [ LeaveApplicationController::class, 'update'])->name('update');
+            Route::delete('/{leaveApplication}', [ LeaveApplicationController::class,   'destroy'])->name('destroy');
+            Route::post('/{leaveApplication}/approve', [ LeaveApplicationController::class,  'approve' ])->name('approve');
+            Route::post('/{leaveApplication}/reject', [  LeaveApplicationController::class, 'reject'])->name('reject');
+        });
 
 });
+
+
 
 
     Route::prefix('exams')->name('admin.exams.')->group(function () {

@@ -257,7 +257,7 @@
                                 <div class="flex items-center justify-end gap-2">
 
                                     {{-- Edit --}}
-                                    <a href="{{ route('leave-allocations.edit', $allocation) }}"
+                                    <a href="{{ route('admin.leave-allocations.edit', $allocation) }}"
                                        class="inline-flex items-center justify-center
                                               w-9 h-9 rounded-lg
                                               bg-blue-50 text-blue-600
@@ -270,7 +270,7 @@
 
 
                                     {{-- Delete --}}
-                                    <form action="{{ route('leave-allocations.destroy', $allocation) }}"
+                                    <form action="{{ route('admin.leave-allocations.destroy', $allocation) }}"
                                           method="POST"
                                           onsubmit="return confirm('Are you sure you want to delete this leave allocation?');">
 

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\LeaveAllocation;
 use App\Models\LeaveType;
 use App\Models\TeacherStaff;
+use App\Models\AcademicSession;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -69,28 +70,32 @@ class LeaveAllocationController extends Controller
     /**
      * Show the form for creating a new leave allocation.
      */
-    public function create()
-    {
-        $branchId = auth()->user()->branch_id;
+  public function create()
+{
+    $branchId = auth()->user()->branch_id;
 
-        $teacherStaff = TeacherStaff::where('branch_id', $branchId)
-            ->orderBy('name')
-            ->get();
+    $teacherStaff = TeacherStaff::where('branch_id', $branchId)
+        ->orderBy('name')
+        ->get();
 
-        $leaveTypes = LeaveType::where('branch_id', $branchId)
-            ->where('status', true)
-            ->orderBy('name')
-            ->get();
+    $leaveTypes = LeaveType::where('branch_id', $branchId)
+        ->where('status', true)
+        ->orderBy('name')
+        ->get();
 
-        return view(
-            'admin.leave-allocations.create',
-            compact(
-                'teacherStaff',
-                'leaveTypes'
-            )
-        );
-    }
+    $academicSessions = AcademicSession::where('branch_id', $branchId)
+        ->orderByDesc('id')
+        ->get();
 
+    return view(
+        'admin.leave-allocations.create',
+        compact(
+            'teacherStaff',
+            'leaveTypes',
+            'academicSessions'
+        )
+    );
+}
 
     /**
      * Store a newly created leave allocation.
@@ -217,7 +222,7 @@ class LeaveAllocationController extends Controller
         );
 
 
-        $teachers = TeacherStaff::where('branch_id', $branchId)
+        $teacherStaff = TeacherStaff::where('branch_id', $branchId)
             ->orderBy('name')
             ->get();
 
@@ -226,13 +231,18 @@ class LeaveAllocationController extends Controller
             ->orderBy('name')
             ->get();
 
+        $academicSessions = AcademicSession::where('branch_id', $branchId)
+            ->orderByDesc('id')
+            ->get();
+
 
         return view(
             'admin.leave-allocations.edit',
             compact(
                 'leaveAllocation',
-                'teachers',
-                'leaveTypes'
+                'teacherStaff',
+                'leaveTypes',
+                'academicSessions'
             )
         );
     }

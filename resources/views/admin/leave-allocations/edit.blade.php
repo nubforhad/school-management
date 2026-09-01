@@ -4,69 +4,181 @@
 
 @section('content')
 
-<div class="space-y-6">
+<div class="max-w-screen-lg mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
+ 
+{{-- =========================================================
+    Header
+========================================================== --}}
 
-    {{-- Header --}}
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<div class="mb-4 sm:mb-6">
+
+    <div class="flex flex-col sm:flex-row
+                sm:items-center sm:justify-between gap-3">
 
         <div>
-            <h1 class="text-2xl font-bold text-slate-800">
+
+            <h1 class="text-xl sm:text-2xl font-bold text-slate-800">
                 Edit Leave Allocation
             </h1>
 
-            <p class="text-sm text-slate-500 mt-1">
-                Update leave allocation information.
+            <p class="text-xs sm:text-sm text-slate-500 mt-1">
+                Update leave allocation information
             </p>
+
         </div>
 
-        <a href="{{ route('leave-allocations.index') }}"
-           class="inline-flex items-center justify-center gap-2 px-4 py-2.5
-                  bg-slate-100 hover:bg-slate-200 text-slate-700
-                  rounded-lg text-sm font-medium transition">
+        <a href="{{ route('admin.leave-allocations.index') }}"
+           class="w-full sm:w-auto
+                  inline-flex items-center justify-center gap-2
+                  px-4 py-2.5 rounded-lg
+                  bg-slate-100 text-slate-700
+                  text-sm font-medium
+                  hover:bg-slate-200 transition">
 
             <i class="bi bi-arrow-left"></i>
+
             Back
+
         </a>
 
     </div>
 
+</div>
 
-    {{-- Form Card --}}
-    <div class="bg-white border border-slate-200 rounded-xl shadow-sm">
 
-        <div class="px-6 py-4 border-b border-slate-200">
-            <h2 class="text-base font-semibold text-slate-800">
-                Leave Allocation Information
-            </h2>
+{{-- =========================================================
+    Validation Errors
+========================================================== --}}
+
+@if ($errors->any())
+
+    <div class="mb-4 bg-red-50 border border-red-200
+                rounded-xl p-4">
+
+        <div class="flex items-start gap-3">
+
+            <i class="bi bi-exclamation-triangle-fill
+                      text-red-500 text-lg"></i>
+
+            <div>
+
+                <h3 class="text-sm font-semibold text-red-700">
+                    Please fix the following errors:
+                </h3>
+
+                <ul class="mt-1 text-xs sm:text-sm
+                           text-red-600 list-disc list-inside">
+
+                    @foreach ($errors->all() as $error)
+
+                        <li>{{ $error }}</li>
+
+                    @endforeach
+
+                </ul>
+
+            </div>
+
         </div>
 
+    </div>
 
-        <form action="{{ route('leave-allocations.update', $leaveAllocation) }}"
-              method="POST"
-              class="p-6">
+@endif
 
-            @csrf
-            @method('PUT')
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+{{-- =========================================================
+    Form Card
+========================================================== --}}
+
+<div class="bg-white rounded-xl shadow-sm
+            border border-slate-200
+            overflow-hidden">
+
+
+    {{-- Form Header --}}
+
+    <div class="p-4 sm:p-5
+                border-b border-slate-200">
+
+        <div class="flex items-center gap-3">
+
+            <div class="w-10 h-10 rounded-lg
+                        bg-blue-50
+                        flex items-center justify-center">
+
+                <i class="bi bi-calendar-check
+                          text-blue-600 text-lg"></i>
+
+            </div>
+
+            <div>
+
+                <h2 class="text-base sm:text-lg
+                           font-semibold text-slate-800">
+
+                    Leave Allocation Information
+
+                </h2>
+
+                <p class="text-xs sm:text-sm text-slate-500">
+
+                    Update the information of this leave allocation.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    {{-- Form Body --}}
+
+    <form method="POST"
+          action="{{ route('admin.leave-allocations.update', $leaveAllocation) }}">
+
+        @csrf
+
+        @method('PUT')
+
+        <div class="p-4 sm:p-6">
+
+            <div class="grid grid-cols-1 md:grid-cols-2
+                        gap-4 sm:gap-5">
+
 
                 {{-- Teacher / Staff --}}
+
                 <div>
-                    <label for="teacher_staff_id"
-                           class="block text-sm font-medium text-slate-700 mb-2">
+
+                    <label class="block text-xs sm:text-sm
+                                  font-medium text-slate-700 mb-1">
 
                         Teacher / Staff
+
                         <span class="text-red-500">*</span>
 
                     </label>
 
                     <select name="teacher_staff_id"
-                            id="teacher_staff_id"
-                            class="w-full rounded-lg border-slate-300
-                                   focus:border-blue-500 focus:ring-blue-500
-                                   text-sm @error('teacher_staff_id') border-red-500 @enderror">
+                            required
+                            class="w-full rounded-lg
+                                   border border-slate-300
+                                   bg-white
+                                   px-3 py-2.5
+                                   text-sm
+                                   focus:border-blue-500
+                                   focus:ring-2
+                                   focus:ring-blue-100
+                                   outline-none
+                                   @error('teacher_staff_id')
+                                       border-red-400
+                                   @enderror">
 
-                        <option value="">Select Teacher / Staff</option>
+                        <option value="">
+                            Select Teacher / Staff
+                        </option>
 
                         @foreach($teacherStaff as $staff)
 
@@ -86,31 +198,47 @@
                     </select>
 
                     @error('teacher_staff_id')
-                        <p class="mt-1 text-xs text-red-500">
+
+                        <p class="mt-1 text-xs text-red-600">
                             {{ $message }}
                         </p>
+
                     @enderror
 
                 </div>
 
 
                 {{-- Leave Type --}}
+
                 <div>
-                    <label for="leave_type_id"
-                           class="block text-sm font-medium text-slate-700 mb-2">
+
+                    <label class="block text-xs sm:text-sm
+                                  font-medium text-slate-700 mb-1">
 
                         Leave Type
+
                         <span class="text-red-500">*</span>
 
                     </label>
 
                     <select name="leave_type_id"
-                            id="leave_type_id"
-                            class="w-full rounded-lg border-slate-300
-                                   focus:border-blue-500 focus:ring-blue-500
-                                   text-sm @error('leave_type_id') border-red-500 @enderror">
+                            required
+                            class="w-full rounded-lg
+                                   border border-slate-300
+                                   bg-white
+                                   px-3 py-2.5
+                                   text-sm
+                                   focus:border-blue-500
+                                   focus:ring-2
+                                   focus:ring-blue-100
+                                   outline-none
+                                   @error('leave_type_id')
+                                       border-red-400
+                                   @enderror">
 
-                        <option value="">Select Leave Type</option>
+                        <option value="">
+                            Select Leave Type
+                        </option>
 
                         @foreach($leaveTypes as $leaveType)
 
@@ -126,31 +254,47 @@
                     </select>
 
                     @error('leave_type_id')
-                        <p class="mt-1 text-xs text-red-500">
+
+                        <p class="mt-1 text-xs text-red-600">
                             {{ $message }}
                         </p>
+
                     @enderror
 
                 </div>
 
 
                 {{-- Academic Session --}}
+
                 <div>
-                    <label for="academic_session_id"
-                           class="block text-sm font-medium text-slate-700 mb-2">
+
+                    <label class="block text-xs sm:text-sm
+                                  font-medium text-slate-700 mb-1">
 
                         Academic Session
+
                         <span class="text-red-500">*</span>
 
                     </label>
 
                     <select name="academic_session_id"
-                            id="academic_session_id"
-                            class="w-full rounded-lg border-slate-300
-                                   focus:border-blue-500 focus:ring-blue-500
-                                   text-sm @error('academic_session_id') border-red-500 @enderror">
+                            required
+                            class="w-full rounded-lg
+                                   border border-slate-300
+                                   bg-white
+                                   px-3 py-2.5
+                                   text-sm
+                                   focus:border-blue-500
+                                   focus:ring-2
+                                   focus:ring-blue-100
+                                   outline-none
+                                   @error('academic_session_id')
+                                       border-red-400
+                                   @enderror">
 
-                        <option value="">Select Academic Session</option>
+                        <option value="">
+                            Select Academic Session
+                        </option>
 
                         @foreach($academicSessions as $session)
 
@@ -166,48 +310,110 @@
                     </select>
 
                     @error('academic_session_id')
-                        <p class="mt-1 text-xs text-red-500">
+
+                        <p class="mt-1 text-xs text-red-600">
                             {{ $message }}
                         </p>
+
+                    @enderror
+
+                </div>
+
+
+                {{-- Year --}}
+
+                <div>
+
+                    <label class="block text-xs sm:text-sm
+                                  font-medium text-slate-700 mb-1">
+
+                        Year
+
+                        <span class="text-red-500">*</span>
+
+                    </label>
+
+                    <input type="number"
+                           name="year"
+                           value="{{ old('year', $leaveAllocation->year ?? date('Y')) }}"
+                           min="2000"
+                           max="2100"
+                           required
+                           placeholder="e.g. 2026"
+                           class="w-full rounded-lg
+                                  border border-slate-300
+                                  bg-white
+                                  px-3 py-2.5
+                                  text-sm
+                                  focus:border-blue-500
+                                  focus:ring-2
+                                  focus:ring-blue-100
+                                  outline-none
+                                  @error('year')
+                                      border-red-400
+                                  @enderror">
+
+                    @error('year')
+
+                        <p class="mt-1 text-xs text-red-600">
+                            {{ $message }}
+                        </p>
+
                     @enderror
 
                 </div>
 
 
                 {{-- Allocated Days --}}
+
                 <div>
-                    <label for="allocated_days"
-                           class="block text-sm font-medium text-slate-700 mb-2">
+
+                    <label class="block text-xs sm:text-sm
+                                  font-medium text-slate-700 mb-1">
 
                         Allocated Days
+
                         <span class="text-red-500">*</span>
 
                     </label>
 
                     <input type="number"
                            name="allocated_days"
-                           id="allocated_days"
+                           value="{{ old('allocated_days', $leaveAllocation->allocated_days) }}"
                            min="0"
                            step="0.5"
-                           value="{{ old('allocated_days', $leaveAllocation->allocated_days) }}"
-                           placeholder="Enter allocated days"
-                           class="w-full rounded-lg border-slate-300
-                                  focus:border-blue-500 focus:ring-blue-500
-                                  text-sm @error('allocated_days') border-red-500 @enderror">
+                           required
+                           placeholder="e.g. 15"
+                           class="w-full rounded-lg
+                                  border border-slate-300
+                                  bg-white
+                                  px-3 py-2.5
+                                  text-sm
+                                  focus:border-blue-500
+                                  focus:ring-2
+                                  focus:ring-blue-100
+                                  outline-none
+                                  @error('allocated_days')
+                                      border-red-400
+                                  @enderror">
 
                     @error('allocated_days')
-                        <p class="mt-1 text-xs text-red-500">
+
+                        <p class="mt-1 text-xs text-red-600">
                             {{ $message }}
                         </p>
+
                     @enderror
 
                 </div>
 
 
                 {{-- Used Days --}}
+
                 <div>
-                    <label for="used_days"
-                           class="block text-sm font-medium text-slate-700 mb-2">
+
+                    <label class="block text-xs sm:text-sm
+                                  font-medium text-slate-700 mb-1">
 
                         Used Days
 
@@ -215,83 +421,173 @@
 
                     <input type="number"
                            name="used_days"
-                           id="used_days"
+                           value="{{ old('used_days', $leaveAllocation->used_days) }}"
                            min="0"
                            step="0.5"
-                           value="{{ old('used_days', $leaveAllocation->used_days) }}"
-                           placeholder="Enter used days"
-                           class="w-full rounded-lg border-slate-300
-                                  focus:border-blue-500 focus:ring-blue-500
-                                  text-sm @error('used_days') border-red-500 @enderror">
+                           placeholder="e.g. 3"
+                           class="w-full rounded-lg
+                                  border border-slate-300
+                                  bg-white
+                                  px-3 py-2.5
+                                  text-sm
+                                  focus:border-blue-500
+                                  focus:ring-2
+                                  focus:ring-blue-100
+                                  outline-none
+                                  @error('used_days')
+                                      border-red-400
+                                  @enderror">
 
                     @error('used_days')
-                        <p class="mt-1 text-xs text-red-500">
+
+                        <p class="mt-1 text-xs text-red-600">
                             {{ $message }}
                         </p>
+
+                    @enderror
+
+                </div>
+
+
+                {{-- Remarks --}}
+
+                <div class="md:col-span-2">
+
+                    <label class="block text-xs sm:text-sm
+                                  font-medium text-slate-700 mb-1">
+
+                        Remarks
+
+                    </label>
+
+                    <textarea name="remarks"
+                              rows="3"
+                              placeholder="Optional remarks..."
+                              class="w-full rounded-lg
+                                     border border-slate-300
+                                     bg-white
+                                     px-3 py-2.5
+                                     text-sm
+                                     focus:border-blue-500
+                                     focus:ring-2
+                                     focus:ring-blue-100
+                                     outline-none
+                                     resize-none
+                                     @error('remarks')
+                                         border-red-400
+                                     @enderror">{{ old('remarks', $leaveAllocation->remarks) }}</textarea>
+
+                    @error('remarks')
+
+                        <p class="mt-1 text-xs text-red-600">
+                            {{ $message }}
+                        </p>
+
                     @enderror
 
                 </div>
 
 
                 {{-- Status --}}
-                <div>
-                    <label for="status"
-                           class="block text-sm font-medium text-slate-700 mb-2">
+
+                <div class="md:col-span-2">
+
+                    <label class="block text-xs sm:text-sm
+                                  font-medium text-slate-700 mb-2">
 
                         Status
 
                     </label>
 
-                    <select name="status"
-                            id="status"
-                            class="w-full rounded-lg border-slate-300
-                                   focus:border-blue-500 focus:ring-blue-500
-                                   text-sm">
+                    <label class="inline-flex items-center
+                                  cursor-pointer">
 
-                        <option value="1"
-                            {{ old('status', $leaveAllocation->status) == 1 ? 'selected' : '' }}>
+                        <input type="checkbox"
+                               name="status"
+                               value="1"
+                               class="sr-only peer"
+                               {{ old('status', $leaveAllocation->status) ? 'checked' : '' }}>
+
+                        <div class="relative w-11 h-6
+                                    bg-slate-300
+                                    rounded-full
+                                    peer
+                                    peer-checked:bg-blue-600
+                                    after:content-['']
+                                    after:absolute
+                                    after:top-[2px]
+                                    after:left-[2px]
+                                    after:bg-white
+                                    after:border
+                                    after:border-slate-300
+                                    after:rounded-full
+                                    after:h-5
+                                    after:w-5
+                                    after:transition-all
+                                    peer-checked:after:translate-x-full
+                                    peer-checked:after:border-white">
+                        </div>
+
+                        <span class="ml-3 text-sm text-slate-700">
                             Active
-                        </option>
+                        </span>
 
-                        <option value="0"
-                            {{ old('status', $leaveAllocation->status) == 0 ? 'selected' : '' }}>
-                            Inactive
-                        </option>
+                    </label>
 
-                    </select>
                 </div>
 
-            </div>
-
-
-            {{-- Buttons --}}
-            <div class="flex items-center justify-end gap-3 mt-6 pt-5
-                        border-t border-slate-200">
-
-                <a href="{{ route('leave-allocations.index') }}"
-                   class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200
-                          text-slate-700 rounded-lg text-sm font-medium">
-
-                    Cancel
-
-                </a>
-
-                <button type="submit"
-                        class="inline-flex items-center gap-2 px-5 py-2.5
-                               bg-blue-600 hover:bg-blue-700 text-white
-                               rounded-lg text-sm font-medium transition">
-
-                    <i class="bi bi-save"></i>
-                    Update Allocation
-
-                </button>
 
             </div>
 
-        </form>
+        </div>
 
-    </div>
+
+        {{-- Footer --}}
+
+        <div class="px-4 sm:px-6 py-4
+                    bg-slate-50
+                    border-t border-slate-200
+                    flex flex-col xs:flex-row
+                    gap-2.5 sm:gap-3
+                    sm:justify-end">
+
+            <a href="{{ route('admin.leave-allocations.index') }}"
+               class="w-full xs:w-auto
+                      inline-flex items-center
+                      justify-center gap-2
+                      px-5 py-2.5 rounded-lg
+                      bg-white
+                      border border-slate-300
+                      text-slate-700
+                      text-sm font-medium
+                      hover:bg-slate-100 transition">
+
+                Cancel
+
+            </a>
+
+
+            <button type="submit"
+                    class="w-full xs:w-auto
+                           inline-flex items-center
+                           justify-center gap-2
+                           px-5 py-2.5 rounded-lg
+                           bg-blue-600 text-white
+                           text-sm font-medium
+                           hover:bg-blue-700 transition">
+
+                <i class="bi bi-save"></i>
+
+                Update Allocation
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div> 
 
 </div>
 
-@endsection 
+@endsection

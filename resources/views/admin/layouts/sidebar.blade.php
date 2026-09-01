@@ -945,6 +945,16 @@
                         leave Allocations
                     </span>
                 </a>
+
+                <!-- Designations -->
+                <a href="{{ route('admin.leave-applications.index') }}"  class="nav-link group">
+                    <span class="nav-icon bg-slate-800 text-slate-400  group-hover:bg-blue-600  group-hover:text-white">
+                        <i class="bi bi-person-badge"></i>
+                    </span>
+                    <span>
+                        Leave Applications
+                    </span>
+                </a>
                 
 
                 <!-- salary structures -->
