@@ -958,7 +958,7 @@
                 
 
                 <!-- salary structures -->
-                <!-- <a href="{{ route('admin.salary-structures.index') }}"
+                <a href="{{ route('admin.teacher-staff-attendance.index') }}"
                 class="nav-link group">
 
                     <span class="nav-icon bg-slate-800 text-slate-400
@@ -976,27 +976,24 @@
                     </span>
 
                     <span>
-                    salary structures
+                   Teacher Staff Attendance
                     </span>
 
-                </a> -->
+                </a>
 
                 <!-- salary structures -->
-                <!-- <a href="{{ route('admin.salary-payments.index') }}"
-                class="nav-link group">
+                <a href="{{ route('admin.teacher-staff-attendance.report') }}" class="nav-link group">
                     <span class="nav-icon bg-slate-800 text-slate-400
                                 group-hover:bg-blue-600
                                 group-hover:text-white">
-                        <span class="nav-icon bg-slate-800 text-slate-400
-                                    group-hover:bg-blue-600
-                                    group-hover:text-white">
+                        <span class="nav-icon bg-slate-800 text-slate-400  group-hover:bg-blue-600  group-hover:text-white">
                             <i class="bi bi-person-lines-fill"></i>
                         </span>
                     </span>
                     <span>
-                    salary payments
+                   Teacher Staff Attendance Report
                     </span>
-                </a> -->
+                </a> 
             </div>
         </div>
                 <style>
@@ -1372,7 +1369,7 @@
 </style>
 
 
-// SIDEBAR JS 
+ <!-- SIDEBAR JS  -->
 
 <script>
 

@@ -30,6 +30,7 @@ use App\Http\Controllers\SalaryPaymentController;
 use App\Http\Controllers\LeaveTypeController;
 use App\Http\Controllers\LeaveAllocationController;
 use App\Http\Controllers\LeaveApplicationController;
+use App\Http\Controllers\TeacherStaffAttendanceController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -176,6 +177,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::delete('/{leaveApplication}', [ LeaveApplicationController::class,   'destroy'])->name('destroy');
             Route::post('/{leaveApplication}/approve', [ LeaveApplicationController::class,  'approve' ])->name('approve');
             Route::post('/{leaveApplication}/reject', [  LeaveApplicationController::class, 'reject'])->name('reject');
+        });
+
+        Route::prefix('teacher-staff-attendance') ->name('teacher-staff-attendance.')
+            ->group(function () {
+                Route::get(  '/',  [TeacherStaffAttendanceController::class, 'index'] )->name('index');
+                Route::get(  '/create', [TeacherStaffAttendanceController::class, 'create'] )->name('create');
+                Route::post(  '/',  [TeacherStaffAttendanceController::class, 'store'] )->name('store');
+                Route::get( '/{teacherStaffAttendance}', [TeacherStaffAttendanceController::class, 'show'])->name('show');
+                Route::get( '/{teacherStaffAttendance}/edit', [TeacherStaffAttendanceController::class, 'edit'])->name('edit');
+                Route::put( '/{teacherStaffAttendance}',  [TeacherStaffAttendanceController::class, 'update'] )->name('update');
+                Route::delete(  '/{teacherStaffAttendance}', [TeacherStaffAttendanceController::class, 'destroy'] )->name('destroy');
+
+                // Report — অবশ্যই /{attendance} এর আগে
+                Route::get('/report', [ TeacherStaffAttendanceController::class, 'report' ])->name('report');
         });
 
 });
