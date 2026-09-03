@@ -39,20 +39,29 @@ class ExamScheduleController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function create(Exam $exam)
-    {
-        $subjects = ClassSubject::with('subject')
-            ->where('school_class_id', $exam->school_class_id)
-            ->get()
-            ->pluck('subject')
-            ->filter();
+ public function create(Exam $exam)
+{
+    // Load exam information
+    $exam->load([
+        'branch',
+        'academicSession',
+        'schoolClass',
+        'section',
+    ]);
 
-        return view('admin.exam-schedules.create', compact(
-            'exam',
-            'subjects'
-        ));
-    }
+    // Get only subjects assigned to this exam's class
+    $subjects = ClassSubject::with('subject')
+        ->where('class_id', $exam->school_class_id)
+        ->get()
+        ->pluck('subject')
+        ->filter()
+        ->values();
 
+    return view(
+        'admin.exam-schedules.create',
+        compact('exam', 'subjects')
+    );
+}
 
     /*
     |--------------------------------------------------------------------------
@@ -132,22 +141,36 @@ class ExamScheduleController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function edit(Exam $exam, ExamSchedule $schedule)
-    {
-        abort_unless(
-            $schedule->exam_id == $exam->id,
-            404
-        );
+   public function edit(Exam $exam, ExamSchedule $schedule)
+{
+    abort_unless(
+        $schedule->exam_id == $exam->id,
+        404
+    );
 
-        $subjects = Subject::orderBy('name')->get();
+    $exam->load([
+        'branch',
+        'academicSession',
+        'schoolClass',
+        'section',
+    ]);
 
-        return view('admin.exam-schedules.edit', compact(
+    $subjects = ClassSubject::with('subject')
+        ->where('class_id', $exam->school_class_id)
+        ->get()
+        ->pluck('subject')
+        ->filter()
+        ->values();
+
+    return view(
+        'admin.exam-schedules.edit',
+        compact(
             'exam',
             'schedule',
             'subjects'
-        ));
-    }
-
+        )
+    );
+}
 
     /*
     |--------------------------------------------------------------------------

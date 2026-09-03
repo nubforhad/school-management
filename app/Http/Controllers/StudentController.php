@@ -13,11 +13,7 @@ use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Student List
-    |--------------------------------------------------------------------------
-    */
+    /* Student List */
 
     public function index(Request $request)
     {
@@ -57,7 +53,6 @@ class StudentController extends Controller
                         ->orWhere('admission_no', 'like', "%{$search}%")
                         ->orWhere('roll_no', 'like', "%{$search}%")
                         ->orWhere('guardian_phone', 'like', "%{$search}%");
-
                 });
             })
             ->latest()
@@ -65,25 +60,11 @@ class StudentController extends Controller
             ->withQueryString();
 
 
-        $branches = Branch::where('status', true)
-            ->orderBy('name')
-            ->get();
-
-        $academicSessions = AcademicSession::orderByDesc('id')
-            ->get();
-
-        $classes = SchoolClass::where('status', true)
-            ->orderBy('numeric_order')
-            ->get();
-
-        $sections = Section::where('status', true)
-            ->orderBy('name')
-            ->get();
-
-
-        return view(
-            'admin.students.index',
-            compact(
+        $branches = Branch::where('status', true)->orderBy('name')->get();
+        $academicSessions = AcademicSession::orderByDesc('id')->get();
+        $classes = SchoolClass::where('status', true)->orderBy('numeric_order')->get();
+        $sections = Section::where('status', true)->orderBy('name')->get();
+        return view('admin.students.index',  compact(
                 'students',
                 'branches',
                 'academicSessions',

@@ -13,66 +13,34 @@
     ========================================================== --}}
 
     <div class="mb-5 sm:mb-6">
-
-        <div class="flex flex-col lg:flex-row
-                    lg:items-center lg:justify-between gap-4">
-
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div>
                 <div class="flex items-center gap-2 mb-1">
-
-                    <a href="{{ route('admin.exams.index') }}"
-                       class="text-slate-400 hover:text-blue-600 transition">
-
+                    <a href="{{ route('admin.exams.index') }}"  class="text-slate-400 hover:text-blue-600 transition">
                         <i class="bi bi-arrow-left"></i>
-
                     </a>
-
                     <span class="text-slate-300">/</span>
-
                     <span class="text-xs sm:text-sm text-slate-500">
                         Exam
                     </span>
-
                     <span class="text-slate-300">/</span>
-
                     <span class="text-xs sm:text-sm text-slate-600">
                         Schedule
                     </span>
-
                 </div>
-
                 <h1 class="text-xl sm:text-2xl font-bold text-slate-800">
                     Exam Schedule
                 </h1>
-
                 <p class="mt-1 text-xs sm:text-sm text-slate-500">
                     Manage subjects, dates and timings for this examination
                 </p>
             </div>
-
-
             {{-- Add Schedule --}}
-
             <div class="flex flex-col sm:flex-row gap-2">
-
-                <a href="{{ route('admin.exams.index') }}"
-                   class="inline-flex items-center justify-center gap-2
-                          rounded-lg
-                          border border-slate-300
-                          bg-white
-                          px-4 py-2.5
-                          text-sm font-medium
-                          text-slate-700
-                          hover:bg-slate-50
-                          transition">
-
+                <a href="{{ route('admin.exams.index') }}"  class="inline-flex items-center justify-center gap-2 rounded-lg border border-slate-300  bg-whiten px-4 py-2.5 text-sm font-medium  text-slate-700 hover:bg-slate-50 transition">
                     <i class="bi bi-arrow-left"></i>
-
                     Back to Exams
-
                 </a>
-
-
                 <a href="{{ route('admin.exams.schedules.create', $exam) }}"
                    class="inline-flex items-center justify-center gap-2
                           rounded-lg
@@ -82,26 +50,16 @@
                           text-white
                           hover:bg-blue-700
                           transition">
-
                     <i class="bi bi-plus-lg"></i>
-
                     Add Schedule
-
                 </a>
-
             </div>
-
         </div>
-
     </div>
 
-
-    {{-- =========================================================
-        SUCCESS MESSAGE
-    ========================================================== --}}
+    {{-- =====================  SUCCESS MESSAGE =========== --}}
 
     @if(session('success'))
-
         <div class="mb-5 rounded-lg
                     border border-green-200
                     bg-green-50
@@ -136,9 +94,7 @@
     @endif
 
 
-    {{-- =========================================================
-        EXAM INFORMATION
-    ========================================================== --}}
+    {{-- =========== EXAM INFORMATION ============ --}}
 
     <div class="bg-white
                 rounded-xl
@@ -270,9 +226,7 @@
     </div>
 
 
-    {{-- =========================================================
-        SCHEDULE TABLE
-    ========================================================== --}}
+    {{-- ============ SCHEDULE TABLE ================ --}}
 
     <div class="bg-white
                 rounded-xl
@@ -334,68 +288,50 @@
         </div>
 
 
-        {{-- =====================================================
-            DESKTOP TABLE
-        ====================================================== --}}
+        {{-- ========== DESKTOP TABLE ============== --}}
 
         <div class="hidden md:block overflow-x-auto">
 
             <table class="w-full text-sm">
 
-                <thead class="bg-slate-50
-                              border-b border-slate-200">
-
+                <thead class="bg-slate-50  border-b border-slate-200">
                     <tr>
-
                         <th class="px-4 py-3 text-left
                                    font-semibold text-slate-600">
                             #
                         </th>
-
                         <th class="px-4 py-3 text-left
                                    font-semibold text-slate-600">
                             Subject
                         </th>
-
                         <th class="px-4 py-3 text-left
                                    font-semibold text-slate-600">
                             Exam Date
                         </th>
-
                         <th class="px-4 py-3 text-left
                                    font-semibold text-slate-600">
                             Time
                         </th>
-
                         <th class="px-4 py-3 text-left
                                    font-semibold text-slate-600">
                             Room
                         </th>
-
                         <th class="px-4 py-3 text-right
                                    font-semibold text-slate-600">
                             Marks
                         </th>
-
                         <th class="px-4 py-3 text-right
                                    font-semibold text-slate-600">
                             Actions
                         </th>
-
                     </tr>
-
                 </thead>
-
-
                 <tbody class="divide-y divide-slate-100">
 
                     @forelse($schedules as $schedule)
-
                         <tr class="hover:bg-slate-50 transition">
 
-
                             {{-- Number --}}
-
                             <td class="px-4 py-4 text-slate-500">
 
                                 {{ $loop->iteration }}
@@ -1061,17 +997,11 @@
                                            transition">
 
                                 <i class="bi bi-trash3"></i>
-
                                 Delete
-
                             </button>
-
                         </form>
-
                     </div>
-
                 </div>
-
             @empty
 
                 <div class="px-4 py-16 text-center">
@@ -1084,30 +1014,21 @@
                                     rounded-full
                                     bg-blue-50
                                     text-blue-600">
-
-                            <i class="bi bi-calendar-x
-                                      text-3xl"></i>
-
+                            <i class="bi bi-calendar-x   text-3xl"></i>
                         </div>
 
                         <h3 class="mt-4
                                    text-base
                                    font-semibold
                                    text-slate-700">
-
                             No Exam Schedule Found
-
                         </h3>
-
                         <p class="mt-1
                                   text-sm
                                   text-slate-500">
-
                             No subjects have been added
                             to this examination yet.
-
                         </p>
-
                         <a href="{{ route(
                             'admin.exams.schedules.create',
                             $exam
@@ -1125,21 +1046,13 @@
                                   transition">
 
                             <i class="bi bi-plus-lg"></i>
-
                             Add Schedule
-
                         </a>
-
                     </div>
-
                 </div>
-
             @endforelse
-
         </div>
-
     </div>
-
 </div>
 
 @endsection

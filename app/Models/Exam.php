@@ -60,6 +60,8 @@ class Exam extends Model
         return $this->hasMany(ExamSchedule::class);
     }
 
+   
+
     
 
 

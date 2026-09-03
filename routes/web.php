@@ -151,7 +151,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('exams', ExamController::class);
 
-    Route::resource( 'exams.schedules', ExamScheduleController::class)->names('exams.schedules');
+  //  Route::resource( 'exams.schedules', ExamScheduleController::class)->names('exams.schedules');
 
     //  departments
     Route::resource('departments', DepartmentController::class)->except(['show']);
