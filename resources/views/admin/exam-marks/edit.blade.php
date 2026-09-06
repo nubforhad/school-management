@@ -1,25 +1,23 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Enter Exam Marks')
+@section('title', 'Edit Exam Marks')
 
-@section('page-title', 'Enter Exam Marks')
+@section('page-title', 'Edit Exam Marks')
 
 @section('content')
 
 <div class="max-w-5xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
 
-    {{-- =========================================================
-        HEADER
-    ========================================================== --}}
+    {{-- HEADER --}}
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
 
         <div>
             <h1 class="text-2xl sm:text-3xl font-bold text-slate-800">
-                Enter Exam Marks
+                Edit Exam Marks
             </h1>
 
             <p class="mt-1 text-sm text-slate-500">
-                Enter marks for a student in a specific examination subject.
+                Update examination marks, grade and result information.
             </p>
         </div>
 
@@ -48,9 +46,7 @@
     </div>
 
 
-    {{-- =========================================================
-        BREADCRUMB
-    ========================================================== --}}
+    {{-- BREADCRUMB --}}
     <div class="mb-6">
 
         <nav class="flex items-center gap-2 text-sm text-slate-500">
@@ -70,7 +66,7 @@
             <span>/</span>
 
             <span class="text-slate-700 font-medium">
-                Enter Marks
+                Edit
             </span>
 
         </nav>
@@ -78,9 +74,7 @@
     </div>
 
 
-    {{-- =========================================================
-        VALIDATION ERRORS
-    ========================================================== --}}
+    {{-- ERRORS --}}
     @if($errors->any())
 
         <div class="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
@@ -110,9 +104,7 @@
 
                         @foreach($errors->all() as $error)
 
-                            <li>
-                                {{ $error }}
-                            </li>
+                            <li>{{ $error }}</li>
 
                         @endforeach
 
@@ -127,9 +119,7 @@
     @endif
 
 
-    {{-- =========================================================
-        INFO BOX
-    ========================================================== --}}
+    {{-- INFO --}}
     <div class="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
 
         <div class="flex items-start gap-3">
@@ -155,12 +145,12 @@
             <div>
 
                 <h3 class="font-semibold text-blue-800 text-sm">
-                    Marks Entry Information
+                    Marks Record
                 </h3>
 
                 <p class="text-sm text-blue-700 mt-1">
-                    Select an exam subject and student carefully.
-                    Full marks and pass marks can be taken from the assigned exam subject.
+                    Update the marks information below. The record ID is
+                    <strong>#{{ $examMark->id }}</strong>.
                 </p>
 
             </div>
@@ -170,14 +160,13 @@
     </div>
 
 
-    {{-- =========================================================
-        FORM
-    ========================================================== --}}
+    {{-- FORM --}}
     <form method="POST"
-          action="{{ route('admin.exam-marks.store') }}"
-          id="exam-mark-form">
+          id="exam-mark-update-form"
+          action="{{ route('admin.exam-marks.update', $examMark) }}">
 
         @csrf
+        @method('PUT')
 
 
         {{-- =====================================================
@@ -193,7 +182,7 @@
                 </h2>
 
                 <p class="text-xs text-slate-500 mt-1">
-                    Select the examination and academic information.
+                    Examination and academic information.
                 </p>
 
             </div>
@@ -202,7 +191,6 @@
             <div class="p-4 sm:p-5">
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-
 
                     {{-- Exam --}}
                     <div>
@@ -229,7 +217,7 @@
                             @foreach($exams as $exam)
 
                                 <option value="{{ $exam->id }}"
-                                    {{ old('exam_id') == $exam->id ? 'selected' : '' }}>
+                                    {{ old('exam_id', $examMark->exam_id) == $exam->id ? 'selected' : '' }}>
 
                                     {{ $exam->name }}
 
@@ -277,7 +265,7 @@
                             @foreach($academicSessions as $session)
 
                                 <option value="{{ $session->id }}"
-                                    {{ old('academic_session_id') == $session->id ? 'selected' : '' }}>
+                                    {{ old('academic_session_id', $examMark->academic_session_id) == $session->id ? 'selected' : '' }}>
 
                                     {{ $session->name ?? 'Session #' . $session->id }}
 
@@ -321,7 +309,7 @@
                             @foreach($schoolClasses as $class)
 
                                 <option value="{{ $class->id }}"
-                                    {{ old('school_class_id') == $class->id ? 'selected' : '' }}>
+                                    {{ old('school_class_id', $examMark->school_class_id) == $class->id ? 'selected' : '' }}>
 
                                     {{ $class->name }}
 
@@ -357,13 +345,13 @@
                                        text-sm">
 
                             <option value="">
-                                All / No Section
+                                No Section
                             </option>
 
                             @foreach($sections as $section)
 
                                 <option value="{{ $section->id }}"
-                                    {{ old('section_id') == $section->id ? 'selected' : '' }}>
+                                    {{ old('section_id', $examMark->section_id) == $section->id ? 'selected' : '' }}>
 
                                     {{ $section->name }}
 
@@ -400,10 +388,6 @@
                     Subject & Student
                 </h2>
 
-                <p class="text-xs text-slate-500 mt-1">
-                    Select the subject and student for marks entry.
-                </p>
-
             </div>
 
 
@@ -437,7 +421,7 @@
                             @foreach($subjects as $subject)
 
                                 <option value="{{ $subject->id }}"
-                                    {{ old('subject_id') == $subject->id ? 'selected' : '' }}>
+                                    {{ old('subject_id', $examMark->subject_id) == $subject->id ? 'selected' : '' }}>
 
                                     {{ $subject->name }}
 
@@ -481,7 +465,7 @@
                             @foreach($students as $student)
 
                                 <option value="{{ $student->id }}"
-                                    {{ old('student_id') == $student->id ? 'selected' : '' }}>
+                                    {{ old('student_id', $examMark->student_id) == $student->id ? 'selected' : '' }}>
 
                                     {{ $student->name
                                         ?? $student->student_name
@@ -523,19 +507,20 @@
                                        text-sm">
 
                             <option value="">
-                                Select Exam Subject Assignment
+                                No Assignment
                             </option>
 
                             @foreach($examSubjects as $examSubject)
 
                                 <option value="{{ $examSubject->id }}"
                                     data-exam="{{ $examSubject->exam_id }}"
+                                    data-session="{{ $examSubject->academic_session_id }}"
                                     data-class="{{ $examSubject->school_class_id }}"
                                     data-section="{{ $examSubject->section_id }}"
                                     data-subject="{{ $examSubject->subject_id }}"
                                     data-full-marks="{{ $examSubject->full_marks }}"
                                     data-pass-marks="{{ $examSubject->pass_marks }}"
-                                    {{ old('exam_subject_id') == $examSubject->id ? 'selected' : '' }}>
+                                    {{ old('exam_subject_id', $examMark->exam_subject_id) == $examSubject->id ? 'selected' : '' }}>
 
                                     {{ $examSubject->exam?->name ?? 'Exam' }}
                                     -
@@ -555,8 +540,7 @@
                         </select>
 
                         <p class="mt-1.5 text-xs text-slate-500">
-                            Optional. Selecting an assignment will automatically fill
-                            full marks and pass marks.
+                            Select an assignment to load its full marks and pass marks.
                         </p>
 
                         @error('exam_subject_id')
@@ -586,10 +570,6 @@
                     Marks Information
                 </h2>
 
-                <p class="text-xs text-slate-500 mt-1">
-                    Enter obtained marks and result information.
-                </p>
-
             </div>
 
 
@@ -612,7 +592,7 @@
                         <input type="number"
                                name="full_marks"
                                id="full_marks"
-                               value="{{ old('full_marks', '100') }}"
+                               value="{{ old('full_marks', $examMark->full_marks) }}"
                                min="0"
                                step="0.01"
                                required
@@ -642,7 +622,7 @@
                         <input type="number"
                                name="pass_marks"
                                id="pass_marks"
-                               value="{{ old('pass_marks') }}"
+                               value="{{ old('pass_marks', $examMark->pass_marks) }}"
                                min="0"
                                step="0.01"
                                class="w-full rounded-lg border-slate-300
@@ -658,7 +638,7 @@
                     </div>
 
 
-                    {{-- Obtained Marks --}}
+                    {{-- Obtained --}}
                     <div>
 
                         <label for="obtained_marks"
@@ -671,7 +651,7 @@
                         <input type="number"
                                name="obtained_marks"
                                id="obtained_marks"
-                               value="{{ old('obtained_marks') }}"
+                               value="{{ old('obtained_marks', $examMark->obtained_marks) }}"
                                min="0"
                                step="0.01"
                                class="w-full rounded-lg border-slate-300
@@ -707,40 +687,24 @@
                                 Select Grade
                             </option>
 
-                            <option value="A+"
-                                {{ old('grade') === 'A+' ? 'selected' : '' }}>
-                                A+
-                            </option>
+                            @foreach([
+                                'A+' => 'A+',
+                                'A'  => 'A',
+                                'A-' => 'A-',
+                                'B'  => 'B',
+                                'C'  => 'C',
+                                'D'  => 'D',
+                                'F'  => 'F',
+                            ] as $value => $label)
 
-                            <option value="A"
-                                {{ old('grade') === 'A' ? 'selected' : '' }}>
-                                A
-                            </option>
+                                <option value="{{ $value }}"
+                                    {{ old('grade', $examMark->grade) === $value ? 'selected' : '' }}>
 
-                            <option value="A-"
-                                {{ old('grade') === 'A-' ? 'selected' : '' }}>
-                                A-
-                            </option>
+                                    {{ $label }}
 
-                            <option value="B"
-                                {{ old('grade') === 'B' ? 'selected' : '' }}>
-                                B
-                            </option>
+                                </option>
 
-                            <option value="C"
-                                {{ old('grade') === 'C' ? 'selected' : '' }}>
-                                C
-                            </option>
-
-                            <option value="D"
-                                {{ old('grade') === 'D' ? 'selected' : '' }}>
-                                D
-                            </option>
-
-                            <option value="F"
-                                {{ old('grade') === 'F' ? 'selected' : '' }}>
-                                F
-                            </option>
+                            @endforeach
 
                         </select>
 
@@ -766,7 +730,7 @@
                         <input type="number"
                                name="grade_point"
                                id="grade_point"
-                               value="{{ old('grade_point') }}"
+                               value="{{ old('grade_point', $examMark->grade_point) }}"
                                min="0"
                                max="10"
                                step="0.01"
@@ -798,7 +762,7 @@
                             <input type="checkbox"
                                    name="status"
                                    value="1"
-                                   {{ old('status', true) ? 'checked' : '' }}
+                                   {{ old('status', $examMark->status) ? 'checked' : '' }}
                                    class="rounded border-slate-300
                                           text-blue-600
                                           focus:ring-blue-500">
@@ -827,10 +791,10 @@
                     <textarea name="remarks"
                               id="remarks"
                               rows="4"
-                              placeholder="Enter any remarks about the student's performance..."
+                              placeholder="Enter remarks..."
                               class="w-full rounded-lg border-slate-300
                                      focus:border-blue-500 focus:ring-blue-500
-                                     text-sm">{{ old('remarks') }}</textarea>
+                                     text-sm">{{ old('remarks', $examMark->remarks) }}</textarea>
 
                     @error('remarks')
                         <p class="mt-1 text-xs text-red-600">
@@ -849,15 +813,15 @@
             RESULT PREVIEW
         ====================================================== --}}
         <div id="result-preview"
-             class="hidden mb-6 bg-slate-50
-                    border border-slate-200 rounded-xl p-4">
+             class="mb-6 bg-slate-50 border border-slate-200
+                    rounded-xl p-4">
 
-            <div class="flex items-center justify-between gap-4">
+            <div class="grid grid-cols-2 gap-4">
 
                 <div>
 
                     <p class="text-xs text-slate-500">
-                        Result Preview
+                        Result
                     </p>
 
                     <p id="result-text"
@@ -886,28 +850,71 @@
 
 
         {{-- =====================================================
-            FOOTER ACTIONS
+            RECORD INFORMATION
+        ====================================================== --}}
+        <div class="mb-6 bg-slate-50 border border-slate-200
+                    rounded-xl p-4">
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+                <div>
+
+                    <p class="text-xs text-slate-500">
+                        Record ID
+                    </p>
+
+                    <p class="text-sm font-semibold text-slate-700 mt-1">
+                        #{{ $examMark->id }}
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <p class="text-xs text-slate-500">
+                        Created
+                    </p>
+
+                    <p class="text-sm font-semibold text-slate-700 mt-1">
+
+                        {{ $examMark->created_at?->format('d M Y, h:i A') ?? '—' }}
+
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <p class="text-xs text-slate-500">
+                        Last Updated
+                    </p>
+
+                    <p class="text-sm font-semibold text-slate-700 mt-1">
+
+                        {{ $examMark->updated_at?->format('d M Y, h:i A') ?? '—' }}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- =====================================================
+            ACTIONS
         ====================================================== --}}
         <div class="flex flex-col-reverse sm:flex-row
-                    sm:items-center sm:justify-end gap-3">
+                    sm:items-center sm:justify-between gap-3">
 
-            <a href="{{ route('admin.exam-marks.index') }}"
-               class="inline-flex items-center justify-center
-                      px-5 py-2.5 rounded-lg
-                      bg-slate-100 hover:bg-slate-200
-                      text-slate-700 text-sm font-semibold transition">
-
-                Cancel
-
-            </a>
-
-
-            <button type="submit"
+            {{-- Delete --}}
+            <button type="button"
+                    onclick="if(confirm('Are you sure you want to delete these marks?')) document.getElementById('delete-exam-mark-form').submit();"
                     class="inline-flex items-center justify-center gap-2
                            px-5 py-2.5 rounded-lg
-                           bg-blue-600 hover:bg-blue-700
-                           text-white text-sm font-semibold
-                           shadow-sm transition">
+                           bg-red-50 hover:bg-red-100
+                           text-red-600 text-sm font-semibold transition">
 
                 <svg xmlns="http://www.w3.org/2000/svg"
                      class="w-4 h-4"
@@ -918,15 +925,67 @@
                     <path stroke-linecap="round"
                           stroke-linejoin="round"
                           stroke-width="2"
-                          d="M5 13l4 4L19 7"/>
+                          d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m-7 0h12"/>
 
                 </svg>
 
-                Save Marks
+                Delete Marks
 
             </button>
 
+
+            <div class="flex flex-col sm:flex-row gap-3">
+
+                <a href="{{ route('admin.exam-marks.index') }}"
+                   class="inline-flex items-center justify-center
+                          px-5 py-2.5 rounded-lg
+                          bg-slate-100 hover:bg-slate-200
+                          text-slate-700 text-sm font-semibold transition">
+
+                    Cancel
+
+                </a>
+
+
+                <button type="submit"
+                        class="inline-flex items-center justify-center gap-2
+                               px-5 py-2.5 rounded-lg
+                               bg-blue-600 hover:bg-blue-700
+                               text-white text-sm font-semibold
+                               shadow-sm transition">
+
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="w-4 h-4"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor">
+
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5 13l4 4L19 7"/>
+
+                    </svg>
+
+                    Update Marks
+
+                </button>
+
+            </div>
+
         </div>
+
+    </form>
+
+
+    {{-- DELETE FORM --}}
+    <form method="POST"
+          id="delete-exam-mark-form"
+          action="{{ route('admin.exam-marks.destroy', $examMark) }}"
+          class="hidden">
+
+        @csrf
+        @method('DELETE')
 
     </form>
 
@@ -940,23 +999,34 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const examSubjectSelect = document.getElementById('exam_subject_id');
+    const examSubjectSelect =
+        document.getElementById('exam_subject_id');
 
-    const fullMarksInput = document.getElementById('full_marks');
-    const passMarksInput = document.getElementById('pass_marks');
-    const obtainedMarksInput = document.getElementById('obtained_marks');
+    const fullMarksInput =
+        document.getElementById('full_marks');
 
-    const gradeSelect = document.getElementById('grade');
-    const gradePointInput = document.getElementById('grade_point');
+    const passMarksInput =
+        document.getElementById('pass_marks');
 
-    const resultPreview = document.getElementById('result-preview');
-    const resultText = document.getElementById('result-text');
-    const percentageText = document.getElementById('percentage-text');
+    const obtainedMarksInput =
+        document.getElementById('obtained_marks');
+
+    const gradeSelect =
+        document.getElementById('grade');
+
+    const gradePointInput =
+        document.getElementById('grade_point');
+
+    const resultText =
+        document.getElementById('result-text');
+
+    const percentageText =
+        document.getElementById('percentage-text');
 
 
     /*
     |--------------------------------------------------------------------------
-    | Exam Subject Selection
+    | Exam Subject
     |--------------------------------------------------------------------------
     */
 
@@ -971,74 +1041,55 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
+            const exam =
+                selected.dataset.exam;
+
+            const session =
+                selected.dataset.session;
+
+            const schoolClass =
+                selected.dataset.class;
+
+            const section =
+                selected.dataset.section;
+
+            const subject =
+                selected.dataset.subject;
+
             const fullMarks =
                 selected.dataset.fullMarks;
 
             const passMarks =
                 selected.dataset.passMarks;
 
-            const examId =
-                selected.dataset.exam;
 
-            const classId =
-                selected.dataset.class;
+            if (exam) {
+                document.getElementById('exam_id').value = exam;
+            }
 
-            const sectionId =
-                selected.dataset.section;
+            if (session) {
+                document.getElementById('academic_session_id').value = session;
+            }
 
-            const subjectId =
-                selected.dataset.subject;
+            if (schoolClass) {
+                document.getElementById('school_class_id').value = schoolClass;
+            }
 
+            if (section) {
+                document.getElementById('section_id').value = section;
+            }
+
+            if (subject) {
+                document.getElementById('subject_id').value = subject;
+            }
 
             if (fullMarks !== undefined && fullMarks !== '') {
-
                 fullMarksInput.value = fullMarks;
-
             }
-
 
             if (passMarks !== undefined && passMarks !== '') {
-
                 passMarksInput.value = passMarks;
-
             }
-
-
-            /*
-            |--------------------------------------------------------------------------
-            | Automatically select related fields
-            |--------------------------------------------------------------------------
-            */
-
-            const examSelect =
-                document.getElementById('exam_id');
-
-            const classSelect =
-                document.getElementById('school_class_id');
-
-            const sectionSelect =
-                document.getElementById('section_id');
-
-            const subjectSelect =
-                document.getElementById('subject_id');
-
-
-            if (examSelect && examId) {
-                examSelect.value = examId;
-            }
-
-            if (classSelect && classId) {
-                classSelect.value = classId;
-            }
-
-            if (sectionSelect && sectionId) {
-                sectionSelect.value = sectionId;
-            }
-
-            if (subjectSelect && subjectId) {
-                subjectSelect.value = subjectId;
-            }
-
 
             calculateResult();
 
@@ -1071,7 +1122,8 @@ document.addEventListener('DOMContentLoaded', function () {
             isNaN(obtainedMarks)
         ) {
 
-            resultPreview.classList.add('hidden');
+            resultText.textContent = 'Pending';
+            percentageText.textContent = '—';
 
             return;
 
@@ -1100,12 +1152,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
-        resultPreview.classList.remove('hidden');
-
-
         /*
         |--------------------------------------------------------------------------
-        | Automatic Grade
+        | Auto Grade
         |--------------------------------------------------------------------------
         */
 
@@ -1153,58 +1202,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
         /*
         |--------------------------------------------------------------------------
-        | Only auto-fill if fields are empty
+        | Update Grade Automatically
         |--------------------------------------------------------------------------
         */
 
-        if (!gradeSelect.value) {
-
-            gradeSelect.value = grade;
-
-        }
-
-        if (!gradePointInput.value) {
-
-            gradePointInput.value = gradePoint;
-
-        }
-
-    }
-
-
-    if (obtainedMarksInput) {
-
-        obtainedMarksInput.addEventListener(
-            'input',
-            calculateResult
-        );
-
-    }
-
-
-    if (fullMarksInput) {
-
-        fullMarksInput.addEventListener(
-            'input',
-            calculateResult
-        );
-
-    }
-
-
-    if (passMarksInput) {
-
-        passMarksInput.addEventListener(
-            'input',
-            calculateResult
-        );
+        gradeSelect.value = grade;
+        gradePointInput.value = gradePoint;
 
     }
 
 
     /*
     |--------------------------------------------------------------------------
-    | Initial Calculation
+    | Events
+    |--------------------------------------------------------------------------
+    */
+
+    obtainedMarksInput.addEventListener(
+        'input',
+        calculateResult
+    );
+
+    fullMarksInput.addEventListener(
+        'input',
+        calculateResult
+    );
+
+    passMarksInput.addEventListener(
+        'input',
+        calculateResult
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Initial Result
     |--------------------------------------------------------------------------
     */
 

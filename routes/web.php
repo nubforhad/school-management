@@ -152,6 +152,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('exams', ExamController::class); 
     Route::resource('exam-schedules', ExamScheduleController::class);
     Route::resource( 'exam-subjects',  ExamSubjectController::class);
+    Route::resource('exam-marks', ExamMarkController::class);
 
   //  Route::resource( 'exams.schedules', ExamScheduleController::class)->names('exams.schedules');
 
@@ -211,10 +212,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     // =============== Exam Marks
 
-    Route::prefix('admin/exam-marks')->name('admin.exam-marks.')->group(function () {
-        Route::get('/', [ExamMarkController::class, 'index'])->name('index');
-        Route::post('/', [ExamMarkController::class, 'store'])->name('store');
-    });
+    // Route::prefix('admin/exam-marks')->name('admin.exam-marks.')->group(function () {
+    //     Route::get('/', [ExamMarkController::class, 'index'])->name('index');
+    //     Route::post('/', [ExamMarkController::class, 'store'])->name('store');
+    // });
 
     
 
