@@ -9,6 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('exam_schedules', function (Blueprint $table) {
+
             $table->id();
 
             $table->foreignId('branch_id')
@@ -24,7 +25,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->foreignId('school_class_id')
-                ->constrained('school_classes')
+                ->constrained('classes')
                 ->cascadeOnDelete();
 
             $table->foreignId('section_id')
@@ -37,21 +38,43 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->date('exam_date');
+
             $table->time('start_time');
+
             $table->time('end_time');
+
             $table->string('room')->nullable();
-            $table->decimal('full_marks', 8, 2)->default(100);
-            $table->decimal('pass_marks', 8, 2)->nullable();
+
+            $table->decimal('full_marks', 8, 2)
+                ->default(100);
+
+            $table->decimal('pass_marks', 8, 2)
+                ->nullable();
+
             $table->text('instructions')->nullable();
-            $table->boolean('status')->default(true);
+
+            $table->boolean('status')
+                ->default(true);
+
             $table->timestamps();
-            $table->index([
-                'branch_id',
-                'exam_id',
-                'school_class_id',
-                'section_id',
-                'exam_date'
-            ]);
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | Index
+            |--------------------------------------------------------------------------
+            */
+
+            $table->index(
+                [
+                    'branch_id',
+                    'exam_id',
+                    'school_class_id',
+                    'section_id',
+                    'exam_date'
+                ],
+                'exam_schedule_filter_idx'
+            );
         });
     }
 

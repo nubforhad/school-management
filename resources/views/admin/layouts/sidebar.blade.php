@@ -735,6 +735,52 @@
                     exam marks
                 </span>
             </a>
+
+            <a href="{{ route('admin.exam-subjects.index') }}"
+                class="sub-link
+                       {{ request()->routeIs('admin.exam-subjects.*')
+                            ? 'sub-link-active'
+                            : '' }}">
+                <i class="bi bi-person-check w-4 text-center"></i>
+                <span>
+                    exam Subject
+                </span>
+            </a>
+
+            <a href="{{ route('admin.student-results.index') }}"
+                class="sub-link
+                       {{ request()->routeIs('admin.exam-marks.*')
+                            ? 'sub-link-active'
+                            : '' }}">
+                <i class="bi bi-person-check w-4 text-center"></i>
+                <span>
+                    Student Result
+                </span>
+            </a>
+
+            <a href="{{ route('admin.result-sheets.show') }}"
+                class="sub-link
+                       {{ request()->routeIs('admin.result-sheets.*')
+                            ? 'sub-link-active'
+                            : '' }}">
+                <i class="bi bi-person-check w-4 text-center"></i>
+                <span>
+                     Result Sheets
+                </span>
+            </a>
+
+            <a href="{{ route('admin.class-results.index') }}"
+                class="sub-link
+                       {{ request()->routeIs('admin.class-results.*')
+                            ? 'sub-link-active'
+                            : '' }}">
+                <i class="bi bi-person-check w-4 text-center"></i>
+                <span>
+                    Class Result
+                </span>
+            </a>
+
+
         </div>
     </div>
 </nav>

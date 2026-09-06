@@ -136,7 +136,7 @@ class ExamSubjectController extends Controller
 
             'school_class_id' => [
                 'required',
-                'exists:school_classes,id',
+                'exists:classes,id',
             ],
 
             'section_id' => [
@@ -288,7 +288,7 @@ class ExamSubjectController extends Controller
 
             'school_class_id' => [
                 'required',
-                'exists:school_classes,id',
+                'exists:classes,id',
             ],
 
             'section_id' => [

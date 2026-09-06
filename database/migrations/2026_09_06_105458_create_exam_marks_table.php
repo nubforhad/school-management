@@ -25,7 +25,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->foreignId('school_class_id')
-                ->constrained('school_classes')
+                ->constrained('classes')
                 ->cascadeOnDelete();
 
             $table->foreignId('section_id')
@@ -44,19 +44,26 @@ return new class extends Migration
             $table->text('remarks')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
-            $table->unique([
-                'exam_id',
-                'student_id',
-                'subject_id'
-            ], 'exam_marks_unique');
+             $table->unique(
+                [
+                    'exam_id',
+                    'school_class_id',
+                    'student_id',
+                    'subject_id'
+                ],
+                'exam_marks_unique'
+            );
 
-            $table->index([
-                'branch_id',
-                'exam_id',
-                'school_class_id',
-                'section_id',
-                'student_id'
-            ]);
+            $table->index(
+                [
+                    'branch_id',
+                    'exam_id',
+                    'school_class_id',
+                    'section_id',
+                    'student_id'
+                ],
+                'exam_marks_filter_idx'
+            );
         });
     }
 

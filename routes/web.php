@@ -23,6 +23,8 @@ use App\Http\Controllers\ExamScheduleController;
 use App\Http\Controllers\ExamSubjectController;
 use App\Http\Controllers\ExamMarkController;
 use App\Http\Controllers\StudentResultController;
+use App\Http\Controllers\ClassResultController;
+use App\Http\Controllers\ResultSheetController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
 use App\Http\Controllers\TeacherStaffController;
@@ -155,6 +157,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource( 'exam-subjects',  ExamSubjectController::class);
     Route::resource('exam-marks', ExamMarkController::class);
     Route::get('student-results', [StudentResultController::class, 'index'])->name('student-results.index');
+    Route::get('result-sheets', [ResultSheetController::class, 'show'])->name('result-sheets.show');
+    Route::get( 'class-results',  [ClassResultController::class, 'index'])->name('class-results.index');
+
+
 
   //  Route::resource( 'exams.schedules', ExamScheduleController::class)->names('exams.schedules');
 

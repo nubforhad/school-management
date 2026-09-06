@@ -55,7 +55,7 @@
 
         <nav class="flex items-center gap-2 text-sm text-slate-500">
 
-            <a href="{{ route('admin.dashboard') }}"
+            <a href="{{ route('dashboard') }}"
                class="hover:text-blue-600 transition">
                 Dashboard
             </a>
