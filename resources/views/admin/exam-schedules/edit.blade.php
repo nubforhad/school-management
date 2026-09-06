@@ -11,47 +11,86 @@
     {{-- =========================================================
         HEADER
     ========================================================== --}}
-
     <div class="mb-6">
 
-        <div class="flex flex-col sm:flex-row
-                    sm:items-center
+        <div class="flex items-center gap-2 text-sm text-slate-500 mb-2">
+
+            <a href="{{ route('admin.exams.index') }}"
+               class="hover:text-blue-600 transition">
+                Exams
+            </a>
+
+            <svg class="w-4 h-4"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5l7 7-7 7"/>
+            </svg>
+
+            <a href="{{ route('admin.exam-schedules.index') }}"
+               class="hover:text-blue-600 transition">
+                Exam Schedules
+            </a>
+
+            <svg class="w-4 h-4"
+                 fill="none"
+                 stroke="currentColor"
+                 viewBox="0 0 24 24">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M9 5l7 7-7 7"/>
+            </svg>
+
+            <span class="text-slate-700">
+                Edit Schedule
+            </span>
+
+        </div>
+
+
+        <div class="flex flex-col sm:flex-row sm:items-center
                     sm:justify-between gap-4">
 
             <div>
 
-                <div class="flex items-center gap-2 mb-2">
-
-                    <a href="{{ route(
-                        'admin.exams.schedules.index',
-                        $exam
-                    ) }}"
-                       class="text-slate-400 hover:text-blue-600 transition">
-
-                        <i class="bi bi-arrow-left"></i>
-
-                    </a>
-
-                    <span class="text-xs text-slate-400">
-                        Exam Schedule
-                    </span>
-
-                </div>
-
-                <h1 class="text-xl sm:text-2xl
-                           font-bold text-slate-800">
-
+                <h1 class="text-2xl sm:text-3xl font-bold text-slate-800">
                     Edit Exam Schedule
-
                 </h1>
 
-                <p class="mt-1 text-xs sm:text-sm text-slate-500">
-
-                    Update examination subject, date, time and marks
-
+                <p class="text-sm text-slate-500 mt-1">
+                    Update examination date, subject, timing, room and marks.
                 </p>
 
             </div>
+
+
+            <a href="{{ route('admin.exam-schedules.index') }}"
+               class="inline-flex items-center justify-center gap-2
+                      px-4 py-2.5 rounded-lg
+                      border border-slate-300
+                      bg-white hover:bg-slate-50
+                      text-slate-700 text-sm font-semibold
+                      transition">
+
+                <svg class="w-4 h-4"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+
+                </svg>
+
+                Back to Schedules
+
+            </a>
 
         </div>
 
@@ -61,40 +100,39 @@
     {{-- =========================================================
         VALIDATION ERRORS
     ========================================================== --}}
-
     @if($errors->any())
 
-        <div class="mb-5 rounded-xl
-                    border border-red-200
-                    bg-red-50
-                    p-4">
+        <div class="mb-6 rounded-xl border border-red-200
+                    bg-red-50 p-4">
 
             <div class="flex items-start gap-3">
 
-                <div class="flex h-8 w-8 shrink-0
-                            items-center justify-center
-                            rounded-full
-                            bg-red-100
-                            text-red-600">
+                <svg class="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
 
-                    <i class="bi bi-exclamation-triangle"></i>
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 8v4m0 4h.01M10.29 3.86l-8.1 14A2 2 0 003.92 21h16.16a2 2 0 001.73-3.14l-8.1-14a2 2 0 00-3.42 0z"/>
 
-                </div>
+                </svg>
+
 
                 <div>
 
-                    <p class="text-sm font-semibold text-red-800">
-                        Please fix the following errors
-                    </p>
+                    <h3 class="text-sm font-semibold text-red-700">
+                        Please fix the following errors:
+                    </h3>
 
-                    <ul class="mt-2 space-y-1
-                               text-xs sm:text-sm
-                               text-red-700">
+                    <ul class="mt-2 text-sm text-red-600
+                               list-disc pl-5 space-y-1">
 
                         @foreach($errors->all() as $error)
 
                             <li>
-                                • {{ $error }}
+                                {{ $error }}
                             </li>
 
                         @endforeach
@@ -111,284 +149,399 @@
 
 
     {{-- =========================================================
-        EXAM INFORMATION
+        UPDATE FORM
     ========================================================== --}}
-
-    <div class="bg-white
-                rounded-xl
-                border border-slate-200
-                shadow-sm mb-5">
-
-        <div class="border-b border-slate-200
-                    bg-slate-50
-                    px-4 sm:px-5 py-4">
-
-            <div class="flex items-center gap-3">
-
-                <div class="flex h-10 w-10
-                            items-center justify-center
-                            rounded-lg
-                            bg-blue-50
-                            text-blue-600">
-
-                    <i class="bi bi-file-earmark-text"></i>
-
-                </div>
-
-                <div>
-
-                    <h2 class="font-semibold text-slate-800">
-                        Examination
-                    </h2>
-
-                    <p class="text-xs text-slate-500 mt-0.5">
-                        This schedule belongs to the following examination
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="p-4 sm:p-5">
-
-            <div class="grid grid-cols-1
-                        sm:grid-cols-3 gap-4">
-
-                {{-- Exam --}}
-
-                <div class="rounded-lg
-                            border border-blue-100
-                            bg-blue-50
-                            p-4">
-
-                    <p class="text-xs font-medium text-blue-600">
-                        Examination
-                    </p>
-
-                    <p class="mt-1 text-sm
-                              font-semibold text-blue-900">
-
-                        {{ $exam->name ?? 'N/A' }}
-
-                    </p>
-
-                </div>
-
-
-                {{-- Branch --}}
-
-                <div class="rounded-lg
-                            border border-slate-200
-                            bg-slate-50
-                            p-4">
-
-                    <p class="text-xs font-medium text-slate-500">
-                        Branch
-                    </p>
-
-                    <p class="mt-1 text-sm
-                              font-semibold text-slate-800">
-
-                        {{ $exam->branch->name ?? 'N/A' }}
-
-                    </p>
-
-                </div>
-
-
-                {{-- Academic Session --}}
-
-                <div class="rounded-lg
-                            border border-slate-200
-                            bg-slate-50
-                            p-4">
-
-                    <p class="text-xs font-medium text-slate-500">
-                        Academic Session
-                    </p>
-
-                    <p class="mt-1 text-sm
-                              font-semibold text-slate-800">
-
-                        {{ $exam->academicSession->name ?? 'N/A' }}
-
-                    </p>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    {{-- =========================================================
-        EDIT FORM
-    ========================================================== --}}
-
     <form method="POST"
-          action="{{ route(
-              'admin.exams.schedules.update',
-              [$exam, $schedule]
-          ) }}">
+          action="{{ route('admin.exam-schedules.update', $examSchedule) }}">
 
         @csrf
-
         @method('PUT')
 
 
-        <div class="bg-white
-                    rounded-xl
-                    border border-slate-200
-                    shadow-sm
-                    overflow-hidden">
+        {{-- =====================================================
+            BASIC INFORMATION
+        ====================================================== --}}
+        <div class="bg-white border border-slate-200
+                    rounded-xl shadow-sm overflow-hidden mb-6">
+
+            <div class="px-5 py-4 bg-slate-50
+                        border-b border-slate-200">
+
+                <div class="flex items-center gap-3">
+
+                    <div class="w-9 h-9 rounded-lg bg-blue-50
+                                flex items-center justify-center">
+
+                        <svg class="w-5 h-5 text-blue-600"
+                             fill="none"
+                             stroke="currentColor"
+                             viewBox="0 0 24 24">
+
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M8 7V3m8 4V3m-9 4h10m-9 4h10m-9 4h10m-9 4h10"/>
+
+                        </svg>
+
+                    </div>
 
 
-            {{-- =================================================
-                FORM HEADER
-            ================================================== --}}
+                    <div>
 
-            <div class="border-b border-slate-200
-                        px-4 sm:px-5 py-4">
+                        <h2 class="font-semibold text-slate-800">
+                            Basic Information
+                        </h2>
 
-                <h2 class="font-semibold text-slate-800">
+                        <p class="text-xs text-slate-500 mt-0.5">
+                            Update exam, session, class, section and subject.
+                        </p>
 
-                    Schedule Details
+                    </div>
 
-                </h2>
-
-                <p class="mt-1 text-xs text-slate-500">
-
-                    Update the schedule information below.
-
-                </p>
+                </div>
 
             </div>
 
 
-            <div class="p-4 sm:p-5">
+            <div class="p-5">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
 
 
-                {{-- =================================================
-                    SUBJECT
-                ================================================== --}}
-
-                <div class="mb-6">
-
-                    <label for="subject_id"
-                           class="block text-sm
-                                  font-medium
-                                  text-slate-700 mb-1.5">
-
-                        Subject
-
-                        <span class="text-red-500">*</span>
-
-                    </label>
-
-
-                    <select name="subject_id"
-                            id="subject_id"
-                            required
-                            class="w-full rounded-lg
-                                   border border-slate-300
-                                   bg-white
-                                   px-3 py-2.5
-                                   text-sm text-slate-800
-                                   outline-none
-                                   focus:border-blue-500
-                                   focus:ring-2
-                                   focus:ring-blue-100">
-
-                        <option value="">
-                            Select Subject
-                        </option>
-
-                        @foreach($subjects as $subject)
-
-                            <option value="{{ $subject->id }}"
-                                {{ old(
-                                    'subject_id',
-                                    $schedule->subject_id
-                                ) == $subject->id
-                                    ? 'selected'
-                                    : '' }}>
-
-                                {{ $subject->name }}
-
-                                @if($subject->code)
-
-                                    — {{ $subject->code }}
-
-                                @endif
-
-                            </option>
-
-                        @endforeach
-
-                    </select>
-
-
-                    @error('subject_id')
-
-                        <p class="mt-1 text-xs text-red-600">
-                            {{ $message }}
-                        </p>
-
-                    @enderror
-
-                </div>
-
-
-                {{-- =================================================
-                    DATE + TIME + ROOM
-                ================================================== --}}
-
-                <div class="grid grid-cols-1
-                            sm:grid-cols-2
-                            lg:grid-cols-4 gap-4">
-
-
-                    {{-- Exam Date --}}
-
+                    {{-- Exam --}}
                     <div>
 
-                        <label for="exam_date"
-                               class="block text-sm
-                                      font-medium
+                        <label for="exam_id"
+                               class="block text-sm font-medium
                                       text-slate-700 mb-1.5">
 
-                            Exam Date
-
+                            Exam
                             <span class="text-red-500">*</span>
 
                         </label>
 
+
+                        <select id="exam_id"
+                                name="exam_id"
+                                required
+                                class="w-full rounded-lg border-slate-300
+                                       focus:border-blue-500
+                                       focus:ring-blue-500 text-sm">
+
+                            <option value="">
+                                Select Exam
+                            </option>
+
+                            @foreach($exams as $exam)
+
+                                <option value="{{ $exam->id }}"
+                                    {{ old('exam_id', $examSchedule->exam_id) == $exam->id ? 'selected' : '' }}>
+
+                                    {{ $exam->name }}
+
+                                    @if($exam->code)
+                                        ({{ $exam->code }})
+                                    @endif
+
+                                </option>
+
+                            @endforeach
+
+                        </select>
+
+
+                        @error('exam_id')
+
+                            <p class="mt-1 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
+
+                        @enderror
+
+                    </div>
+
+
+                    {{-- Academic Session --}}
+                    <div>
+
+                        <label for="academic_session_id"
+                               class="block text-sm font-medium
+                                      text-slate-700 mb-1.5">
+
+                            Academic Session
+                            <span class="text-red-500">*</span>
+
+                        </label>
+
+
+                        <select id="academic_session_id"
+                                name="academic_session_id"
+                                required
+                                class="w-full rounded-lg border-slate-300
+                                       focus:border-blue-500
+                                       focus:ring-blue-500 text-sm">
+
+                            <option value="">
+                                Select Academic Session
+                            </option>
+
+                            @foreach($academicSessions as $session)
+
+                                <option value="{{ $session->id }}"
+                                    {{ old('academic_session_id', $examSchedule->academic_session_id) == $session->id ? 'selected' : '' }}>
+
+                                    {{ $session->name
+                                        ?? $session->title
+                                        ?? $session->year
+                                        ?? 'Session '.$session->id }}
+
+                                </option>
+
+                            @endforeach
+
+                        </select>
+
+
+                        @error('academic_session_id')
+
+                            <p class="mt-1 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
+
+                        @enderror
+
+                    </div>
+
+
+                    {{-- Class --}}
+                    <div>
+
+                        <label for="school_class_id"
+                               class="block text-sm font-medium
+                                      text-slate-700 mb-1.5">
+
+                            Class
+                            <span class="text-red-500">*</span>
+
+                        </label>
+
+
+                        <select id="school_class_id"
+                                name="school_class_id"
+                                required
+                                class="w-full rounded-lg border-slate-300
+                                       focus:border-blue-500
+                                       focus:ring-blue-500 text-sm">
+
+                            <option value="">
+                                Select Class
+                            </option>
+
+                            @foreach($schoolClasses as $class)
+
+                                <option value="{{ $class->id }}"
+                                    {{ old('school_class_id', $examSchedule->school_class_id) == $class->id ? 'selected' : '' }}>
+
+                                    {{ $class->name }}
+
+                                </option>
+
+                            @endforeach
+
+                        </select>
+
+
+                        @error('school_class_id')
+
+                            <p class="mt-1 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
+
+                        @enderror
+
+                    </div>
+
+
+                    {{-- Section --}}
+                    <div>
+
+                        <label for="section_id"
+                               class="block text-sm font-medium
+                                      text-slate-700 mb-1.5">
+
+                            Section
+
+                        </label>
+
+
+                        <select id="section_id"
+                                name="section_id"
+                                class="w-full rounded-lg border-slate-300
+                                       focus:border-blue-500
+                                       focus:ring-blue-500 text-sm">
+
+                            <option value="">
+                                All Sections / No Section
+                            </option>
+
+                            @foreach($sections as $section)
+
+                                <option value="{{ $section->id }}"
+                                    {{ old('section_id', $examSchedule->section_id) == $section->id ? 'selected' : '' }}>
+
+                                    {{ $section->name }}
+
+                                </option>
+
+                            @endforeach
+
+                        </select>
+
+
+                        @error('section_id')
+
+                            <p class="mt-1 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
+
+                        @enderror
+
+                    </div>
+
+
+                    {{-- Subject --}}
+                    <div class="md:col-span-2">
+
+                        <label for="subject_id"
+                               class="block text-sm font-medium
+                                      text-slate-700 mb-1.5">
+
+                            Subject
+                            <span class="text-red-500">*</span>
+
+                        </label>
+
+
+                        <select id="subject_id"
+                                name="subject_id"
+                                required
+                                class="w-full rounded-lg border-slate-300
+                                       focus:border-blue-500
+                                       focus:ring-blue-500 text-sm">
+
+                            <option value="">
+                                Select Subject
+                            </option>
+
+                            @foreach($subjects as $subject)
+
+                                <option value="{{ $subject->id }}"
+                                    {{ old('subject_id', $examSchedule->subject_id) == $subject->id ? 'selected' : '' }}>
+
+                                    {{ $subject->name }}
+
+                                    @if(isset($subject->code) && $subject->code)
+                                        ({{ $subject->code }})
+                                    @endif
+
+                                </option>
+
+                            @endforeach
+
+                        </select>
+
+
+                        @error('subject_id')
+
+                            <p class="mt-1 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
+
+                        @enderror
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- =====================================================
+            DATE & TIME
+        ====================================================== --}}
+        <div class="bg-white border border-slate-200
+                    rounded-xl shadow-sm overflow-hidden mb-6">
+
+            <div class="px-5 py-4 bg-slate-50
+                        border-b border-slate-200">
+
+                <div class="flex items-center gap-3">
+
+                    <div class="w-9 h-9 rounded-lg bg-blue-50
+                                flex items-center justify-center">
+
+                        <svg class="w-5 h-5 text-blue-600"
+                             fill="none"
+                             stroke="currentColor"
+                             viewBox="0 0 24 24">
+
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M8 7V3m8 4V3m-9 4h10m-9 4h10m-9 4h10m-9 4h10"/>
+
+                        </svg>
+
+                    </div>
+
+
+                    <div>
+
+                        <h2 class="font-semibold text-slate-800">
+                            Date & Time
+                        </h2>
+
+                        <p class="text-xs text-slate-500 mt-0.5">
+                            Update examination date and duration.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="p-5">
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+
+                    {{-- Exam Date --}}
+                    <div>
+
+                        <label for="exam_date"
+                               class="block text-sm font-medium
+                                      text-slate-700 mb-1.5">
+
+                            Exam Date
+                            <span class="text-red-500">*</span>
+
+                        </label>
+
+
                         <input type="date"
-                               name="exam_date"
                                id="exam_date"
-                               value="{{ old(
-                                   'exam_date',
-                                   optional($schedule->exam_date)
-                                       ? \Carbon\Carbon::parse(
-                                           $schedule->exam_date
-                                       )->format('Y-m-d')
-                                       : ''
-                               ) }}"
+                               name="exam_date"
+                               value="{{ old('exam_date', $examSchedule->exam_date?->format('Y-m-d')) }}"
                                required
-                               class="w-full rounded-lg
-                                      border border-slate-300
-                                      bg-white
-                                      px-3 py-2.5
-                                      text-sm text-slate-800
-                                      outline-none
+                               class="w-full rounded-lg border-slate-300
                                       focus:border-blue-500
-                                      focus:ring-2
-                                      focus:ring-blue-100">
+                                      focus:ring-blue-500 text-sm">
+
 
                         @error('exam_date')
 
@@ -402,38 +555,27 @@
 
 
                     {{-- Start Time --}}
-
                     <div>
 
                         <label for="start_time"
-                               class="block text-sm
-                                      font-medium
+                               class="block text-sm font-medium
                                       text-slate-700 mb-1.5">
 
                             Start Time
+                            <span class="text-red-500">*</span>
 
                         </label>
 
+
                         <input type="time"
-                               name="start_time"
                                id="start_time"
-                               value="{{ old(
-                                   'start_time',
-                                   $schedule->start_time
-                                       ? \Carbon\Carbon::parse(
-                                           $schedule->start_time
-                                       )->format('H:i')
-                                       : ''
-                               ) }}"
-                               class="w-full rounded-lg
-                                      border border-slate-300
-                                      bg-white
-                                      px-3 py-2.5
-                                      text-sm text-slate-800
-                                      outline-none
+                               name="start_time"
+                               value="{{ old('start_time', \Carbon\Carbon::parse($examSchedule->start_time)->format('H:i')) }}"
+                               required
+                               class="w-full rounded-lg border-slate-300
                                       focus:border-blue-500
-                                      focus:ring-2
-                                      focus:ring-blue-100">
+                                      focus:ring-blue-500 text-sm">
+
 
                         @error('start_time')
 
@@ -447,38 +589,27 @@
 
 
                     {{-- End Time --}}
-
                     <div>
 
                         <label for="end_time"
-                               class="block text-sm
-                                      font-medium
+                               class="block text-sm font-medium
                                       text-slate-700 mb-1.5">
 
                             End Time
+                            <span class="text-red-500">*</span>
 
                         </label>
 
+
                         <input type="time"
-                               name="end_time"
                                id="end_time"
-                               value="{{ old(
-                                   'end_time',
-                                   $schedule->end_time
-                                       ? \Carbon\Carbon::parse(
-                                           $schedule->end_time
-                                       )->format('H:i')
-                                       : ''
-                               ) }}"
-                               class="w-full rounded-lg
-                                      border border-slate-300
-                                      bg-white
-                                      px-3 py-2.5
-                                      text-sm text-slate-800
-                                      outline-none
+                               name="end_time"
+                               value="{{ old('end_time', \Carbon\Carbon::parse($examSchedule->end_time)->format('H:i')) }}"
+                               required
+                               class="w-full rounded-lg border-slate-300
                                       focus:border-blue-500
-                                      focus:ring-2
-                                      focus:ring-blue-100">
+                                      focus:ring-blue-500 text-sm">
+
 
                         @error('end_time')
 
@@ -490,37 +621,85 @@
 
                     </div>
 
+                </div>
 
-                    {{-- Room --}}
+            </div>
+
+        </div>
+
+
+        {{-- =====================================================
+            MARKS & ROOM
+        ====================================================== --}}
+        <div class="bg-white border border-slate-200
+                    rounded-xl shadow-sm overflow-hidden mb-6">
+
+            <div class="px-5 py-4 bg-slate-50
+                        border-b border-slate-200">
+
+                <div class="flex items-center gap-3">
+
+                    <div class="w-9 h-9 rounded-lg bg-blue-50
+                                flex items-center justify-center">
+
+                        <svg class="w-5 h-5 text-blue-600"
+                             fill="none"
+                             stroke="currentColor"
+                             viewBox="0 0 24 24">
+
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M9 7h6m-6 4h6m-6 4h4M5 5a2 2 0 012-2h10a2 2 0 012 2v14a2 2 0 01-2 2H7a2 2 0 01-2-2V5z"/>
+
+                        </svg>
+
+                    </div>
+
 
                     <div>
 
+                        <h2 class="font-semibold text-slate-800">
+                            Marks & Room
+                        </h2>
+
+                        <p class="text-xs text-slate-500 mt-0.5">
+                            Update room and examination marks.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="p-5">
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+
+                    {{-- Room --}}
+                    <div>
+
                         <label for="room"
-                               class="block text-sm
-                                      font-medium
+                               class="block text-sm font-medium
                                       text-slate-700 mb-1.5">
 
                             Room
 
                         </label>
 
+
                         <input type="text"
-                               name="room"
                                id="room"
-                               value="{{ old(
-                                   'room',
-                                   $schedule->room
-                               ) }}"
+                               name="room"
+                               value="{{ old('room', $examSchedule->room) }}"
                                placeholder="e.g. Room 101"
-                               class="w-full rounded-lg
-                                      border border-slate-300
-                                      bg-white
-                                      px-3 py-2.5
-                                      text-sm text-slate-800
-                                      outline-none
+                               class="w-full rounded-lg border-slate-300
                                       focus:border-blue-500
-                                      focus:ring-2
-                                      focus:ring-blue-100">
+                                      focus:ring-blue-500 text-sm">
+
 
                         @error('room')
 
@@ -532,272 +711,74 @@
 
                     </div>
 
-                </div>
+
+                    {{-- Full Marks --}}
+                    <div>
+
+                        <label for="full_marks"
+                               class="block text-sm font-medium
+                                      text-slate-700 mb-1.5">
+
+                            Full Marks
+                            <span class="text-red-500">*</span>
+
+                        </label>
 
 
-                {{-- =================================================
-                    MARKS CONFIGURATION
-                ================================================== --}}
-
-                <div class="mt-6">
-
-                    <div class="mb-3">
-
-                        <h3 class="text-sm
-                                   font-semibold
-                                   text-slate-800">
-
-                            Marks Configuration
-
-                        </h3>
-
-                        <p class="text-xs text-slate-500 mt-1">
-
-                            Update full marks and passing marks.
-
-                        </p>
-
-                    </div>
+                        <input type="number"
+                               id="full_marks"
+                               name="full_marks"
+                               value="{{ old('full_marks', $examSchedule->full_marks) }}"
+                               min="0"
+                               step="0.01"
+                               required
+                               class="w-full rounded-lg border-slate-300
+                                      focus:border-blue-500
+                                      focus:ring-blue-500 text-sm">
 
 
-                    <div class="grid grid-cols-1
-                                sm:grid-cols-2 gap-4">
+                        @error('full_marks')
 
+                            <p class="mt-1 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
 
-                        {{-- Full Marks --}}
-
-                        <div>
-
-                            <label for="full_marks"
-                                   class="block text-sm
-                                          font-medium
-                                          text-slate-700 mb-1.5">
-
-                                Full Marks
-
-                                <span class="text-red-500">*</span>
-
-                            </label>
-
-                            <input type="number"
-                                   name="full_marks"
-                                   id="full_marks"
-                                   value="{{ old(
-                                       'full_marks',
-                                       $schedule->full_marks
-                                   ) }}"
-                                   min="0"
-                                   step="0.01"
-                                   required
-                                   class="w-full rounded-lg
-                                          border border-slate-300
-                                          bg-white
-                                          px-3 py-2.5
-                                          text-sm text-slate-800
-                                          outline-none
-                                          focus:border-blue-500
-                                          focus:ring-2
-                                          focus:ring-blue-100">
-
-                            @error('full_marks')
-
-                                <p class="mt-1 text-xs text-red-600">
-                                    {{ $message }}
-                                </p>
-
-                            @enderror
-
-                        </div>
-
-
-                        {{-- Pass Marks --}}
-
-                        <div>
-
-                            <label for="pass_marks"
-                                   class="block text-sm
-                                          font-medium
-                                          text-slate-700 mb-1.5">
-
-                                Pass Marks
-
-                                <span class="text-red-500">*</span>
-
-                            </label>
-
-                            <input type="number"
-                                   name="pass_marks"
-                                   id="pass_marks"
-                                   value="{{ old(
-                                       'pass_marks',
-                                       $schedule->pass_marks
-                                   ) }}"
-                                   min="0"
-                                   step="0.01"
-                                   required
-                                   class="w-full rounded-lg
-                                          border border-slate-300
-                                          bg-white
-                                          px-3 py-2.5
-                                          text-sm text-slate-800
-                                          outline-none
-                                          focus:border-blue-500
-                                          focus:ring-2
-                                          focus:ring-blue-100">
-
-                            @error('pass_marks')
-
-                                <p class="mt-1 text-xs text-red-600">
-                                    {{ $message }}
-                                </p>
-
-                            @enderror
-
-                        </div>
+                        @enderror
 
                     </div>
 
-                </div>
+
+                    {{-- Pass Marks --}}
+                    <div>
+
+                        <label for="pass_marks"
+                               class="block text-sm font-medium
+                                      text-slate-700 mb-1.5">
+
+                            Pass Marks
+
+                        </label>
 
 
-                {{-- =================================================
-                    INSTRUCTIONS
-                ================================================== --}}
-
-                <div class="mt-6">
-
-                    <label for="instructions"
-                           class="block text-sm
-                                  font-medium
-                                  text-slate-700 mb-1.5">
-
-                        Instructions
-
-                    </label>
-
-                    <textarea name="instructions"
-                              id="instructions"
-                              rows="4"
-                              placeholder="Enter any special instructions..."
-                              class="w-full rounded-lg
-                                     border border-slate-300
-                                     bg-white
-                                     px-3 py-2.5
-                                     text-sm text-slate-800
-                                     outline-none
-                                     resize-none
-                                     focus:border-blue-500
-                                     focus:ring-2
-                                     focus:ring-blue-100">{{ old(
-                                         'instructions',
-                                         $schedule->instructions
-                                     ) }}</textarea>
-
-                    @error('instructions')
-
-                        <p class="mt-1 text-xs text-red-600">
-                            {{ $message }}
-                        </p>
-
-                    @enderror
-
-                </div>
+                        <input type="number"
+                               id="pass_marks"
+                               name="pass_marks"
+                               value="{{ old('pass_marks', $examSchedule->pass_marks) }}"
+                               min="0"
+                               step="0.01"
+                               placeholder="e.g. 40"
+                               class="w-full rounded-lg border-slate-300
+                                      focus:border-blue-500
+                                      focus:ring-blue-500 text-sm">
 
 
-            </div>
+                        @error('pass_marks')
 
+                            <p class="mt-1 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
 
-            {{-- =================================================
-                FORM FOOTER
-            ================================================== --}}
-
-            <div class="border-t border-slate-200
-                        bg-slate-50
-                        px-4 sm:px-5 py-4">
-
-                <div class="flex flex-col-reverse
-                            sm:flex-row
-                            sm:items-center
-                            sm:justify-between gap-3">
-
-
-                    {{-- Cancel --}}
-
-                    <a href="{{ route(
-                        'admin.exams.schedules.index',
-                        $exam
-                    ) }}"
-                       class="inline-flex
-                              items-center
-                              justify-center
-                              gap-2
-                              rounded-lg
-                              border border-slate-300
-                              bg-white
-                              px-5 py-2.5
-                              text-sm
-                              font-medium
-                              text-slate-700
-                              hover:bg-slate-50
-                              transition">
-
-                        <i class="bi bi-x-lg"></i>
-
-                        Cancel
-
-                    </a>
-
-
-                    <div class="flex flex-col
-                                sm:flex-row gap-2">
-
-
-                        {{-- Delete --}}
-
-                        <button type="button"
-                                onclick="confirmDelete()"
-                                class="inline-flex
-                                       items-center
-                                       justify-center
-                                       gap-2
-                                       rounded-lg
-                                       border border-red-200
-                                       bg-red-50
-                                       px-5 py-2.5
-                                       text-sm
-                                       font-semibold
-                                       text-red-600
-                                       hover:bg-red-100
-                                       transition">
-
-                            <i class="bi bi-trash"></i>
-
-                            Delete
-
-                        </button>
-
-
-                        {{-- Update --}}
-
-                        <button type="submit"
-                                class="inline-flex
-                                       items-center
-                                       justify-center
-                                       gap-2
-                                       rounded-lg
-                                       bg-blue-600
-                                       px-5 py-2.5
-                                       text-sm
-                                       font-semibold
-                                       text-white
-                                       hover:bg-blue-700
-                                       transition">
-
-                            <i class="bi bi-check-lg"></i>
-
-                            Update Schedule
-
-                        </button>
+                        @enderror
 
                     </div>
 
@@ -807,52 +788,291 @@
 
         </div>
 
-    </form>
+
+        {{-- =====================================================
+            ADDITIONAL INFORMATION
+        ====================================================== --}}
+        <div class="bg-white border border-slate-200
+                    rounded-xl shadow-sm overflow-hidden mb-6">
+
+            <div class="px-5 py-4 bg-slate-50
+                        border-b border-slate-200">
+
+                <div class="flex items-center gap-3">
+
+                    <div class="w-9 h-9 rounded-lg bg-blue-50
+                                flex items-center justify-center">
+
+                        <svg class="w-5 h-5 text-blue-600"
+                             fill="none"
+                             stroke="currentColor"
+                             viewBox="0 0 24 24">
+
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  stroke-width="2"
+                                  d="M8 10h8M8 14h5m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+
+                        </svg>
+
+                    </div>
 
 
-    {{-- =========================================================
-        DELETE FORM
-    ========================================================== --}}
+                    <div>
 
-    <form id="delete-schedule-form"
-          method="POST"
-          action="{{ route(
-              'admin.exams.schedules.destroy',
-              [$exam, $schedule]
-          ) }}"
-          class="hidden">
+                        <h2 class="font-semibold text-slate-800">
+                            Additional Information
+                        </h2>
 
-        @csrf
+                        <p class="text-xs text-slate-500 mt-0.5">
+                            Update instructions and schedule status.
+                        </p>
 
-        @method('DELETE')
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="p-5">
+
+                <div class="space-y-5">
+
+
+                    {{-- Instructions --}}
+                    <div>
+
+                        <label for="instructions"
+                               class="block text-sm font-medium
+                                      text-slate-700 mb-1.5">
+
+                            Instructions
+
+                        </label>
+
+
+                        <textarea id="instructions"
+                                  name="instructions"
+                                  rows="4"
+                                  placeholder="Enter any instructions for this examination..."
+                                  class="w-full rounded-lg border-slate-300
+                                         focus:border-blue-500
+                                         focus:ring-blue-500 text-sm">{{ old('instructions', $examSchedule->instructions) }}</textarea>
+
+
+                        @error('instructions')
+
+                            <p class="mt-1 text-xs text-red-600">
+                                {{ $message }}
+                            </p>
+
+                        @enderror
+
+                    </div>
+
+
+                    {{-- Status --}}
+                    <div class="flex items-center justify-between
+                                gap-4 rounded-lg border border-slate-200
+                                bg-slate-50 px-4 py-4">
+
+                        <div>
+
+                            <h3 class="text-sm font-semibold text-slate-800">
+                                Schedule Status
+                            </h3>
+
+                            <p class="text-xs text-slate-500 mt-1">
+                                Enable this schedule to keep it active.
+                            </p>
+
+                        </div>
+
+
+                        <label class="relative inline-flex items-center
+                                      cursor-pointer flex-shrink-0">
+
+                            <input type="checkbox"
+                                   name="status"
+                                   value="1"
+                                   class="sr-only peer"
+                                   {{ old('status', $examSchedule->status) ? 'checked' : '' }}>
+
+
+                            <div class="w-11 h-6 bg-slate-300
+                                        peer-focus:outline-none
+                                        peer-focus:ring-4
+                                        peer-focus:ring-blue-100
+                                        rounded-full peer
+                                        peer-checked:bg-blue-600
+                                        after:content-['']
+                                        after:absolute
+                                        after:top-[2px]
+                                        after:left-[2px]
+                                        after:bg-white
+                                        after:border-slate-300
+                                        after:border
+                                        after:rounded-full
+                                        after:h-5
+                                        after:w-5
+                                        after:transition-all
+                                        peer-checked:after:translate-x-full
+                                        peer-checked:after:border-white">
+                            </div>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- =====================================================
+            CURRENT INFORMATION
+        ====================================================== --}}
+        <div class="bg-slate-50 border border-slate-200
+                    rounded-xl p-5 mb-6">
+
+            <h3 class="text-sm font-semibold text-slate-800 mb-4">
+                Schedule Information
+            </h3>
+
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+
+                <div>
+
+                    <p class="text-xs text-slate-500">
+                        Schedule ID
+                    </p>
+
+                    <p class="text-sm font-semibold text-slate-700 mt-1">
+                        #{{ $examSchedule->id }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <p class="text-xs text-slate-500">
+                        Created
+                    </p>
+
+                    <p class="text-sm font-semibold text-slate-700 mt-1">
+                        {{ $examSchedule->created_at?->format('d M Y, h:i A') }}
+                    </p>
+
+                </div>
+
+
+                <div>
+
+                    <p class="text-xs text-slate-500">
+                        Last Updated
+                    </p>
+
+                    <p class="text-sm font-semibold text-slate-700 mt-1">
+                        {{ $examSchedule->updated_at?->format('d M Y, h:i A') }}
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- =====================================================
+            INFO BOX
+        ====================================================== --}}
+        <div class="mb-6 rounded-xl border border-blue-200
+                    bg-blue-50 p-4">
+
+            <div class="flex items-start gap-3">
+
+                <svg class="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M13 16h-1v-4h-1m1-4h.01M12 22a10 10 0 110-20 10 10 0 010 20z"/>
+
+                </svg>
+
+
+                <div class="text-sm text-blue-700">
+
+                    <p class="font-semibold mb-1">
+                        Important
+                    </p>
+
+                    <p>
+                        Please verify the exam, class, subject, date and
+                        examination time before updating this schedule.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        {{-- =====================================================
+            FORM ACTIONS
+        ====================================================== --}}
+        <div class="flex flex-col-reverse sm:flex-row
+                    sm:items-center sm:justify-end gap-3">
+
+            <a href="{{ route('admin.exam-schedules.index') }}"
+               class="inline-flex items-center justify-center
+                      px-5 py-2.5 rounded-lg
+                      border border-slate-300
+                      bg-white hover:bg-slate-50
+                      text-slate-700 text-sm font-semibold
+                      transition">
+
+                Cancel
+
+            </a>
+
+
+            <button type="submit"
+                    class="inline-flex items-center justify-center gap-2
+                           px-5 py-2.5 rounded-lg
+                           bg-blue-600 hover:bg-blue-700
+                           text-white text-sm font-semibold
+                           shadow-sm transition">
+
+                <svg class="w-4 h-4"
+                     fill="none"
+                     stroke="currentColor"
+                     viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 13l4 4L19 7"/>
+
+                </svg>
+
+                Update Schedule
+
+            </button>
+
+        </div>
 
     </form>
 
 </div>
-
-
-{{-- =============================================================
-    DELETE CONFIRMATION
-============================================================= --}}
-
-<script>
-
-function confirmDelete() {
-
-    if (
-        confirm(
-            'Are you sure you want to delete this exam schedule?'
-        )
-    ) {
-
-        document
-            .getElementById('delete-schedule-form')
-            .submit();
-
-    }
-
-}
-
-</script>
 
 @endsection

@@ -8,9 +8,7 @@
 
 <div class="max-w-screen-xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
 
-    {{-- =========================================================
-        HEADER
-    ========================================================== --}}
+    {{-- ========= HEADER ========================== --}}
     <div class="mb-6">
 
         <div class="flex flex-col sm:flex-row sm:items-center

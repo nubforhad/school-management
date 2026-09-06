@@ -20,6 +20,7 @@ use App\Http\Controllers\FeePaymentController;
 use App\Http\Controllers\FeeReportController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExamScheduleController;
+use App\Http\Controllers\ExamSubjectController;
 use App\Http\Controllers\ExamMarkController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DesignationController;
@@ -149,6 +150,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/fee-collection/due-report', [FeePaymentController::class, 'dueReport'])->name('fee-collection.due-report');
 
     Route::resource('exams', ExamController::class); 
+    Route::resource('exam-schedules', ExamScheduleController::class);
+    Route::resource( 'exam-subjects',  ExamSubjectController::class);
 
   //  Route::resource( 'exams.schedules', ExamScheduleController::class)->names('exams.schedules');
 
