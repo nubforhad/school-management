@@ -2,42 +2,46 @@
 
 @section('title', 'Exams')
 
-@section('page-title', 'Exam Management')
+@section('page-title', 'Exams')
 
 @section('content')
 
-<div class="max-w-screen-5xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
+<div class="max-w-screen-xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
 
     {{-- =========================================================
         HEADER
     ========================================================== --}}
-
-    <div class="mb-5 sm:mb-6">
-        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+    <div class="mb-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
 
             <div>
-                <h1 class="text-xl sm:text-2xl font-bold text-slate-800">
-                    Exam Management
+                <h1 class="text-2xl font-bold text-slate-800">
+                    Exams
                 </h1>
 
-                <p class="mt-1 text-xs sm:text-sm text-slate-500">
-                    Manage academic examinations for your school
+                <p class="mt-1 text-sm text-slate-500">
+                    Manage your examinations and exam information.
                 </p>
             </div>
 
-            <div>
-                <a href="{{ route('admin.exams.create') }}"
-                   class="inline-flex items-center justify-center gap-2
-                          rounded-lg bg-blue-600
-                          px-4 py-2.5
-                          text-sm font-semibold text-white
-                          hover:bg-blue-700 transition">
+            <a href="{{ route('admin.exams.create') }}"
+               class="inline-flex items-center justify-center gap-2 px-4 py-2.5
+                      bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold
+                      rounded-lg shadow-sm transition">
 
-                    <i class="bi bi-plus-lg"></i>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="w-5 h-5"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor"
+                     stroke-width="2">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M12 4v16m8-8H4"/>
+                </svg>
 
-                    Create Exam
-                </a>
-            </div>
+                Add Exam
+            </a>
 
         </div>
     </div>
@@ -46,113 +50,93 @@
     {{-- =========================================================
         SUCCESS MESSAGE
     ========================================================== --}}
-
     @if(session('success'))
+        <div class="mb-5 flex items-center gap-3 p-4 rounded-lg
+                    bg-green-50 border border-green-200 text-green-700">
 
-        <div class="mb-5 rounded-lg border border-green-200
-                    bg-green-50 px-4 py-3 text-sm text-green-700">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 class="w-5 h-5 flex-shrink-0"
+                 fill="none"
+                 viewBox="0 0 24 24"
+                 stroke="currentColor"
+                 stroke-width="2">
+                <path stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M5 13l4 4L19 7"/>
+            </svg>
 
-            <div class="flex items-center gap-2">
-
-                <i class="bi bi-check-circle-fill"></i>
-
-                <span>
-                    {{ session('success') }}
-                </span>
-
-            </div>
-
+            <span class="text-sm font-medium">
+                {{ session('success') }}
+            </span>
         </div>
-
-    @endif
-
-
-    {{-- =========================================================
-        ERROR MESSAGE
-    ========================================================== --}}
-
-    @if(session('error'))
-
-        <div class="mb-5 rounded-lg border border-red-200
-                    bg-red-50 px-4 py-3 text-sm text-red-700">
-
-            <div class="flex items-center gap-2">
-
-                <i class="bi bi-exclamation-circle-fill"></i>
-
-                <span>
-                    {{ session('error') }}
-                </span>
-
-            </div>
-
-        </div>
-
     @endif
 
 
     {{-- =========================================================
         VALIDATION ERRORS
     ========================================================== --}}
-
     @if($errors->any())
+        <div class="mb-5 p-4 rounded-lg bg-red-50 border border-red-200">
 
-        <div class="mb-5 rounded-lg border border-red-200
-                    bg-red-50 px-4 py-3 text-sm text-red-700">
+            <div class="flex items-center gap-2 text-red-700 font-semibold text-sm mb-2">
 
-            <div class="font-semibold mb-1">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="w-5 h-5"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor"
+                     stroke-width="2">
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M12 9v2m0 4h.01"/>
+                </svg>
+
                 Please fix the following errors:
             </div>
 
-            <ul class="list-disc list-inside space-y-1">
-
+            <ul class="list-disc list-inside text-sm text-red-600 space-y-1">
                 @foreach($errors->all() as $error)
-
                     <li>{{ $error }}</li>
-
                 @endforeach
-
             </ul>
 
         </div>
-
     @endif
 
 
     {{-- =========================================================
         FILTER CARD
     ========================================================== --}}
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm mb-6">
 
-    <div class="bg-white rounded-xl
-                border border-slate-200
-                shadow-sm mb-5">
-
-        <div class="border-b border-slate-200
-                    bg-slate-50
-                    px-4 sm:px-5 py-4">
+        <div class="p-4 sm:p-5 border-b border-slate-200 bg-slate-50 rounded-t-xl">
 
             <div class="flex items-center gap-2">
 
-                <div class="flex h-9 w-9
-                            items-center justify-center
-                            rounded-lg
-                            bg-blue-50
-                            text-blue-600">
+                <div class="w-9 h-9 rounded-lg bg-blue-50
+                            flex items-center justify-center">
 
-                    <i class="bi bi-funnel"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         class="w-5 h-5 text-blue-600"
+                         fill="none"
+                         viewBox="0 0 24 24"
+                         stroke="currentColor"
+                         stroke-width="2">
+                        <path stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L15 11.414V19a1 1 0 01-.553.894l-4 2A1 1 0 019 21v-9.586L3.293 6.707A1 1 0 013 6V4z"/>
+                    </svg>
 
                 </div>
 
                 <div>
-
-                    <h2 class="font-semibold text-slate-800">
-                        Search & Filter
+                    <h2 class="text-sm font-semibold text-slate-800">
+                        Filter Exams
                     </h2>
 
-                    <p class="text-xs text-slate-500 mt-0.5">
-                        Find exams by name, session or class
+                    <p class="text-xs text-slate-500">
+                        Search and filter examination records.
                     </p>
-
                 </div>
 
             </div>
@@ -161,187 +145,147 @@
 
 
         <form method="GET"
-              action="{{ route('admin.exams.index') }}">
+              action="{{ route('admin.exams.index') }}"
+              class="p-4 sm:p-5">
 
-            <div class="p-4 sm:p-5">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
-                <div class="grid grid-cols-1
-                            sm:grid-cols-2
-                            lg:grid-cols-4
-                            gap-4">
+                {{-- Search --}}
+                <div>
+                    <label for="search"
+                           class="block text-sm font-medium text-slate-700 mb-1.5">
+                        Search
+                    </label>
 
-                    {{-- Search --}}
+                    <div class="relative">
 
-                    <div>
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 class="w-4 h-4 text-slate-400"
+                                 fill="none"
+                                 viewBox="0 0 24 24"
+                                 stroke="currentColor"
+                                 stroke-width="2">
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                            </svg>
+                        </span>
 
-                        <label for="search"
-                               class="block text-sm font-medium
-                                      text-slate-700 mb-1.5">
-
-                            Search
-
-                        </label>
-
-                        <div class="relative">
-
-                            <i class="bi bi-search
-                                      absolute left-3 top-1/2
-                                      -translate-y-1/2
-                                      text-slate-400"></i>
-
-                            <input type="text"
-                                   name="search"
-                                   id="search"
-                                   value="{{ request('search') }}"
-                                   placeholder="Exam name or code..."
-                                   class="w-full rounded-lg
-                                          border border-slate-300
-                                          bg-white
-                                          pl-9 pr-3 py-2.5
-                                          text-sm text-slate-800
-                                          outline-none
-                                          focus:border-blue-500
-                                          focus:ring-2
-                                          focus:ring-blue-100">
-
-                        </div>
+                        <input type="text"
+                               id="search"
+                               name="search"
+                               value="{{ request('search') }}"
+                               placeholder="Exam name or code..."
+                               class="w-full pl-9 pr-3 py-2.5 rounded-lg
+                                      border border-slate-300
+                                      focus:border-blue-500 focus:ring-2
+                                      focus:ring-blue-100 outline-none
+                                      text-sm text-slate-700">
 
                     </div>
+                </div>
 
 
-                    {{-- Academic Session --}}
+                {{-- Academic Session --}}
+                <div>
+                    <label for="academic_session_id"
+                           class="block text-sm font-medium text-slate-700 mb-1.5">
+                        Academic Session
+                    </label>
 
-                    <div>
+                    <select name="academic_session_id"
+                            id="academic_session_id"
+                            class="w-full px-3 py-2.5 rounded-lg
+                                   border border-slate-300
+                                   focus:border-blue-500 focus:ring-2
+                                   focus:ring-blue-100 outline-none
+                                   text-sm text-slate-700">
 
-                        <label for="academic_session_id"
-                               class="block text-sm font-medium
-                                      text-slate-700 mb-1.5">
+                        <option value="">
+                            All Sessions
+                        </option>
 
-                            Academic Session
+                        @foreach($academicSessions as $session)
+                            <option value="{{ $session->id }}"
+                                {{ request('academic_session_id') == $session->id ? 'selected' : '' }}>
 
-                        </label>
+                                {{ $session->name ?? $session->title ?? 'Session '.$session->id }}
 
-                        <select name="academic_session_id"
-                                id="academic_session_id"
-                                class="w-full rounded-lg
-                                       border border-slate-300
-                                       bg-white
-                                       px-3 py-2.5
-                                       text-sm text-slate-800
-                                       outline-none
-                                       focus:border-blue-500
-                                       focus:ring-2
-                                       focus:ring-blue-100">
-
-                            <option value="">
-                                All Sessions
                             </option>
+                        @endforeach
 
-                            @foreach($academicSessions as $session)
-
-                                <option value="{{ $session->id }}"
-                                    {{ request('academic_session_id') == $session->id
-                                        ? 'selected'
-                                        : '' }}>
-
-                                    {{ $session->name }}
-
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
-                    </div>
+                    </select>
+                </div>
 
 
-                    {{-- Class --}}
+                {{-- Status --}}
+                <div>
+                    <label for="status"
+                           class="block text-sm font-medium text-slate-700 mb-1.5">
+                        Status
+                    </label>
 
-                    <div>
+                    <select name="status"
+                            id="status"
+                            class="w-full px-3 py-2.5 rounded-lg
+                                   border border-slate-300
+                                   focus:border-blue-500 focus:ring-2
+                                   focus:ring-blue-100 outline-none
+                                   text-sm text-slate-700">
 
-                        <label for="school_class_id"
-                               class="block text-sm font-medium
-                                      text-slate-700 mb-1.5">
+                        <option value="">
+                            All Status
+                        </option>
 
-                            Class
+                        <option value="1"
+                            {{ request('status') === '1' ? 'selected' : '' }}>
+                            Active
+                        </option>
 
-                        </label>
+                        <option value="0"
+                            {{ request('status') === '0' ? 'selected' : '' }}>
+                            Inactive
+                        </option>
 
-                        <select name="school_class_id"
-                                id="school_class_id"
-                                class="w-full rounded-lg
-                                       border border-slate-300
-                                       bg-white
-                                       px-3 py-2.5
-                                       text-sm text-slate-800
-                                       outline-none
-                                       focus:border-blue-500
-                                       focus:ring-2
-                                       focus:ring-blue-100">
-
-                            <option value="">
-                                All Classes
-                            </option>
-
-                            @foreach($classes as $class)
-
-                                <option value="{{ $class->id }}"
-                                    {{ request('school_class_id') == $class->id
-                                        ? 'selected'
-                                        : '' }}>
-
-                                    {{ $class->name }}
-
-                                </option>
-
-                            @endforeach
-
-                        </select>
-
-                    </div>
+                    </select>
+                </div>
 
 
-                    {{-- Buttons --}}
+                {{-- Buttons --}}
+                <div class="flex items-end gap-2">
 
-                    <div class="flex items-end gap-2">
+                    <button type="submit"
+                            class="flex-1 inline-flex items-center justify-center
+                                   gap-2 px-4 py-2.5 rounded-lg
+                                   bg-blue-600 hover:bg-blue-700
+                                   text-white text-sm font-semibold
+                                   transition">
 
-                        <button type="submit"
-                                class="inline-flex items-center
-                                       justify-center gap-2
-                                       rounded-lg
-                                       bg-blue-600
-                                       px-4 py-2.5
-                                       text-sm font-semibold
-                                       text-white
-                                       hover:bg-blue-700
-                                       transition">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             class="w-4 h-4"
+                             fill="none"
+                             viewBox="0 0 24 24"
+                             stroke="currentColor"
+                             stroke-width="2">
+                            <path stroke-linecap="round"
+                                  stroke-linejoin="round"
+                                  d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
 
-                            <i class="bi bi-search"></i>
+                        Filter
+                    </button>
 
-                            Search
+                    <a href="{{ route('admin.exams.index') }}"
+                       class="inline-flex items-center justify-center
+                              px-4 py-2.5 rounded-lg
+                              border border-slate-300
+                              bg-white hover:bg-slate-50
+                              text-slate-700 text-sm font-medium
+                              transition">
 
-                        </button>
-
-
-                        <a href="{{ route('admin.exams.index') }}"
-                           class="inline-flex items-center
-                                  justify-center gap-2
-                                  rounded-lg
-                                  border border-slate-300
-                                  bg-white
-                                  px-4 py-2.5
-                                  text-sm font-medium
-                                  text-slate-700
-                                  hover:bg-slate-50
-                                  transition">
-
-                            <i class="bi bi-arrow-counterclockwise"></i>
-
-                            Reset
-
-                        </a>
-
-                    </div>
+                        Reset
+                    </a>
 
                 </div>
 
@@ -355,50 +299,23 @@
     {{-- =========================================================
         EXAM TABLE
     ========================================================== --}}
-
-    <div class="bg-white rounded-xl
-                border border-slate-200
-                shadow-sm overflow-hidden">
-
+    <div class="bg-white border border-slate-200 rounded-xl shadow-sm overflow-hidden">
 
         {{-- Table Header --}}
-
-        <div class="p-4 sm:p-5
-                    border-b border-slate-200">
+        <div class="px-4 sm:px-5 py-4 border-b border-slate-200
+                    bg-slate-50">
 
             <div class="flex flex-col sm:flex-row
-                        sm:items-center
-                        sm:justify-between gap-2">
+                        sm:items-center sm:justify-between gap-2">
 
                 <div>
-
-                    <h2 class="text-base sm:text-lg
-                               font-semibold text-slate-800">
-
+                    <h2 class="text-base font-semibold text-slate-800">
                         Exam List
-
                     </h2>
 
-                    <p class="text-xs sm:text-sm
-                              text-slate-500 mt-1">
-
-                        All examinations
-
+                    <p class="text-xs text-slate-500 mt-0.5">
+                        Total {{ $exams->total() }} examination{{ $exams->total() != 1 ? 's' : '' }}
                     </p>
-
-                </div>
-
-
-                <div class="text-xs sm:text-sm text-slate-500">
-
-                    Total:
-
-                    <span class="font-semibold text-slate-700">
-
-                        {{ $exams->total() }}
-
-                    </span>
-
                 </div>
 
             </div>
@@ -406,74 +323,37 @@
         </div>
 
 
-        {{-- =====================================================
-            TABLE
-        ====================================================== --}}
+        {{-- Desktop Table --}}
+        <div class="hidden md:block overflow-x-auto">
 
-        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
 
-            <table class="w-full min-w-[1050px]
-                          text-xs sm:text-sm">
-
-                <thead class="bg-slate-50
-                              border-b border-slate-200">
+                <thead class="bg-slate-50 border-b border-slate-200">
 
                     <tr>
 
-                        <th class="px-4 py-3 text-left
-                                   font-semibold text-slate-600">
-
+                        <th class="px-5 py-3 text-left font-semibold text-slate-600">
                             #
-
                         </th>
 
-                        <th class="px-4 py-3 text-left
-                                   font-semibold text-slate-600">
-
+                        <th class="px-5 py-3 text-left font-semibold text-slate-600">
                             Exam
-
                         </th>
 
-                        <th class="px-4 py-3 text-left
-                                   font-semibold text-slate-600">
-
-                            Session
-
+                        <th class="px-5 py-3 text-left font-semibold text-slate-600">
+                            Academic Session
                         </th>
 
-                        <th class="px-4 py-3 text-left
-                                   font-semibold text-slate-600">
-
-                            Class
-
+                        <th class="px-5 py-3 text-left font-semibold text-slate-600">
+                            Exam Period
                         </th>
 
-                        <th class="px-4 py-3 text-left
-                                   font-semibold text-slate-600">
-
-                            Section
-
-                        </th>
-
-                        <th class="px-4 py-3 text-left
-                                   font-semibold text-slate-600">
-
-                            Date
-
-                        </th>
-
-                        <th class="px-4 py-3 text-left
-                                   font-semibold text-slate-600">
-
+                        <th class="px-5 py-3 text-center font-semibold text-slate-600">
                             Status
-
                         </th>
 
-                        <th class="px-4 py-3 text-right
-                                   font-semibold text-slate-600">
-
-                            Actions
-
+                        <th class="px-5 py-3 text-right font-semibold text-slate-600">
+                            Action
                         </th>
 
                     </tr>
@@ -487,52 +367,50 @@
 
                         <tr class="hover:bg-slate-50 transition">
 
-
                             {{-- Number --}}
-
-                            <td class="px-4 py-3 text-slate-500">
-
+                            <td class="px-5 py-4 text-slate-500">
                                 {{ $exams->firstItem() + $loop->index }}
-
                             </td>
 
 
                             {{-- Exam --}}
-
-                            <td class="px-4 py-3">
+                            <td class="px-5 py-4">
 
                                 <div class="flex items-center gap-3">
 
-                                    <div class="flex h-10 w-10
-                                                shrink-0
-                                                items-center justify-center
-                                                rounded-lg
-                                                bg-blue-50
-                                                text-blue-600">
+                                    <div class="w-10 h-10 rounded-lg bg-blue-50
+                                                flex items-center justify-center
+                                                flex-shrink-0">
 
-                                        <i class="bi bi-journal-text"></i>
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="w-5 h-5 text-blue-600"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor"
+                                             stroke-width="2">
+
+                                            <path stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+
+                                        </svg>
 
                                     </div>
 
                                     <div>
 
-                                        <p class="font-semibold
-                                                  text-slate-800">
+                                        <a href="{{ route('admin.exams.show', $exam) }}"
+                                           class="font-semibold text-slate-800
+                                                  hover:text-blue-600 transition">
 
                                             {{ $exam->name }}
 
-                                        </p>
+                                        </a>
 
                                         @if($exam->code)
-
-                                            <p class="text-xs
-                                                      text-slate-400">
-
-                                                Code:
-                                                {{ $exam->code }}
-
+                                            <p class="text-xs text-slate-500 mt-0.5">
+                                                Code: {{ $exam->code }}
                                             </p>
-
                                         @endif
 
                                     </div>
@@ -542,83 +420,79 @@
                             </td>
 
 
-                            {{-- Session --}}
+                            {{-- Academic Session --}}
+                            <td class="px-5 py-4 text-slate-600">
 
-                            <td class="px-4 py-3">
-
-                                <span class="font-medium
-                                             text-slate-700">
-
-                                    {{ $exam->academicSession->name ?? 'N/A' }}
-
-                                </span>
+                                {{ $exam->academicSession->name
+                                    ?? $exam->academicSession->title
+                                    ?? '-' }}
 
                             </td>
 
 
-                            {{-- Class --}}
-
-                            <td class="px-4 py-3">
-
-                                <span class="font-medium
-                                             text-slate-700">
-
-                                    {{ $exam->schoolClass->name ?? 'N/A' }}
-
-                                </span>
-
-                            </td>
-
-
-                            {{-- Section --}}
-
-                            <td class="px-4 py-3">
-
-                                @if($exam->section)
-
-                                    {{ $exam->section->name }}
-
-                                @else
-
-                                    <span class="text-slate-400">
-                                        All Sections
-                                    </span>
-
-                                @endif
-
-                            </td>
-
-
-                            {{-- Date --}}
-
-                            <td class="px-4 py-3">
+                            {{-- Period --}}
+                            <td class="px-5 py-4">
 
                                 @if($exam->start_date || $exam->end_date)
 
                                     <div class="text-slate-700">
 
                                         @if($exam->start_date)
-
                                             {{ $exam->start_date->format('d M Y') }}
-
+                                        @else
+                                            -
                                         @endif
 
+                                        <span class="text-slate-400 mx-1">
+                                            →
+                                        </span>
+
                                         @if($exam->end_date)
-
-                                            <span class="text-slate-400">
-                                                -
-                                            </span>
-
                                             {{ $exam->end_date->format('d M Y') }}
-
+                                        @else
+                                            -
                                         @endif
 
                                     </div>
 
                                 @else
-
                                     <span class="text-slate-400">
                                         Not set
+                                    </span>
+                                @endif
+
+                            </td>
+
+
+                            {{-- Status --}}
+                            <td class="px-5 py-4 text-center">
+
+                                @if($exam->status)
+
+                                    <span class="inline-flex items-center gap-1.5
+                                                 px-2.5 py-1 rounded-full
+                                                 text-xs font-semibold
+                                                 bg-green-50 text-green-700
+                                                 border border-green-200">
+
+                                        <span class="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+
+                                        Active
+
+                                    </span>
+
+                                @else
+
+                                    <span class="inline-flex items-center gap-1.5
+                                                 px-2.5 py-1 rounded-full
+                                                 text-xs font-semibold
+                                                 bg-red-50 text-red-700
+                                                 border border-red-200">
+
+                                        <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+
+                                        Inactive
+
                                     </span>
 
                                 @endif
@@ -626,122 +500,118 @@
                             </td>
 
 
-                            {{-- Status --}}
-
-                            <td class="px-4 py-3">
-
-                                @php
-
-                                    $statusClasses = [
-                                        'draft' =>
-                                            'bg-slate-50 text-slate-700 border-slate-200',
-
-                                        'published' =>
-                                            'bg-green-50 text-green-700 border-green-200',
-
-                                        'completed' =>
-                                            'bg-blue-50 text-blue-700 border-blue-200',
-                                    ];
-
-                                    $statusLabels = [
-                                        'draft' => 'Draft',
-                                        'published' => 'Published',
-                                        'completed' => 'Completed',
-                                    ];
-
-                                @endphp
-
-
-                                <span class="inline-flex
-                                             items-center
-                                             rounded-full
-                                             border
-                                             px-2.5 py-1
-                                             text-xs font-medium
-                                             {{ $statusClasses[$exam->status]
-                                                ?? 'bg-slate-50 text-slate-700 border-slate-200' }}">
-
-                                    {{ $statusLabels[$exam->status]
-                                       ?? ucfirst($exam->status) }}
-
-                                </span>
-
-                            </td>
-
-
                             {{-- Actions --}}
+                            <td class="px-5 py-4">
 
-                            <td class="px-4 py-3">
+                                <div class="flex items-center justify-end gap-2">
 
-                                <div class="flex items-center  justify-end gap-1.5">
- 
                                     {{-- Schedule --}}
+                                    <a href="#"
+                                       title="Exam Schedule"
+                                       class="inline-flex items-center justify-center
+                                              w-9 h-9 rounded-lg
+                                              bg-blue-50 text-blue-600
+                                              hover:bg-blue-100 transition">
 
-                                    <a href="{{ route('admin.exams.schedules.index', $exam) }}"  title="Exam Schedule"
-                                    class="inline-flex h-9 w-9  items-center justify-center  rounded-lg  border border-slate-200
-                                            bg-white text-slate-600  hover:bg-blue-50  hover:text-blue-600  transition">
-                                        <i class="bi bi-calendar2-week"></i>
-                                    </a> 
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="w-4 h-4"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor"
+                                             stroke-width="2">
+
+                                            <path stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+
+                                        </svg>
+
+                                    </a>
+
+
                                     {{-- View --}}
-
                                     <a href="{{ route('admin.exams.show', $exam) }}"
                                        title="View"
-                                       class="inline-flex h-9 w-9
-                                              items-center justify-center
-                                              rounded-lg
-                                              border border-slate-200
-                                              bg-white
-                                              text-slate-600
-                                              hover:bg-slate-50
-                                              hover:text-blue-600
-                                              transition">
+                                       class="inline-flex items-center justify-center
+                                              w-9 h-9 rounded-lg
+                                              bg-slate-100 text-slate-600
+                                              hover:bg-slate-200 transition">
 
-                                        <i class="bi bi-eye"></i>
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="w-4 h-4"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor"
+                                             stroke-width="2">
+
+                                            <path stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+
+                                            <path stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+
+                                        </svg>
 
                                     </a>
 
 
                                     {{-- Edit --}}
-
                                     <a href="{{ route('admin.exams.edit', $exam) }}"
                                        title="Edit"
-                                       class="inline-flex h-9 w-9
-                                              items-center justify-center
-                                              rounded-lg
-                                              border border-slate-200
-                                              bg-white
-                                              text-slate-600
-                                              hover:bg-blue-50
-                                              hover:text-blue-600
-                                              transition">
+                                       class="inline-flex items-center justify-center
+                                              w-9 h-9 rounded-lg
+                                              bg-amber-50 text-amber-600
+                                              hover:bg-amber-100 transition">
 
-                                        <i class="bi bi-pencil"></i>
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="w-4 h-4"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor"
+                                             stroke-width="2">
+
+                                            <path stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"/>
+
+                                            <path stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/>
+
+                                        </svg>
 
                                     </a>
 
 
                                     {{-- Delete --}}
-
                                     <form method="POST"
                                           action="{{ route('admin.exams.destroy', $exam) }}"
                                           onsubmit="return confirm('Are you sure you want to delete this exam?');">
 
                                         @csrf
-
                                         @method('DELETE')
 
                                         <button type="submit"
                                                 title="Delete"
-                                                class="inline-flex h-9 w-9
-                                                       items-center justify-center
-                                                       rounded-lg
-                                                       border border-red-200
-                                                       bg-white
-                                                       text-red-600
-                                                       hover:bg-red-50
-                                                       transition">
+                                                class="inline-flex items-center justify-center
+                                                       w-9 h-9 rounded-lg
+                                                       bg-red-50 text-red-600
+                                                       hover:bg-red-100 transition">
 
-                                            <i class="bi bi-trash"></i>
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 class="w-4 h-4"
+                                                 fill="none"
+                                                 viewBox="0 0 24 24"
+                                                 stroke="currentColor"
+                                                 stroke-width="2">
+
+                                                <path stroke-linecap="round"
+                                                      stroke-linejoin="round"
+                                                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6M9 7V4a1 1 0 011-1h4a1 1 0 011 1v3m-9 0h14"/>
+
+                                            </svg>
 
                                         </button>
 
@@ -756,66 +626,62 @@
                     @empty
 
                         <tr>
+                            <td colspan="6"
+                                class="px-5 py-12 text-center">
 
-                            <td colspan="8"
-                                class="px-4 py-14 text-center">
+                                <div class="flex flex-col items-center">
 
-                                <div class="flex flex-col
-                                            items-center">
+                                    <div class="w-14 h-14 rounded-full
+                                                bg-slate-100
+                                                flex items-center justify-center mb-3">
 
-                                    <div class="flex h-16 w-16
-                                                items-center justify-center
-                                                rounded-full
-                                                bg-blue-50
-                                                text-blue-600">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="w-7 h-7 text-slate-400"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor"
+                                             stroke-width="2">
 
-                                        <i class="bi bi-journal-x
-                                                  text-3xl"></i>
+                                            <path stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332-.477 4.5-1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+
+                                        </svg>
 
                                     </div>
 
-
-                                    <h3 class="mt-4
-                                               text-sm sm:text-base
-                                               font-semibold
-                                               text-slate-700">
-
+                                    <h3 class="text-sm font-semibold text-slate-700">
                                         No Exams Found
-
                                     </h3>
 
-
-                                    <p class="mt-1
-                                              text-xs sm:text-sm
-                                              text-slate-500">
-
-                                        No examinations match your
-                                        current filters.
-
+                                    <p class="text-sm text-slate-500 mt-1">
+                                        Create your first exam to get started.
                                     </p>
 
-
                                     <a href="{{ route('admin.exams.create') }}"
-                                       class="mt-4 inline-flex
-                                              items-center gap-2
-                                              rounded-lg
-                                              bg-blue-600
-                                              px-4 py-2
-                                              text-sm font-semibold
-                                              text-white
-                                              hover:bg-blue-700
-                                              transition">
+                                       class="mt-4 inline-flex items-center gap-2
+                                              px-4 py-2 rounded-lg
+                                              bg-blue-600 hover:bg-blue-700
+                                              text-white text-sm font-semibold">
 
-                                        <i class="bi bi-plus-lg"></i>
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="w-4 h-4"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor"
+                                             stroke-width="2">
+                                            <path stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  d="M12 4v16m8-8H4"/>
+                                        </svg>
 
-                                        Create First Exam
+                                        Add Exam
 
                                     </a>
 
                                 </div>
 
                             </td>
-
                         </tr>
 
                     @endforelse
@@ -828,13 +694,194 @@
 
 
         {{-- =====================================================
+            MOBILE CARDS
+        ====================================================== --}}
+        <div class="md:hidden divide-y divide-slate-100">
+
+            @forelse($exams as $exam)
+
+                <div class="p-4">
+
+                    <div class="flex items-start justify-between gap-3">
+
+                        <div class="flex items-start gap-3 min-w-0">
+
+                            <div class="w-10 h-10 rounded-lg bg-blue-50
+                                        flex items-center justify-center
+                                        flex-shrink-0">
+
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     class="w-5 h-5 text-blue-600"
+                                     fill="none"
+                                     viewBox="0 0 24 24"
+                                     stroke="currentColor"
+                                     stroke-width="2">
+                                    <path stroke-linecap="round"
+                                          stroke-linejoin="round"
+                                          d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332-.477 4.5-1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                </svg>
+
+                            </div>
+
+                            <div class="min-w-0">
+
+                                <a href="{{ route('admin.exams.show', $exam) }}"
+                                   class="font-semibold text-slate-800
+                                          hover:text-blue-600">
+
+                                    {{ $exam->name }}
+
+                                </a>
+
+                                @if($exam->code)
+                                    <p class="text-xs text-slate-500 mt-0.5">
+                                        Code: {{ $exam->code }}
+                                    </p>
+                                @endif
+
+                            </div>
+
+                        </div>
+
+
+                        @if($exam->status)
+
+                            <span class="flex-shrink-0 px-2 py-1 rounded-full
+                                         text-xs font-semibold
+                                         bg-green-50 text-green-700
+                                         border border-green-200">
+                                Active
+                            </span>
+
+                        @else
+
+                            <span class="flex-shrink-0 px-2 py-1 rounded-full
+                                         text-xs font-semibold
+                                         bg-red-50 text-red-700
+                                         border border-red-200">
+                                Inactive
+                            </span>
+
+                        @endif
+
+                    </div>
+
+
+                    <div class="mt-4 grid grid-cols-2 gap-3 text-sm">
+
+                        <div>
+                            <p class="text-xs text-slate-400">
+                                Academic Session
+                            </p>
+
+                            <p class="text-slate-700 mt-0.5">
+                                {{ $exam->academicSession->name
+                                    ?? $exam->academicSession->title
+                                    ?? '-' }}
+                            </p>
+                        </div>
+
+
+                        <div>
+                            <p class="text-xs text-slate-400">
+                                Exam Period
+                            </p>
+
+                            <p class="text-slate-700 mt-0.5">
+
+                                @if($exam->start_date)
+                                    {{ $exam->start_date->format('d M Y') }}
+                                @else
+                                    -
+                                @endif
+
+                                @if($exam->end_date)
+                                    → {{ $exam->end_date->format('d M Y') }}
+                                @endif
+
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="mt-4 flex items-center justify-end gap-2">
+
+                        <a href="#"
+                           class="inline-flex items-center gap-1.5
+                                  px-3 py-2 rounded-lg
+                                  bg-blue-50 text-blue-600
+                                  hover:bg-blue-100
+                                  text-xs font-medium">
+
+                            Schedule
+                        </a>
+
+                        <a href="{{ route('admin.exams.show', $exam) }}"
+                           class="inline-flex items-center gap-1.5
+                                  px-3 py-2 rounded-lg
+                                  bg-slate-100 text-slate-600
+                                  hover:bg-slate-200
+                                  text-xs font-medium">
+
+                            View
+                        </a>
+
+                        <a href="{{ route('admin.exams.edit', $exam) }}"
+                           class="inline-flex items-center gap-1.5
+                                  px-3 py-2 rounded-lg
+                                  bg-amber-50 text-amber-600
+                                  hover:bg-amber-100
+                                  text-xs font-medium">
+
+                            Edit
+                        </a>
+
+                        <form method="POST"
+                              action="{{ route('admin.exams.destroy', $exam) }}"
+                              onsubmit="return confirm('Are you sure you want to delete this exam?');">
+
+                            @csrf
+                            @method('DELETE')
+
+                            <button type="submit"
+                                    class="inline-flex items-center gap-1.5
+                                           px-3 py-2 rounded-lg
+                                           bg-red-50 text-red-600
+                                           hover:bg-red-100
+                                           text-xs font-medium">
+
+                                Delete
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            @empty
+
+                <div class="p-10 text-center">
+
+                    <p class="text-sm text-slate-500">
+                        No exams found.
+                    </p>
+
+                </div>
+
+            @endforelse
+
+        </div>
+
+
+        {{-- =====================================================
             PAGINATION
         ====================================================== --}}
-
         @if($exams->hasPages())
 
-            <div class="border-t border-slate-200
-                        px-4 sm:px-5 py-4">
+            <div class="px-4 sm:px-5 py-4 border-t border-slate-200">
 
                 {{ $exams->links() }}
 

@@ -2,18 +2,18 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\ExamSchedule;
 
 class Exam extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'branch_id',
         'academic_session_id',
-        'school_class_id',
-        'section_id',
         'name',
         'code',
         'start_date',
@@ -25,57 +25,30 @@ class Exam extends Model
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
+        'status' => 'boolean',
     ];
 
-      public function branch(): BelongsTo
-        {
-            return $this->belongsTo(
-                Branch::class,
-                'branch_id'
-            );
-        }
+    /**
+     * Branch
+     */
+    public function branch(): BelongsTo
+    {
+        return $this->belongsTo(Branch::class);
+    }
 
-
+    /**
+     * Academic Session
+     */
     public function academicSession(): BelongsTo
     {
-        return $this->belongsTo(
-            AcademicSession::class,
-            'academic_session_id'
-        );
+        return $this->belongsTo(AcademicSession::class);
     }
 
-    public function schoolClass(): BelongsTo
-    {
-        return $this->belongsTo(
-            SchoolClass::class,
-            'school_class_id'
-        );
-    }
-
-    public function section(): BelongsTo
-    {
-        return $this->belongsTo(
-            Section::class,
-            'section_id'
-        );
-    }
-
+    /**
+     * Exam Schedules
+     */
     public function schedules(): HasMany
     {
-        return $this->hasMany(
-            ExamSchedule::class,
-            'exam_id'
-        );
+        return $this->hasMany(ExamSchedule::class);
     }
-
-    public function marks(): HasMany
-    {
-        return $this->hasMany(
-            ExamMark::class,
-            'exam_id'
-        );
-    }
-
-
-
 }

@@ -2,166 +2,89 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\AcademicSession;
-use App\Models\Branch;
 use App\Models\Exam;
-use App\Models\SchoolClass;
-use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
-use App\Models\ExamSchedule;
 
 class ExamController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | INDEX
-    |--------------------------------------------------------------------------
-    */
-
+    /**
+     * Display a listing of exams.
+     */
     public function index(Request $request)
     {
-        $user = auth()->user();
+        $branchId = Auth::user()->branch_id;
 
-        $exams = Exam::with([
-            'branch',
-            'academicSession',
-            'schoolClass',
-            'section',
-        ])
-        ->when(
-            $user->branch_id,
-            fn ($query) =>
-                $query->where(
-                    'branch_id',
-                    $user->branch_id
-                )
-        )
-        ->when(
-            $request->filled('search'),
-            function ($query) use ($request) {
+        $exams = Exam::with('academicSession')
+            ->where('branch_id', $branchId)
+            ->when($request->filled('search'), function ($query) use ($request) {
                 $search = $request->search;
 
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
                         ->orWhere('code', 'like', "%{$search}%");
                 });
-            }
-        )
-        ->when(
-            $request->filled('academic_session_id'),
-            fn ($query) =>
-                $query->where(
-                    'academic_session_id',
-                    $request->academic_session_id
-                )
-        )
-        ->when(
-            $request->filled('school_class_id'),
-            fn ($query) =>
-                $query->where(
-                    'school_class_id',
-                    $request->school_class_id
-                )
-        )
-        ->latest()
-        ->paginate(15)
-        ->withQueryString();
-
-        $academicSessions = AcademicSession::orderBy(
-            'name'
-        )->get();
-
-        $classes = SchoolClass::orderBy(
-            'name'
-        )->get();
-
-        return view(
-            'admin.exams.index',
-            compact(
-                'exams',
-                'academicSessions',
-                'classes'
-            )
-        );
-    }
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | CREATE
-    |--------------------------------------------------------------------------
-    */
-
-    public function create()
-    {
-        $user = auth()->user();
-
-        $branches = Branch::query()
+            })
             ->when(
-                $user->branch_id,
-                fn ($query) =>
+                $request->filled('academic_session_id'),
+                function ($query) use ($request) {
                     $query->where(
-                        'id',
-                        $user->branch_id
-                    )
+                        'academic_session_id',
+                        $request->academic_session_id
+                    );
+                }
             )
-            ->orderBy('name')
+            ->when(
+                $request->filled('status'),
+                function ($query) use ($request) {
+                    $query->where('status', $request->status);
+                }
+            )
+            ->latest()
+            ->paginate(15)
+            ->withQueryString();
+
+        $academicSessions = AcademicSession::query()
+            ->orderByDesc('id')
             ->get();
 
-        $academicSessions = AcademicSession::orderBy(
-            'name'
-        )->get();
-
-        $classes = SchoolClass::orderBy(
-            'name'
-        )->get();
-
-        $sections = Section::orderBy(
-            'name'
-        )->get();
-
-        return view(
-            'admin.exams.create',
-            compact(
-                'branches',
-                'academicSessions',
-                'classes',
-                'sections'
-            )
-        );
+        return view('admin.exams.index', compact(
+            'exams',
+            'academicSessions'
+        ));
     }
 
+    /**
+     * Show the form for creating a new exam.
+     */
+    public function create()
+    {
+        $branchId = Auth::user()->branch_id;
 
-    /*
-    |--------------------------------------------------------------------------
-    | STORE
-    |--------------------------------------------------------------------------
-    */
+        $academicSessions = AcademicSession::query()
+            ->orderByDesc('id')
+            ->get();
 
+        return view('admin.exams.create', compact(
+            'academicSessions',
+            'branchId'
+        ));
+    }
+
+    /**
+     * Store a newly created exam.
+     */
     public function store(Request $request)
     {
-        $user = auth()->user();
+        $branchId = Auth::user()->branch_id;
 
         $validated = $request->validate([
-            'branch_id' => [
-                'required',
-                'exists:branches,id',
-            ],
-
             'academic_session_id' => [
                 'required',
                 'exists:academic_sessions,id',
-            ],
-
-            'school_class_id' => [
-                'required',
-                'exists:classes,id',
-            ],
-
-            'section_id' => [
-                'nullable',
-                'exists:sections,id',
             ],
 
             'name' => [
@@ -174,6 +97,10 @@ class ExamController extends Controller
                 'nullable',
                 'string',
                 'max:100',
+                Rule::unique('exams', 'code')
+                    ->where(function ($query) use ($branchId) {
+                        return $query->where('branch_id', $branchId);
+                    }),
             ],
 
             'start_date' => [
@@ -193,136 +120,66 @@ class ExamController extends Controller
             ],
 
             'status' => [
-                'required',
-                Rule::in([
-                    'draft',
-                    'published',
-                    'completed',
-                ]),
+                'nullable',
+                'boolean',
             ],
         ]);
 
-        if ($user->branch_id) {
-            $validated['branch_id'] = $user->branch_id;
-        }
+        $validated['branch_id'] = $branchId;
+        $validated['status'] = $request->boolean('status');
 
         Exam::create($validated);
 
         return redirect()
             ->route('admin.exams.index')
-            ->with(
-                'success',
-                'Exam created successfully.'
-            );
+            ->with('success', 'Exam created successfully.');
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | SHOW
-    |--------------------------------------------------------------------------
-    */
-
+    /**
+     * Display the specified exam.
+     */
     public function show(Exam $exam)
     {
-        $this->authorizeBranch($exam);
+        $this->checkBranch($exam);
 
         $exam->load([
-            'branch',
             'academicSession',
-            'schoolClass',
-            'section',
+            'schedules',
         ]);
 
-        return view(
-            'admin.exams.show',
-            compact('exam')
-        );
+        return view('admin.exams.show', compact('exam'));
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | EDIT
-    |--------------------------------------------------------------------------
-    */
-
+    /**
+     * Show the form for editing the specified exam.
+     */
     public function edit(Exam $exam)
     {
-        $this->authorizeBranch($exam);
+        $this->checkBranch($exam);
 
-        $user = auth()->user();
-
-        $branches = Branch::query()
-            ->when(
-                $user->branch_id,
-                fn ($query) =>
-                    $query->where(
-                        'id',
-                        $user->branch_id
-                    )
-            )
-            ->orderBy('name')
+        $academicSessions = AcademicSession::query()
+            ->orderByDesc('id')
             ->get();
 
-        $academicSessions = AcademicSession::orderBy(
-            'name'
-        )->get();
-
-        $classes = SchoolClass::orderBy(
-            'name'
-        )->get();
-
-        $sections = Section::orderBy(
-            'name'
-        )->get();
-
-        return view(
-            'admin.exams.edit',
-            compact(
-                'exam',
-                'branches',
-                'academicSessions',
-                'classes',
-                'sections'
-            )
-        );
+        return view('admin.exams.edit', compact(
+            'exam',
+            'academicSessions'
+        ));
     }
 
+    /**
+     * Update the specified exam.
+     */
+    public function update(Request $request, Exam $exam)
+    {
+        $this->checkBranch($exam);
 
-    /*
-    |--------------------------------------------------------------------------
-    | UPDATE
-    |--------------------------------------------------------------------------
-    */
-
-    public function update(
-        Request $request,
-        Exam $exam
-    ) {
-        $this->authorizeBranch($exam);
-
-        $user = auth()->user();
+        $branchId = Auth::user()->branch_id;
 
         $validated = $request->validate([
-            'branch_id' => [
-                'required',
-                'exists:branches,id',
-            ],
-
             'academic_session_id' => [
                 'required',
                 'exists:academic_sessions,id',
-            ],
-
-            'school_class_id' => [
-                'required',
-                'exists:classes,id',
-            ],
-
-            'section_id' => [
-                'nullable',
-                'exists:sections,id',
             ],
 
             'name' => [
@@ -335,6 +192,11 @@ class ExamController extends Controller
                 'nullable',
                 'string',
                 'max:100',
+                Rule::unique('exams', 'code')
+                    ->ignore($exam->id)
+                    ->where(function ($query) use ($branchId) {
+                        return $query->where('branch_id', $branchId);
+                    }),
             ],
 
             'start_date' => [
@@ -354,66 +216,42 @@ class ExamController extends Controller
             ],
 
             'status' => [
-                'required',
-                Rule::in([
-                    'draft',
-                    'published',
-                    'completed',
-                ]),
+                'nullable',
+                'boolean',
             ],
         ]);
 
-        if ($user->branch_id) {
-            $validated['branch_id'] = $user->branch_id;
-        }
+        $validated['status'] = $request->boolean('status');
 
         $exam->update($validated);
 
         return redirect()
             ->route('admin.exams.index')
-            ->with(
-                'success',
-                'Exam updated successfully.'
-            );
+            ->with('success', 'Exam updated successfully.');
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | DESTROY
-    |--------------------------------------------------------------------------
-    */
-
+    /**
+     * Remove the specified exam.
+     */
     public function destroy(Exam $exam)
     {
-        $this->authorizeBranch($exam);
+        $this->checkBranch($exam);
 
         $exam->delete();
 
         return redirect()
             ->route('admin.exams.index')
-            ->with(
-                'success',
-                'Exam deleted successfully.'
-            );
+            ->with('success', 'Exam deleted successfully.');
     }
 
-
-    /*
-    |--------------------------------------------------------------------------
-    | BRANCH ACCESS
-    |--------------------------------------------------------------------------
-    */
-
-    private function authorizeBranch(Exam $exam): void
+    /**
+     * Check branch access.
+     */
+    private function checkBranch(Exam $exam): void
     {
-        $user = auth()->user();
-
-        if (
-            $user->branch_id &&
-            $exam->branch_id != $user->branch_id
-        ) {
-            abort(403);
-        }
+        abort_if(
+            $exam->branch_id !== Auth::user()->branch_id,
+            403
+        );
     }
 }
