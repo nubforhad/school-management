@@ -27,10 +27,14 @@ class Exam extends Model
         'end_date' => 'date',
     ];
 
-    public function branch(): BelongsTo
-    {
-        return $this->belongsTo(Branch::class);
-    }
+      public function branch(): BelongsTo
+        {
+            return $this->belongsTo(
+                Branch::class,
+                'branch_id'
+            );
+        }
+
 
     public function academicSession(): BelongsTo
     {
@@ -55,14 +59,23 @@ class Exam extends Model
             'section_id'
         );
     }
+
     public function schedules(): HasMany
     {
-        return $this->hasMany(ExamSchedule::class);
+        return $this->hasMany(
+            ExamSchedule::class,
+            'exam_id'
+        );
     }
 
-   
+    public function marks(): HasMany
+    {
+        return $this->hasMany(
+            ExamMark::class,
+            'exam_id'
+        );
+    }
 
-    
 
 
 }

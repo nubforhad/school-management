@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ExamSchedule extends Model
 {
@@ -31,19 +32,27 @@ class ExamSchedule extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function exam(): BelongsTo
+     public function exam(): BelongsTo
     {
-        return $this->belongsTo(Exam::class);
+        return $this->belongsTo(
+            Exam::class,
+            'exam_id'
+        );
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Subject
-    |--------------------------------------------------------------------------
-    */
 
     public function subject(): BelongsTo
     {
-        return $this->belongsTo(Subject::class);
+        return $this->belongsTo(
+            Subject::class,
+            'subject_id'
+        );
+    }
+
+    public function marks(): HasMany
+    {
+        return $this->hasMany(
+            ExamMark::class,
+            'exam_schedule_id'
+        );
     }
 }

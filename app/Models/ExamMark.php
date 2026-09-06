@@ -8,71 +8,58 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ExamMark extends Model
 {
     protected $fillable = [
-        'branch_id',
-        'academic_session_id',
+
         'exam_id',
         'exam_schedule_id',
+
         'student_id',
-        'school_class_id',
-        'section_id',
-        'subject_id',
-        'written_marks',
-        'mcq_marks',
-        'practical_marks',
-        'total_marks',
-        'percentage',
-        'grade',
-        'grade_point',
-        'result_status',
+        'student_enrollment_id',
+
+        'marks',
         'remarks',
     ];
 
     protected $casts = [
-        'written_marks'   => 'decimal:2',
-        'mcq_marks'       => 'decimal:2',
-        'practical_marks' => 'decimal:2',
-        'total_marks'     => 'decimal:2',
-        'percentage'      => 'decimal:2',
-        'grade_point'     => 'decimal:2',
+
+        'marks' => 'decimal:2',
+
     ];
 
-    public function branch(): BelongsTo
-    {
-        return $this->belongsTo(Branch::class);
-    }
-
-    public function academicSession(): BelongsTo
-    {
-        return $this->belongsTo(AcademicSession::class);
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
 
     public function exam(): BelongsTo
     {
-        return $this->belongsTo(Exam::class);
+        return $this->belongsTo(
+            Exam::class,
+            'exam_id'
+        );
     }
 
-    public function examSchedule(): BelongsTo
+    public function schedule(): BelongsTo
     {
-        return $this->belongsTo(ExamSchedule::class);
+        return $this->belongsTo(
+            ExamSchedule::class,
+            'exam_schedule_id'
+        );
     }
 
     public function student(): BelongsTo
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(
+            Student::class,
+            'student_id'
+        );
     }
 
-    public function schoolClass(): BelongsTo
+    public function enrollment(): BelongsTo
     {
-        return $this->belongsTo(SchoolClass::class);
-    }
-
-    public function section(): BelongsTo
-    {
-        return $this->belongsTo(Section::class);
-    }
-
-    public function subject(): BelongsTo
-    {
-        return $this->belongsTo(Subject::class);
+        return $this->belongsTo(
+            StudentEnrollment::class,
+            'student_enrollment_id'
+        );
     }
 }
