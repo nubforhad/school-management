@@ -612,19 +612,14 @@
                         #{{ $examMark->id }}
                     </p>
                 </div>
-
-
                 <div>
                     <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">
                         Created At
                     </p>
-
                     <p class="mt-1 text-sm font-semibold text-slate-800">
                         {{ $examMark->created_at?->format('d M Y, h:i A') ?? 'N/A' }}
                     </p>
                 </div>
-
-
                 <div>
                     <p class="text-xs font-medium text-slate-500 uppercase tracking-wide">
                         Last Updated
@@ -634,13 +629,9 @@
                         {{ $examMark->updated_at?->format('d M Y, h:i A') ?? 'N/A' }}
                     </p>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 
     {{-- =========================================================
         ACTIONS
@@ -658,8 +649,6 @@
             Back to Marks List
 
         </a>
-
-
         <div class="flex flex-col sm:flex-row gap-2">
 
             <a href="{{ route('admin.exam-marks.edit', $examMark) }}"
@@ -668,19 +657,14 @@
                       bg-blue-600 hover:bg-blue-700
                       text-white text-sm font-medium
                       rounded-lg transition">
-
                 Edit Mark
-
             </a>
-
-
             <form method="POST"
                   action="{{ route('admin.exam-marks.destroy', $examMark) }}"
                   onsubmit="return confirm('Are you sure you want to delete this mark record?');">
 
                 @csrf
                 @method('DELETE')
-
                 <button type="submit"
                         class="w-full inline-flex justify-center items-center gap-2
                                px-5 py-2.5
@@ -689,15 +673,10 @@
                                rounded-lg transition">
 
                     Delete
-
                 </button>
-
             </form>
-
         </div>
-
     </div>
-
 </div>
 
 @endsection
