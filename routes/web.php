@@ -207,8 +207,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 
-
-
     Route::prefix('exams')->name('admin.exams.')->group(function () {
         Route::get( 'schedules',  [ExamScheduleController::class, 'index'])->name('schedules.index');
         Route::get('schedules/create',  [ExamScheduleController::class, 'create'])->name('schedules.create');
@@ -217,13 +215,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put(  'schedules/{schedule}',   [ExamScheduleController::class, 'update'])->name('schedules.update');
         Route::delete('schedules/{schedule}',  [ExamScheduleController::class, 'destroy'])->name('schedules.destroy');
     });
-
-    // =============== Exam Marks
-
-    // Route::prefix('admin/exam-marks')->name('admin.exam-marks.')->group(function () {
-    //     Route::get('/', [ExamMarkController::class, 'index'])->name('index');
-    //     Route::post('/', [ExamMarkController::class, 'store'])->name('store');
-    // });
 
     
 

@@ -6,14 +6,22 @@ use App\Models\Branch;
 use App\Models\SchoolClass;
 use App\Models\Section;
 use App\Models\Subject;
+use App\Models\Student;
+use App\Models\Attendance;
+use App\Models\FeePayment;
+use App\Models\TeacherStaff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        // Branch Selection
-         
+        /*
+        |--------------------------------------------------------------------------
+        | Branches
+        |--------------------------------------------------------------------------
+        */
 
         $branches = Branch::where('status', true)
             ->orderBy('name')
@@ -30,8 +38,55 @@ class DashboardController extends Controller
         $branch = null;
 
         if ($branchId) {
-            $branch = Branch::find($branchId);
+            $branch = Branch::where('status', true)
+                ->find($branchId);
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Date
+        |--------------------------------------------------------------------------
+        */
+
+        $today = Carbon::today();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Students
+        |--------------------------------------------------------------------------
+        */
+
+        $studentQuery = Student::query();
+
+        if ($branchId) {
+            $studentQuery->where('branch_id', $branchId);
+        }
+
+        $totalStudents = (clone $studentQuery)->count();
+
+        $activeStudents = (clone $studentQuery)
+            ->where('status', true)
+            ->count();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Teachers / Staff
+        |--------------------------------------------------------------------------
+        */
+
+        $teacherQuery = TeacherStaff::query();
+
+        if ($branchId) {
+            $teacherQuery->where('branch_id', $branchId);
+        }
+
+        $totalTeachers = (clone $teacherQuery)->count();
+
+        $activeTeachers = (clone $teacherQuery)
+            ->where('status', true)
+            ->count();
 
 
         /*
@@ -40,13 +95,13 @@ class DashboardController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $classesQuery = SchoolClass::query();
+        $classQuery = SchoolClass::query();
 
         if ($branchId) {
-            $classesQuery->where('branch_id', $branchId);
+            $classQuery->where('branch_id', $branchId);
         }
 
-        $totalClasses = $classesQuery
+        $totalClasses = (clone $classQuery)
             ->where('status', true)
             ->count();
 
@@ -57,13 +112,13 @@ class DashboardController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $sectionsQuery = Section::query();
+        $sectionQuery = Section::query();
 
         if ($branchId) {
-            $sectionsQuery->where('branch_id', $branchId);
+            $sectionQuery->where('branch_id', $branchId);
         }
 
-        $totalSections = $sectionsQuery
+        $totalSections = (clone $sectionQuery)
             ->where('status', true)
             ->count();
 
@@ -74,46 +129,58 @@ class DashboardController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $subjectsQuery = Subject::query();
+        $subjectQuery = Subject::query();
 
         if ($branchId) {
-            $subjectsQuery->where('branch_id', $branchId);
+            $subjectQuery->where('branch_id', $branchId);
         }
 
-        $totalSubjects = $subjectsQuery
+        $totalSubjects = (clone $subjectQuery)
             ->where('status', true)
             ->count();
 
 
         /*
         |--------------------------------------------------------------------------
-        | Students
+        | Student Attendance
         |--------------------------------------------------------------------------
-        |
-        | Student model তৈরি হলে এখানে query add করব.
-        |
         */
 
-        $totalStudents = 0;
-        $activeStudents = 0;
+        $studentAttendanceQuery = Attendance::query()
+            ->whereDate('date', $today);
 
-
-        //Teachers
-         
-
-        $totalTeachers = 0;
-        $activeTeachers = 0;
-
-
-        //Attendance
-         
+        if ($branchId) {
+            $studentAttendanceQuery->where('branch_id', $branchId);
+        }
 
         $todayStudentAttendance = [
-            'present' => 0,
-            'absent'  => 0,
-            'late'    => 0,
-            'leave'   => 0,
+            'present' => (clone $studentAttendanceQuery)
+                ->where('status', 'present')
+                ->count(),
+
+            'absent' => (clone $studentAttendanceQuery)
+                ->where('status', 'absent')
+                ->count(),
+
+            'late' => (clone $studentAttendanceQuery)
+                ->where('status', 'late')
+                ->count(),
+
+            'leave' => (clone $studentAttendanceQuery)
+                ->where('status', 'leave')
+                ->count(),
         ];
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Teacher Attendance
+        |--------------------------------------------------------------------------
+        |
+        | যদি Teacher/Staff-এর attendance আলাদা table-এ থাকে,
+        | এখানে সেই model/table ব্যবহার করবেন।
+        |
+        */
 
         $todayTeacherAttendance = [
             'present' => 0,
@@ -125,53 +192,112 @@ class DashboardController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | Finance
+        | Fee Payments
         |--------------------------------------------------------------------------
         */
 
-        $todayCollection = 0;
-        $totalCollection = 0;
-        $totalDue = 0;
+        $paymentQuery = FeePayment::query();
+
+        if ($branchId) {
+            $paymentQuery->where('branch_id', $branchId);
+        }
+
+
+        /*
+        | Today's Collection
+        */
+
+        $todayCollection = (clone $paymentQuery)
+            ->whereDate(
+                'payment_date',
+                $today
+            )
+            ->sum('amount');
+
+
+        /*
+        | Total Collection
+        */
+
+        $totalCollection = (clone $paymentQuery)
+            ->sum('amount');
 
 
         /*
         |--------------------------------------------------------------------------
-        | Recent Data
+        | Total Due
+        |--------------------------------------------------------------------------
+        |
+        | যদি fee_payments table-এ due_amount থাকে,
+        | সেটি ব্যবহার করা হবে।
+        |
+        */
+
+        // $totalDue = (clone $paymentQuery)
+        //     ->sum('due_amount');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Recent Students
         |--------------------------------------------------------------------------
         */
 
-        $recentStudents = collect();
-
-        $recentPayments = collect();
-
-
-        return view(
-            'admin.dashboard',
-            compact(
-                'branches',
-                'branch',
-                'branchId',
-
-                'totalStudents',
-                'activeStudents',
-
-                'totalTeachers',
-                'activeTeachers',
-
-                'totalClasses',
-                'totalSections',
-                'totalSubjects',
-
-                'todayStudentAttendance',
-                'todayTeacherAttendance',
-
-                'todayCollection',
-                'totalCollection',
-                'totalDue',
-
-                'recentStudents',
-                'recentPayments'
+        $recentStudents = Student::query()
+            ->when(
+                $branchId,
+                fn ($query) => $query->where('branch_id', $branchId)
             )
-        );
+            ->latest()
+            ->take(5)
+            ->get();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Recent Payments
+        |--------------------------------------------------------------------------
+        */
+
+        $recentPayments = FeePayment::query()
+            ->when(
+                $branchId,
+                fn ($query) => $query->where('branch_id', $branchId)
+            )
+            ->latest()
+            ->take(5)
+            ->get();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Return Dashboard
+        |--------------------------------------------------------------------------
+        */
+
+        return view('admin.dashboard', compact(
+
+            'branches',
+            'branch',
+            'branchId',
+
+            'totalStudents',
+            'activeStudents',
+
+            'totalTeachers',
+            'activeTeachers',
+
+            'totalClasses',
+            'totalSections',
+            'totalSubjects',
+
+            'todayStudentAttendance',
+            'todayTeacherAttendance',
+
+            'todayCollection',
+            'totalCollection',
+            'recentStudents',
+            'recentPayments'
+        ));
     }
-}
+} 

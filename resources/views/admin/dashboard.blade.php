@@ -7,7 +7,6 @@
 
 <div class="w-full space-y-6">
 
-
     {{-- ============================================================
          HEADER
     ============================================================= --}}
@@ -31,37 +30,73 @@
         </div>
 
 
-        {{-- Branch --}}
-        @if($branch)
+        {{-- ========================================================
+             BRANCH SELECTOR
+        ========================================================= --}}
 
-            <div class="flex items-center gap-3 rounded-2xl border
-                        border-slate-200 bg-white px-4 py-3 shadow-sm">
+        <form method="GET" action="{{ route('dashboard') }}"
+              class="flex items-center gap-3">
 
-                <div class="flex h-10 w-10 items-center justify-center
-                            rounded-xl bg-blue-50 text-blue-600">
+            <select
+                name="branch_id"
+                onchange="this.form.submit()"
+                class="rounded-xl border border-slate-200 bg-white
+                       px-4 py-3 text-sm font-medium text-slate-700
+                       shadow-sm outline-none focus:border-blue-500
+                       focus:ring-2 focus:ring-blue-100">
 
-                    🏫
+                <option value="">
+                    All Branches
+                </option>
 
-                </div>
+                @foreach($branches as $item)
 
-                <div>
+                    <option
+                        value="{{ $item->id }}"
+                        @selected($branchId == $item->id)
+                    >
+                        {{ $item->name }}
+                    </option>
 
-                    <p class="text-[11px] font-medium uppercase tracking-wide text-slate-400">
-                        Current Branch
-                    </p>
+                @endforeach
 
-                    <p class="text-sm font-bold text-slate-900">
-                        {{ $branch->name }}
-                    </p>
+            </select>
 
-                </div>
-
-            </div>
-
-        @endif
+        </form>
 
     </div>
 
+
+    {{-- ============================================================
+         CURRENT BRANCH
+    ============================================================= --}}
+
+    @if($branch)
+
+        <div class="flex items-center gap-3 rounded-2xl border
+                    border-blue-100 bg-blue-50 px-5 py-4">
+
+            <div class="flex h-11 w-11 items-center justify-center
+                        rounded-xl bg-white text-xl shadow-sm">
+                🏫
+            </div>
+
+            <div>
+
+                <p class="text-xs font-medium uppercase tracking-wide
+                          text-blue-500">
+                    Current Branch
+                </p>
+
+                <p class="text-sm font-bold text-slate-900">
+                    {{ $branch->name }}
+                </p>
+
+            </div>
+
+        </div>
+
+    @endif
 
 
     {{-- ============================================================
@@ -69,7 +104,6 @@
     ============================================================= --}}
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-
 
         {{-- Students --}}
         <div class="rounded-2xl border border-slate-200 bg-white
@@ -88,7 +122,7 @@
                         {{ number_format($totalStudents) }}
                     </h2>
 
-                    <p class="mt-2 text-xs text-green-600">
+                    <p class="mt-2 text-xs font-medium text-green-600">
                         {{ number_format($activeStudents) }} Active
                     </p>
 
@@ -96,9 +130,7 @@
 
                 <div class="flex h-12 w-12 items-center justify-center
                             rounded-xl bg-blue-50 text-2xl">
-
                     👨‍🎓
-
                 </div>
 
             </div>
@@ -123,7 +155,7 @@
                         {{ number_format($totalTeachers) }}
                     </h2>
 
-                    <p class="mt-2 text-xs text-green-600">
+                    <p class="mt-2 text-xs font-medium text-green-600">
                         {{ number_format($activeTeachers) }} Active
                     </p>
 
@@ -131,9 +163,7 @@
 
                 <div class="flex h-12 w-12 items-center justify-center
                             rounded-xl bg-purple-50 text-2xl">
-
                     👨‍🏫
-
                 </div>
 
             </div>
@@ -166,9 +196,7 @@
 
                 <div class="flex h-12 w-12 items-center justify-center
                             rounded-xl bg-amber-50 text-2xl">
-
                     📚
-
                 </div>
 
             </div>
@@ -201,9 +229,7 @@
 
                 <div class="flex h-12 w-12 items-center justify-center
                             rounded-xl bg-green-50 text-2xl">
-
                     📖
-
                 </div>
 
             </div>
@@ -213,13 +239,11 @@
     </div>
 
 
-
     {{-- ============================================================
          ATTENDANCE
     ============================================================= --}}
 
     <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
-
 
         {{-- Student Attendance --}}
         <div class="rounded-2xl border border-slate-200
@@ -242,9 +266,7 @@
 
                 <span class="rounded-lg bg-blue-50 px-3 py-1.5
                              text-xs font-semibold text-blue-700">
-
                     Today
-
                 </span>
 
             </div>
@@ -252,9 +274,7 @@
 
             <div class="grid grid-cols-2 gap-4 p-5 sm:grid-cols-4">
 
-                {{-- Present --}}
                 <div class="rounded-xl bg-green-50 p-4 text-center">
-
                     <p class="text-2xl font-bold text-green-700">
                         {{ number_format($todayStudentAttendance['present']) }}
                     </p>
@@ -262,13 +282,10 @@
                     <p class="mt-1 text-xs font-semibold text-green-600">
                         Present
                     </p>
-
                 </div>
 
 
-                {{-- Absent --}}
                 <div class="rounded-xl bg-red-50 p-4 text-center">
-
                     <p class="text-2xl font-bold text-red-700">
                         {{ number_format($todayStudentAttendance['absent']) }}
                     </p>
@@ -276,13 +293,10 @@
                     <p class="mt-1 text-xs font-semibold text-red-600">
                         Absent
                     </p>
-
                 </div>
 
 
-                {{-- Late --}}
                 <div class="rounded-xl bg-amber-50 p-4 text-center">
-
                     <p class="text-2xl font-bold text-amber-700">
                         {{ number_format($todayStudentAttendance['late']) }}
                     </p>
@@ -290,13 +304,10 @@
                     <p class="mt-1 text-xs font-semibold text-amber-600">
                         Late
                     </p>
-
                 </div>
 
 
-                {{-- Leave --}}
                 <div class="rounded-xl bg-purple-50 p-4 text-center">
-
                     <p class="text-2xl font-bold text-purple-700">
                         {{ number_format($todayStudentAttendance['leave']) }}
                     </p>
@@ -304,13 +315,11 @@
                     <p class="mt-1 text-xs font-semibold text-purple-600">
                         Leave
                     </p>
-
                 </div>
 
             </div>
 
         </div>
-
 
 
         {{-- Teacher Attendance --}}
@@ -334,9 +343,7 @@
 
                 <span class="rounded-lg bg-purple-50 px-3 py-1.5
                              text-xs font-semibold text-purple-700">
-
                     Today
-
                 </span>
 
             </div>
@@ -345,7 +352,6 @@
             <div class="grid grid-cols-2 gap-4 p-5 sm:grid-cols-4">
 
                 <div class="rounded-xl bg-green-50 p-4 text-center">
-
                     <p class="text-2xl font-bold text-green-700">
                         {{ number_format($todayTeacherAttendance['present']) }}
                     </p>
@@ -353,12 +359,10 @@
                     <p class="mt-1 text-xs font-semibold text-green-600">
                         Present
                     </p>
-
                 </div>
 
 
                 <div class="rounded-xl bg-red-50 p-4 text-center">
-
                     <p class="text-2xl font-bold text-red-700">
                         {{ number_format($todayTeacherAttendance['absent']) }}
                     </p>
@@ -366,12 +370,10 @@
                     <p class="mt-1 text-xs font-semibold text-red-600">
                         Absent
                     </p>
-
                 </div>
 
 
                 <div class="rounded-xl bg-amber-50 p-4 text-center">
-
                     <p class="text-2xl font-bold text-amber-700">
                         {{ number_format($todayTeacherAttendance['late']) }}
                     </p>
@@ -379,12 +381,10 @@
                     <p class="mt-1 text-xs font-semibold text-amber-600">
                         Late
                     </p>
-
                 </div>
 
 
                 <div class="rounded-xl bg-purple-50 p-4 text-center">
-
                     <p class="text-2xl font-bold text-purple-700">
                         {{ number_format($todayTeacherAttendance['leave']) }}
                     </p>
@@ -392,7 +392,6 @@
                     <p class="mt-1 text-xs font-semibold text-purple-600">
                         Leave
                     </p>
-
                 </div>
 
             </div>
@@ -402,13 +401,11 @@
     </div>
 
 
-
     {{-- ============================================================
          FINANCE
     ============================================================= --}}
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
-
 
         {{-- Today's Collection --}}
         <div class="rounded-2xl border border-slate-200
@@ -418,9 +415,7 @@
 
                 <div class="flex h-12 w-12 items-center justify-center
                             rounded-xl bg-green-50 text-2xl">
-
                     💰
-
                 </div>
 
                 <div>
@@ -430,9 +425,7 @@
                     </p>
 
                     <h2 class="mt-1 text-2xl font-bold text-slate-900">
-
                         ৳ {{ number_format($todayCollection, 2) }}
-
                     </h2>
 
                 </div>
@@ -450,9 +443,7 @@
 
                 <div class="flex h-12 w-12 items-center justify-center
                             rounded-xl bg-blue-50 text-2xl">
-
                     💳
-
                 </div>
 
                 <div>
@@ -462,9 +453,7 @@
                     </p>
 
                     <h2 class="mt-1 text-2xl font-bold text-slate-900">
-
                         ৳ {{ number_format($totalCollection, 2) }}
-
                     </h2>
 
                 </div>
@@ -482,9 +471,7 @@
 
                 <div class="flex h-12 w-12 items-center justify-center
                             rounded-xl bg-red-50 text-2xl">
-
                     ⚠️
-
                 </div>
 
                 <div>
@@ -494,9 +481,7 @@
                     </p>
 
                     <h2 class="mt-1 text-2xl font-bold text-red-600">
-
-                        ৳ {{ number_format($totalDue, 2) }}
-
+                        
                     </h2>
 
                 </div>
@@ -506,7 +491,6 @@
         </div>
 
     </div>
-
 
 
     {{-- ============================================================
@@ -536,11 +520,9 @@
                 </div>
 
                 <a
-                    href=""
+                    href="{{ route('admin.students.index') }}"
                     class="text-xs font-semibold text-blue-600 hover:text-blue-700">
-
                     View All →
-
                 </a>
 
             </div>
@@ -564,25 +546,19 @@
                         <div class="min-w-0 flex-1">
 
                             <p class="truncate text-sm font-semibold text-slate-900">
-
                                 {{ $student->name ?? 'Student' }}
-
                             </p>
 
                             <p class="mt-0.5 text-xs text-slate-500">
-
                                 ID:
                                 {{ $student->student_id ?? $student->id }}
-
                             </p>
 
                         </div>
 
 
                         <span class="text-xs text-slate-400">
-
                             {{ $student->created_at?->format('d M') }}
-
                         </span>
 
                     </div>
@@ -602,7 +578,6 @@
             </div>
 
         </div>
-
 
 
         {{-- Recent Payments --}}
@@ -625,11 +600,9 @@
                 </div>
 
                 <a
-                    href=""
+                    href="#"
                     class="text-xs font-semibold text-blue-600 hover:text-blue-700">
-
                     View All →
-
                 </a>
 
             </div>
@@ -644,18 +617,14 @@
                         <div class="flex h-10 w-10 shrink-0 items-center
                                     justify-center rounded-xl bg-green-50
                                     text-green-600">
-
                             ৳
-
                         </div>
 
 
                         <div class="min-w-0 flex-1">
 
                             <p class="text-sm font-semibold text-slate-900">
-
-                                Payment
-
+                                Fee Payment
                             </p>
 
                             <p class="mt-0.5 text-xs text-slate-500">
@@ -696,7 +665,6 @@
     </div>
 
 
-
     {{-- ============================================================
          QUICK ACTIONS
     ============================================================= --}}
@@ -720,8 +688,9 @@
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
 
 
+            {{-- Add Student --}}
             <a
-                href=""
+                href="{{ route('admin.students.create') }}"
                 class="group rounded-xl border border-slate-200
                        p-4 text-center transition hover:border-blue-300
                        hover:bg-blue-50">
@@ -732,14 +701,13 @@
 
                 <p class="mt-2 text-xs font-semibold text-slate-700
                           group-hover:text-blue-700">
-
                     Add Student
-
                 </p>
 
             </a>
 
 
+            {{-- Assign Subject --}}
             <a
                 href="{{ route('admin.academic.class-subjects.create') }}"
                 class="group rounded-xl border border-slate-200
@@ -752,14 +720,13 @@
 
                 <p class="mt-2 text-xs font-semibold text-slate-700
                           group-hover:text-blue-700">
-
                     Assign Subject
-
                 </p>
 
             </a>
 
 
+            {{-- Add Subject --}}
             <a
                 href="{{ route('admin.academic.subjects.create') }}"
                 class="group rounded-xl border border-slate-200
@@ -772,14 +739,13 @@
 
                 <p class="mt-2 text-xs font-semibold text-slate-700
                           group-hover:text-blue-700">
-
                     Add Subject
-
                 </p>
 
             </a>
 
 
+            {{-- Add Class --}}
             <a
                 href="{{ route('admin.academic.classes.create') }}"
                 class="group rounded-xl border border-slate-200
@@ -792,14 +758,13 @@
 
                 <p class="mt-2 text-xs font-semibold text-slate-700
                           group-hover:text-blue-700">
-
                     Add Class
-
                 </p>
 
             </a>
 
 
+            {{-- Add Section --}}
             <a
                 href="{{ route('admin.academic.sections.create') }}"
                 class="group rounded-xl border border-slate-200
@@ -812,16 +777,15 @@
 
                 <p class="mt-2 text-xs font-semibold text-slate-700
                           group-hover:text-blue-700">
-
                     Add Section
-
                 </p>
 
             </a>
 
 
+            {{-- Dashboard --}}
             <a
-                href=""
+                href="{{ route('dashboard') }}"
                 class="group rounded-xl border border-slate-200
                        p-4 text-center transition hover:border-blue-300
                        hover:bg-blue-50">
@@ -832,9 +796,7 @@
 
                 <p class="mt-2 text-xs font-semibold text-slate-700
                           group-hover:text-blue-700">
-
                     Dashboard
-
                 </p>
 
             </a>
@@ -845,4 +807,4 @@
 
 </div>
 
-@endsection
+@endsection 
