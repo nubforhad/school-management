@@ -11,7 +11,7 @@
                     @yield('page-title', 'Dashboard')
                 </h2>
                 <p class="hidden text-xs text-slate-500 sm:block">
-                    School Management ERP
+                    Madrasah Management ERP
                 </p>
             </div>
         </div>

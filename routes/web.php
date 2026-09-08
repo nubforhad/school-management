@@ -127,20 +127,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('attendance/monthly-report', [AttendanceController::class, 'monthlyReport'])->name('attendance.monthly-report');
 
       
-        // fee type date 23 08 26 Forhad
-        Route::resource('fee-types', FeeTypeController::class)->except(['show'])->names('fee-types');
-        Route::patch('fee-types/{feeType}/toggle-status',  [FeeTypeController::class, 'toggleStatus'])->name('fee-types.toggle-status');
-        // Student Fee Assignment
-        Route::resource( 'student-fees',  StudentFeeController::class)->names('student-fees');
-        // Fee Collection
-        Route::prefix('fee-collection')->name('fee-collection.')->group(function () {
-            Route::get( '/', [FeePaymentController::class, 'index'])->name('index');
-            Route::get( '/{studentFeeAssignment}/create',  [FeePaymentController::class, 'create'])->name('create');
-            Route::post( '/{studentFeeAssignment}',  [FeePaymentController::class, 'store'] )->name('store');
-            // Payment receipt
-            Route::get('/payment/{payment}/receipt', [ FeeCollectionController::class, 'receipt'])->name('receipt');
+    // fee type date 23 08 26 Forhad
+    Route::resource('fee-types', FeeTypeController::class)->except(['show'])->names('fee-types');
+    Route::patch('fee-types/{feeType}/toggle-status',  [FeeTypeController::class, 'toggleStatus'])->name('fee-types.toggle-status');
+    // Student Fee Assignment
+    Route::resource( 'student-fees',  StudentFeeController::class)->names('student-fees');
+    // Fee Collection
+    Route::prefix('fee-collection')->name('fee-collection.')->group(function () {
+        Route::get( '/', [FeePaymentController::class, 'index'])->name('index');
+        Route::get( '/{studentFeeAssignment}/create',  [FeePaymentController::class, 'create'])->name('create');
+        Route::post( '/{studentFeeAssignment}',  [FeePaymentController::class, 'store'] )->name('store');
+        // Payment receipt
+        Route::get('/payment/{payment}/receipt', [ FeeCollectionController::class, 'receipt'])->name('receipt');
 
-        });
+    });
 
         // Fee Payment History
     Route::get( 'fee-payment-history', [FeePaymentController::class, 'history'])->name('fee-payment-history.index');
@@ -160,8 +160,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('result-sheets', [ResultSheetController::class, 'show'])->name('result-sheets.show');
     Route::get( 'class-results',  [ClassResultController::class, 'index'])->name('class-results.index');
 
-
-
   //  Route::resource( 'exams.schedules', ExamScheduleController::class)->names('exams.schedules');
 
     //  departments
@@ -178,7 +176,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
      
     Route::prefix('leave-applications')
         ->name('leave-applications.') ->group(function () {
-
             Route::get('/', [ LeaveApplicationController::class, 'index' ])->name('index');
             Route::get('/create', [ LeaveApplicationController::class, 'create' ])->name('create');
             Route::post('/', [  LeaveApplicationController::class, 'store' ])->name('store');

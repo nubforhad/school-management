@@ -47,7 +47,7 @@
 
             <h1 class="mt-4 text-2xl sm:text-3xl font-bold text-slate-800">
 
-                School Management System
+                Madrasah Management System
 
             </h1>
 

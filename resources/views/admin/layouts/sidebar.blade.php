@@ -45,7 +45,7 @@
                 <h1 class="font-semibold text-sm
                            text-white truncate">
 
-                    School ERP
+                    Madrasah ERP
 
                 </h1>
 
@@ -1268,7 +1268,7 @@
                 <p class="text-[10px]
                           text-slate-500">
 
-                    School ERP
+                    Madrasah ERP
 
                 </p>
 
