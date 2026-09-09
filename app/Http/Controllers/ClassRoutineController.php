@@ -8,9 +8,10 @@ use App\Models\AcademicSession;
 use App\Models\SchoolClass;
 use App\Models\Section;
 use App\Models\Subject;
-use App\Models\Teacher;
+use App\Models\TeacherStaff;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+
 
 class ClassRoutineController extends Controller
 {
@@ -129,20 +130,12 @@ class ClassRoutineController extends Controller
     public function create()
     {
         $branches = Branch::orderBy('name')->get();
-
         $academicSessions = AcademicSession::latest()->get();
-
         $schoolClasses = SchoolClass::orderBy('name')->get();
-
         $sections = Section::orderBy('name')->get();
-
         $subjects = Subject::orderBy('name')->get();
-
-        $teachers = Teacher::orderBy('name')->get();
-
-        return view(
-            'admin.class-routines.create',
-            compact(
+        $teachers = TeacherStaff::orderBy('name')->get();
+        return view('admin.class-routines.create',  compact(
                 'branches',
                 'academicSessions',
                 'schoolClasses',
@@ -279,7 +272,7 @@ class ClassRoutineController extends Controller
 
         $subjects = Subject::orderBy('name')->get();
 
-        $teachers = Teacher::orderBy('name')->get();
+        $teachers = TeacherStaff::orderBy('name')->get();
 
         return view(
             'admin.class-routines.edit',

@@ -22,9 +22,9 @@ return new class extends Migration
                 ->constrained('academic_sessions')
                 ->cascadeOnDelete();
 
-            // Class
+            // School Class
             $table->foreignId('school_class_id')
-                ->constrained('school_classes')
+                ->constrained('classes')
                 ->cascadeOnDelete();
 
             // Section
@@ -38,8 +38,8 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             // Teacher / Staff
-            $table->foreignId('teacher_id')
-                ->constrained('teachers')
+            $table->foreignId('teacher_staff_id')
+                ->constrained('teacher_staff')
                 ->cascadeOnDelete();
 
             // Day
@@ -53,8 +53,10 @@ return new class extends Migration
                 'Friday',
             ]);
 
-            // Class Time
+            // Start Time
             $table->time('start_time');
+
+            // End Time
             $table->time('end_time');
 
             // Room / Classroom
@@ -65,19 +67,32 @@ return new class extends Migration
 
             $table->timestamps();
 
-            // Indexes
-            $table->index([
-                'branch_id',
-                'academic_session_id',
-                'school_class_id',
-                'section_id',
-                'day',
-            ]);
 
-            $table->index([
-                'teacher_id',
-                'day',
-            ]);
+            /*
+            |--------------------------------------------------------------------------
+            | Indexes
+            |--------------------------------------------------------------------------
+            */
+
+            $table->index(
+                [
+                    'branch_id',
+                    'academic_session_id',
+                    'school_class_id',
+                    'section_id',
+                    'day',
+                ],
+                'routine_class_day_idx'
+            );
+
+            $table->index(
+                [
+                    'teacher_staff_id',
+                    'day',
+                ],
+                'routine_teacher_day_idx'
+            );
+
         });
     }
 

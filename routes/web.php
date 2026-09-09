@@ -159,7 +159,7 @@ Route::middleware('auth')
     Route::get('student-results', [StudentResultController::class, 'index'])->name('student-results.index');
     Route::get('result-sheets', [ResultSheetController::class, 'show'])->name('result-sheets.show');
     Route::get( 'class-results',  [ClassResultController::class, 'index'])->name('class-results.index');
-
+    // class-routines
     Route::resource('class-routines', ClassRoutineController::class)->names('class-routines');
 
   //  Route::resource( 'exams.schedules', ExamScheduleController::class)->names('exams.schedules');

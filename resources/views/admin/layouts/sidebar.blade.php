@@ -1,6 +1,4 @@
-{{-- =========================================================
-    SIDEBAR
-========================================================= --}}
+{{-- ====== SIDEBAR ============== --}}
 
 <aside
     id="sidebar"
@@ -270,6 +268,13 @@
                     <i class="bi bi-people"></i>
                 </span>
                 <span>  Guardians </span>
+            </a>
+            {{-- class-routines  --}}
+            <a href="{{ route('admin.class-routines.index') }}" class="nav-link group  {{ request()->routeIs('admin.class-routines.*') ? 'nav-link-active' : '' }}">
+                <span class="nav-icon   {{ request()->routeIs('admin.class-routines.*')   ? 'bg-white/15 text-white'  : 'bg-slate-800 text-cyan-400 group-hover:text-cyan-300' }}">
+                    <i class="bi bi-people"></i>
+                </span>
+                <span>  Class Routines </span>
             </a>
             {{-- Enrollments --}}
             <a href="{{ route('admin.student-enrollments.bulk.create') }}" class="nav-link group {{ request()->routeIs('admin.student-enrollments.*') ? 'nav-link-active' : '' }}">
