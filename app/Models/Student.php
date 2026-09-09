@@ -107,8 +107,23 @@ class Student extends Model
         return $this->hasMany(Attendance::class, 'student_id');
     }
     public function studentFees()
-{
-    return $this->hasMany(StudentFee::class);
-}
+    {
+        return $this->hasMany(StudentFee::class);
+    }
+
+    /**  Student has many Guardians */
+    public function guardians()
+    {
+        return $this->belongsToMany(
+            Guardian::class,
+            'student_guardian'
+        )->withPivot([
+            'relationship',
+            'is_primary',
+        ])->withTimestamps();
+    }
+
+
+
 
 }

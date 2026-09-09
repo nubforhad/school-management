@@ -264,6 +264,13 @@
                 </span>
                 <span>  Students </span>
             </a>
+            {{-- guardians --}}
+            <a href="{{ route('admin.guardians.index') }}" class="nav-link group  {{ request()->routeIs('admin.guardians.*') ? 'nav-link-active' : '' }}">
+                <span class="nav-icon   {{ request()->routeIs('admin.guardians.*')   ? 'bg-white/15 text-white'  : 'bg-slate-800 text-cyan-400 group-hover:text-cyan-300' }}">
+                    <i class="bi bi-people"></i>
+                </span>
+                <span>  Guardians </span>
+            </a>
             {{-- Enrollments --}}
             <a href="{{ route('admin.student-enrollments.bulk.create') }}" class="nav-link group {{ request()->routeIs('admin.student-enrollments.*') ? 'nav-link-active' : '' }}">
 
