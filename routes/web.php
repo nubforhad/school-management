@@ -36,6 +36,7 @@ use App\Http\Controllers\LeaveAllocationController;
 use App\Http\Controllers\LeaveApplicationController;
 use App\Http\Controllers\TeacherStaffAttendanceController;
 use App\Http\Controllers\GuardianController;
+use App\Http\Controllers\ClassRoutineController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -158,6 +159,8 @@ Route::middleware('auth')
     Route::get('student-results', [StudentResultController::class, 'index'])->name('student-results.index');
     Route::get('result-sheets', [ResultSheetController::class, 'show'])->name('result-sheets.show');
     Route::get( 'class-results',  [ClassResultController::class, 'index'])->name('class-results.index');
+
+    Route::resource('class-routines', ClassRoutineController::class)->names('class-routines');
 
   //  Route::resource( 'exams.schedules', ExamScheduleController::class)->names('exams.schedules');
     Route::resource('guardians', GuardianController::class)->names('guardians');

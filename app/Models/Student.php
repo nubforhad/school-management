@@ -123,6 +123,20 @@ class Student extends Model
         ])->withTimestamps();
     }
 
+    /**
+     * Get Primary Guardian
+     */
+    public function primaryGuardian()
+    {
+        return $this->belongsToMany(
+            Guardian::class,
+            'student_guardian'
+        )
+        ->wherePivot('is_primary', true)
+        ->withPivot('relationship')
+        ->withTimestamps();
+    }
+
 
 
 
