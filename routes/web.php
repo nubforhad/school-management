@@ -88,9 +88,9 @@ Route::middleware('auth')
     });
 }); 
 
-//Student Enrollment 
- 
-Route::prefix('admin')->name('admin.')->group(function () { 
+    //Student Enrollment 
+    
+    Route::prefix('admin')->name('admin.')->group(function () { 
         // Enrollment History
         Route::get( 'students/{student}/enrollments', [StudentEnrollmentController::class, 'index'] )->name('students.enrollments.index');
         // Create / Promote
@@ -125,22 +125,20 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('attendance/{attendance}/edit',  [AttendanceController::class, 'edit'])->name('attendance.edit');
         Route::put( 'attendance/{attendance}',  [AttendanceController::class, 'update'])->name('attendance.update');
         Route::get('attendance/monthly-report', [AttendanceController::class, 'monthlyReport'])->name('attendance.monthly-report');
-
       
-    // fee type date 23 08 26 Forhad
-    Route::resource('fee-types', FeeTypeController::class)->except(['show'])->names('fee-types');
-    Route::patch('fee-types/{feeType}/toggle-status',  [FeeTypeController::class, 'toggleStatus'])->name('fee-types.toggle-status');
-    // Student Fee Assignment
-    Route::resource( 'student-fees',  StudentFeeController::class)->names('student-fees');
-    // Fee Collection
-    Route::prefix('fee-collection')->name('fee-collection.')->group(function () {
-        Route::get( '/', [FeePaymentController::class, 'index'])->name('index');
-        Route::get( '/{studentFeeAssignment}/create',  [FeePaymentController::class, 'create'])->name('create');
-        Route::post( '/{studentFeeAssignment}',  [FeePaymentController::class, 'store'] )->name('store');
-        // Payment receipt
-        Route::get('/payment/{payment}/receipt', [ FeeCollectionController::class, 'receipt'])->name('receipt');
-
-    });
+        // fee type date 23 08 26 Forhad
+        Route::resource('fee-types', FeeTypeController::class)->except(['show'])->names('fee-types');
+        Route::patch('fee-types/{feeType}/toggle-status',  [FeeTypeController::class, 'toggleStatus'])->name('fee-types.toggle-status');
+        // Student Fee Assignment
+        Route::resource( 'student-fees',  StudentFeeController::class)->names('student-fees');
+        // Fee Collection
+        Route::prefix('fee-collection')->name('fee-collection.')->group(function () {
+            Route::get( '/', [FeePaymentController::class, 'index'])->name('index');
+            Route::get( '/{studentFeeAssignment}/create',  [FeePaymentController::class, 'create'])->name('create');
+            Route::post( '/{studentFeeAssignment}',  [FeePaymentController::class, 'store'] )->name('store');
+            // Payment receipt
+            Route::get('/payment/{payment}/receipt', [ FeeCollectionController::class, 'receipt'])->name('receipt');
+        });
 
         // Fee Payment History
     Route::get( 'fee-payment-history', [FeePaymentController::class, 'history'])->name('fee-payment-history.index');
@@ -204,14 +202,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
 });
 
 
-    Route::prefix('exams')->name('admin.exams.')->group(function () {
-        Route::get( 'schedules',  [ExamScheduleController::class, 'index'])->name('schedules.index');
-        Route::get('schedules/create',  [ExamScheduleController::class, 'create'])->name('schedules.create');
-        Route::post( 'schedules',  [ExamScheduleController::class, 'store'])->name('schedules.store');
-        Route::get('schedules/{schedule}/edit',   [ExamScheduleController::class, 'edit'])->name('schedules.edit');
-        Route::put(  'schedules/{schedule}',   [ExamScheduleController::class, 'update'])->name('schedules.update');
-        Route::delete('schedules/{schedule}',  [ExamScheduleController::class, 'destroy'])->name('schedules.destroy');
-    });
+    // Route::prefix('exams')->name('admin.exams.')->group(function () {
+    //     Route::get( 'schedules',  [ExamScheduleController::class, 'index'])->name('schedules.index');
+    //     Route::get('schedules/create',  [ExamScheduleController::class, 'create'])->name('schedules.create');
+    //     Route::post( 'schedules',  [ExamScheduleController::class, 'store'])->name('schedules.store');
+    //     Route::get('schedules/{schedule}/edit',   [ExamScheduleController::class, 'edit'])->name('schedules.edit');
+    //     Route::put(  'schedules/{schedule}',   [ExamScheduleController::class, 'update'])->name('schedules.update');
+    //     Route::delete('schedules/{schedule}',  [ExamScheduleController::class, 'destroy'])->name('schedules.destroy');
+    // });
 
     
 

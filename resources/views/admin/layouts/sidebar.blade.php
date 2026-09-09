@@ -714,9 +714,9 @@
                 </span>
             </a>
             {{-- Future: Exams Schedules --}} 
-            <a href="{{ route('admin.exams.schedules.index') }}"
+            <a href="{{ route('admin.exam-schedules.index') }}"
                 class="sub-link
-                       {{ request()->routeIs('admin.exams.schedules.*')
+                       {{ request()->routeIs('admin.exam-schedules.*')
                             ? 'sub-link-active'
                             : '' }}">
                 <i class="bi bi-person-check w-4 text-center"></i>

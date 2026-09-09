@@ -60,39 +60,25 @@
 
         </div>
 
+        {{-- =========== LOGIN CARD ====================== --}}
 
-
-        {{-- =========================================================
-             LOGIN CARD
-        ========================================================== --}}
-
-        <div
-            class="bg-white rounded-2xl
+        <div   class="bg-white rounded-2xl
                    shadow-xl shadow-slate-200/60
                    border border-slate-200
                    p-6 sm:p-7">
-
-
             {{-- Success Message --}}
-
             @if(session('success'))
-
-                <div
-                    class="mb-5 flex items-start gap-3
+                <div class="mb-5 flex items-start gap-3
                            rounded-xl
                            bg-green-50
                            border border-green-200
                            px-4 py-3
                            text-sm text-green-700">
-
                     <i class="bi bi-check-circle-fill mt-0.5"></i>
-
                     <span>
                         {{ session('success') }}
                     </span>
-
                 </div>
-
             @endif
 
 
@@ -100,7 +86,6 @@
             {{-- Error Message --}}
 
             @if($errors->any())
-
                 <div
                     class="mb-5
                            rounded-xl
@@ -111,36 +96,21 @@
                     <div class="flex items-center gap-2 mb-2">
 
                         <i class="bi bi-exclamation-circle-fill text-red-600"></i>
-
                         <p class="text-sm font-semibold text-red-700">
-
                             Login failed
-
                         </p>
-
                     </div>
-
-
                     <ul class="space-y-1 text-sm text-red-600">
-
                         @foreach($errors->all() as $error)
-
                             <li class="flex gap-2">
-
                                 <span>•</span>
-
                                 <span>
                                     {{ $error }}
                                 </span>
-
                             </li>
-
                         @endforeach
-
                     </ul>
-
                 </div>
-
             @endif
 
 
@@ -153,30 +123,17 @@
                 method="POST"
                 action="{{ route('login.store') }}"
                 class="space-y-5">
-
                 @csrf
-
-
-
                 {{-- Email --}}
-
                 <div>
-
-                    <label
-                        for="email"
-                        class="block
+                    <label  for="email" class="block
                                text-sm
                                font-semibold
                                text-slate-700
                                mb-2">
-
                         Email Address
-
                     </label>
-
-
                     <div class="relative">
-
                         <div
                             class="absolute inset-y-0 left-0
                                    flex items-center

@@ -23,7 +23,7 @@
                 <div class="flex items-center gap-2 mb-2">
 
                     <a href="{{ route(
-                        'admin.exams.schedules.index',
+                        'admin.exam-schedules.index',
                         $exam
                     ) }}"
                        class="text-slate-400
@@ -61,7 +61,7 @@
                 {{-- Back --}}
 
                 <a href="{{ route(
-                    'admin.exams.schedules.index',
+                    'admin.exam-schedules.index',
                     $exam
                 ) }}"
                    class="inline-flex
@@ -88,7 +88,7 @@
                 {{-- Edit --}}
 
                 <a href="{{ route(
-                    'admin.exams.schedules.edit',
+                    'admin.exam-schedules.edit',
                     [$exam, $schedule]
                 ) }}"
                    class="inline-flex

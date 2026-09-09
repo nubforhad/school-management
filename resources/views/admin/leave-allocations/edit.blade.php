@@ -20,11 +20,9 @@
             <h1 class="text-xl sm:text-2xl font-bold text-slate-800">
                 Edit Leave Allocation
             </h1>
-
             <p class="text-xs sm:text-sm text-slate-500 mt-1">
                 Update leave allocation information
             </p>
-
         </div>
 
         <a href="{{ route('admin.leave-allocations.index') }}"
@@ -34,61 +32,37 @@
                   bg-slate-100 text-slate-700
                   text-sm font-medium
                   hover:bg-slate-200 transition">
-
             <i class="bi bi-arrow-left"></i>
-
             Back
-
         </a>
-
     </div>
-
 </div>
 
 
-{{-- =========================================================
-    Validation Errors
-========================================================== --}}
+{{-- =====  Validation Errors ==== --}}
 
 @if ($errors->any())
 
-    <div class="mb-4 bg-red-50 border border-red-200
-                rounded-xl p-4">
+    <div class="mb-4 bg-red-50 border border-red-200  rounded-xl p-4">
 
         <div class="flex items-start gap-3">
-
             <i class="bi bi-exclamation-triangle-fill
                       text-red-500 text-lg"></i>
-
             <div>
-
                 <h3 class="text-sm font-semibold text-red-700">
                     Please fix the following errors:
                 </h3>
-
                 <ul class="mt-1 text-xs sm:text-sm
                            text-red-600 list-disc list-inside">
-
                     @foreach ($errors->all() as $error)
-
                         <li>{{ $error }}</li>
-
                     @endforeach
-
                 </ul>
-
             </div>
-
         </div>
-
     </div>
-
 @endif
-
-
-{{-- =========================================================
-    Form Card
-========================================================== --}}
+{{-- ============== Form Card ================= --}}
 
 <div class="bg-white rounded-xl shadow-sm
             border border-slate-200
@@ -113,23 +87,14 @@
 
             <div>
 
-                <h2 class="text-base sm:text-lg
-                           font-semibold text-slate-800">
-
+                <h2 class="text-base sm:text-lg font-semibold text-slate-800">
                     Leave Allocation Information
-
                 </h2>
-
                 <p class="text-xs sm:text-sm text-slate-500">
-
                     Update the information of this leave allocation.
-
                 </p>
-
             </div>
-
         </div>
-
     </div>
 
 
