@@ -1164,61 +1164,7 @@
                         }
                 </style>
 
-            {{-- Teachers --}}
-
-            <a href="#" class="nav-link nav-link-disabled group">
-
-                <span class="nav-icon bg-slate-800 text-slate-500">
-                    <i class="bi bi-person-workspace"></i>
-                </span>
-
-                <span>
-                    Teachers & Staff
-                </span>
-
-                <span class="soon-badge">
-                    Soon
-                </span>
-
-            </a>
-
-
-            {{-- Examination --}}
-
-            <a href="#" class="nav-link nav-link-disabled group">
-
-                <span class="nav-icon bg-slate-800 text-slate-500">
-                    <i class="bi bi-journal-text"></i>
-                </span>
-
-                <span>
-                    Examination
-                </span>
-
-                <span class="soon-badge">
-                    Soon
-                </span>
-
-            </a>
-
-
-            {{-- Fees --}}
-
-            <a href="#" class="nav-link nav-link-disabled group">
-
-                <span class="nav-icon bg-slate-800 text-slate-500">
-                    <i class="bi bi-cash-stack"></i>
-                </span>
-
-                <span>
-                    Fees
-                </span>
-
-                <span class="soon-badge">
-                    Soon
-                </span>
-
-            </a>
+          
 
 
             {{-- Accounts --}}
@@ -1293,9 +1239,7 @@
 </aside>
 
 
-{{-- =========================================================
-    MOBILE OVERLAY
-========================================================= --}}
+{{-- ==============  MOBILE OVERLAY ================== --}}
 
 <div
     id="sidebarOverlay"
@@ -1308,9 +1252,7 @@
 </div>
 
 
-{{-- =========================================================
-    SIDEBAR STYLES
-========================================================= --}}
+{{-- ==== SIDEBAR STYLES ===== --}}
 
 <style>
 

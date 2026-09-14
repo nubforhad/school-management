@@ -158,32 +158,26 @@ class ClassRoutineController extends Controller
                 'required',
                 'exists:branches,id',
             ],
-
             'academic_session_id' => [
                 'required',
                 'exists:academic_sessions,id',
             ],
-
             'school_class_id' => [
                 'required',
-                'exists:school_classes,id',
+                'exists:classes,id',
             ],
-
             'section_id' => [
                 'required',
                 'exists:sections,id',
             ],
-
             'subject_id' => [
                 'required',
                 'exists:subjects,id',
             ],
-
-            'teacher_id' => [
+            'teacher_staff_id' => [
                 'required',
-                'exists:teachers,id',
+                'exists:teacher_staff,id',
             ],
-
             'day' => [
                 'required',
                 Rule::in([
@@ -263,17 +257,11 @@ class ClassRoutineController extends Controller
     public function edit(ClassRoutine $classRoutine)
     {
         $branches = Branch::orderBy('name')->get();
-
         $academicSessions = AcademicSession::latest()->get();
-
         $schoolClasses = SchoolClass::orderBy('name')->get();
-
         $sections = Section::orderBy('name')->get();
-
         $subjects = Subject::orderBy('name')->get();
-
         $teachers = TeacherStaff::orderBy('name')->get();
-
         return view(
             'admin.class-routines.edit',
             compact(
@@ -310,7 +298,7 @@ class ClassRoutineController extends Controller
 
             'school_class_id' => [
                 'required',
-                'exists:school_classes,id',
+                'exists:classes,id',
             ],
 
             'section_id' => [
@@ -323,9 +311,9 @@ class ClassRoutineController extends Controller
                 'exists:subjects,id',
             ],
 
-            'teacher_id' => [
+            'teacher_staff_id' => [
                 'required',
-                'exists:teachers,id',
+                'exists:teacher_staff,id',
             ],
 
             'day' => [

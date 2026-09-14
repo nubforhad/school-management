@@ -213,7 +213,7 @@
                             Teacher <span class="text-red-500">*</span>
                         </label>
 
-                        <select name="teacher_id"
+                        <select name="teacher_staff_id"
                                 class="w-full rounded-lg border-slate-300
                                        focus:border-blue-500 focus:ring-blue-500">
 
@@ -221,14 +221,14 @@
 
                             @foreach ($teachers as $teacher)
                                 <option value="{{ $teacher->id }}"
-                                    {{ old('teacher_id', $classRoutine->teacher_id) == $teacher->id ? 'selected' : '' }}>
+                                    {{ old('teacher_staff_id', $classRoutine->teacher_staff_id) == $teacher->id ? 'selected' : '' }}>
                                     {{ $teacher->name }}
                                 </option>
                             @endforeach
 
                         </select>
 
-                        @error('teacher_id')
+                        @error('teacher_staff_id')
                             <p class="mt-1 text-sm text-red-600">
                                 {{ $message }}
                             </p>

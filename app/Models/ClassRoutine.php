@@ -15,7 +15,7 @@ class ClassRoutine extends Model
         'school_class_id',
         'section_id',
         'subject_id',
-        'teacher_id',
+        'teacher_staff_id',
         'day',
         'start_time',
         'end_time',
@@ -90,6 +90,6 @@ class ClassRoutine extends Model
 
     public function teacher()
     {
-        return $this->belongsTo(Teacher::class);
+        return $this->belongsTo(TeacherStaff::class);
     }
 }

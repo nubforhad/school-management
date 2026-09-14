@@ -13,12 +13,10 @@
             <h1 class="text-2xl font-bold text-slate-800">
                 Class Routine
             </h1>
-
             <p class="text-sm text-slate-500 mt-1">
                 Manage class schedules and timetables.
             </p>
         </div>
-
         <a href="{{ route('admin.class-routines.create') }}"
            class="inline-flex items-center justify-center gap-2
                   px-4 py-2.5
@@ -33,132 +31,84 @@
 
     {{-- Success Message --}}
     @if(session('success'))
-
         <div class="bg-green-50 border border-green-200
                     text-green-700 px-4 py-3 rounded-lg">
             {{ session('success') }}
         </div>
-
     @endif
-
-
     {{-- Error Message --}}
     @if($errors->any())
-
         <div class="bg-red-50 border border-red-200
                     text-red-700 px-4 py-3 rounded-lg">
-
             <ul class="list-disc ml-5 text-sm">
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
             </ul>
-
         </div>
-
     @endif
-
-
     {{-- Filters --}}
-    <div class="bg-white border border-slate-200
-                rounded-xl shadow-sm">
-
+    <div class="bg-white border border-slate-200  rounded-xl shadow-sm">
         <form method="GET"
               action="{{ route('admin.class-routines.index') }}"
               class="p-5">
-
-            <div class="grid grid-cols-1 md:grid-cols-2
-                        lg:grid-cols-4 gap-4">
-
+            <div class="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-4">
                 {{-- Search --}}
                 <div>
-
                     <label class="block text-sm font-medium
                                   text-slate-700 mb-1">
                         Search
                     </label>
-
-                    <input type="text"
-                           name="search"
-                           value="{{ request('search') }}"
-                           placeholder="Subject, teacher, room..."
-                           class="w-full rounded-lg
-                                  border-slate-300
-                                  focus:border-blue-500
-                                  focus:ring-blue-500">
+                    <input type="text"  name="search" value="{{ request('search') }}" placeholder="Subject, teacher, room..."  class="w-full rounded-lg
+                                  border-slate-300  focus:border-blue-500 focus:ring-blue-500">
 
                 </div>
-
-
                 {{-- Branch --}}
                 <div>
-
                     <label class="block text-sm font-medium
                                   text-slate-700 mb-1">
                         Branch
                     </label>
-
                     <select name="branch_id"
                             class="w-full rounded-lg
                                    border-slate-300
                                    focus:border-blue-500
                                    focus:ring-blue-500">
-
                         <option value="">
                             All Branches
                         </option>
-
                         @foreach($branches as $branch)
-
                             <option value="{{ $branch->id }}"
                                 {{ request('branch_id') == $branch->id ? 'selected' : '' }}>
-
                                 {{ $branch->name }}
-
                             </option>
-
                         @endforeach
-
                     </select>
-
                 </div>
-
-
                 {{-- Academic Session --}}
                 <div>
-
                     <label class="block text-sm font-medium
                                   text-slate-700 mb-1">
                         Academic Session
                     </label>
-
                     <select name="academic_session_id"
                             class="w-full rounded-lg
                                    border-slate-300
                                    focus:border-blue-500
                                    focus:ring-blue-500">
-
                         <option value="">
                             All Sessions
                         </option>
-
                         @foreach($academicSessions as $session)
-
                             <option value="{{ $session->id }}"
                                 {{ request('academic_session_id') == $session->id ? 'selected' : '' }}>
-
                                 {{ $session->name }}
-
                             </option>
-
                         @endforeach
-
                     </select>
-
                 </div>
 
-
-                {{-- Class --}}
+               {{-- Class --}}
                 <div>
 
                     <label class="block text-sm font-medium
@@ -467,13 +417,9 @@
 
                                 {{-- Teacher --}}
                                 <td class="px-6 py-4">
-
                                     <span class="text-sm text-slate-700">
-
                                         {{ $routine->teacher->name ?? '—' }}
-
                                     </span>
-
                                 </td>
 
 
