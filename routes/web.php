@@ -78,8 +78,8 @@ Route::middleware('auth')
     ->group(function () {
         Route::resource('branches', BranchController::class);
         Route::resource('students', StudentController::class );
+        Route::get('students/{student}/print',  [StudentController::class, 'print'])->name('students.print');
 
-        
     Route::prefix('academic')->name('academic.')->group(function () {
         Route::resource('sessions', AcademicSessionController::class);
         Route::resource('classes', SchoolClassController::class );
@@ -109,6 +109,7 @@ Route::middleware('auth')
         Route::delete( 'students/{student}/enrollments/{enrollment}', [StudentEnrollmentController::class, 'destroy'])->name('students.enrollments.destroy');
         //Dynamic Sections 
         Route::get(  'enrollments/sections',  [StudentEnrollmentController::class, 'sections'])->name('students.enrollments.sections');
+       
 
         // bulk enrollment      
         Route::get( 'student-enrollments/bulk/create', [StudentEnrollmentController::class, 'bulkCreate'])->name('student-enrollments.bulk.create');

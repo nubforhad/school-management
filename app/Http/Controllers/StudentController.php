@@ -626,7 +626,17 @@ class StudentController extends Controller
 
 
 
+    public function print(Student $student)
+    {
+        $student->load([
+            'branch',
+            'schoolClass',
+            'section',
+            'academicSession',
+        ]);
 
+        return view('admin.students.print', compact('student'));
+    }
 
 
 

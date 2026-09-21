@@ -200,38 +200,24 @@
                 <span>
                     Classes
                 </span>
-
             </a>
 
-
             {{-- Sections --}}
-
             <a href="{{ route('admin.academic.sections.index') }}"
-               class="nav-link group
-                      {{ request()->routeIs('admin.academic.sections.*') ? 'nav-link-active' : '' }}">
-
-                <span class="nav-icon
-                             {{ request()->routeIs('admin.academic.sections.*')
-                                    ? 'bg-white/15 text-white'
-                                    : 'bg-slate-800 text-teal-400 group-hover:text-teal-300' }}">
+               class="nav-link group  {{ request()->routeIs('admin.academic.sections.*') ? 'nav-link-active' : '' }}">
+                <span class="nav-icon  {{ request()->routeIs('admin.academic.sections.*')
+                                    ? 'bg-white/15 text-white' : 'bg-slate-800 text-teal-400 group-hover:text-teal-300' }}">
                     <i class="bi bi-people-fill"></i>
                 </span>
-
                 <span>
                     Sections
                 </span>
-
             </a>
-
-
             {{-- Subjects --}}
-
             <a href="{{ route('admin.academic.subjects.index') }}"
                class="nav-link group
                       {{ request()->routeIs('admin.academic.subjects.*') ? 'nav-link-active' : '' }}">
-
-                <span class="nav-icon
-                             {{ request()->routeIs('admin.academic.subjects.*')
+                <span class="nav-icon {{ request()->routeIs('admin.academic.subjects.*')
                                     ? 'bg-white/15 text-white'
                                     : 'bg-slate-800 text-amber-400 group-hover:text-amber-300' }}">
                     <i class="bi bi-book-half"></i>
@@ -239,7 +225,6 @@
                 <span>  Subjects </span>
             </a>
             {{-- Class Subjects --}}
-
             <a href="{{ route('admin.academic.class-subjects.index') }}"  class="nav-link group   {{ request()->routeIs('admin.academic.class-subjects.*') ? 'nav-link-active' : '' }}">
                 <span class="nav-icon {{ request()->routeIs('admin.academic.class-subjects.*') ? 'bg-white/15 text-white'  : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}">
                     <i class="bi bi-diagram-3"></i>
@@ -248,12 +233,9 @@
             </a>
         </nav>
 
-
          <!-- STUDENT MANAGEMENT  -->
 
-        <p class="px-3 mb-2 mt-7 text-[10px]  font-semibold  uppercase  tracking-[0.12em]  text-slate-500">
-            Student Management
-        </p>
+        <p class="px-3 mb-2 mt-7 text-[10px]  font-semibold  uppercase  tracking-[0.12em]  text-slate-500"> Student Management </p>
         <nav class="space-y-1">
             {{-- Students --}}
             <a href="{{ route('admin.students.index') }}" class="nav-link group  {{ request()->routeIs('admin.students.*') ? 'nav-link-active' : '' }}">
@@ -287,36 +269,19 @@
         </nav>
 
 
-        {{-- =================================================
-            ATTENDANCE
-        ================================================== --}}
+        {{-- ======  ATTENDANCE ===== --}}
 
-        <p class="px-3 mb-2 mt-7
-                  text-[10px]
-                  font-semibold
-                  uppercase
-                  tracking-[0.12em]
-                  text-slate-500">
-
+        <p class="px-3 mb-2 mt-7  text-[10px] font-semibold uppercase  tracking-[0.12em] text-slate-500">
             Attendance
-
         </p>
-
-
         <nav class="space-y-1">
-
-
             {{-- Attendance Parent --}}
-
-            <div
-                x-data="{
+            <div  x-data="{
                     open: {{ request()->routeIs('admin.attendance.*')
                             || request()->routeIs('admin.attendances.*')
                             ? 'true'
                             : 'false' }}
                 }">
-
-
                 {{-- Parent Button --}}
 
                 <button

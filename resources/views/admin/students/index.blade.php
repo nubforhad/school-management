@@ -632,15 +632,15 @@
 
                                 <div class="flex justify-end gap-2">
 
-                                   <a  href="{{ route('admin.students.enrollments.index', $student) }}"
-                                        title="Enrollments"
-                                        class="inline-flex h-9 w-9 items-center justify-center
-                                            rounded-lg border border-slate-200
-                                            text-slate-600 transition
-                                            hover:bg-slate-100"
+                                <a
+                                        href="{{ route('admin.students.print', $student) }}"
+                                        target="_blank"
+                                        class="inline-flex items-center gap-2 rounded-xl
+                                            bg-emerald-600 px-4 py-2.5 text-sm font-semibold
+                                            text-white transition hover:bg-emerald-700"
                                     >
                                         <svg
-                                            class="h-4 w-4"
+                                            class="h-5 w-5"
                                             fill="none"
                                             stroke="currentColor"
                                             viewBox="0 0 24 24"
@@ -649,8 +649,25 @@
                                                 stroke-linecap="round"
                                                 stroke-linejoin="round"
                                                 stroke-width="2"
-                                                d="M22 10l-10-5L2 10l10 5 10-5z"
+                                                d="M6 9V4h12v5M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v6H6v-6z"
                                             />
+                                        </svg>
+ 
+                                    </a>
+
+                                   <a  href="{{ route('admin.students.enrollments.index', $student) }}"
+                                        title="Enrollments"
+                                        class="inline-flex h-9 w-9 items-center justify-center  rounded-lg border border-slate-200  text-slate-600 transition  hover:bg-slate-100" >
+                                        <svg
+                                            class="h-4 w-4"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path  stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M22 10l-10-5L2 10l10 5 10-5z"  />
 
                                             <path
                                                 stroke-linecap="round"
