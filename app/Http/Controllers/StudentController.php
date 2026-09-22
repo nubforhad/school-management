@@ -10,6 +10,7 @@ use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class StudentController extends Controller
 {
@@ -638,7 +639,26 @@ class StudentController extends Controller
         return view('admin.students.print', compact('student'));
     }
 
+    public function pdf(Student $student)
+    {
+        $student->load([
+            'branch',
+            'schoolClass',
+            'section',
+            'academicSession',
+        ]);
 
+        $pdf = Pdf::loadView(
+            'admin.students.pdf',
+            compact('student')
+        );
+
+        $pdf->setPaper('a4', 'portrait');
+
+        return $pdf->download(
+            'student-' . $student->student_id . '.pdf'
+        );
+    }
 
 
 

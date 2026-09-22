@@ -138,26 +138,14 @@
         </div>
 
 
-        <form
-            method="GET"
-            action="{{ route('admin.students.index') }}"
-            class="p-5"
-        >
-
+        <form  method="GET"  action="{{ route('admin.students.index') }}"  class="p-5" >
             <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-
-
                 {{-- Search --}}
                 <div class="xl:col-span-2">
-
                     <label class="mb-2 block text-sm font-medium text-slate-700">
                         Search
                     </label>
-
-                    <input
-                        type="text"
-                        name="search"
-                        value="{{ request('search') }}"
+                    <input  type="text" name="search" value="{{ request('search') }}"
                         placeholder="Name, ID, admission no, roll..."
                         class="w-full rounded-xl border border-slate-300
                                bg-white px-4 py-2.5 text-sm text-slate-800
@@ -206,11 +194,9 @@
 
                 {{-- Academic Session --}}
                 <div>
-
                     <label class="mb-2 block text-sm font-medium text-slate-700">
                         Session
                     </label>
-
                     <select
                         name="academic_session_id"
                         class="w-full rounded-xl border border-slate-300
@@ -218,24 +204,17 @@
                                outline-none focus:border-blue-500
                                focus:ring-2 focus:ring-blue-500/20"
                     >
-
                         <option value="">
                             All Sessions
                         </option>
-
                         @foreach($academicSessions as $session)
-
-                            <option
-                                value="{{ $session->id }}"
+                            <option value="{{ $session->id }}"
                                 @selected(request('academic_session_id') == $session->id)
                             >
                                 {{ $session->name }}
                             </option>
-
                         @endforeach
-
                     </select>
-
                 </div>
 
 
@@ -633,6 +612,15 @@
                                 <div class="flex justify-end gap-2">
 
                                 <a
+                                    href="{{ route('admin.students.pdf', $student) }}"
+                                    target="_blank"
+                                    class="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700"
+                                >
+                                    <i class="bi bi-file-earmark-pdf"></i>
+                                    
+                                </a>
+
+                                <a
                                         href="{{ route('admin.students.print', $student) }}"
                                         target="_blank"
                                         class="inline-flex items-center gap-2 rounded-xl
@@ -747,10 +735,7 @@
                                             />
                                         </svg>
                                     </a>
-
-
-                                    <a
-                                        href="{{ route('admin.students.edit', $student) }}"
+                                    <a href="{{ route('admin.students.edit', $student) }}"
                                         title="Edit"
                                         class="inline-flex h-9 w-9 items-center justify-center
                                                rounded-lg border border-blue-200
@@ -758,37 +743,21 @@
                                                hover:bg-blue-50"
                                     >
                                         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                stroke-linecap="round"
+                                            <path stroke-linecap="round"
                                                 stroke-linejoin="round"
                                                 stroke-width="2"
                                                 d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5"
                                             />
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                stroke-width="2"
+                                            <path stroke-linecap="round"  stroke-linejoin="round" stroke-width="2"
                                                 d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"
                                             />
                                         </svg>
                                     </a>
-
-                                    
-
-
-                                    <form
-                                        method="POST"
-                                        action="{{ route('admin.students.destroy', $student) }}"
-                                        onsubmit="return confirm('Are you sure you want to delete this student?');"
-                                    >
-
+                                    <form  method="POST"  action="{{ route('admin.students.destroy', $student) }}"
+                                        onsubmit="return confirm('Are you sure you want to delete this student?');">
                                         @csrf
                                         @method('DELETE')
-
-                                        <button
-                                            type="submit"
-                                            title="Delete"
-                                            class="inline-flex h-9 w-9 items-center justify-center
+                                        <button  type="submit"  title="Delete"  class="inline-flex h-9 w-9 items-center justify-center
                                                    rounded-lg border border-red-200
                                                    text-red-600 transition
                                                    hover:bg-red-50"
@@ -802,33 +771,22 @@
                                                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
                                                 />
                                             </svg>
-
                                         </button>
-
                                     </form>
-
                                 </div>
-
                             </td>
-
                         </tr>
-
                     @empty
-
                         <tr>
-
                             <td
                                 colspan="8"
                                 class="px-5 py-16 text-center"
                             >
-
                                 <div class="flex flex-col items-center">
-
                                     <div
                                         class="flex h-14 w-14 items-center justify-center
                                                rounded-full bg-slate-100"
                                     >
-
                                         <svg
                                             class="h-7 w-7 text-slate-400"
                                             fill="none"
@@ -842,203 +800,122 @@
                                                 d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                                             />
                                         </svg>
-
                                     </div>
-
                                     <h3 class="mt-4 font-semibold text-slate-700">
                                         No students found
                                     </h3>
-
                                     <p class="mt-1 text-sm text-slate-500">
                                         Try changing your filters or add a new student.
                                     </p>
-
                                 </div>
-
                             </td>
-
                         </tr>
-
                     @endforelse
-
                 </tbody>
-
             </table>
-
         </div>
-
     </div>
-
-
-    {{-- =========================================================
-        MOBILE / TABLET CARDS
-    ========================================================== --}}
+    {{-- =========  MOBILE / TABLET CARDS ============= --}}
     <div class="space-y-4 lg:hidden">
-
         @forelse($students as $student)
-
-            <div
-                class="rounded-2xl border border-slate-200
+            <div class="rounded-2xl border border-slate-200
                        bg-white p-4 shadow-sm"
             >
-
                 <div class="flex items-start gap-3">
-
                     @if($student->photo)
-
                         <img
                             src="{{ asset('storage/' . $student->photo) }}"
                             alt="{{ $student->name }}"
                             class="h-12 w-12 shrink-0 rounded-full object-cover"
                         >
-
                     @else
-
-                        <div
-                            class="flex h-12 w-12 shrink-0 items-center justify-center
+                        <div  class="flex h-12 w-12 shrink-0 items-center justify-center
                                    rounded-full bg-blue-100
                                    font-bold text-blue-700"
                         >
                             {{ strtoupper(substr($student->name, 0, 1)) }}
                         </div>
-
                     @endif
-
-
                     <div class="min-w-0 flex-1">
-
                         <div class="flex items-start justify-between gap-3">
-
                             <div>
-
                                 <h3 class="font-semibold text-slate-800">
                                     {{ $student->name }}
                                 </h3>
-
                                 @if($student->name_bn)
-
                                     <p class="text-xs text-slate-500">
                                         {{ $student->name_bn }}
                                     </p>
-
                                 @endif
-
                             </div>
-
-
                             @if($student->status)
-
                                 <span class="shrink-0 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">
                                     Active
                                 </span>
-
                             @else
-
                                 <span class="shrink-0 rounded-full bg-red-100 px-2.5 py-1 text-xs font-semibold text-red-700">
                                     Inactive
                                 </span>
-
                             @endif
-
                         </div>
-
-
                         <p class="mt-1 text-xs text-slate-400">
                             ID: {{ $student->student_id }}
                         </p>
-
                     </div>
-
                 </div>
-
-
                 <div class="mt-4 grid grid-cols-2 gap-3 border-t border-slate-100 pt-4">
-
                     <div>
-
                         <p class="text-xs text-slate-400">
                             Branch
                         </p>
-
                         <p class="mt-1 text-sm font-medium text-slate-700">
                             {{ $student->branch?->name ?? '—' }}
                         </p>
-
                     </div>
-
-
                     <div>
-
                         <p class="text-xs text-slate-400">
                             Admission No
                         </p>
-
                         <p class="mt-1 text-sm font-medium text-slate-700">
                             {{ $student->admission_no }}
                         </p>
-
                     </div>
-
-
                     <div>
-
                         <p class="text-xs text-slate-400">
                             Class
                         </p>
-
                         <p class="mt-1 text-sm font-medium text-slate-700">
                             {{ $student->schoolClass?->name ?? '—' }}
                         </p>
-
                     </div>
-
-
                     <div>
-
                         <p class="text-xs text-slate-400">
                             Section
                         </p>
-
                         <p class="mt-1 text-sm font-medium text-slate-700">
                             {{ $student->section?->name ?? '—' }}
                         </p>
-
                     </div>
-
-
                     <div>
-
                         <p class="text-xs text-slate-400">
                             Roll
                         </p>
-
                         <p class="mt-1 text-sm font-medium text-slate-700">
                             {{ $student->roll_no ?? '—' }}
                         </p>
-
                     </div>
-
-
                     <div>
-
                         <p class="text-xs text-slate-400">
                             Session
                         </p>
-
                         <p class="mt-1 text-sm font-medium text-slate-700">
                             {{ $student->academicSession?->name ?? '—' }}
                         </p>
-
                     </div>
-
                 </div>
-
-
                 {{-- Mobile Actions --}}
                 <div class="mt-4 flex gap-2 border-t border-slate-100 pt-4">
-
-                    <a
-                        href="{{ route('admin.students.show', $student) }}"
+                    <a  href="{{ route('admin.students.show', $student) }}"
                         class="flex flex-1 items-center justify-center
                                rounded-xl border border-slate-200
                                px-3 py-2.5 text-sm font-semibold
@@ -1046,10 +923,7 @@
                     >
                         View
                     </a>
-
-
-                    <a
-                        href="{{ route('admin.students.edit', $student) }}"
+                    <a  href="{{ route('admin.students.edit', $student) }}"
                         class="flex flex-1 items-center justify-center
                                rounded-xl bg-blue-600
                                px-3 py-2.5 text-sm font-semibold
@@ -1057,45 +931,26 @@
                     >
                         Edit
                     </a>
-
-
-                    <form
-                        method="POST"
+                    <form  method="POST"
                         action="{{ route('admin.students.destroy', $student) }}"
                         class="flex-1"
                         onsubmit="return confirm('Are you sure you want to delete this student?');"
                     >
-
                         @csrf
                         @method('DELETE')
-
-                        <button
-                            type="submit"
-                            class="w-full rounded-xl border border-red-200
-                                   px-3 py-2.5 text-sm font-semibold
-                                   text-red-600 hover:bg-red-50"
+                        <button type="submit" class="w-full rounded-xl border border-red-200
+                                   px-3 py-2.5 text-sm font-semibold  text-red-600 hover:bg-red-50"
                         >
                             Delete
                         </button>
-
                     </form>
-
                 </div>
-
             </div>
 
         @empty
 
-            <div
-                class="rounded-2xl border border-slate-200
-                       bg-white px-5 py-16 text-center shadow-sm"
-            >
-
-                <div
-                    class="mx-auto flex h-14 w-14 items-center justify-center
-                           rounded-full bg-slate-100"
-                >
-
+            <div class="rounded-2xl border border-slate-200 bg-white px-5 py-16 text-center shadow-sm">
+                <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100">
                     <svg
                         class="h-7 w-7 text-slate-400"
                         fill="none"
@@ -1109,17 +964,13 @@
                             d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
                         />
                     </svg>
-
                 </div>
-
                 <h3 class="mt-4 font-semibold text-slate-700">
                     No students found
                 </h3>
-
                 <p class="mt-1 text-sm text-slate-500">
                     No student matches the selected filters.
                 </p>
-
             </div>
 
         @endforelse

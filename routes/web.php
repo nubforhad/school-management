@@ -79,6 +79,7 @@ Route::middleware('auth')
         Route::resource('branches', BranchController::class);
         Route::resource('students', StudentController::class );
         Route::get('students/{student}/print',  [StudentController::class, 'print'])->name('students.print');
+        Route::get('students/{student}/pdf',  [StudentController::class, 'pdf'])->name('students.pdf');
 
     Route::prefix('academic')->name('academic.')->group(function () {
         Route::resource('sessions', AcademicSessionController::class);
