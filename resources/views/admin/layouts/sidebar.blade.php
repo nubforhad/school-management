@@ -2,1379 +2,1162 @@
 
 <aside
     id="sidebar"
-    class="fixed inset-y-0 left-0 z-50 w-64
-           -translate-x-full lg:translate-x-0
-           bg-slate-900 text-white
-           border-r border-slate-800
-           transition-transform duration-300 ease-in-out
-           flex flex-col">
-
-    {{-- =====================================================
-        Logo / Header
+    class="fixed inset-y-0 left-0 z-50 w-64 -translate-x-full lg:translate-x-0 bg-slate-900 text-white border-r border-slate-800 transition-transform duration-300 ease-in-out flex flex-col"
+>
+    {{-- ===================================================== Logo / Header
     ====================================================== --}}
 
-    <div class="flex h-16 shrink-0 items-center
-                justify-between px-4
-                border-b border-slate-800">
-
-        <a href="{{ route('dashboard') }}"
-           class="flex items-center gap-3 min-w-0">
-
+    <div class="flex h-16 shrink-0 items-center justify-between px-4 border-b border-slate-800">
+        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 min-w-0">
             {{-- Logo --}}
 
-            <div class="flex h-9 w-9 shrink-0
-                        items-center justify-center
-                        rounded-xl
-                        bg-gradient-to-br from-blue-500 to-indigo-600
-                        shadow-lg shadow-blue-900/40
-                        ring-1 ring-white/10">
-
-                <span class="text-sm font-bold tracking-tight">
-                    SE
-                </span>
-
+            <div
+                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-900/40 ring-1 ring-white/10"
+            >
+                <span class="text-sm font-bold tracking-tight"> SE </span>
             </div>
-
 
             {{-- Brand --}}
 
             <div class="min-w-0">
+                <h1 class="font-semibold text-sm text-white truncate">Madrasah ERP</h1>
 
-                <h1 class="font-semibold text-sm
-                           text-white truncate">
-
-                    Madrasah ERP
-
-                </h1>
-
-                <p class="text-[11px]
-                          text-slate-500 truncate">
-
-                    Administration
-
-                </p>
-
+                <p class="text-[11px] text-slate-500 truncate">Administration</p>
             </div>
-
         </a>
-
 
         {{-- Mobile Close --}}
 
         <button
             type="button"
             onclick="closeSidebar()"
-            class="lg:hidden
-                   flex h-8 w-8
-                   items-center justify-center
-                   rounded-lg
-                   text-slate-400
-                   hover:bg-slate-800
-                   hover:text-white
-                   transition">
-
+            class="lg:hidden flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"
+        >
             <i class="bi bi-x-lg text-sm"></i>
-
         </button>
-
     </div>
 
-
-    {{-- =====================================================
-        Scrollable Navigation
+    {{-- ===================================================== Scrollable Navigation
     ====================================================== --}}
 
-    <div class="flex-1 overflow-y-auto
-                px-3 py-4
-                sidebar-scroll">
+    <div class="flex-1 overflow-y-auto px-3 py-4 sidebar-scroll">
+        {{-- ================================================= MAIN ==================================================
+        --}}
 
-        {{-- =================================================
-            MAIN
-        ================================================== --}}
-
-        <p class="px-3 mb-2
-                  text-[10px]
-                  font-semibold
-                  uppercase
-                  tracking-[0.12em]
-                  text-slate-500">
-
-            Main
-
-        </p>
-
+        <p class="px-3 mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Main</p>
 
         <nav class="space-y-1">
-
-
             {{-- Dashboard --}}
 
-            <a href="{{ route('dashboard') }}"
-               class="nav-link group
-                      {{ request()->routeIs('dashboard') ? 'nav-link-active' : '' }}">
-
-                <span class="nav-icon
+            <a
+                href="{{ route('dashboard') }}"
+                class="nav-link group
+                      {{ request()->routeIs('dashboard') ? 'nav-link-active' : '' }}"
+            >
+                <span
+                    class="nav-icon
                              {{ request()->routeIs('dashboard')
                                     ? 'bg-white/15 text-white'
-                                    : 'bg-slate-800 text-blue-400 group-hover:text-blue-300' }}">
+                                    : 'bg-slate-800 text-blue-400 group-hover:text-blue-300' }}"
+                >
                     <i class="bi bi-grid-1x2-fill"></i>
                 </span>
 
-                <span>
-                    Dashboard
-                </span>
-
+                <span> Dashboard </span>
             </a>
-
 
             {{-- Branches --}}
 
-            <a href="{{ route('admin.branches.index') }}"
-               class="nav-link group
-                      {{ request()->routeIs('admin.branches.*') ? 'nav-link-active' : '' }}">
-
-                <span class="nav-icon
+            <a
+                href="{{ route('admin.branches.index') }}"
+                class="nav-link group
+                      {{ request()->routeIs('admin.branches.*') ? 'nav-link-active' : '' }}"
+            >
+                <span
+                    class="nav-icon
                              {{ request()->routeIs('admin.branches.*')
                                     ? 'bg-white/15 text-white'
-                                    : 'bg-slate-800 text-indigo-400 group-hover:text-indigo-300' }}">
+                                    : 'bg-slate-800 text-indigo-400 group-hover:text-indigo-300' }}"
+                >
                     <i class="bi bi-building"></i>
                 </span>
 
-                <span>
-                    Branches
-                </span>
-
+                <span> Branches </span>
             </a>
-
         </nav>
-<!-- //  ACADEMIC  -->
+        <!-- //  ACADEMIC  -->
 
-        <p class="px-3 mb-2 mt-7
-                  text-[10px]
-                  font-semibold
-                  uppercase
-                  tracking-[0.12em]
-                  text-slate-500">
-
-            Academic
-
-        </p>
-
+        <p class="px-3 mb-2 mt-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Academic</p>
 
         <nav class="space-y-1">
-
-
             {{-- Academic Sessions --}}
 
-            <a href="{{ route('admin.academic.sessions.index') }}"
-               class="nav-link group
-                      {{ request()->routeIs('admin.academic.sessions.*') ? 'nav-link-active' : '' }}">
-
-                <span class="nav-icon
+            <a
+                href="{{ route('admin.academic.sessions.index') }}"
+                class="nav-link group
+                      {{ request()->routeIs('admin.academic.sessions.*') ? 'nav-link-active' : '' }}"
+            >
+                <span
+                    class="nav-icon
                              {{ request()->routeIs('admin.academic.sessions.*')
                                     ? 'bg-white/15 text-white'
-                                    : 'bg-slate-800 text-sky-400 group-hover:text-sky-300' }}">
+                                    : 'bg-slate-800 text-sky-400 group-hover:text-sky-300' }}"
+                >
                     <i class="bi bi-calendar-event"></i>
                 </span>
 
-                <span>
-                    Academic Sessions
-                </span>
-
+                <span> Academic Sessions </span>
             </a>
-
 
             {{-- Classes --}}
 
-            <a href="{{ route('admin.academic.classes.index') }}"
-               class="nav-link group
-                      {{ request()->routeIs('admin.academic.classes.*') ? 'nav-link-active' : '' }}">
-
-                <span class="nav-icon
+            <a
+                href="{{ route('admin.academic.classes.index') }}"
+                class="nav-link group {{ request()->routeIs('admin.academic.classes.*') ? 'nav-link-active' : '' }}">
+                <span
+                    class="nav-icon
                              {{ request()->routeIs('admin.academic.classes.*')
                                     ? 'bg-white/15 text-white'
-                                    : 'bg-slate-800 text-violet-400 group-hover:text-violet-300' }}">
+                                    : 'bg-slate-800 text-violet-400 group-hover:text-violet-300' }}"
+                >
                     <i class="bi bi-mortarboard-fill"></i>
                 </span>
-
-                <span>
-                    Classes
-                </span>
+                <span> Classes </span>
             </a>
 
             {{-- Sections --}}
-            <a href="{{ route('admin.academic.sections.index') }}"
-               class="nav-link group  {{ request()->routeIs('admin.academic.sections.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon  {{ request()->routeIs('admin.academic.sections.*')
-                                    ? 'bg-white/15 text-white' : 'bg-slate-800 text-teal-400 group-hover:text-teal-300' }}">
+            <a  href="{{ route('admin.academic.sections.index') }}"
+                class="nav-link group  {{ request()->routeIs('admin.academic.sections.*') ? 'nav-link-active' : '' }}"
+            >
+                <span
+                    class="nav-icon  {{ request()->routeIs('admin.academic.sections.*')
+                                    ? 'bg-white/15 text-white' : 'bg-slate-800 text-teal-400 group-hover:text-teal-300' }}"
+                >
                     <i class="bi bi-people-fill"></i>
                 </span>
-                <span>
-                    Sections
-                </span>
+                <span> Sections </span>
             </a>
             {{-- Subjects --}}
-            <a href="{{ route('admin.academic.subjects.index') }}"
-               class="nav-link group
-                      {{ request()->routeIs('admin.academic.subjects.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon {{ request()->routeIs('admin.academic.subjects.*')
+            <a
+                href="{{ route('admin.academic.subjects.index') }}"
+                class="nav-link group
+                      {{ request()->routeIs('admin.academic.subjects.*') ? 'nav-link-active' : '' }}"
+            >
+                <span
+                    class="nav-icon {{ request()->routeIs('admin.academic.subjects.*')
                                     ? 'bg-white/15 text-white'
-                                    : 'bg-slate-800 text-amber-400 group-hover:text-amber-300' }}">
+                                    : 'bg-slate-800 text-amber-400 group-hover:text-amber-300' }}"
+                >
                     <i class="bi bi-book-half"></i>
                 </span>
-                <span>  Subjects </span>
+                <span> Subjects </span>
             </a>
             {{-- Class Subjects --}}
-            <a href="{{ route('admin.academic.class-subjects.index') }}"  class="nav-link group   {{ request()->routeIs('admin.academic.class-subjects.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon {{ request()->routeIs('admin.academic.class-subjects.*') ? 'bg-white/15 text-white'  : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}">
+            <a
+                href="{{ route('admin.academic.class-subjects.index') }}"
+                class="nav-link group   {{ request()->routeIs('admin.academic.class-subjects.*') ? 'nav-link-active' : '' }}"
+            >
+                <span
+                    class="nav-icon {{ request()->routeIs('admin.academic.class-subjects.*') ? 'bg-white/15 text-white'  : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}"
+                >
                     <i class="bi bi-diagram-3"></i>
                 </span>
-                <span>  Class Subjects </span>
+                <span> Class Subjects </span>
             </a>
         </nav>
 
-         <!-- STUDENT MANAGEMENT  -->
+        <!-- STUDENT MANAGEMENT  -->
 
-        <p class="px-3 mb-2 mt-7 text-[10px]  font-semibold  uppercase  tracking-[0.12em]  text-slate-500"> Student Management </p>
+        <p class="px-3 mb-2 mt-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+            Student Management
+        </p>
         <nav class="space-y-1">
             {{-- Students --}}
-            <a href="{{ route('admin.students.index') }}" class="nav-link group  {{ request()->routeIs('admin.students.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon   {{ request()->routeIs('admin.students.*')   ? 'bg-white/15 text-white'  : 'bg-slate-800 text-cyan-400 group-hover:text-cyan-300' }}">
+            <a
+                href="{{ route('admin.students.index') }}"
+                class="nav-link group  {{ request()->routeIs('admin.students.*') ? 'nav-link-active' : '' }}"
+            >
+                <span
+                    class="nav-icon   {{ request()->routeIs('admin.students.*')   ? 'bg-white/15 text-white'  : 'bg-slate-800 text-cyan-400 group-hover:text-cyan-300' }}"
+                >
                     <i class="bi bi-people"></i>
                 </span>
-                <span>  Students </span>
+                <span> Students </span>
             </a>
             {{-- guardians --}}
-            <a href="{{ route('admin.guardians.index') }}" class="nav-link group  {{ request()->routeIs('admin.guardians.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon   {{ request()->routeIs('admin.guardians.*')   ? 'bg-white/15 text-white'  : 'bg-slate-800 text-cyan-400 group-hover:text-cyan-300' }}">
+            <a
+                href="{{ route('admin.guardians.index') }}"
+                class="nav-link group  {{ request()->routeIs('admin.guardians.*') ? 'nav-link-active' : '' }}"
+            >
+                <span
+                    class="nav-icon   {{ request()->routeIs('admin.guardians.*')   ? 'bg-white/15 text-white'  : 'bg-slate-800 text-cyan-400 group-hover:text-cyan-300' }}"
+                >
                     <i class="bi bi-people"></i>
                 </span>
-                <span>  Guardians </span>
+                <span> Guardians </span>
             </a>
-            {{-- class-routines  --}}
-            <a href="{{ route('admin.class-routines.index') }}" class="nav-link group  {{ request()->routeIs('admin.class-routines.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon   {{ request()->routeIs('admin.class-routines.*')   ? 'bg-white/15 text-white'  : 'bg-slate-800 text-cyan-400 group-hover:text-cyan-300' }}">
+            {{-- class-routines --}}
+            <a
+                href="{{ route('admin.class-routines.index') }}"
+                class="nav-link group  {{ request()->routeIs('admin.class-routines.*') ? 'nav-link-active' : '' }}"
+            >
+                <span
+                    class="nav-icon   {{ request()->routeIs('admin.class-routines.*')   ? 'bg-white/15 text-white'  : 'bg-slate-800 text-cyan-400 group-hover:text-cyan-300' }}"
+                >
                     <i class="bi bi-people"></i>
                 </span>
-                <span>  Class Routines </span>
+                <span> Class Routines </span>
             </a>
             {{-- Enrollments --}}
-            <a href="{{ route('admin.student-enrollments.bulk.create') }}" class="nav-link group {{ request()->routeIs('admin.student-enrollments.*') ? 'nav-link-active' : '' }}">
-
-                <span class="nav-icon  {{ request()->routeIs('admin.student-enrollments.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-emerald-400 group-hover:text-emerald-300' }}">
+            <a
+                href="{{ route('admin.student-enrollments.bulk.create') }}"
+                class="nav-link group {{ request()->routeIs('admin.student-enrollments.*') ? 'nav-link-active' : '' }}"
+            >
+                <span
+                    class="nav-icon  {{ request()->routeIs('admin.student-enrollments.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-emerald-400 group-hover:text-emerald-300' }}"
+                >
                     <i class="bi bi-person-check-fill"></i>
                 </span>
-                <span>  Enrollments  </span>
+                <span> Enrollments </span>
             </a>
         </nav>
 
+        {{-- ====== ATTENDANCE ===== --}}
 
-        {{-- ======  ATTENDANCE ===== --}}
+        <!-- Attendance -->
+        <div class="nav-group">
+            <!-- Group Header -->
+            <button
+                type="button"
+                onclick="toggleNavGroup(this)"
+                class="nav-group-title w-full flex items-center justify-between text-left"
+            >
+                <div class="flex items-center gap-3">
+                    <span class="nav-icon bg-slate-800 text-slate-300">
+                        <i class="bi bi-calendar-check-fill"></i>
+                    </span>
 
-        <p class="px-3 mb-2 mt-7  text-[10px] font-semibold uppercase  tracking-[0.12em] text-slate-500">
-            Attendance
+                    <span> Attendance </span>
+                </div>
+
+                <i class="bi bi-chevron-down nav-group-arrow text-slate-500 transition-transform duration-300"></i>
+            </button>
+
+            <!-- Submenu -->
+            <div class="nav-submenu hidden">
+                <!-- Take Attendance -->
+                <a href="{{ route('admin.attendance.index') }}" class="nav-link group">
+                    <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
+                        <i class="bi bi-check2-square"></i>
+                    </span>
+
+                    <span> Take Attendance </span>
+                </a>
+
+                <!-- Attendance Report -->
+                <a href="{{ route('admin.attendances.report') }}" class="nav-link group">
+                    <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
+                        <i class="bi bi-file-earmark-bar-graph"></i>
+                    </span>
+
+                    <span> Attendance Report </span>
+                </a>
+
+                <!-- Analytics -->
+                <a href="{{ route('admin.attendance.analytics') }}" class="nav-link group">
+                    <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
+                        <i class="bi bi-graph-up-arrow"></i>
+                    </span>
+
+                    <span> Analytics </span>
+                </a>
+
+                <!-- Student History -->
+                <a href="{{ route('admin.attendance.student-history') }}" class="nav-link group">
+                    <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
+                        <i class="bi bi-person-lines-fill"></i>
+                    </span>
+
+                    <span> Student History </span>
+                </a>
+
+                <!-- Monthly Report -->
+                <a href="{{ route('admin.attendance.monthly-report') }}" class="nav-link group">
+                    <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
+                        <i class="bi bi-calendar3"></i>
+                    </span>
+
+                    <span> Monthly Report </span>
+                </a>
+            </div>
+        </div>
+
+        <style>
+            /* ================================
+   NAV GROUP
+   ================================ */
+
+            .nav-group-title {
+                border: 0;
+                background: transparent;
+                cursor: pointer;
+                padding: 10px 12px;
+                color: #cbd5e1;
+                transition: all 0.25s ease;
+                border-radius: 10px;
+            }
+
+            .nav-group-title:hover {
+                background: rgba(30, 41, 59, 0.7);
+                color: #fff;
+            }
+
+            /* Arrow */
+
+            .nav-group-arrow {
+                font-size: 12px;
+            }
+
+            /* ================================
+   SUBMENU
+   ================================ */
+
+            .nav-submenu {
+                margin-left: 12px;
+                padding-left: 14px;
+                border-left: 1px solid rgba(148, 163, 184, 0.15);
+
+                overflow: hidden;
+
+                transition:
+                    max-height 0.3s ease,
+                    opacity 0.25s ease;
+
+                animation: submenuOpen 0.25s ease;
+            }
+
+            /* Submenu links */
+
+            .nav-submenu .nav-link {
+                position: relative;
+                margin-top: 3px;
+                padding-left: 10px;
+            }
+
+            /* Small line before submenu item */
+
+            .nav-submenu .nav-link::before {
+                content: "";
+                position: absolute;
+                left: -15px;
+                top: 50%;
+
+                width: 8px;
+                height: 1px;
+
+                background: rgba(148, 163, 184, 0.25);
+
+                transition: all 0.2s ease;
+            }
+
+            .nav-submenu .nav-link:hover::before {
+                width: 14px;
+                background: #3b82f6;
+            }
+
+            /* Open arrow */
+
+            .nav-group-title.active .nav-group-arrow {
+                transform: rotate(180deg);
+            }
+
+            /* Active group */
+
+            .nav-group-title.active {
+                background: rgba(30, 41, 59, 0.8);
+                color: #fff;
+            }
+
+            /* Animation */
+
+            @keyframes submenuOpen {
+                from {
+                    opacity: 0;
+                    transform: translateY(-5px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        </style>
+
+        {{-- ========================================================= Fee Management
+        ========================================================= --}}
+        <p class="px-3 mb-2 mt-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">
+            Fee Management
         </p>
-        <nav class="space-y-1">
-            {{-- Attendance Parent --}}
-            <div  x-data="{
-                    open: {{ request()->routeIs('admin.attendance.*')
-                            || request()->routeIs('admin.attendances.*')
-                            ? 'true'
-                            : 'false' }}
-                }">
-                {{-- Parent Button --}}
 
+        <nav class="space-y-1">
+            {{-- Fee Management --}}
+            <div class="nav-group">
+                {{-- Parent Button --}}
                 <button
                     type="button"
-                    @click="open = !open"
-                    class="w-full flex items-center
-                           justify-between
-                           gap-3
-                           rounded-lg px-2.5 py-2
-                           text-sm font-medium
-                           transition-colors duration-150
-
-                           {{ request()->routeIs('admin.attendance.*')
-                                || request()->routeIs('admin.attendances.*')
-                                ? 'bg-slate-800 text-white'
-                                : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-
-                    <span class="flex items-center gap-3">
-
-                        <span class="nav-icon
-                                     {{ request()->routeIs('admin.attendance.*')
-                                            || request()->routeIs('admin.attendances.*')
-                                            ? 'bg-white/15 text-white'
-                                            : 'bg-slate-800 text-orange-400' }}">
-                            <i class="bi bi-calendar-check-fill"></i>
+                    onclick="toggleNavGroup(this)"
+                    class="nav-group-title w-full flex items-center justify-between text-left
+                   {{ request()->routeIs('admin.fee-types.*')
+                        || request()->routeIs('admin.student-fees.*')
+                        || request()->routeIs('admin.fee-collection.*')
+                        || request()->routeIs('admin.fee-payment-history.*')
+                        ? 'active'
+                        : '' }}"
+                >
+                    <div class="flex items-center gap-3">
+                        <span
+                            class="nav-icon
+                    {{ request()->routeIs('admin.fee-types.*')
+                        || request()->routeIs('admin.student-fees.*')
+                        || request()->routeIs('admin.fee-collection.*')
+                        || request()->routeIs('admin.fee-payment-history.*')
+                        ? 'bg-white/15 text-white'
+                        : 'bg-slate-800 text-orange-400' }}"
+                        >
+                            <i class="bi bi-cash-stack"></i>
                         </span>
 
-                        <span>
-                            Attendance
-                        </span>
+                        <span> Fee Management </span>
+                    </div>
 
-                    </span>
-
-
-                    <i class="bi text-xs text-slate-500 transition-transform duration-200"
-                       :class="open
-                            ? 'bi-chevron-up'
-                            : 'bi-chevron-down'">
-                    </i>
-
+                    {{-- Arrow --}}
+                    <i class="bi bi-chevron-down nav-group-arrow text-slate-500 transition-transform duration-300"></i>
                 </button>
 
-
                 {{-- Submenu --}}
-
-                <div
-                    x-show="open"
-                    x-transition:enter="transition ease-out duration-200"
-                    x-transition:enter-start="opacity-0 -translate-y-1"
-                    x-transition:enter-end="opacity-100 translate-y-0"
-                    x-transition:leave="transition ease-in duration-150"
-                    x-transition:leave-start="opacity-100"
-                    x-transition:leave-end="opacity-0"
-                    class="mt-1 ml-[18px] pl-4
-                           border-l border-slate-700
-                           space-y-0.5">
-
-
-                    {{-- Take Attendance --}}
-
-                    <a href="{{ route('admin.attendance.index') }}"
-                       class="sub-link
-                              {{ request()->routeIs('admin.attendance.index')
-                                    ? 'sub-link-active'
-                                    : '' }}">
-
-                        <i class="bi bi-check2-square w-4 text-center"></i>
-
-                        <span>
-                            Take Attendance
+                <div class="nav-submenu hidden">
+                    {{-- Fee Types --}}
+                    <a
+                        href="{{ route('admin.fee-types.index') }}"
+                        class="nav-link group
+                       {{ request()->routeIs('admin.fee-types.*')
+                            ? 'active'
+                            : '' }}"
+                    >
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400
+                           group-hover:bg-blue-600
+                           group-hover:text-white
+                           {{ request()->routeIs('admin.fee-types.*')
+                                ? 'bg-blue-600 text-white'
+                                : '' }}"
+                        >
+                            <i class="bi bi-tags"></i>
                         </span>
 
+                        <span> Fee Types </span>
                     </a>
 
-
-                    {{-- Attendance Report --}}
-
-                    <a href="{{ route('admin.attendances.report') }}"
-                       class="sub-link
-                              {{ request()->routeIs('admin.attendances.report')
-                                    ? 'sub-link-active'
-                                    : '' }}">
-
-                        <i class="bi bi-file-earmark-bar-graph w-4 text-center"></i>
-
-                        <span>
-                            Attendance Report
+                    {{-- Student Fees --}}
+                    <a
+                        href="{{ route('admin.student-fees.index') }}"
+                        class="nav-link group
+                       {{ request()->routeIs('admin.student-fees.*')
+                            ? 'active'
+                            : '' }}"
+                    >
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400
+                           group-hover:bg-blue-600
+                           group-hover:text-white
+                           {{ request()->routeIs('admin.student-fees.*')
+                                ? 'bg-blue-600 text-white'
+                                : '' }}"
+                        >
+                            <i class="bi bi-person-check"></i>
                         </span>
 
+                        <span> Student Fees </span>
                     </a>
 
-
-                    {{-- Analytics --}}
-
-                    <a href="{{ route('admin.attendance.analytics') }}"
-                       class="sub-link
-                              {{ request()->routeIs('admin.attendance.analytics')
-                                    ? 'sub-link-active'
-                                    : '' }}">
-
-                        <i class="bi bi-graph-up-arrow w-4 text-center"></i>
-
-                        <span>
-                            Analytics
+                    {{-- Fee Collection --}}
+                    <a
+                        href="{{ route('admin.fee-collection.index') }}"
+                        class="nav-link group
+                       {{ request()->routeIs('admin.fee-collection.*')
+                            ? 'active'
+                            : '' }}"
+                    >
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400
+                           group-hover:bg-blue-600
+                           group-hover:text-white
+                           {{ request()->routeIs('admin.fee-collection.*')
+                                ? 'bg-blue-600 text-white'
+                                : '' }}"
+                        >
+                            <i class="bi bi-wallet2"></i>
                         </span>
 
+                        <span> Fee Collection </span>
                     </a>
 
-
-                    {{-- Student History --}}
-
-                    <a href="{{ route('admin.attendance.student-history') }}"
-                       class="sub-link
-                              {{ request()->routeIs('admin.attendance.student-history')
-                                    ? 'sub-link-active'
-                                    : '' }}">
-
-                        <i class="bi bi-person-lines-fill w-4 text-center"></i>
-
-                        <span>
-                            Student History
+                    {{-- Payment History --}}
+                    <a
+                        href="{{ route('admin.fee-payment-history.index') }}"
+                        class="nav-link group
+                       {{ request()->routeIs('admin.fee-payment-history.*')
+                            ? 'active'
+                            : '' }}"
+                    >
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400
+                           group-hover:bg-blue-600
+                           group-hover:text-white
+                           {{ request()->routeIs('admin.fee-payment-history.*')
+                                ? 'bg-blue-600 text-white'
+                                : '' }}"
+                        >
+                            <i class="bi bi-clock-history"></i>
                         </span>
 
+                        <span> Payment History </span>
                     </a>
 
-
-                    {{-- Monthly Report --}}
-
-                    <a href="{{ route('admin.attendance.monthly-report') }}"
-                       class="sub-link
-                              {{ request()->routeIs('admin.attendance.monthly-report')
-                                    ? 'sub-link-active'
-                                    : '' }}">
-
-                        <i class="bi bi-calendar3 w-4 text-center"></i>
-
-                        <span>
-                            Monthly Report
+                    {{-- Fee Collection Report --}}
+                    <a
+                        href="{{ route('admin.fee-collection.report') }}"
+                        class="nav-link group
+                       {{ request()->routeIs('admin.fee-collection.report')
+                            ? 'active'
+                            : '' }}"
+                    >
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400
+                           group-hover:bg-blue-600
+                           group-hover:text-white
+                           {{ request()->routeIs('admin.fee-collection.report')
+                                ? 'bg-blue-600 text-white'
+                                : '' }}"
+                        >
+                            <i class="bi bi-file-earmark-bar-graph"></i>
                         </span>
 
+                        <span> Fee Collection Report </span>
                     </a>
 
+                    {{-- Fee Collection Due Report --}}
+                    <a
+                        href="{{ route('admin.fee-collection.due-report') }}"
+                        class="nav-link group
+                       {{ request()->routeIs('admin.fee-collection.due-report')
+                            ? 'active'
+                            : '' }}"
+                    >
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400
+                           group-hover:bg-blue-600
+                           group-hover:text-white
+                           {{ request()->routeIs('admin.fee-collection.due-report')
+                                ? 'bg-blue-600 text-white'
+                                : '' }}"
+                        >
+                            <i class="bi bi-hourglass-split"></i>
+                        </span>
+
+                        <span> Fee Collection Due Report </span>
+                    </a>
                 </div>
-
             </div>
-
         </nav>
 
-      {{-- =========================================================
-    Fee Management
-========================================================= --}}
-
-<p class="px-3 mb-2 mt-7
-          text-[10px]
-          font-semibold
-          uppercase
-          tracking-[0.12em]
-          text-slate-500">
-
-    Fee Management
-
-</p>
-
-
-<nav class="space-y-1">
-
-    {{-- Fee Management Parent --}}
-    <div
-        x-data="{
-            open: {{ request()->routeIs('admin.fee-types.*')
-                        ? 'true'
-                        : 'false' }}
-        }">
-
-
-        {{-- Parent Button --}}
-        <button
-            type="button"
-            @click="open = !open"
-            class="w-full flex items-center
-                   justify-between
-                   gap-3
-                   rounded-lg px-2.5 py-2
-                   text-sm font-medium
-                   transition-colors duration-150
-
-                   {{ request()->routeIs('admin.fee-types.*')
-                        ? 'bg-slate-800 text-white'
-                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-
-
-            <span class="flex items-center gap-3">
-
-                {{-- Icon --}}
-                <span
-                    class="nav-icon
-                           {{ request()->routeIs('admin.fee-types.*')
-                                ? 'bg-white/15 text-white'
-                                : 'bg-slate-800 text-orange-400' }}">
-
-                    <i class="bi bi-cash-stack"></i>
-
-                </span>
-
-
-                {{-- Title --}}
-                <span>
-                    Fee
-                </span>
-
-            </span>
-
-
-            {{-- Arrow --}}
-            <i
-                class="bi text-xs text-slate-500
-                       transition-transform duration-200"
-                :class="open
-                    ? 'bi-chevron-up'
-                    : 'bi-chevron-down'">
-            </i>
-
-        </button>
-
-
-        {{-- =====================================================
-            Submenu
-        ====================================================== --}}
-
-        <div
-            x-show="open"
-            x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="opacity-0 -translate-y-1"
-            x-transition:enter-end="opacity-100 translate-y-0"
-            x-transition:leave="transition ease-in duration-150"
-            x-transition:leave-start="opacity-100"
-            x-transition:leave-end="opacity-0"
-
-            class="mt-1 ml-[18px] pl-4
-                   border-l border-slate-700
-                   space-y-0.5">
-
-
-            {{-- Fee Types --}}
-            <a
-                href="{{ route('admin.fee-types.index') }}"
-                class="sub-link
-                       {{ request()->routeIs('admin.fee-types.index')
-                            ? 'sub-link-active'
-                            : '' }}">
-
-                <i class="bi bi-tags w-4 text-center"></i>
-
-                <span>
-                    Fee Types
-                </span>
-
-            </a>
-
-
-            {{-- Future: Fee Assignment --}}
-            
-
-            <a
-                href="{{ route('admin.student-fees.index') }}"
-                class="sub-link
-                       {{ request()->routeIs('admin.student-fees.*')
-                            ? 'sub-link-active'
-                            : '' }}">
-
-                <i class="bi bi-person-check w-4 text-center"></i>
-
-                <span>
-                    Student Fees
-                </span>
-
-            </a>
- 
-
-
-            {{-- Future: Fee Collection --}}
-           
-
-            <a
-                href="{{ route('admin.fee-collection.index') }}"
-                class="sub-link
-                       {{ request()->routeIs('admin.fee-collection.*')
-                            ? 'sub-link-active'
-                            : '' }}">
-
-                <i class="bi bi-wallet2 w-4 text-center"></i>
-
-                <span>
-                    Fee Collection
-                </span>
-
-            </a>
-
-            <a href="{{ route('admin.fee-payment-history.index') }}" class="flex items-center gap-3 px-3 py-2.5
-                    rounded-lg text-sm  text-slate-600  hover:bg-slate-100 hover:text-slate-800 transition">
-                <i class="bi bi-clock-history"></i>
-                <span>
-                    Payment History
-                </span>
-            </a>
-
-            <a href="{{ route('admin.fee-collection.report') }}" class="flex items-center gap-3 px-3 py-2.5
-                    rounded-lg text-sm  text-slate-600  hover:bg-slate-100 hover:text-slate-800 transition">
-                <i class="bi bi-clock-history"></i>
-                <span>
-                    Fee Collection Report
-                </span>
-            </a>
-
-            <a href="{{ route('admin.fee-collection.due-report') }}" class="flex items-center gap-3 px-3 py-2.5
-                    rounded-lg text-sm  text-slate-600  hover:bg-slate-100 hover:text-slate-800 transition">
-                <i class="bi bi-clock-history"></i>
-                <span>
-                    Fee Collection Due Report
-                </span>
-            </a>
- 
-
-        </div>
-
-    </div>
-
-</nav>
-
-<nav class="space-y-1">
-
-    {{-- Fee Management Parent --}}
-    <div
-        x-data="{
-            open: {{ request()->routeIs('admin.fee-types.*')
-                        ? 'true'
-                        : 'false' }}
-        }">
-
-
-        {{-- Parent Button --}}
-        <button
-            type="button"
-            @click="open = !open"
-            class="w-full flex items-center
-                   justify-between
-                   gap-3
-                   rounded-lg px-2.5 py-2
-                   text-sm font-medium
-                   transition-colors duration-150
-
-                   {{ request()->routeIs('admin.fee-types.*')
-                        ? 'bg-slate-800 text-white'
-                        : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-
-
-            <span class="flex items-center gap-3">
-
-                {{-- Icon --}}
-                <span
-                    class="nav-icon
-                           {{ request()->routeIs('admin.fee-types.*')
-                                ? 'bg-white/15 text-white'
-                                : 'bg-slate-800 text-orange-400' }}">
-
-                    <i class="bi bi-cash-stack"></i>
-
-                </span>
-
-
-                {{-- Title --}}
-                <span>
-                    Exams
-                </span>
-
-            </span>
-
-
-            {{-- Arrow --}}
-            <i
-                class="bi text-xs text-slate-500
-                       transition-transform duration-200"
-                :class="open
-                    ? 'bi-chevron-up'
-                    : 'bi-chevron-down'">
-            </i>
-
-        </button>
-
-
-        {{-- =====================================================
-            Submenu
-        ====================================================== --}}
-
-        <div x-show="open" x-transition:enter="transition ease-out duration-200"  x-transition:enter-start="opacity-0 -translate-y-1"  x-transition:enter-end="opacity-100 translate-y-0"
-            x-transition:leave="transition ease-in duration-150"  x-transition:leave-start="opacity-100"  x-transition:leave-end="opacity-0" class="mt-1 ml-[18px] pl-4 border-l border-slate-700  space-y-0.5">
-            {{--  Exams --}}
-            <a href="{{ route('admin.exams.index') }}"
-                class="sub-link
-                       {{ request()->routeIs('admin.exams.index')
-                            ? 'sub-link-active'
-                            : '' }}">
-
-                <i class="bi bi-tags w-4 text-center"></i>
-                <span>
-                    Exam
-                </span>
-            </a>
-            {{-- Future: Exams Schedules --}} 
-            <a href="{{ route('admin.exam-schedules.index') }}"
-                class="sub-link
-                       {{ request()->routeIs('admin.exam-schedules.*')
-                            ? 'sub-link-active'
-                            : '' }}">
-                <i class="bi bi-person-check w-4 text-center"></i>
-                <span>
-                    Exams Schedules
-                </span>
-            </a>
-
-            <a href="{{ route('admin.exam-marks.index') }}"
-                class="sub-link
-                       {{ request()->routeIs('admin.exam-marks.*')
-                            ? 'sub-link-active'
-                            : '' }}">
-                <i class="bi bi-person-check w-4 text-center"></i>
-                <span>
-                    exam marks
-                </span>
-            </a>
-
-            <a href="{{ route('admin.exam-subjects.index') }}"
-                class="sub-link
-                       {{ request()->routeIs('admin.exam-subjects.*')
-                            ? 'sub-link-active'
-                            : '' }}">
-                <i class="bi bi-person-check w-4 text-center"></i>
-                <span>
-                    exam Subject
-                </span>
-            </a>
-
-            <a href="{{ route('admin.student-results.index') }}"
-                class="sub-link
-                       {{ request()->routeIs('admin.exam-marks.*')
-                            ? 'sub-link-active'
-                            : '' }}">
-                <i class="bi bi-person-check w-4 text-center"></i>
-                <span>
-                    Student Result
-                </span>
-            </a>
-
-            <a href="{{ route('admin.result-sheets.show') }}"
-                class="sub-link
-                       {{ request()->routeIs('admin.result-sheets.*')
-                            ? 'sub-link-active'
-                            : '' }}">
-                <i class="bi bi-person-check w-4 text-center"></i>
-                <span>
-                     Result Sheets
-                </span>
-            </a>
-
-            <a href="{{ route('admin.class-results.index') }}"
-                class="sub-link
-                       {{ request()->routeIs('admin.class-results.*')
-                            ? 'sub-link-active'
-                            : '' }}">
-                <i class="bi bi-person-check w-4 text-center"></i>
-                <span>
-                    Class Result
-                </span>
-            </a>
-
-
-        </div>
-    </div>
-</nav>
-
-
-        {{-- =======  OTHER MODULES ==== --}}
-
-        <p class="px-3 mb-2 mt-7
-                  text-[10px]
-                  font-semibold
-                  uppercase
-                  tracking-[0.12em]
-                  text-slate-500">
-
-            Other Modules
-
-        </p>
-
+        <p class="px-3 mb-2 mt-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Examination</p>
 
         <nav class="space-y-1">
-
-       <!-- Teachers & Staff -->
-        <div class="nav-group">
-
-            <!-- Group Header -->
-            <button type="button"
+            {{-- Exams --}}
+            <div class="nav-group">
+                {{-- Parent Button --}}
+                <button
+                    type="button"
                     onclick="toggleNavGroup(this)"
-                    class="nav-group-title w-full flex items-center justify-between text-left">
+                    class="nav-group-title w-full flex items-center justify-between text-left"
+                >
+                    <div class="flex items-center gap-3">
+                        <span class="nav-icon bg-slate-800 text-slate-300">
+                            <i class="bi bi-journal-text"></i>
+                        </span>
 
-                <div class="flex items-center gap-3">
-                    <span class="nav-icon bg-slate-800 text-slate-300">
-                        <i class="bi bi-person-workspace"></i>
-                    </span>
+                        <span> Exams </span>
+                    </div>
 
-                    <span>
-                        Teachers & Staff
-                    </span>
+                    <i class="bi bi-chevron-down nav-group-arrow text-slate-500 transition-transform duration-300"></i>
+                </button>
+
+                {{-- Submenu --}}
+                <div class="nav-submenu hidden">
+                    {{-- Exams --}}
+                    <a href="{{ route('admin.exams.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <i class="bi bi-journal-text"></i>
+                        </span>
+
+                        <span> Exams </span>
+                    </a>
+
+                    {{-- Exam Schedules --}}
+                    <a href="{{ route('admin.exam-schedules.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <i class="bi bi-calendar2-week"></i>
+                        </span>
+
+                        <span> Exam Schedules </span>
+                    </a>
+
+                    {{-- Exam Marks --}}
+                    <a href="{{ route('admin.exam-marks.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <i class="bi bi-pencil-square"></i>
+                        </span>
+
+                        <span> Exam Marks </span>
+                    </a>
+
+                    {{-- Exam Subjects --}}
+                    <a href="{{ route('admin.exam-subjects.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <i class="bi bi-book"></i>
+                        </span>
+
+                        <span> Exam Subjects </span>
+                    </a>
+
+                    {{-- Student Result --}}
+                    <a href="{{ route('admin.student-results.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <i class="bi bi-person-vcard"></i>
+                        </span>
+
+                        <span> Student Result </span>
+                    </a>
+
+                    {{-- Result Sheets --}}
+                    <a href="{{ route('admin.result-sheets.show') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <i class="bi bi-file-earmark-spreadsheet"></i>
+                        </span>
+
+                        <span> Result Sheets </span>
+                    </a>
+
+                    {{-- Class Result --}}
+                    <a href="{{ route('admin.class-results.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <i class="bi bi-clipboard-data"></i>
+                        </span>
+
+                        <span> Class Result </span>
+                    </a>
                 </div>
-
-                <i class="bi bi-chevron-down nav-group-arrow text-slate-500 transition-transform duration-300"></i>
-
-            </button>
-
-
-            <!-- Submenu -->
-            <div class="nav-submenu hidden">
-
-                <!-- Departments -->
-                <a href="{{ route('admin.departments.index') }}"
-                class="nav-link group">
-
-                    <span class="nav-icon bg-slate-800 text-slate-400
-                                group-hover:bg-blue-600
-                                group-hover:text-white">
-
-                        <i class="bi bi-diagram-3"></i>
-
-                    </span>
-
-                    <span>
-                        Departments
-                    </span>
-
-                </a>
-
-
-                <!-- Designations -->
-                <a href="{{ route('admin.designations.index') }}"  class="nav-link group">
-
-                    <span class="nav-icon bg-slate-800 text-slate-400  group-hover:bg-blue-600  group-hover:text-white">
-                        <i class="bi bi-person-badge"></i>
-                    </span>
-                    <span>
-                        Designations
-                    </span>
-                </a>
-                <!-- Teachers & Staff -->
-                <a href="{{ route('admin.teacher-staff.index') }}"   class="nav-link group">
-                    <span class="nav-icon bg-slate-800 text-slate-400
-                                group-hover:bg-blue-600
-                                group-hover:text-white">
-
-                        <i class="bi bi-people"></i>
-                    </span>
-                    <span>
-                        Teachers & Staff
-                    </span>
-
-                </a>
-
-
-                <!-- Teacher Assignment -->
-                <a href="{{ route('admin.teacher-assignment.index') }}"
-                class="nav-link group">
-
-                    <span class="nav-icon bg-slate-800 text-slate-400
-                                group-hover:bg-blue-600
-                                group-hover:text-white">
-
-                        <span class="nav-icon bg-slate-800 text-slate-400
-                                    group-hover:bg-blue-600
-                                    group-hover:text-white">
-
-                            <i class="bi bi-person-lines-fill"></i>
-
-                        </span>
-
-                    </span>
-
-                    <span>
-                        Teacher Assignment
-                    </span>
-
-                </a>
-
-                <!-- salary structures -->
-                <a href="{{ route('admin.salary-structures.index') }}"
-                class="nav-link group">
-
-                    <span class="nav-icon bg-slate-800 text-slate-400
-                                group-hover:bg-blue-600
-                                group-hover:text-white">
-
-                        <span class="nav-icon bg-slate-800 text-slate-400
-                                    group-hover:bg-blue-600
-                                    group-hover:text-white">
-
-                            <i class="bi bi-person-lines-fill"></i>
-
-                        </span>
-
-                    </span>
-
-                    <span>
-                    salary structures
-                    </span>
-
-                </a>
-
-                <!-- salary structures -->
-                <a href="{{ route('admin.salary-payments.index') }}"
-                class="nav-link group">
-                    <span class="nav-icon bg-slate-800 text-slate-400
-                                group-hover:bg-blue-600
-                                group-hover:text-white">
-                        <span class="nav-icon bg-slate-800 text-slate-400
-                                    group-hover:bg-blue-600
-                                    group-hover:text-white">
-                            <i class="bi bi-person-lines-fill"></i>
-                        </span>
-                    </span>
-                    <span>
-                    salary payments
-                    </span>
-                </a>
             </div>
-        </div>
+        </nav>
 
-       <!-- Leave  -->
-        <div class="nav-group">
+        {{-- ======= OTHER MODULES ==== --}}
 
-            <!-- Group Header -->
-            <button type="button"
+        <p class="px-3 mb-2 mt-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Other Modules</p>
+
+        <nav class="space-y-1">
+            <!-- Teachers & Staff -->
+            <div class="nav-group">
+                <!-- Group Header -->
+                <button
+                    type="button"
                     onclick="toggleNavGroup(this)"
-                    class="nav-group-title w-full flex items-center justify-between text-left">
+                    class="nav-group-title w-full flex items-center justify-between text-left"
+                >
+                    <div class="flex items-center gap-3">
+                        <span class="nav-icon bg-slate-800 text-slate-300">
+                            <i class="bi bi-person-workspace"></i>
+                        </span>
 
-                <div class="flex items-center gap-3">
-                    <span class="nav-icon bg-slate-800 text-slate-300">
-                        <i class="bi bi-person-workspace"></i>
-                    </span>
+                        <span> Teachers & Staff </span>
+                    </div>
 
-                    <span>
-                       Leave Management
-                    </span>
+                    <i class="bi bi-chevron-down nav-group-arrow text-slate-500 transition-transform duration-300"></i>
+                </button>
+
+                <!-- Submenu -->
+                <div class="nav-submenu hidden">
+                    <!-- Departments -->
+                    <a href="{{ route('admin.departments.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <i class="bi bi-diagram-3"></i>
+                        </span>
+
+                        <span> Departments </span>
+                    </a>
+
+                    <!-- Designations -->
+                    <a href="{{ route('admin.designations.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <i class="bi bi-person-badge"></i>
+                        </span>
+                        <span> Designations </span>
+                    </a>
+                    <!-- Teachers & Staff -->
+                    <a href="{{ route('admin.teacher-staff.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <i class="bi bi-people"></i>
+                        </span>
+                        <span> Teachers & Staff </span>
+                    </a>
+
+                    <!-- Teacher Assignment -->
+                    <a href="{{ route('admin.teacher-assignment.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <span
+                                class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                            >
+                                <i class="bi bi-person-lines-fill"></i>
+                            </span>
+                        </span>
+
+                        <span> Teacher Assignment </span>
+                    </a>
+
+                    <!-- salary structures -->
+                    <a href="{{ route('admin.salary-structures.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <span
+                                class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                            >
+                                <i class="bi bi-person-lines-fill"></i>
+                            </span>
+                        </span>
+
+                        <span> salary structures </span>
+                    </a>
+
+                    <!-- salary structures -->
+                    <a href="{{ route('admin.salary-payments.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <span
+                                class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                            >
+                                <i class="bi bi-person-lines-fill"></i>
+                            </span>
+                        </span>
+                        <span> salary payments </span>
+                    </a>
                 </div>
-
-                <i class="bi bi-chevron-down nav-group-arrow text-slate-500 transition-transform duration-300"></i>
-
-            </button>
-
-
-            <!-- Submenu -->
-            <div class="nav-submenu hidden">
-
-                <!-- Departments -->
-                <a href="{{ route('admin.leave-types.index') }}"
-                class="nav-link group">
-
-                    <span class="nav-icon bg-slate-800 text-slate-400
-                                group-hover:bg-blue-600
-                                group-hover:text-white">
-                        <i class="bi bi-diagram-3"></i>
-                    </span>
-                    <span>
-                       leave Types
-                    </span>
-
-                </a>
-
-
-                <!-- Designations -->
-                <a href="{{ route('admin.leave-allocations.index') }}"  class="nav-link group">
-
-                    <span class="nav-icon bg-slate-800 text-slate-400  group-hover:bg-blue-600  group-hover:text-white">
-                        <i class="bi bi-person-badge"></i>
-                    </span>
-                    <span>
-                        leave Allocations
-                    </span>
-                </a>
-
-                <!-- Designations -->
-                <a href="{{ route('admin.leave-applications.index') }}"  class="nav-link group">
-                    <span class="nav-icon bg-slate-800 text-slate-400  group-hover:bg-blue-600  group-hover:text-white">
-                        <i class="bi bi-person-badge"></i>
-                    </span>
-                    <span>
-                        Leave Applications
-                    </span>
-                </a>
-                
-
-                <!-- salary structures -->
-                <a href="{{ route('admin.teacher-staff-attendance.index') }}"
-                class="nav-link group">
-
-                    <span class="nav-icon bg-slate-800 text-slate-400
-                                group-hover:bg-blue-600
-                                group-hover:text-white">
-
-                        <span class="nav-icon bg-slate-800 text-slate-400
-                                    group-hover:bg-blue-600
-                                    group-hover:text-white">
-
-                            <i class="bi bi-person-lines-fill"></i>
-
-                        </span>
-
-                    </span>
-
-                    <span>
-                   Teacher Staff Attendance
-                    </span>
-
-                </a>
-
-                <!-- salary structures -->
-                <a href="{{ route('admin.teacher-staff-attendance.report') }}" class="nav-link group">
-                    <span class="nav-icon bg-slate-800 text-slate-400
-                                group-hover:bg-blue-600
-                                group-hover:text-white">
-                        <span class="nav-icon bg-slate-800 text-slate-400  group-hover:bg-blue-600  group-hover:text-white">
-                            <i class="bi bi-person-lines-fill"></i>
-                        </span>
-                    </span>
-                    <span>
-                   Teacher Staff Attendance Report
-                    </span>
-                </a> 
             </div>
-        </div>
-                <style>
-                            /* ================================
+
+            <!-- Leave  -->
+            <div class="nav-group">
+                <!-- Group Header -->
+                <button
+                    type="button"
+                    onclick="toggleNavGroup(this)"
+                    class="nav-group-title w-full flex items-center justify-between text-left"
+                >
+                    <div class="flex items-center gap-3">
+                        <span class="nav-icon bg-slate-800 text-slate-300">
+                            <i class="bi bi-person-workspace"></i>
+                        </span>
+
+                        <span> Leave Management </span>
+                    </div>
+
+                    <i class="bi bi-chevron-down nav-group-arrow text-slate-500 transition-transform duration-300"></i>
+                </button>
+
+                <!-- Submenu -->
+                <div class="nav-submenu hidden">
+                    <!-- Departments -->
+                    <a href="{{ route('admin.leave-types.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <i class="bi bi-diagram-3"></i>
+                        </span>
+                        <span> leave Types </span>
+                    </a>
+
+                    <!-- Designations -->
+                    <a href="{{ route('admin.leave-allocations.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <i class="bi bi-person-badge"></i>
+                        </span>
+                        <span> leave Allocations </span>
+                    </a>
+
+                    <!-- Designations -->
+                    <a href="{{ route('admin.leave-applications.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <i class="bi bi-person-badge"></i>
+                        </span>
+                        <span> Leave Applications </span>
+                    </a>
+
+                    <!-- salary structures -->
+                    <a href="{{ route('admin.teacher-staff-attendance.index') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <span
+                                class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                            >
+                                <i class="bi bi-person-lines-fill"></i>
+                            </span>
+                        </span>
+
+                        <span> Teacher Staff Attendance </span>
+                    </a>
+
+                    <!-- salary structures -->
+                    <a href="{{ route('admin.teacher-staff-attendance.report') }}" class="nav-link group">
+                        <span
+                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                        >
+                            <span
+                                class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
+                            >
+                                <i class="bi bi-person-lines-fill"></i>
+                            </span>
+                        </span>
+                        <span> Teacher Staff Attendance Report </span>
+                    </a>
+                </div>
+            </div>
+            <style>
+                /* ================================
                         NAV GROUP
                         ================================ */
 
-                        .nav-group-title {
-                            border: 0;
-                            background: transparent;
-                            cursor: pointer;
-                            padding: 10px 12px;
-                            color: #cbd5e1;
-                            transition: all .25s ease;
-                            border-radius: 10px;
-                        }
+                .nav-group-title {
+                    border: 0;
+                    background: transparent;
+                    cursor: pointer;
+                    padding: 10px 12px;
+                    color: #cbd5e1;
+                    transition: all 0.25s ease;
+                    border-radius: 10px;
+                }
 
-                        .nav-group-title:hover {
-                            background: rgba(30, 41, 59, .7);
-                            color: #fff;
-                        }
+                .nav-group-title:hover {
+                    background: rgba(30, 41, 59, 0.7);
+                    color: #fff;
+                }
 
+                /* Arrow */
 
-                        /* Arrow */
+                .nav-group-arrow {
+                    font-size: 12px;
+                }
 
-                        .nav-group-arrow {
-                            font-size: 12px;
-                        }
-
-
-                        /* ================================
+                /* ================================
                         SUBMENU
                         ================================ */
 
-                        .nav-submenu {
-                            margin-left: 12px;
-                            padding-left: 14px;
-                            border-left: 1px solid rgba(148, 163, 184, .15);
+                .nav-submenu {
+                    margin-left: 12px;
+                    padding-left: 14px;
+                    border-left: 1px solid rgba(148, 163, 184, 0.15);
 
-                            overflow: hidden;
+                    overflow: hidden;
 
-                            transition:
-                                max-height .3s ease,
-                                opacity .25s ease;
+                    transition:
+                        max-height 0.3s ease,
+                        opacity 0.25s ease;
 
-                            animation: submenuOpen .25s ease;
-                        }
+                    animation: submenuOpen 0.25s ease;
+                }
 
+                /* Submenu links */
 
-                        /* Submenu links */
+                .nav-submenu .nav-link {
+                    position: relative;
+                    margin-top: 3px;
+                    padding-left: 10px;
+                }
 
-                        .nav-submenu .nav-link {
-                            position: relative;
-                            margin-top: 3px;
-                            padding-left: 10px;
-                        }
+                /* Small line before submenu item */
 
+                .nav-submenu .nav-link::before {
+                    content: "";
+                    position: absolute;
+                    left: -15px;
+                    top: 50%;
 
-                        /* Small line before submenu item */
+                    width: 8px;
+                    height: 1px;
 
-                        .nav-submenu .nav-link::before {
-                            content: "";
-                            position: absolute;
-                            left: -15px;
-                            top: 50%;
+                    background: rgba(148, 163, 184, 0.25);
 
-                            width: 8px;
-                            height: 1px;
+                    transition: all 0.2s ease;
+                }
 
-                            background: rgba(148, 163, 184, .25);
+                .nav-submenu .nav-link:hover::before {
+                    width: 14px;
+                    background: #3b82f6;
+                }
 
-                            transition: all .2s ease;
-                        }
+                /* Open arrow */
 
-                        .nav-submenu .nav-link:hover::before {
-                            width: 14px;
-                            background: #3b82f6;
-                        }
+                .nav-group-title.active .nav-group-arrow {
+                    transform: rotate(180deg);
+                }
 
+                /* Active group */
 
-                        /* Open arrow */
+                .nav-group-title.active {
+                    background: rgba(30, 41, 59, 0.8);
+                    color: #fff;
+                }
 
-                        .nav-group-title.active .nav-group-arrow {
-                            transform: rotate(180deg);
-                        }
+                /* Animation */
 
+                @keyframes submenuOpen {
+                    from {
+                        opacity: 0;
+                        transform: translateY(-5px);
+                    }
 
-                        /* Active group */
-
-                        .nav-group-title.active {
-                            background: rgba(30, 41, 59, .8);
-                            color: #fff;
-                        }
-
-
-                        /* Animation */
-
-                        @keyframes submenuOpen {
-
-                            from {
-                                opacity: 0;
-                                transform: translateY(-5px);
-                            }
-
-                            to {
-                                opacity: 1;
-                                transform: translateY(0);
-                            }
-
-                        }
-                </style>
-
-          
-
+                    to {
+                        opacity: 1;
+                        transform: translateY(0);
+                    }
+                }
+            </style>
 
             {{-- Accounts --}}
 
             <a href="#" class="nav-link nav-link-disabled group">
-
                 <span class="nav-icon bg-slate-800 text-slate-500">
                     <i class="bi bi-wallet2"></i>
                 </span>
 
-                <span>
-                    Accounts
-                </span>
+                <span> Accounts </span>
 
-                <span class="soon-badge">
-                    Soon
-                </span>
-
+                <span class="soon-badge"> Soon </span>
             </a>
-
         </nav>
-
     </div>
 
-
-    {{-- =====================================================
-        Sidebar Footer
+    {{-- ===================================================== Sidebar Footer
     ====================================================== --}}
 
-    <div class="shrink-0
-                border-t border-slate-800
-                p-3">
-
-        <div class="flex items-center gap-3
-                    rounded-xl
-                    bg-slate-800/60
-                    px-3 py-2.5
-                    ring-1 ring-white/5">
-
-            <div class="flex h-8 w-8
-                        items-center justify-center
-                        rounded-full
-                        bg-gradient-to-br from-blue-500 to-indigo-600
-                        shadow-md shadow-blue-900/30">
-
+    <div class="shrink-0 border-t border-slate-800 p-3">
+        <div class="flex items-center gap-3 rounded-xl bg-slate-800/60 px-3 py-2.5 ring-1 ring-white/5">
+            <div
+                class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md shadow-blue-900/30"
+            >
                 <i class="bi bi-person-fill text-sm"></i>
-
             </div>
 
             <div class="min-w-0">
+                <p class="text-xs font-medium text-white truncate">Administrator</p>
 
-                <p class="text-xs font-medium
-                          text-white truncate">
-
-                    Administrator
-
-                </p>
-
-                <p class="text-[10px]
-                          text-slate-500">
-
-                    Madrasah ERP
-
-                </p>
-
+                <p class="text-[10px] text-slate-500">Madrasah ERP</p>
             </div>
-
         </div>
-
     </div>
-
 </aside>
 
-
-{{-- ==============  MOBILE OVERLAY ================== --}}
+{{-- ============== MOBILE OVERLAY ================== --}}
 
 <div
     id="sidebarOverlay"
     onclick="closeSidebar()"
-    class="fixed inset-0 z-40
-           hidden
-           bg-black/50
-           backdrop-blur-sm
-           lg:hidden">
-</div>
-
+    class="fixed inset-0 z-40 hidden bg-black/50 backdrop-blur-sm lg:hidden"
+></div>
 
 {{-- ==== SIDEBAR STYLES ===== --}}
 
 <style>
+    .sidebar-scroll {
+        scrollbar-width: thin;
+        scrollbar-color: #334155 transparent;
+    }
 
-.sidebar-scroll {
-    scrollbar-width: thin;
-    scrollbar-color: #334155 transparent;
-}
+    .sidebar-scroll::-webkit-scrollbar {
+        width: 5px;
+    }
 
-.sidebar-scroll::-webkit-scrollbar {
-    width: 5px;
-}
+    .sidebar-scroll::-webkit-scrollbar-track {
+        background: transparent;
+    }
 
-.sidebar-scroll::-webkit-scrollbar-track {
-    background: transparent;
-}
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 10px;
+    }
 
-.sidebar-scroll::-webkit-scrollbar-thumb {
-    background: #334155;
-    border-radius: 10px;
-}
+    /* ---- Nav links ---- */
 
-/* ---- Nav links ---- */
+    .nav-link {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-radius: 0.65rem;
+        padding: 0.5rem 0.625rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #cbd5e1; /* slate-300 */
+        transition:
+            background-color 0.15s ease,
+            color 0.15s ease,
+            transform 0.1s ease;
+    }
 
-.nav-link {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    border-radius: 0.65rem;
-    padding: 0.5rem 0.625rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #cbd5e1; /* slate-300 */
-    transition: background-color .15s ease, color .15s ease, transform .1s ease;
-}
+    .nav-link:hover {
+        background-color: #1e293b; /* slate-800 */
+        color: #ffffff;
+    }
 
-.nav-link:hover {
-    background-color: #1e293b; /* slate-800 */
-    color: #ffffff;
-}
+    .nav-link:active {
+        transform: scale(0.98);
+    }
 
-.nav-link:active {
-    transform: scale(0.98);
-}
+    .nav-link-active {
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+        color: #ffffff;
+        box-shadow: 0 4px 14px -4px rgba(37, 99, 235, 0.5);
+    }
 
-.nav-link-active {
-    background: linear-gradient(135deg, #2563eb, #4f46e5);
-    color: #ffffff;
-    box-shadow: 0 4px 14px -4px rgba(37, 99, 235, .5);
-}
+    .nav-link-active:hover {
+        background: linear-gradient(135deg, #2563eb, #4f46e5);
+    }
 
-.nav-link-active:hover {
-    background: linear-gradient(135deg, #2563eb, #4f46e5);
-}
+    .nav-link-disabled {
+        color: #64748b; /* slate-500 */
+        cursor: not-allowed;
+    }
 
-.nav-link-disabled {
-    color: #64748b; /* slate-500 */
-    cursor: not-allowed;
-}
+    .nav-link-disabled:hover {
+        background-color: transparent;
+        color: #94a3b8;
+    }
 
-.nav-link-disabled:hover {
-    background-color: transparent;
-    color: #94a3b8;
-}
+    /* ---- Icon chip ---- */
 
-/* ---- Icon chip ---- */
+    .nav-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 2rem;
+        height: 2rem;
+        border-radius: 0.55rem;
+        font-size: 0.95rem;
+        transition:
+            background-color 0.15s ease,
+            color 0.15s ease;
+    }
 
-.nav-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 0.55rem;
-    font-size: 0.95rem;
-    transition: background-color .15s ease, color .15s ease;
-}
+    /* ---- Sub links (submenu) ---- */
 
-/* ---- Sub links (submenu) ---- */
+    .sub-link {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        border-radius: 0.5rem;
+        padding: 0.45rem 0.6rem;
+        font-size: 0.8125rem;
+        color: #94a3b8; /* slate-400 */
+        transition:
+            background-color 0.15s ease,
+            color 0.15s ease;
+    }
 
-.sub-link {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    border-radius: 0.5rem;
-    padding: 0.45rem 0.6rem;
-    font-size: 0.8125rem;
-    color: #94a3b8; /* slate-400 */
-    transition: background-color .15s ease, color .15s ease;
-}
+    .sub-link:hover {
+        background-color: #1e293b;
+        color: #ffffff;
+    }
 
-.sub-link:hover {
-    background-color: #1e293b;
-    color: #ffffff;
-}
+    .sub-link-active {
+        background-color: #2563eb;
+        color: #ffffff;
+    }
 
-.sub-link-active {
-    background-color: #2563eb;
-    color: #ffffff;
-}
+    /* ---- Soon badge ---- */
 
-/* ---- Soon badge ---- */
-
-.soon-badge {
-    margin-left: auto;
-    font-size: 9px;
-    border-radius: 9999px;
-    background-color: #1e293b;
-    padding: 0.15rem 0.45rem;
-    color: #64748b;
-    letter-spacing: .02em;
-}
-
+    .soon-badge {
+        margin-left: auto;
+        font-size: 9px;
+        border-radius: 9999px;
+        background-color: #1e293b;
+        padding: 0.15rem 0.45rem;
+        color: #64748b;
+        letter-spacing: 0.02em;
+    }
 </style>
 
-
- <!-- SIDEBAR JS  -->
+<!-- SIDEBAR JS  -->
 
 <script>
-
-    function openSidebar()
-    {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebarOverlay');
+    function openSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
         if (sidebar) {
-            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.remove("-translate-x-full");
         }
         if (overlay) {
-            overlay.classList.remove('hidden');
+            overlay.classList.remove("hidden");
         }
-        document.body.classList.add('overflow-hidden');
+        document.body.classList.add("overflow-hidden");
     }
 
-    function closeSidebar()
-    {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebarOverlay');
+    function closeSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        const overlay = document.getElementById("sidebarOverlay");
         if (sidebar) {
-            sidebar.classList.add('-translate-x-full');
+            sidebar.classList.add("-translate-x-full");
         }
         if (overlay) {
-            overlay.classList.add('hidden');
+            overlay.classList.add("hidden");
         }
-        document.body.classList.remove('overflow-hidden');
+        document.body.classList.remove("overflow-hidden");
     }
-
 
     // Close mobile sidebar after clicking a link
 
-    document.addEventListener('DOMContentLoaded', function () {
-        document.querySelectorAll('#sidebar a').forEach(function (link) {
-            link.addEventListener('click', function () {
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("#sidebar a").forEach(function (link) {
+            link.addEventListener("click", function () {
                 if (window.innerWidth < 1024) {
                     closeSidebar();
                 }
             });
         });
     });
-
 </script>

@@ -11,8 +11,7 @@
     <title>Create Account</title>
 
     {{-- Bootstrap Icons --}}
-    <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
 
@@ -41,42 +40,28 @@
         }
 
 
-        /* ========================================
-           Main
-        ======================================== */
+        /* ========  Main ============= */
 
         .auth-wrapper {
             min-height: 100vh;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             padding: 30px 16px;
         }
-
-
         .auth-container {
             width: 100%;
             max-width: 430px;
         }
 
-
-        /* ========================================
-           Card
-        ======================================== */
+        /* ======  Card =================== */
 
         .auth-card {
             background: #ffffff;
-
             border: 1px solid #e2e8f0;
-
             border-radius: 16px;
-
             overflow: hidden;
-
-            box-shadow:
-                0 10px 30px rgba(15, 23, 42, 0.08);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
         }
 
 
@@ -86,53 +71,35 @@
 
         .auth-header {
             text-align: center;
-
             padding: 30px 25px 25px;
-
             border-bottom: 1px solid #e2e8f0;
         }
-
 
         .auth-icon {
             width: 58px;
             height: 58px;
-
             margin: 0 auto 15px;
-
             border-radius: 14px;
-
             display: flex;
             align-items: center;
             justify-content: center;
-
             background: #eff6ff;
-
             color: #2563eb;
-
             font-size: 25px;
         }
 
-
         .auth-title {
             margin: 0;
-
             font-size: 23px;
-
             font-weight: 700;
-
             color: #1e293b;
         }
 
-
         .auth-subtitle {
             margin: 7px 0 0;
-
             font-size: 13px;
-
             color: #64748b;
         }
-
-
         /* ========================================
            Body
         ======================================== */
@@ -141,56 +108,42 @@
             padding: 25px;
         }
 
-
         /* ========================================
            Alerts
         ======================================== */
 
         .alert {
             padding: 12px 14px;
-
             border-radius: 8px;
-
             margin-bottom: 18px;
-
             font-size: 13px;
         }
 
-
         .alert-error {
             color: #b91c1c;
-
             background: #fef2f2;
-
             border: 1px solid #fecaca;
         }
 
-
         .alert-success {
             color: #15803d;
-
             background: #f0fdf4;
-
             border: 1px solid #bbf7d0;
         }
 
 
         .alert ul {
             margin: 0;
-
             padding-left: 18px;
         }
-
 
         .alert li {
             margin-bottom: 3px;
         }
 
-
         /* ========================================
            Form
         ======================================== */
-
         .form-group {
             margin-bottom: 17px;
         }
@@ -198,13 +151,9 @@
 
         .form-label {
             display: block;
-
             margin-bottom: 7px;
-
             font-size: 13px;
-
             font-weight: 600;
-
             color: #334155;
         }
 
@@ -212,23 +161,14 @@
         .form-control,
         .form-select {
             width: 100%;
-
             height: 43px;
-
             padding: 0 12px;
-
             border: 1px solid #cbd5e1;
-
             border-radius: 8px;
-
             background: #ffffff;
-
             color: #334155;
-
             font-size: 14px;
-
             outline: none;
-
             transition:
                 border-color .2s ease,
                 box-shadow .2s ease;
@@ -243,7 +183,6 @@
         .form-control:focus,
         .form-select:focus {
             border-color: #3b82f6;
-
             box-shadow:
                 0 0 0 3px rgba(59, 130, 246, .10);
         }

@@ -23,45 +23,24 @@
 
 
 <body class="min-h-screen bg-slate-100 flex items-center justify-center px-4 py-8">
-
-
     <div class="w-full max-w-md">
-
-
-        {{-- =========================================================
-             LOGO / HEADER
-        ========================================================== --}}
-
+        {{-- =================  LOGO / HEADER ================ --}}
         <div class="text-center mb-6">
-
             <div
                 class="w-16 h-16 mx-auto rounded-2xl
                        bg-blue-600 text-white
                        flex items-center justify-center
                        shadow-lg shadow-blue-600/20">
-
                 <i class="bi bi-mortarboard-fill text-3xl"></i>
-
             </div>
-
-
             <h1 class="mt-4 text-2xl sm:text-3xl font-bold text-slate-800">
-
                 Madrasah Management System
-
             </h1>
-
-
             <p class="mt-2 text-sm text-slate-500">
-
                 Sign in to your administrator account
-
             </p>
-
         </div>
-
         {{-- =========== LOGIN CARD ====================== --}}
-
         <div   class="bg-white rounded-2xl
                    shadow-xl shadow-slate-200/60
                    border border-slate-200
@@ -80,11 +59,7 @@
                     </span>
                 </div>
             @endif
-
-
-
             {{-- Error Message --}}
-
             @if($errors->any())
                 <div
                     class="mb-5
@@ -112,12 +87,7 @@
                     </ul>
                 </div>
             @endif
-
-
-
-            {{-- =====================================================
-                 LOGIN FORM
-            ====================================================== --}}
+            {{-- ===============  LOGIN FORM ================== --}}
 
             <form
                 method="POST"
@@ -171,31 +141,19 @@
                     </div>
 
                 </div>
-
-
-
                 {{-- Password --}}
-
                 <div>
-
                     <div class="flex items-center justify-between mb-2">
-
                         <label
                             for="password"
                             class="block
                                    text-sm
                                    font-semibold
                                    text-slate-700">
-
                             Password
-
                         </label>
-
                     </div>
-
-
                     <div class="relative">
-
                         <div
                             class="absolute inset-y-0 left-0
                                    flex items-center
@@ -203,10 +161,7 @@
                                    pointer-events-none">
 
                             <i class="bi bi-lock text-slate-400"></i>
-
                         </div>
-
-
                         <input
                             id="password"
                             type="password"
@@ -231,10 +186,7 @@
 
                         {{-- Show / Hide Password --}}
 
-                        <button
-                            type="button"
-                            onclick="togglePassword()"
-
+                        <button   type="button"  onclick="togglePassword()"
                             class="absolute
                                    inset-y-0
                                    right-0
@@ -242,19 +194,10 @@
                                    pr-3.5
                                    text-slate-400
                                    hover:text-slate-600">
-
-                            <i
-                                id="passwordIcon"
-                                class="bi bi-eye">
-                            </i>
-
+                            <i id="passwordIcon"  class="bi bi-eye"> </i>
                         </button>
-
                     </div>
-
                 </div>
-
-
 
                 {{-- Remember Me --}}
 
@@ -279,23 +222,13 @@
                                    border-slate-300
                                    text-blue-600
                                    focus:ring-blue-500">
-
-                        <span>
-                            Remember me
-                        </span>
-
+                        <span> Remember me </span>
                     </label>
-
-
                 </div>
-
-
 
                 {{-- Login Button --}}
 
-                <button
-                    type="submit"
-
+                <button  type="submit"
                     class="w-full
                            inline-flex
                            items-center
@@ -315,70 +248,37 @@
                            focus:outline-none
                            focus:ring-4
                            focus:ring-blue-100">
-
                     <i class="bi bi-box-arrow-in-right text-lg"></i>
-
                     Sign In
-
                 </button>
-
-
             </form>
-
         </div>
-
-
-
         {{-- Footer --}}
 
-        <p
-            class="text-center
+        <p class="text-center
                    text-xs
                    text-slate-400
                    mt-6">
-
             © {{ date('Y') }} School Management System
-
         </p>
-
-
     </div>
 
-
-
-    {{-- =========================================================
-         PASSWORD TOGGLE
-    ========================================================== --}}
+    {{-- ==================  PASSWORD TOGGLE ========= --}}
 
     <script>
-
         function togglePassword() {
-
             const password = document.getElementById('password');
-
             const icon = document.getElementById('passwordIcon');
-
-
             if (password.type === 'password') {
-
                 password.type = 'text';
-
                 icon.classList.remove('bi-eye');
-
                 icon.classList.add('bi-eye-slash');
-
             } else {
-
                 password.type = 'password';
-
                 icon.classList.remove('bi-eye-slash');
-
                 icon.classList.add('bi-eye');
-
             }
-
         }
-
     </script>
 
 </body>

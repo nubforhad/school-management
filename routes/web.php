@@ -66,30 +66,30 @@ Route::post('/logout', function () {
     return redirect()->route('login');
 })->middleware('auth')->name('logout');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
-    Route::get('/addmission', [AdmissionController::class, 'admission'])->name('admission');
-    // Route::get('/dashboard', [DashboardController::class,  'index' ])->name('dashboard');
-    Route::get('/students/{student}/id-card',  [StudentController::class, 'idCard'])->name('admin.students.id-card');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+        Route::get('/addmission', [AdmissionController::class, 'admission'])->name('admission');
+        // Route::get('/dashboard', [DashboardController::class,  'index' ])->name('dashboard');
+        Route::get('/students/{student}/id-card',  [StudentController::class, 'idCard'])->name('admin.students.id-card');
 
-// admin 
-Route::middleware('auth')
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-        Route::resource('branches', BranchController::class);
-        Route::resource('students', StudentController::class );
-        Route::get('students/{student}/print',  [StudentController::class, 'print'])->name('students.print');
-        Route::get('students/{student}/pdf',  [StudentController::class, 'pdf'])->name('students.pdf');
+    // admin 
+    Route::middleware('auth')
+        ->prefix('admin')
+        ->name('admin.')
+        ->group(function () {
+            Route::resource('branches', BranchController::class);
+            Route::resource('students', StudentController::class );
+            Route::get('students/{student}/print',  [StudentController::class, 'print'])->name('students.print');
+            Route::get('students/{student}/pdf',  [StudentController::class, 'pdf'])->name('students.pdf');
 
-    Route::prefix('academic')->name('academic.')->group(function () {
-        Route::resource('sessions', AcademicSessionController::class);
-        Route::resource('classes', SchoolClassController::class );
-        Route::resource('sections', SectionController::class);
-        Route::resource('subjects', SubjectController::class);
-        Route::resource(  'class-subjects', ClassSubjectController::class);
+        Route::prefix('academic')->name('academic.')->group(function () {
+            Route::resource('sessions', AcademicSessionController::class);
+            Route::resource('classes', SchoolClassController::class );
+            Route::resource('sections', SectionController::class);
+            Route::resource('subjects', SubjectController::class);
+            Route::resource(  'class-subjects', ClassSubjectController::class);
 
-    });
-}); 
+        });
+    }); 
 
     //Student Enrollment 
     
@@ -111,7 +111,6 @@ Route::middleware('auth')
         //Dynamic Sections 
         Route::get(  'enrollments/sections',  [StudentEnrollmentController::class, 'sections'])->name('students.enrollments.sections');
        
-
         // bulk enrollment      
         Route::get( 'student-enrollments/bulk/create', [StudentEnrollmentController::class, 'bulkCreate'])->name('student-enrollments.bulk.create');
         Route::get( 'student-enrollments/bulk/students', [StudentEnrollmentController::class, 'bulkStudents'])->name('student-enrollments.bulk.students');

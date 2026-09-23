@@ -16,52 +16,40 @@ class SalaryPaymentController extends Controller
     public function index(Request $request)
     {
         $branchId = auth()->user()->branch_id;
-
         $salaryPayments = SalaryPayment::with([
                 'teacherStaff',
                 'salaryStructure'
             ])
             ->where('branch_id', $branchId)
-
             ->when($request->filled('salary_month'), function ($query) use ($request) {
                 $query->where(
                     'salary_month',
                     $request->salary_month
                 );
-            })
-
-            ->when($request->filled('salary_year'), function ($query) use ($request) {
+            })->when($request->filled('salary_year'), function ($query) use ($request) {
                 $query->where(
                     'salary_year',
                     $request->salary_year
                 );
-            })
-
-            ->when($request->filled('status'), function ($query) use ($request) {
+            })->when($request->filled('status'), function ($query) use ($request) {
                 $query->where(
                     'status',
                     $request->status
                 );
-            })
-
-            ->when($request->filled('teacher_staff_id'), function ($query) use ($request) {
+            })->when($request->filled('teacher_staff_id'), function ($query) use ($request) {
                 $query->where(
                     'teacher_staff_id',
                     $request->teacher_staff_id
                 );
             })
-
             ->latest()
             ->paginate(15)
             ->withQueryString();
-
         $teachers = TeacherStaff::where('branch_id', $branchId)
             ->where('status', true)
             ->orderBy('name')
             ->get();
-
-        return view(
-            'admin.salary-payments.index',
+        return view( 'admin.salary-payments.index',
             compact(
                 'salaryPayments',
                 'teachers'
@@ -95,9 +83,7 @@ class SalaryPaymentController extends Controller
 public function store(Request $request)
 {
     $branchId = auth()->user()->branch_id;
-
     $validated = $request->validate([
-
         'teacher_staff_id' => [
             'required',
             Rule::exists('teacher_staff', 'id')
@@ -109,14 +95,12 @@ public function store(Request $request)
             'integer',
             'between:1,12',
         ],
-
         'salary_year' => [
             'required',
             'integer',
             'min:2000',
             'max:2100',
         ],
-
         'paid_amount' => [
             'required',
             'numeric',
@@ -143,7 +127,6 @@ public function store(Request $request)
                 'Cancelled',
             ]),
         ],
-
         'remarks' => [
             'nullable',
             'string',
