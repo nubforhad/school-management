@@ -2,25 +2,15 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
-    <title>Login | School Management</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Madrasah School Management</title>
     {{-- Tailwind CDN --}}
     <script src="https://cdn.tailwindcss.com"></script>
-
     {{-- Bootstrap Icons --}}
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    >
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
 </head>
-
 
 <body class="min-h-screen bg-slate-100 flex items-center justify-center px-4 py-8">
     <div class="w-full max-w-md">
@@ -62,14 +52,8 @@
             {{-- Error Message --}}
             @if($errors->any())
                 <div
-                    class="mb-5
-                           rounded-xl
-                           bg-red-50
-                           border border-red-200
-                           px-4 py-3">
-
+                    class="mb-5 rounded-xl  bg-red-50 border border-red-200 px-4 py-3">
                     <div class="flex items-center gap-2 mb-2">
-
                         <i class="bi bi-exclamation-circle-fill text-red-600"></i>
                         <p class="text-sm font-semibold text-red-700">
                             Login failed
@@ -96,57 +80,22 @@
                 @csrf
                 {{-- Email --}}
                 <div>
-                    <label  for="email" class="block
-                               text-sm
-                               font-semibold
-                               text-slate-700
-                               mb-2">
+                    <label  for="email" class="block text-sm font-semibold text-slate-700 mb-2">
                         Email Address
                     </label>
                     <div class="relative">
-                        <div
-                            class="absolute inset-y-0 left-0
-                                   flex items-center
-                                   pl-3.5
-                                   pointer-events-none">
-
+                        <div  class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none">
                             <i class="bi bi-envelope text-slate-400"></i>
-
                         </div>
-
-
-                        <input
-                            id="email"
-                            type="email"
-                            name="email"
-                            value="{{ old('email') }}"
-                            required
-                            autofocus
-                            autocomplete="email"
-                            placeholder="Enter your email"
-
-                            class="w-full
-                                   rounded-xl
-                                   border border-slate-300
-                                   bg-white
-                                   pl-10 pr-4 py-3
-                                   text-sm text-slate-800
-                                   placeholder:text-slate-400
-                                   outline-none
-                                   transition
-                                   focus:border-blue-500
-                                   focus:ring-4
-                                   focus:ring-blue-100">
-
+                        <input id="email" type="email" name="email" value="{{ old('email') }}"
+                            required autofocus autocomplete="email" placeholder="Enter your email"
+                            class="w-full rounded-xl  border border-slate-300  bg-white  pl-10 pr-4 py-3 text-sm text-slate-800 placeholder:text-slate-400 outline-none transition  focus:border-blue-500 focus:ring-4 focus:ring-blue-100">
                     </div>
-
                 </div>
                 {{-- Password --}}
                 <div>
                     <div class="flex items-center justify-between mb-2">
-                        <label
-                            for="password"
-                            class="block
+                        <label for="password" class="block
                                    text-sm
                                    font-semibold
                                    text-slate-700">
@@ -182,15 +131,9 @@
                                    focus:border-blue-500
                                    focus:ring-4
                                    focus:ring-blue-100">
-
-
                         {{-- Show / Hide Password --}}
-
                         <button   type="button"  onclick="togglePassword()"
-                            class="absolute
-                                   inset-y-0
-                                   right-0
-                                   flex items-center
+                            class="absolute  inset-y-0 right-0 flex items-center
                                    pr-3.5
                                    text-slate-400
                                    hover:text-slate-600">
@@ -198,25 +141,16 @@
                         </button>
                     </div>
                 </div>
-
                 {{-- Remember Me --}}
-
                 <div class="flex items-center justify-between">
-
-
-                    <label
-                        class="inline-flex
+                    <label  class="inline-flex
                                items-center
                                gap-2
                                cursor-pointer
                                text-sm
                                text-slate-600">
 
-                        <input
-                            type="checkbox"
-                            name="remember"
-                            value="1"
-
+                        <input type="checkbox" name="remember" value="1"
                             class="h-4 w-4
                                    rounded
                                    border-slate-300
@@ -264,7 +198,6 @@
     </div>
 
     {{-- ==================  PASSWORD TOGGLE ========= --}}
-
     <script>
         function togglePassword() {
             const password = document.getElementById('password');

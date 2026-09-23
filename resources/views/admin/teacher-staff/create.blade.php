@@ -9,136 +9,80 @@
 
     {{-- Page Header --}}
     <div class="mb-6">
-
         <a href="{{ route('admin.teacher-staff.index') }}"
            class="inline-flex items-center gap-2
                   text-sm text-slate-500
                   hover:text-blue-600 transition">
-
             <i class="bi bi-arrow-left"></i>
-
             Back to Teachers & Staff
-
         </a>
-
-
         <div class="mt-4">
-
             <h1 class="text-xl sm:text-2xl font-bold text-slate-800">
                 Add Teacher / Staff
             </h1>
-
             <p class="mt-1 text-xs sm:text-sm text-slate-500">
                 Add a new teacher or staff member
             </p>
-
         </div>
-
     </div>
-
-
     {{-- Validation Errors --}}
     @if($errors->any())
-
-        <div class="mb-5 rounded-lg border border-red-200
-                    bg-red-50 px-4 py-3">
-
+        <div class="mb-5 rounded-lg border border-red-200   bg-red-50 px-4 py-3">
             <div class="flex items-start gap-3">
-
                 <div class="flex h-8 w-8 shrink-0
                             items-center justify-center
                             rounded-full bg-red-100
                             text-red-600">
-
                     <i class="bi bi-exclamation-triangle"></i>
-
                 </div>
-
                 <div>
-
                     <p class="text-sm font-semibold text-red-800">
                         Please fix the following errors
                     </p>
-
-                    <ul class="mt-1 list-disc list-inside
-                               text-xs text-red-700 space-y-1">
-
+                    <ul class="mt-1 list-disc list-inside  text-xs text-red-700 space-y-1">
                         @foreach($errors->all() as $error)
                             <li>{{ $error }}</li>
                         @endforeach
-
                     </ul>
-
                 </div>
-
             </div>
-
         </div>
-
     @endif
-
-
     {{-- Form Card --}}
     <div class="bg-white rounded-xl border border-slate-200
                 shadow-sm overflow-hidden">
 
-        <form action="{{ route('admin.teacher-staff.store') }}"
-              method="POST"
-              enctype="multipart/form-data">
-
+        <form action="{{ route('admin.teacher-staff.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
-
-
             {{-- Personal Information --}}
             <div class="px-4 sm:px-6 py-4
                         border-b border-slate-200
                         bg-slate-50">
-
                 <div class="flex items-center gap-3">
-
                     <div class="flex h-10 w-10 items-center
                                 justify-center rounded-lg
                                 bg-blue-50 text-blue-600">
-
                         <i class="bi bi-person"></i>
-
                     </div>
-
                     <div>
-
                         <h2 class="font-semibold text-slate-800">
                             Personal Information
                         </h2>
-
                         <p class="text-xs text-slate-500 mt-0.5">
                             Basic information of the teacher or staff
                         </p>
-
                     </div>
-
                 </div>
-
             </div>
-
-
             <div class="p-4 sm:p-6">
 
-                <div class="grid grid-cols-1 md:grid-cols-2
-                            lg:grid-cols-3 gap-5">
-
-
+                <div class="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3 gap-5">
                     {{-- Photo --}}
                     <div class="lg:col-span-3">
-
-                        <label class="block text-sm font-medium
-                                      text-slate-700 mb-2">
-
+                        <label class="block text-sm font-medium  text-slate-700 mb-2">
                             Profile Photo
-
                         </label>
-
                         <div class="flex items-center gap-4">
-
                             <div id="photoPreview"
                                  class="flex h-20 w-20 shrink-0
                                         items-center justify-center
@@ -146,13 +90,9 @@
                                         bg-blue-50
                                         text-blue-600
                                         overflow-hidden">
-
                                 <i class="bi bi-person text-3xl"></i>
-
                             </div>
-
                             <div>
-
                                 <input type="file"
                                        name="photo"
                                        id="photo"
@@ -221,21 +161,12 @@
                                 {{ $message }}
                             </p>
                         @enderror
-
                     </div>
-
-
                     {{-- Name --}}
                     <div>
-
-                        <label class="block text-sm font-medium
-                                      text-slate-700 mb-1.5">
-
-                            Full Name
-                            <span class="text-red-500">*</span>
-
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
+                            Full Name <span class="text-red-500">*</span>
                         </label>
-
                         <input type="text"
                                name="name"
                                value="{{ old('name') }}"
@@ -252,31 +183,18 @@
                                       @error('name')
                                           border-red-400
                                       @enderror">
-
                         @error('name')
                             <p class="mt-1 text-xs text-red-500">
                                 {{ $message }}
                             </p>
                         @enderror
-
                     </div>
-
-
                     {{-- Gender --}}
                     <div>
-
-                        <label class="block text-sm font-medium
-                                      text-slate-700 mb-1.5">
-
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
                             Gender
-
                         </label>
-
-                        <select name="gender"
-                                class="w-full rounded-lg
-                                       border border-slate-300
-                                       bg-white px-3 py-2.5
-                                       text-sm text-slate-700
+                        <select name="gender" class="w-full rounded-lg  border border-slate-300  bg-white px-3 py-2.5 text-sm text-slate-700
                                        outline-none
                                        focus:border-blue-500
                                        focus:ring-2
@@ -285,37 +203,25 @@
                             <option value="">
                                 Select Gender
                             </option>
-
                             <option value="Male"
                                 {{ old('gender') == 'Male' ? 'selected' : '' }}>
                                 Male
                             </option>
-
                             <option value="Female"
                                 {{ old('gender') == 'Female' ? 'selected' : '' }}>
                                 Female
                             </option>
-
                             <option value="Other"
                                 {{ old('gender') == 'Other' ? 'selected' : '' }}>
                                 Other
                             </option>
-
                         </select>
-
                     </div>
-
-
                     {{-- Date of Birth --}}
                     <div>
-
-                        <label class="block text-sm font-medium
-                                      text-slate-700 mb-1.5">
-
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
                             Date of Birth
-
                         </label>
-
                         <input type="date"
                                name="date_of_birth"
                                value="{{ old('date_of_birth') }}"
@@ -329,18 +235,12 @@
                                       focus:ring-blue-100">
 
                     </div>
-
-
                     {{-- Phone --}}
                     <div>
-
                         <label class="block text-sm font-medium
                                       text-slate-700 mb-1.5">
-
                             Phone
-
                         </label>
-
                         <input type="text"
                                name="phone"
                                value="{{ old('phone') }}"
@@ -356,18 +256,12 @@
                                       focus:ring-blue-100">
 
                     </div>
-
-
                     {{-- Email --}}
                     <div>
-
                         <label class="block text-sm font-medium
                                       text-slate-700 mb-1.5">
-
                             Email
-
                         </label>
-
                         <input type="email"
                                name="email"
                                value="{{ old('email') }}"
@@ -381,11 +275,8 @@
                                       focus:border-blue-500
                                       focus:ring-2
                                       focus:ring-blue-100">
-
                     </div>
-
-
-                    {{-- Address --}}
+                   {{-- Address --}}
                     <div class="md:col-span-2 lg:col-span-3">
 
                         <label class="block text-sm font-medium
@@ -407,58 +298,36 @@
                                          focus:border-blue-500
                                          focus:ring-2
                                          focus:ring-blue-100">{{ old('address') }}</textarea>
-
                     </div>
-
                 </div>
-
             </div>
-
-
             {{-- Employment Information --}}
             <div class="px-4 sm:px-6 py-4
                         border-y border-slate-200
                         bg-slate-50">
-
                 <div class="flex items-center gap-3">
-
                     <div class="flex h-10 w-10 items-center
                                 justify-center rounded-lg
                                 bg-blue-50 text-blue-600">
-
                         <i class="bi bi-briefcase"></i>
-
                     </div>
-
                     <div>
-
                         <h2 class="font-semibold text-slate-800">
                             Employment Information
                         </h2>
-
                         <p class="text-xs text-slate-500 mt-0.5">
                             Department, designation and employment details
                         </p>
-
                     </div>
-
                 </div>
-
             </div>
-
-
             <div class="p-4 sm:p-6">
-
                 <div class="grid grid-cols-1 md:grid-cols-2
                             lg:grid-cols-3 gap-5">
-
-
                     {{-- Branch --}}
                     <div>
-
                         <label class="block text-sm font-medium
                                       text-slate-700 mb-1.5">
-
                             Branch
                             <span class="text-red-500">*</span>
 
@@ -482,7 +351,6 @@
                             </option>
 
                             @foreach($branches as $branch)
-
                                 <option value="{{ $branch->id }}"
                                     {{ old(
                                         'branch_id',
@@ -490,32 +358,21 @@
                                     ) == $branch->id ? 'selected' : '' }}>
 
                                     {{ $branch->name }}
-
                                 </option>
-
                             @endforeach
-
                         </select>
-
                         @error('branch_id')
                             <p class="mt-1 text-xs text-red-500">
                                 {{ $message }}
                             </p>
                         @enderror
-
                     </div>
-
-
                     {{-- Department --}}
                     <div>
-
                         <label class="block text-sm font-medium
                                       text-slate-700 mb-1.5">
-
                             Department
-
                         </label>
-
                         <select name="department_id"
                                 class="w-full rounded-lg
                                        border border-slate-300
@@ -529,35 +386,21 @@
                             <option value="">
                                 Select Department
                             </option>
-
                             @foreach($departments as $department)
-
                                 <option value="{{ $department->id }}"
                                     {{ old('department_id') == $department->id
                                         ? 'selected'
                                         : '' }}>
-
                                     {{ $department->name }}
-
                                 </option>
-
                             @endforeach
-
                         </select>
-
                     </div>
-
-
                     {{-- Designation --}}
                     <div>
-
-                        <label class="block text-sm font-medium
-                                      text-slate-700 mb-1.5">
-
+                        <label class="block text-sm font-medium  text-slate-700 mb-1.5">
                             Designation
-
                         </label>
-
                         <select name="designation_id"
                                 class="w-full rounded-lg
                                        border border-slate-300
@@ -675,38 +518,16 @@
 
                         </label>
 
-                        <input type="number"
-                               name="basic_salary"
-                               value="{{ old('basic_salary', 0) }}"
-                               min="0"
-                               step="0.01"
-                               placeholder="0.00"
-                               class="w-full rounded-lg
-                                      border border-slate-300
-                                      bg-white px-3 py-2.5
-                                      text-sm text-slate-700
-                                      placeholder-slate-400
-                                      outline-none
-                                      focus:border-blue-500
-                                      focus:ring-2
-                                      focus:ring-blue-100">
-
+                        <input type="number"  name="basic_salary" value="{{ old('basic_salary', 0) }}"  min="0" step="0.01"  placeholder="0.00"
+                               class="w-full rounded-lg  border border-slate-300  bg-white px-3 py-2.5  text-sm text-slate-700  placeholder-slate-400  outline-none  focus:border-blue-500  focus:ring-2  focus:ring-blue-100">
                     </div>
-
-
                     {{-- Status --}}
                     <div>
-
-                        <label class="block text-sm font-medium
-                                      text-slate-700 mb-1.5">
-
+                        <label class="block text-sm font-medium text-slate-700 mb-1.5">
                             Status
-
                         </label>
-
                         <label class="flex items-center gap-3
                                       h-[42px] cursor-pointer">
-
                             <input type="checkbox"
                                    name="status"
                                    value="1"

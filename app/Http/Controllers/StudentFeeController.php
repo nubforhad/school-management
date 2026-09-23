@@ -357,15 +357,8 @@ class StudentFeeController extends Controller
         $feeTypes = FeeType::where('branch_id', $branchId)->where('status', true)->orderBy('name')->get();
         $academicSessions = AcademicSession::where('branch_id',  $branchId )->orderByDesc('id')->get();
 
-        return view( 'admin.student-fees.edit', compact(
-                'studentFee',
-                'students',
-                'feeTypes',
-                'academicSessions'
-            )
-        );
+        return view( 'admin.student-fees.edit', compact( 'studentFee', 'students', 'feeTypes', 'academicSessions'));
     }
-
 
     /**
      * Update Assignment
