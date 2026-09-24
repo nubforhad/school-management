@@ -1,7 +1,6 @@
 {{-- ====== SIDEBAR ============== --}}
 
-<aside
-    id="sidebar"
+<aside id="sidebar"
     class="fixed inset-y-0 left-0 z-50 w-64 -translate-x-full lg:translate-x-0 bg-slate-900 text-white border-r border-slate-800 transition-transform duration-300 ease-in-out flex flex-col"
 >
     {{-- ===================================================== Logo / Header
@@ -163,6 +162,15 @@
                     <i class="bi bi-diagram-3"></i>
                 </span>
                 <span> Class Subjects </span>
+            </a>
+
+
+            {{-- Class Subjects --}}
+            <a href="{{ route('admin.expense-categories.index') }}" class="nav-link group   {{ request()->routeIs('admin.expense-categories.*') ? 'nav-link-active' : '' }}">
+                <span class="nav-icon {{ request()->routeIs('admin.expense-categories.*') ? 'bg-white/15 text-white'  : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}">
+                    <i class="bi bi-diagram-3"></i>
+                </span>
+                <span> Expense Category </span>
             </a>
         </nav>
 
@@ -973,8 +981,7 @@
         </nav>
     </div>
 
-    {{-- ===================================================== Sidebar Footer
-    ====================================================== --}}
+    {{-- ========= Sidebar Footer ===== --}}
 
     <div class="shrink-0 border-t border-slate-800 p-3">
         <div class="flex items-center gap-3 rounded-xl bg-slate-800/60 px-3 py-2.5 ring-1 ring-white/5">
