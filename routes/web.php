@@ -38,6 +38,8 @@ use App\Http\Controllers\TeacherStaffAttendanceController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\ClassRoutineController;
 
+use App\Http\Controllers\ExpenseCategoryController;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -204,6 +206,9 @@ Route::post('/logout', function () {
                 // Report — অবশ্যই /{attendance} এর আগে
                 Route::get('/report', [ TeacherStaffAttendanceController::class, 'report' ])->name('report');
         });
+
+        // expanse 
+        Route::resource('expense-categories', ExpenseCategoryController::class)->names('expense-categories');
 
 });
 
