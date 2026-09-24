@@ -39,6 +39,7 @@ use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\ClassRoutineController;
 
 use App\Http\Controllers\ExpenseCategoryController;
+use App\Http\Controllers\ExpenseController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -209,6 +210,8 @@ Route::post('/logout', function () {
 
         // expanse 
         Route::resource('expense-categories', ExpenseCategoryController::class)->names('expense-categories');
+        
+        Route::resource('expenses', ExpenseController::class)->names('expenses');
 
 });
 

@@ -165,12 +165,20 @@
             </a>
 
 
-            {{-- Class Subjects --}}
+            {{-- Class expenses cat --}}
             <a href="{{ route('admin.expense-categories.index') }}" class="nav-link group   {{ request()->routeIs('admin.expense-categories.*') ? 'nav-link-active' : '' }}">
                 <span class="nav-icon {{ request()->routeIs('admin.expense-categories.*') ? 'bg-white/15 text-white'  : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}">
                     <i class="bi bi-diagram-3"></i>
                 </span>
                 <span> Expense Category </span>
+            </a>
+
+            {{-- Class expenses --}}
+            <a href="{{ route('admin.expenses.index') }}" class="nav-link group   {{ request()->routeIs('admin.expenses.*') ? 'nav-link-active' : '' }}">
+                <span class="nav-icon {{ request()->routeIs('admin.expenses.*') ? 'bg-white/15 text-white'  : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}">
+                    <i class="bi bi-diagram-3"></i>
+                </span>
+                <span> Expense </span>
             </a>
         </nav>
 
