@@ -1,10 +1,10 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdmissionController;
 use App\Http\Controllers\BranchController;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\AcademicSessionController;
 use App\Http\Controllers\SchoolClassController;
 use App\Http\Controllers\SectionController;
@@ -40,6 +40,8 @@ use App\Http\Controllers\ClassRoutineController;
 
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\FinanceController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -50,24 +52,24 @@ Route::get('/', function () {
 // Authentication
 // ==============================
 
-Route::middleware('guest')->group(function () {
-    Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register', [AuthController::class, 'register'])->name('register.store');
-    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.store');
-});
+    Route::middleware('guest')->group(function () {
+        Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
+        Route::post('/register', [AuthController::class, 'register'])->name('register.store');
+        Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+        Route::post('/login', [AuthController::class, 'login'])->name('login.store');
+    });
 
 
 
 
-Route::post('/logout', function () {
-    Auth::logout();
+    Route::post('/logout', function () {
+        Auth::logout();
 
-    request()->session()->invalidate();
-    request()->session()->regenerateToken();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
 
-    return redirect()->route('login');
-})->middleware('auth')->name('logout');
+        return redirect()->route('login');
+    })->middleware('auth')->name('logout');
 
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
         Route::get('/addmission', [AdmissionController::class, 'admission'])->name('admission');
@@ -150,10 +152,8 @@ Route::post('/logout', function () {
     Route::get( 'fee-payment-history', [FeePaymentController::class, 'history'])->name('fee-payment-history.index');
     Route::get('fee-payment-history/{feePayment}', [FeePaymentController::class, 'show'])->name('fee-payment-history.show');
     Route::get('fee-payment-history/{feePayment}/receipt',  [FeePaymentController::class, 'receipt'])->name('fee-payment-history.receipt');    
-
     Route::get('/fee-reports/collection',  [FeeReportController::class, 'collection'])->name('fee-reports.collection');
     Route::get('fee-collection/report', [FeePaymentController::class, 'report'])->name('fee-collection.report');
-
     Route::get('/fee-collection/due-report', [FeePaymentController::class, 'dueReport'])->name('fee-collection.due-report');
 
     Route::resource('exams', ExamController::class); 
@@ -183,9 +183,9 @@ Route::post('/logout', function () {
      
     Route::prefix('leave-applications')
         ->name('leave-applications.') ->group(function () {
-            Route::get('/', [ LeaveApplicationController::class, 'index' ])->name('index');
-            Route::get('/create', [ LeaveApplicationController::class, 'create' ])->name('create');
-            Route::post('/', [  LeaveApplicationController::class, 'store' ])->name('store');
+            Route::get('/', [LeaveApplicationController::class, 'index' ])->name('index');
+            Route::get('/create', [LeaveApplicationController::class, 'create' ])->name('create');
+            Route::post('/', [ LeaveApplicationController::class, 'store' ])->name('store');
             Route::get('/{leaveApplication}', [  LeaveApplicationController::class, 'show' ])->name('show');
             Route::get('/{leaveApplication}/edit', [  LeaveApplicationController::class,  'edit'])->name('edit');
             Route::put('/{leaveApplication}', [ LeaveApplicationController::class, 'update'])->name('update');
@@ -212,6 +212,9 @@ Route::post('/logout', function () {
         Route::resource('expense-categories', ExpenseCategoryController::class)->names('expense-categories');
         
         Route::resource('expenses', ExpenseController::class)->names('expenses');
+        
+
+        Route::get('finance', [FinanceController::class, 'index'])->name('finance.index');
 
 });
 

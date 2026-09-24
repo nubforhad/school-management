@@ -683,71 +683,44 @@
             </p>
 
         </div>
-
-
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-
-
             {{-- Add Student --}}
-            <a
-                href="{{ route('admin.students.create') }}"
+            <a   href="{{ route('admin.students.create') }}"
                 class="group rounded-xl border border-slate-200
                        p-4 text-center transition hover:border-blue-300
                        hover:bg-blue-50">
-
                 <div class="text-2xl">
                     👨‍🎓
                 </div>
-
                 <p class="mt-2 text-xs font-semibold text-slate-700
                           group-hover:text-blue-700">
                     Add Student
                 </p>
-
-            </a>
-
-
+           </a>
             {{-- Assign Subject --}}
-            <a
-                href="{{ route('admin.academic.class-subjects.create') }}"
+            <a  href="{{ route('admin.academic.class-subjects.create') }}"
                 class="group rounded-xl border border-slate-200
                        p-4 text-center transition hover:border-blue-300
                        hover:bg-blue-50">
-
                 <div class="text-2xl">
                     📚
                 </div>
-
-                <p class="mt-2 text-xs font-semibold text-slate-700
-                          group-hover:text-blue-700">
-                    Assign Subject
-                </p>
-
+                <p class="mt-2 text-xs font-semibold text-slate-700 group-hover:text-blue-700">  Assign Subject </p>
             </a>
-
-
             {{-- Add Subject --}}
-            <a
-                href="{{ route('admin.academic.subjects.create') }}"
+            <a  href="{{ route('admin.academic.subjects.create') }}"
                 class="group rounded-xl border border-slate-200
                        p-4 text-center transition hover:border-blue-300
                        hover:bg-blue-50">
-
                 <div class="text-2xl">
                     📖
                 </div>
-
-                <p class="mt-2 text-xs font-semibold text-slate-700
-                          group-hover:text-blue-700">
+                <p class="mt-2 text-xs font-semibold text-slate-700 group-hover:text-blue-700">
                     Add Subject
                 </p>
-
             </a>
-
-
             {{-- Add Class --}}
-            <a
-                href="{{ route('admin.academic.classes.create') }}"
+            <a href="{{ route('admin.academic.classes.create') }}"
                 class="group rounded-xl border border-slate-200
                        p-4 text-center transition hover:border-blue-300
                        hover:bg-blue-50">
@@ -755,34 +728,25 @@
                 <div class="text-2xl">
                     🏫
                 </div>
-
                 <p class="mt-2 text-xs font-semibold text-slate-700
                           group-hover:text-blue-700">
                     Add Class
                 </p>
-
             </a>
-
-
             {{-- Add Section --}}
             <a
                 href="{{ route('admin.academic.sections.create') }}"
                 class="group rounded-xl border border-slate-200
                        p-4 text-center transition hover:border-blue-300
                        hover:bg-blue-50">
-
                 <div class="text-2xl">
                     🧑‍🤝‍🧑
                 </div>
-
                 <p class="mt-2 text-xs font-semibold text-slate-700
                           group-hover:text-blue-700">
                     Add Section
                 </p>
-
             </a>
-
-
             {{-- Dashboard --}}
             <a
                 href="{{ route('dashboard') }}"
