@@ -37,6 +37,7 @@ use App\Http\Controllers\LeaveApplicationController;
 use App\Http\Controllers\TeacherStaffAttendanceController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\ClassRoutineController;
+use App\Http\Controllers\FeeCollectionController;
 
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
@@ -47,10 +48,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
-// ==============================
-// Authentication
-// ==============================
+    // ==============================
+    // Authentication
+    // ==============================
 
     Route::middleware('guest')->group(function () {
         Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
@@ -59,15 +59,10 @@ Route::get('/', function () {
         Route::post('/login', [AuthController::class, 'login'])->name('login.store');
     });
 
-
-
-
     Route::post('/logout', function () {
         Auth::logout();
-
         request()->session()->invalidate();
         request()->session()->regenerateToken();
-
         return redirect()->route('login');
     })->middleware('auth')->name('logout');
 
@@ -98,7 +93,7 @@ Route::get('/', function () {
 
     //Student Enrollment 
     
-    Route::prefix('admin')->name('admin.')->group(function () { 
+Route::prefix('admin')->name('admin.')->group(function () { 
         // Enrollment History
         Route::get( 'students/{student}/enrollments', [StudentEnrollmentController::class, 'index'] )->name('students.enrollments.index');
         // Create / Promote
@@ -133,7 +128,6 @@ Route::get('/', function () {
         Route::get('attendance/{attendance}/edit',  [AttendanceController::class, 'edit'])->name('attendance.edit');
         Route::put( 'attendance/{attendance}',  [AttendanceController::class, 'update'])->name('attendance.update');
         Route::get('attendance/monthly-report', [AttendanceController::class, 'monthlyReport'])->name('attendance.monthly-report');
-      
         // fee type date 23 08 26 Forhad
         Route::resource('fee-types', FeeTypeController::class)->except(['show'])->names('fee-types');
         Route::patch('fee-types/{feeType}/toggle-status',  [FeeTypeController::class, 'toggleStatus'])->name('fee-types.toggle-status');
@@ -145,10 +139,10 @@ Route::get('/', function () {
             Route::get( '/{studentFeeAssignment}/create',  [FeePaymentController::class, 'create'])->name('create');
             Route::post( '/{studentFeeAssignment}',  [FeePaymentController::class, 'store'] )->name('store');
             // Payment receipt
-            Route::get('/payment/{payment}/receipt', [ FeeCollectionController::class, 'receipt'])->name('receipt');
+            Route::get('/payment/{payment}/receipt', [FeeCollectionController::class, 'receipt'])->name('receipt');
         });
 
-        // Fee Payment History
+    // Fee Payment History
     Route::get( 'fee-payment-history', [FeePaymentController::class, 'history'])->name('fee-payment-history.index');
     Route::get('fee-payment-history/{feePayment}', [FeePaymentController::class, 'show'])->name('fee-payment-history.show');
     Route::get('fee-payment-history/{feePayment}/receipt',  [FeePaymentController::class, 'receipt'])->name('fee-payment-history.receipt');    
@@ -203,17 +197,12 @@ Route::get('/', function () {
                 Route::get( '/{teacherStaffAttendance}/edit', [TeacherStaffAttendanceController::class, 'edit'])->name('edit');
                 Route::put( '/{teacherStaffAttendance}',  [TeacherStaffAttendanceController::class, 'update'] )->name('update');
                 Route::delete(  '/{teacherStaffAttendance}', [TeacherStaffAttendanceController::class, 'destroy'] )->name('destroy');
-
                 // Report — অবশ্যই /{attendance} এর আগে
                 Route::get('/report', [ TeacherStaffAttendanceController::class, 'report' ])->name('report');
         });
-
-        // expanse 
+        // expanse
         Route::resource('expense-categories', ExpenseCategoryController::class)->names('expense-categories');
-        
         Route::resource('expenses', ExpenseController::class)->names('expenses');
-        
-
         Route::get('finance', [FinanceController::class, 'index'])->name('finance.index');
 
 });
