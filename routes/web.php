@@ -38,6 +38,7 @@ use App\Http\Controllers\TeacherStaffAttendanceController;
 use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\ClassRoutineController;
 use App\Http\Controllers\FeeCollectionController;
+use App\Http\Controllers\AccountController;
 
 use App\Http\Controllers\IncomeCategoryController;
 
@@ -165,6 +166,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
   //  Route::resource( 'exams.schedules', ExamScheduleController::class)->names('exams.schedules');
     Route::resource('guardians', GuardianController::class)->names('guardians');
     Route::resource('income-categories', IncomeCategoryController::class);
+    Route::resource('accounts', AccountController::class);
 
     //  departments
     Route::resource('departments', DepartmentController::class)->except(['show']);
