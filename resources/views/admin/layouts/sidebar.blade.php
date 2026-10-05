@@ -181,6 +181,14 @@
                 <span> Expense </span>
             </a>
 
+            {{-- Class income categories --}}
+            <a href="{{ route('admin.income-categories.index') }}" class="nav-link group   {{ request()->routeIs('admin.income-categories.*') ? 'nav-link-active' : '' }}">
+                <span class="nav-icon {{ request()->routeIs('admin.income-categories.*') ? 'bg-white/15 text-white'  : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}">
+                    <i class="bi bi-diagram-3"></i>
+                </span>
+                <span> Income Categories </span>
+            </a>
+
             {{-- Class finance --}}
             <a href="{{ route('admin.finance.index') }}" class="nav-link group   {{ request()->routeIs('admin.finance.*') ? 'nav-link-active' : '' }}">
                 <span class="nav-icon {{ request()->routeIs('admin.finance.*') ? 'bg-white/15 text-white'  : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}">

@@ -39,6 +39,8 @@ use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\ClassRoutineController;
 use App\Http\Controllers\FeeCollectionController;
 
+use App\Http\Controllers\IncomeCategoryController;
+
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\FinanceController;
@@ -162,6 +164,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
   //  Route::resource( 'exams.schedules', ExamScheduleController::class)->names('exams.schedules');
     Route::resource('guardians', GuardianController::class)->names('guardians');
+    Route::resource('income-categories', IncomeCategoryController::class);
 
     //  departments
     Route::resource('departments', DepartmentController::class)->except(['show']);
@@ -203,7 +206,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // expanse
         Route::resource('expense-categories', ExpenseCategoryController::class)->names('expense-categories');
         Route::resource('expenses', ExpenseController::class)->names('expenses');
-        Route::get('finance', [FinanceController::class, 'index'])->name('finance.index');
+        Route::get('finance', [FinanceController::class, 'index'])->name('finance.index'); 
 
 });
 

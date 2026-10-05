@@ -16,9 +16,7 @@ class IncomeCategoryController extends Controller
             ->where('branch_id', $branchId)
             ->when($request->search, function ($query, $search) {
                 $query->where('name', 'like', "%{$search}%");
-            })
-            ->latest()->paginate(15)->withQueryString();
-
+            })->latest()->paginate(15)->withQueryString();
         return view('admin.income-categories.index', compact('categories'));
     }
 
@@ -40,6 +38,7 @@ class IncomeCategoryController extends Controller
                 Rule::unique('income_categories', 'name')
                     ->where('branch_id', $branchId),
             ],
+            'title' => ['nullable', 'string'],
             'description' => ['nullable', 'string'],
             'status' => ['required', 'boolean'],
         ]);
@@ -68,6 +67,7 @@ class IncomeCategoryController extends Controller
                     ->where('branch_id', $branchId)
                     ->ignore($incomeCategory->id),
             ],
+            'title' => ['nullable', 'string'],
             'description' => ['nullable', 'string'],
             'status' => ['required', 'boolean'],
         ]);
@@ -79,12 +79,8 @@ class IncomeCategoryController extends Controller
     public function destroy(IncomeCategory $incomeCategory)
     {
         $this->checkBranch($incomeCategory);
-
         $incomeCategory->delete();
-
-        return redirect()
-            ->route('admin.income-categories.index')
-            ->with('success', 'Income category deleted successfully.');
+        return redirect()->route('admin.income-categories.index')->with('success', 'Income category deleted successfully.');
     }
 
     private function checkBranch(IncomeCategory $incomeCategory): void
