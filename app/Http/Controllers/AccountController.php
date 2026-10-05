@@ -124,17 +124,46 @@ class AccountController extends Controller
             ->with('success', 'Account created successfully.');
     }
 
-    public function show(Account $account)
-    {
-        $user = auth()->user();
+public function show(Account $account)
+{
+    $user = auth()->user();
 
-        abort_unless(
-            $account->branch_id == $user->branch_id,
-            403
-        );
+    abort_unless(
+        $account->branch_id == $user->branch_id,
+        403
+    );
 
-        return view('admin.accounts.show', compact('account'));
-    }
+    $totalCredit = \App\Models\AccountTransaction::where(
+        'account_id',
+        $account->id
+    )
+        ->where('branch_id', $user->branch_id)
+        ->where('direction', 'credit')
+        ->sum('amount');
+
+    $totalDebit = \App\Models\AccountTransaction::where(
+        'account_id',
+        $account->id
+    )
+        ->where('branch_id', $user->branch_id)
+        ->where('direction', 'debit')
+        ->sum('amount');
+
+    $currentBalance =
+        (float) $account->opening_balance
+        + (float) $totalCredit
+        - (float) $totalDebit;
+
+    return view(
+        'admin.accounts.show',
+        compact(
+            'account',
+            'totalCredit',
+            'totalDebit',
+            'currentBalance'
+        )
+    );
+}
 
     public function edit(Account $account)
     {
