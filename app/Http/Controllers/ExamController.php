@@ -18,11 +18,9 @@ class ExamController extends Controller
     {
         $branchId = Auth::user()->branch_id;
 
-        $exams = Exam::with('academicSession')
-            ->where('branch_id', $branchId)
+        $exams = Exam::with('academicSession')->where('branch_id', $branchId)
             ->when($request->filled('search'), function ($query) use ($request) {
                 $search = $request->search;
-
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
                         ->orWhere('code', 'like', "%{$search}%");
@@ -46,7 +44,6 @@ class ExamController extends Controller
             ->latest()
             ->paginate(15)
             ->withQueryString();
-
         $academicSessions = AcademicSession::query()
             ->orderByDesc('id')
             ->get();
@@ -63,24 +60,13 @@ class ExamController extends Controller
     public function create()
     {
         $branchId = Auth::user()->branch_id;
-
-        $academicSessions = AcademicSession::query()
-            ->orderByDesc('id')
-            ->get();
-
-        return view('admin.exams.create', compact(
-            'academicSessions',
-            'branchId'
-        ));
+        $academicSessions = AcademicSession::query()->orderByDesc('id')->get();
+        return view('admin.exams.create', compact( 'academicSessions', 'branchId'));
     }
 
-    /**
-     * Store a newly created exam.
-     */
     public function store(Request $request)
     {
         $branchId = Auth::user()->branch_id;
-
         $validated = $request->validate([
             'academic_session_id' => [
                 'required',
@@ -135,9 +121,6 @@ class ExamController extends Controller
             ->with('success', 'Exam created successfully.');
     }
 
-    /**
-     * Display the specified exam.
-     */
     public function show(Exam $exam)
     {
         $this->checkBranch($exam);
@@ -150,9 +133,6 @@ class ExamController extends Controller
         return view('admin.exams.show', compact('exam'));
     }
 
-    /**
-     * Show the form for editing the specified exam.
-     */
     public function edit(Exam $exam)
     {
         $this->checkBranch($exam);
@@ -167,9 +147,6 @@ class ExamController extends Controller
         ));
     }
 
-    /**
-     * Update the specified exam.
-     */
     public function update(Request $request, Exam $exam)
     {
         $this->checkBranch($exam);

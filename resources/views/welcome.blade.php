@@ -81,7 +81,7 @@
   }
   .brand .mark{
     width:52px;height:52px;border-radius:50%;
-    background:radial-gradient(circle at 35% 30%, var(--teal-600), var(--teal-900));
+    /* background:radial-gradient(circle at 35% 30%, var(--teal-600), var(--teal-900)); */
     display:flex;align-items:center;justify-content:center;
     box-shadow:var(--shadow);
     flex-shrink:0;
@@ -442,7 +442,8 @@
   <div class="container nav-wrap">
     <a href="#top" class="brand">
       <div class="mark">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L12 22 M4 8 Q12 2 20 8 M4 8 L4 20 Q12 24 20 20 L20 8" stroke="#e3c988" stroke-width="1.4" fill="none"/></svg>
+        <img src="{{ asset('asset/image/imagelogo.png') }}" alt="logo">
+        <!-- <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L12 22 M4 8 Q12 2 20 8 M4 8 L4 20 Q12 24 20 20 L20 8" stroke="#e3c988" stroke-width="1.4" fill="none"/></svg> -->
       </div>
       <div class="names">
         <h1>নিদাউল কুরআন মাদরাসা</h1>
@@ -751,7 +752,8 @@
       <div>
         <div class="foot-brand">
           <div class="mark">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M12 2 L12 22 M4 8 Q12 2 20 8 M4 8 L4 20 Q12 24 20 20 L20 8" stroke="#e3c988" stroke-width="1.4" fill="none"/></svg>
+             <img src="{{ asset('asset/image/imagelogo.png') }}" alt="logo">
+            <!-- <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M12 2 L12 22 M4 8 Q12 2 20 8 M4 8 L4 20 Q12 24 20 20 L20 8" stroke="#e3c988" stroke-width="1.4" fill="none"/></svg> -->
           </div>
           <span>নিদারুল মাদরাসা</span>
         </div>

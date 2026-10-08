@@ -39,6 +39,7 @@ use App\Http\Controllers\GuardianController;
 use App\Http\Controllers\ClassRoutineController;
 use App\Http\Controllers\FeeCollectionController;
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\SettingController;
 
 use App\Http\Controllers\IncomeCategoryController;
 
@@ -113,6 +114,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete( 'students/{student}/enrollments/{enrollment}', [StudentEnrollmentController::class, 'destroy'])->name('students.enrollments.destroy');
         //Dynamic Sections 
         Route::get(  'enrollments/sections',  [StudentEnrollmentController::class, 'sections'])->name('students.enrollments.sections');
+
+
+        Route::get('/settings/general', [SettingController::class, 'general'])->name('settings.general');
+        Route::put('/settings/general', [SettingController::class, 'updateGeneral'])->name('settings.general.update');
        
         // bulk enrollment      
         Route::get( 'student-enrollments/bulk/create', [StudentEnrollmentController::class, 'bulkCreate'])->name('student-enrollments.bulk.create');

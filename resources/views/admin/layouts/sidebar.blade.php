@@ -9,35 +9,23 @@
     <div class="flex h-16 shrink-0 items-center justify-between px-4 border-b border-slate-800">
         <a href="{{ route('dashboard') }}" class="flex items-center gap-3 min-w-0">
             {{-- Logo --}}
-
-            <div
-                class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-900/40 ring-1 ring-white/10"
-            >
-                <span class="text-sm font-bold tracking-tight"> SE </span>
+            <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-900/40 ring-1 ring-white/10">
+                <span class="text-sm font-bold tracking-tight">  <img src="{{ asset('asset/image/imagelogo.png') }}" alt="logo"> </span>
             </div>
-
-            {{-- Brand --}}
-
             <div class="min-w-0">
                 <h1 class="font-semibold text-sm text-white truncate">Madrasah ERP</h1>
-
                 <p class="text-[11px] text-slate-500 truncate">Administration</p>
             </div>
         </a>
 
         {{-- Mobile Close --}}
 
-        <button
-            type="button"
-            onclick="closeSidebar()"
-            class="lg:hidden flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition"
-        >
+        <button  type="button" onclick="closeSidebar()" class="lg:hidden flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
             <i class="bi bi-x-lg text-sm"></i>
         </button>
     </div>
 
-    {{-- ===================================================== Scrollable Navigation
-    ====================================================== --}}
+    {{-- ====== Scrollable Navigation  ===== --}}
 
     <div class="flex-1 overflow-y-auto px-3 py-4 sidebar-scroll">
         {{-- ================================================= MAIN ==================================================
@@ -629,53 +617,39 @@
                 <div class="nav-submenu hidden">
                     {{-- Exams --}}
                     <a href="{{ route('admin.exams.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
-                        >
+                        <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
                             <i class="bi bi-journal-text"></i>
                         </span>
-
                         <span> Exams </span>
                     </a>
 
                     {{-- Exam Schedules --}}
                     <a href="{{ route('admin.exam-schedules.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
-                        >
+                        <span  class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
                             <i class="bi bi-calendar2-week"></i>
                         </span>
-
                         <span> Exam Schedules </span>
                     </a>
 
                     {{-- Exam Marks --}}
                     <a href="{{ route('admin.exam-marks.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
-                        >
+                        <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
                             <i class="bi bi-pencil-square"></i>
                         </span>
-
                         <span> Exam Marks </span>
                     </a>
 
                     {{-- Exam Subjects --}}
                     <a href="{{ route('admin.exam-subjects.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
-                        >
+                        <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
                             <i class="bi bi-book"></i>
                         </span>
-
                         <span> Exam Subjects </span>
                     </a>
 
                     {{-- Student Result --}}
                     <a href="{{ route('admin.student-results.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
-                        >
+                        <span  class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
                             <i class="bi bi-person-vcard"></i>
                         </span>
 
@@ -684,12 +658,9 @@
 
                     {{-- Result Sheets --}}
                     <a href="{{ route('admin.result-sheets.show') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white"
-                        >
+                        <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
                             <i class="bi bi-file-earmark-spreadsheet"></i>
                         </span>
-
                         <span> Result Sheets </span>
                     </a>
 
@@ -993,14 +964,13 @@
 
             {{-- Accounts --}}
 
-            <a href="#" class="nav-link nav-link-disabled group">
+            <a href="{{ route('admin.settings.general') }}" class="nav-link  group">
                 <span class="nav-icon bg-slate-800 text-slate-500">
                     <i class="bi bi-wallet2"></i>
                 </span>
 
-                <span> Accounts </span>
-
-                <span class="soon-badge"> Soon </span>
+                <span> Settings </span>
+ 
             </a>
         </nav>
     </div>
@@ -1009,15 +979,11 @@
 
     <div class="shrink-0 border-t border-slate-800 p-3">
         <div class="flex items-center gap-3 rounded-xl bg-slate-800/60 px-3 py-2.5 ring-1 ring-white/5">
-            <div
-                class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md shadow-blue-900/30"
-            >
+            <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md shadow-blue-900/30">
                 <i class="bi bi-person-fill text-sm"></i>
             </div>
-
             <div class="min-w-0">
                 <p class="text-xs font-medium text-white truncate">Administrator</p>
-
                 <p class="text-[10px] text-slate-500">Madrasah ERP</p>
             </div>
         </div>
