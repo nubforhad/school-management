@@ -46,11 +46,10 @@ use App\Http\Controllers\IncomeCategoryController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\FinanceController;
+use App\Http\Controllers\UserController;
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [UserController::class, 'index'])->name('index');
 
     // ==============================
     // Authentication

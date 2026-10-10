@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\Http\Controllers\Controller;
 use App\Models\Setting;
 
-class AdmissionController extends Controller
+class UserController extends Controller
 {
-    public function admission(){
-
+    public function index()
+    {
         $settings = Setting::pluck('value', 'key');
-        return view('frontend.admission-form', compact('settings'));
+        return view('welcome', compact('settings'));
     }
 }

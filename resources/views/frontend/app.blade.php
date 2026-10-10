@@ -1,9 +1,12 @@
-@extends('frontend.app')
-
-@section('title', 'Admission Form')
-
-@section('styles')
-
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>নিদাউল কুরআন মাদরাসা</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;500;600;700;800&family=Hind+Siliguri:wght@300;400;500;600;700&family=Amiri:ital@0;1&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#1b1a17;
@@ -77,7 +80,8 @@
     display:flex;align-items:center;gap:12px;
   }
   .brand .mark{
-    width:52px;height:52px;border-radius:50%; 
+    width:52px;height:52px;border-radius:50%;
+    /* background:radial-gradient(circle at 35% 30%, var(--teal-600), var(--teal-900)); */
     display:flex;align-items:center;justify-content:center;
     box-shadow:var(--shadow);
     flex-shrink:0;
@@ -363,121 +367,6 @@
   .quote-who strong{display:block;font-size:14px;color:var(--teal-900);}
   .quote-who span{font-size:12px;color:#6b6555;}
 
-  /* ===== Admission Application Form ===== */
-  .form-shell{
-    background:#fff;
-    border-radius:22px;
-    box-shadow:var(--shadow);
-    border:1px solid var(--line);
-    overflow:hidden;
-  }
-  .form-head{
-    background:linear-gradient(135deg, var(--teal-800), var(--teal-900));
-    padding:36px 40px;
-    display:flex;justify-content:space-between;align-items:center;gap:24px;
-    flex-wrap:wrap;
-    position:relative;
-  }
-  .form-head::after{
-    content:'';position:absolute;left:0;right:0;bottom:0;height:10px;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='10' viewBox='0 0 34 34'%3E%3Cg fill='none' stroke='%23c6a15b' stroke-width='1.1'%3E%3Cpath d='M17 2 L21 9 L29 9 L23 14 L26 22 L17 17 L8 22 L11 14 L5 9 L13 9 Z'/%3E%3C/g%3E%3C/svg%3E");
-    background-repeat:repeat-x;background-size:34px 34px;opacity:.5;
-  }
-  .form-head .fh-text h4{color:#fbf6e8;font-size:24px;margin-bottom:6px;}
-  .form-head .fh-text p{color:rgba(246,241,228,.75);font-size:13.5px;}
-  .photo-box{
-    width:90px;height:110px;background:rgba(246,241,228,.08);
-    border:1.5px dashed var(--gold-light);border-radius:10px;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    color:var(--gold-light);font-size:12px;text-align:center;flex-shrink:0;
-    gap:4px;
-  }
-  .photo-box .cam{font-size:20px;}
-
-  .form-body{padding:40px;}
-  .form-to{
-    background:var(--paper-2);border-radius:14px;padding:20px 24px;
-    margin-bottom:30px;font-size:14.5px;color:#3f3b30;
-    border-inline-start:4px solid var(--gold);
-  }
-  .form-to strong{color:var(--teal-900);display:block;font-family:'Noto Serif Bengali',serif;font-size:16px;margin:2px 0;}
-
-  .form-intro{
-    font-size:14.5px;color:#3f3b30;margin-bottom:32px;line-height:1.9;
-  }
-  .form-intro .inline-field{
-    display:inline-block;border-bottom:1.5px dotted var(--gold);min-width:130px;
-    padding:0 4px;
-  }
-
-  fieldset{border:none;margin-bottom:34px;}
-  fieldset legend{
-    font-family:'Noto Serif Bengali',serif;font-size:16px;color:var(--teal-900);
-    font-weight:700;margin-bottom:18px;padding-bottom:10px;
-    border-bottom:1px solid var(--line);width:100%;
-    display:flex;align-items:center;gap:10px;
-  }
-  fieldset legend .qn{
-    background:var(--teal-900);color:var(--gold-light);
-    width:26px;height:26px;border-radius:50%;
-    display:inline-flex;align-items:center;justify-content:center;
-    font-size:13px;flex-shrink:0;
-  }
-  .field-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
-  .field-grid.cols-3{grid-template-columns:1fr 1fr 1fr;}
-  .field{display:flex;flex-direction:column;gap:8px;}
-  .field.full{grid-column:1 / -1;}
-  .field label{font-size:13.5px;font-weight:600;color:#4a4636;}
-  .field label .opt{font-weight:400;color:#8a836c;font-size:12px;}
-  .field input[type=text], .field input[type=tel], .field input[type=date], .field input[type=email], .field select{
-    border:1.5px solid var(--line);
-    border-radius:9px;
-    padding:12px 14px;
-    font-family:'Hind Siliguri', sans-serif;
-    font-size:14.5px;
-    background:var(--paper);
-    color:var(--ink);
-    transition:border-color .2s, box-shadow .2s;
-    width:100%;
-  }
-  .field input:focus, .field select:focus{
-    outline:none;border-color:var(--gold);
-    box-shadow:0 0 0 4px rgba(198,161,91,.18);
-    background:#fff;
-  }
-  .radio-row{display:flex;gap:22px;flex-wrap:wrap;padding-top:6px;}
-  .radio-chip{
-    display:flex;align-items:center;gap:8px;
-    border:1.5px solid var(--line);border-radius:30px;
-    padding:9px 18px;font-size:13.5px;cursor:pointer;
-    transition:border-color .2s, background .2s;
-  }
-  .radio-chip:has(input:checked){
-    border-color:var(--gold);background:rgba(198,161,91,.12);
-  }
-  .radio-chip input{accent-color:var(--maroon);}
-
-  .form-foot{
-    display:flex;justify-content:space-between;align-items:center;
-    flex-wrap:wrap;gap:16px;
-    padding-top:20px;border-top:1px dashed var(--line);
-  }
-  .form-foot p{font-size:12.5px;color:#8a836c;max-width:420px;}
-  .form-submit{
-    background:var(--maroon);color:#fdeee6;border:none;cursor:pointer;
-    padding:15px 34px;border-radius:9px;font-weight:700;font-size:15px;
-    font-family:'Hind Siliguri', sans-serif;
-    box-shadow:0 14px 26px -10px rgba(124,45,45,.5);
-    transition:transform .2s;
-  }
-  .form-submit:hover{transform:translateY(-2px);}
-
-  @media (max-width: 720px){
-    .field-grid, .field-grid.cols-3{grid-template-columns:1fr;}
-    .form-body{padding:26px 20px;}
-    .form-head{padding:26px;}
-  }
-
   /* ===== CTA banner ===== */
   .cta-banner{
     background:radial-gradient(ellipse at 30% 30%, rgba(198,161,91,.25), transparent 60%), var(--teal-900);
@@ -535,228 +424,17 @@
     .footer-grid{grid-template-columns:1fr;}
   }
 </style>
-@endsection
-
- @section('content')
- 
-<!-- ===== ADMISSION APPLICATION FORM ===== -->
-<section id="admission-form">
-  <div class="container">
-    <div class="section-head">
-      <span class="kicker">অনলাইনে আবেদন করুন</span>
-      <h3>ভর্তি আবেদন ফরম</h3>
-      <p>নিচের ফরমটি সঠিক ও সম্পূর্ণভাবে পূরণ করে জমা দিন। প্রতিটি তথ্য যাচাই করে নিন জমা দেওয়ার আগে।</p>
-    </div>
-
-    <form class="form-shell" onsubmit="return false;">
-      <div class="form-head">
-        <div class="fh-text">
-          <h4>আবেদন ফরম</h4>
-          <p>নিদাউল কুরআন মাদরাসা — মাতুয়াইল, ডেমরা, ঢাকা</p>
-        </div>
-        <div class="photo-box">
-          <span class="cam">📷</span>
-          <span>পাসপোর্ট সাইজ<br>ছবি ২ কপি</span>
-        </div>
-      </div>
-
-      <div class="form-body">
-        {{-- <div class="form-to">
-          বরাবর,<br>
-          প্রিন্সিপাল<br>
-          <strong>নিদাউল কুরআন মাদরাসা</strong>
-          মাতুয়াইল, ডেমরা, ঢাকা
-        </div> --}}
-
-        <p class="form-intro">
-          জনাব, আসসালামু আলাইকুম। আমি আপনার মাদরাসায়
-          <select class="inline-field" style="border:none;border-bottom:1.5px dotted var(--gold);border-radius:0;background:transparent;padding:2px 4px;font-size:14.5px;">
-            <option value="">— শ্রেণি নির্বাচন —</option>
-            <option>নূরানী</option><option>মক্তব</option><option>হিফজ</option>
-            <option>প্রথম</option><option>দ্বিতীয়</option><option>তৃতীয়</option>
-            <option>চতুর্থ</option><option>পঞ্চম</option><option>ষষ্ঠ</option>
-            <option>সপ্তম</option><option>অষ্টম</option><option>নবম</option><option>দশম</option>
-          </select>
-          শ্রেণিতে
-          <input type="text" class="inline-field" placeholder="১৪৪৭ হিজরি" style="border:none;border-bottom:1.5px dotted var(--gold);border-radius:0;background:transparent;padding:2px 4px;width:110px;">
-          শিক্ষাবর্ষে ভর্তির জন্য নিম্নোক্ত তথ্য প্রদান করলাম:
-        </p>
-
-        <fieldset>
-          <legend><span class="qn">১</span> শিক্ষার্থীর তথ্য</legend>
-          <div class="field-grid">
-            <div class="field">
-              <label>শিক্ষার্থীর নাম (বাংলায়)</label>
-              <input type="text" placeholder="পূর্ণ নাম লিখুন">
-            </div>
-            <div class="field">
-              <label>শিক্ষার্থীর নাম (ইংরেজিতে, বড় হাতের)</label>
-              <input type="text" placeholder="FULL NAME IN ENGLISH">
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend><span class="qn">২</span> পিতার তথ্য</legend>
-          <div class="field-grid">
-            <div class="field">
-              <label>পিতার নাম (বাংলায়)</label>
-              <input type="text" placeholder="পিতার পূর্ণ নাম">
-            </div>
-            <div class="field">
-              <label>পিতার নাম (ইংরেজিতে, বড় হাতের)</label>
-              <input type="text" placeholder="FATHER'S NAME IN ENGLISH">
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend><span class="qn">৩</span> মাতার তথ্য</legend>
-          <div class="field-grid">
-            <div class="field">
-              <label>মাতার নাম (বাংলায়)</label>
-              <input type="text" placeholder="মাতার পূর্ণ নাম">
-            </div>
-            <div class="field">
-              <label>মাতার নাম (ইংরেজিতে, বড় হাতের)</label>
-              <input type="text" placeholder="MOTHER'S NAME IN ENGLISH">
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend><span class="qn">৪</span> জন্ম সংক্রান্ত তথ্য</legend>
-          <div class="field-grid cols-3">
-            <div class="field">
-              <label>জন্ম তারিখ</label>
-              <input type="date">
-            </div>
-            <div class="field">
-              <label>বয়স</label>
-              <input type="text" placeholder="যেমনঃ ১০ বছর">
-            </div>
-            <div class="field">
-              <label>জন্ম নিবন্ধন নং</label>
-              <input type="text" placeholder="জন্ম নিবন্ধন নম্বর">
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend><span class="qn">৫</span> ব্যক্তিগত তথ্য</legend>
-          <div class="field-grid cols-3">
-            <div class="field">
-              <label>রক্তের গ্রুপ <span class="opt">(যদি জানা থাকে)</span></label>
-              <select>
-                <option value="">নির্বাচন করুন</option>
-                <option>A+</option><option>A-</option><option>B+</option><option>B-</option>
-                <option>AB+</option><option>AB-</option><option>O+</option><option>O-</option>
-              </select>
-            </div>
-            <div class="field">
-              <label>জাতীয়তা</label>
-              <input type="text" value="বাংলাদেশী">
-            </div>
-            <div class="field">
-              <label>ধর্ম</label>
-              <input type="text" value="ইসলাম">
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend><span class="qn">৬</span> যোগাযোগের তথ্য</legend>
-          <div class="field-grid">
-            <div class="field">
-              <label>অভিভাবকের মোবাইল নম্বর</label>
-              <input type="tel" placeholder="০১xxxxxxxxx">
-            </div>
-            <div class="field">
-              <label>জরুরী যোগাযোগ নম্বর</label>
-              <input type="tel" placeholder="০১xxxxxxxxx">
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend><span class="qn">৭</span> বর্তমান ঠিকানা</legend>
-          <div class="field-grid">
-            <div class="field full">
-              <label>বর্তমান ঠিকানা <span class="opt">(গ্রাম/বাসা, রোড, এলাকা, থানা, জেলা)</span></label>
-              <input type="text" placeholder="সম্পূর্ণ বর্তমান ঠিকানা লিখুন">
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend><span class="qn">৮</span> স্থায়ী ঠিকানা</legend>
-          <div class="field-grid">
-            <div class="field full">
-              <label>স্থায়ী ঠিকানা <span class="opt">(গ্রাম/বাসা, রোড, এলাকা, থানা, জেলা)</span></label>
-              <input type="text" placeholder="সম্পূর্ণ স্থায়ী ঠিকানা লিখুন">
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend><span class="qn">৯</span> ভর্তির স্তর</legend>
-          <div class="field-grid">
-            <div class="field">
-              <label>যে শ্রেণিতে ভর্তি হতে ইচ্ছুক</label>
-              <input type="text" placeholder="যেমনঃ ৬ষ্ঠ শ্রেণি">
-            </div>
-            <div class="field">
-              <label>বিভাগ</label>
-              <input type="text" placeholder="যেমনঃ হিফজ / কিতাব / সাধারণ">
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend><span class="qn">১০</span> ভর্তির ধরণ</legend>
-          <div class="radio-row">
-            <label class="radio-chip"><input type="radio" name="type" checked> দিন (Day)</label>
-            <label class="radio-chip"><input type="radio" name="type"> অনাবাসিক</label>
-            <label class="radio-chip"><input type="radio" name="type"> ফুল টাইম</label>
-            <label class="radio-chip"><input type="radio" name="type"> আবাসিক</label>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend><span class="qn">১১</span> পূর্ববর্তী প্রতিষ্ঠানের তথ্য <span class="opt" style="font-weight:400;color:#8a836c;">(যদি থাকে)</span></legend>
-          <div class="field-grid">
-            <div class="field">
-              <label>পূর্ববর্তী প্রতিষ্ঠানের নাম</label>
-              <input type="text" placeholder="প্রতিষ্ঠানের নাম">
-            </div>
-            <div class="field">
-              <label>ঠিকানা</label>
-              <input type="text" placeholder="প্রতিষ্ঠানের ঠিকানা">
-            </div>
-          </div>
-        </fieldset>
-
-        <div class="form-foot">
-          <p>জমা দেওয়ার পূর্বে সকল তথ্য সঠিকভাবে যাচাই করে নিন। ভুল তথ্যের জন্য মাদরাসা কর্তৃপক্ষ দায়ী থাকবে না।</p>
-          <button type="submit" class="form-submit">আবেদন জমা দিন →</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</section>
- 
-<!-- ===== CTA BANNER ===== -->
-<section style="padding-top:0;">
-  <div class="cta-banner">
-    <div>
-      <h3>আপনার সন্তানের দ্বীনি ও নৈতিক ভবিষ্যৎ গড়তে আজই যোগাযোগ করুন</h3>
-      <p>ভর্তি সংক্রান্ত যেকোনো তথ্যের জন্য কল করুন অথবা সরাসরি ক্যাম্পাসে চলে আসুন।</p>
-    </div>
-    <a href="#contact" class="btn btn-gold">যোগাযোগ করুন →</a>
-  </div>
-</section>
+</head>
+<body>
 
 
+@include('frontend.layout.header')
+
+<div class="star-divider"></div>
+
+@yield('content')
+
+@include('frontend.layout.footer')
 
 <script>
   // Dropdown submenu (desktop hover handled by CSS; click for touch + mobile)
@@ -791,4 +469,6 @@
     });
   });
 </script>
-@endsection
+
+</body>
+</html>
