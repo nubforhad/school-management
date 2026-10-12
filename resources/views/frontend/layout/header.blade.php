@@ -12,13 +12,13 @@
 
 <header class="site">
   <div class="container nav-wrap">
-    <a href="#top" class="brand">
+    <a href="{{ route('index') }}" class="brand">
       <div class="mark">
         <img src="{{ asset('asset/image/imagelogo.png') }}" alt="logo">
         <!-- <svg viewBox="0 0 24 24" fill="none"><path d="M12 2 L12 22 M4 8 Q12 2 20 8 M4 8 L4 20 Q12 24 20 20 L20 8" stroke="#e3c988" stroke-width="1.4" fill="none"/></svg> -->
       </div>
       <div class="names">
-        <h1>নিদাউল কুরআন মাদরাসা</h1>
+        <h1> {{ $settings->get('institute_name') ?? 'Nidaul Quran Madrasah' }} </h1>
         <span>"সবার জন্য কুরআনের শিক্ষা" </span>
       </div>
     </a>
@@ -29,7 +29,7 @@
 
     <nav class="main" id="mainNav">
       <ul>
-        <li><a href="#top">হোম</a></li>
+        <li><a href="{{ route('index') }}">হোম</a></li>
 
         <li class="has-sub">
           <a href="#about">আমাদের সম্পর্কে <span class="caret">▾</span></a>

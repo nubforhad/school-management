@@ -4,7 +4,11 @@
 
 @section('styles')
 
-<style>
+
+@endsection
+
+ @section('content')
+ <style>
   :root{
     --ink:#1b1a17;
     --paper:#f6f1e4;
@@ -535,10 +539,6 @@
     .footer-grid{grid-template-columns:1fr;}
   }
 </style>
-@endsection
-
- @section('content')
- 
 <!-- ===== ADMISSION APPLICATION FORM ===== -->
 <section id="admission-form">
   <div class="container">
