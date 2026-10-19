@@ -45,12 +45,9 @@ return new class extends Migration
             $table->bigIncrements('id');
 
             if ($teams || config('permission.testing')) {
-                $table->unsignedBigInteger($columnNames['team_foreign_key'])
-                    ->nullable();
-
+                $table->unsignedBigInteger($columnNames['team_foreign_key'])->nullable();
                 $table->index($columnNames['team_foreign_key']);
             }
-
             $table->string('name');
             $table->string('guard_name');
             $table->timestamps();
@@ -75,7 +72,6 @@ return new class extends Migration
             $table->unsignedBigInteger($pivotPermission);
             $table->string('model_type');
             $table->unsignedBigInteger($columnNames['model_morph_key']);
-
             $table->index([
                 $columnNames['model_morph_key'],
                 'model_type',
