@@ -18,7 +18,7 @@
           <li><a href="#about">আমাদের সম্পর্কে</a></li>
           <li><a href="#departments">শিক্ষা কার্যক্রম</a></li>
           <li><a href="#admission">ভর্তি তথ্য</a></li>
-          <li><a href="#notice">নোটিশ বোর্ড</a></li>
+          <li><a href="{{ route('notice') }}">নোটিশ বোর্ড</a></li>
         </ul>
       </div>
       <div>

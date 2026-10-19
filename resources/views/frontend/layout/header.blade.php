@@ -61,7 +61,7 @@
           </ul>
         </li>
 
-        <li class="has-sub">
+        {{-- <li class="has-sub">
           <a href="#notice">নোটিশ বোর্ড <span class="caret">▾</span></a>
           <ul class="submenu">
             <li><a href="#notice">সকল নোটিশ</a></li>
@@ -69,8 +69,9 @@
             <li><a href="#notice">ছুটির তালিকা</a></li>
             <li><a href="#notice">রেজাল্ট</a></li>
           </ul>
-        </li>
+        </li> --}}
 
+        <li><a href="{{ route('notice') }}"> নোটিশ বোর্ড </a></li>
         <li><a href="#gallery">গ্যালারি</a></li>
 
         <li class="has-sub">

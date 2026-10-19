@@ -62,6 +62,8 @@ Route::get('/', [UserController::class, 'index'])->name('index');
         Route::post('/login', [AuthController::class, 'login'])->name('login.store');
     });
 
+    Route::get('notices', [UserController::class, 'notice'])->name('notice');
+
     Route::post('/logout', function () {
         Auth::logout();
         request()->session()->invalidate();

@@ -14,4 +14,12 @@ class UserController extends Controller
         $settings = Setting::pluck('value', 'key');
         return view('welcome', compact('settings'));
     }
+
+    public function notice(Request $request)
+    {
+        $settings = Setting::pluck('value', 'key');
+        return view('frontend.notice', compact('settings'));
+    }
+
+
 }
