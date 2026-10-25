@@ -42,6 +42,6 @@
   </div>
   <div class="star-divider dark"></div>
   <div class="bottom-bar">
-    © ২০২৬ নিদারুল মাদরাসা। সর্বস্বত্ব সংরক্ষিত।
+    © ২০২৬ Nidaul Quran Madrasah। সর্বস্বত্ব সংরক্ষিত।
   </div>
 </footer>

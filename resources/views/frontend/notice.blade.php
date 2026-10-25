@@ -50,7 +50,7 @@
   .page-banner{
     position:relative;
     background:
-      radial-gradient(ellipse at 15% 20%, rgba(198,161,91,.15), transparent 45%),
+      radial-gradient(ellipse at 15% 20%, rgba(119, 125, 126, 0.15), transparent 45%),
       linear-gradient(180deg, var(--teal-900), var(--teal-800));
     color:var(--paper);
     padding:64px 0 54px;

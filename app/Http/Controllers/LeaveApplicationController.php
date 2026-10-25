@@ -13,10 +13,6 @@ use Illuminate\Validation\Rule;
 
 class LeaveApplicationController extends Controller
 {
-    /**
-     * Display leave applications.
-     */
-
     public function index(Request $request)
 {
     $branchId = auth()->user()->branch_id;
@@ -37,26 +33,19 @@ class LeaveApplicationController extends Controller
               ->orWhere('employee_id', 'like', "%{$search}%");
         });
     }
-
     if ($request->filled('leave_type_id')) {
         $query->where('leave_type_id', $request->leave_type_id);
     }
-
     if ($request->filled('status')) {
         $query->where('status', $request->status);
     }
-
     if ($request->filled('from_date')) {
         $query->whereDate('start_date', '>=', $request->from_date);
     }
-
     if ($request->filled('to_date')) {
         $query->whereDate('end_date', '<=', $request->to_date);
     }
-
-    $applications = $query
-        ->latest()
-        ->paginate(15);
+    $applications = $query->latest()->paginate(15);
 
     // $leaveTypes = LeaveType::orderBy('name')->get();
     $leaveTypes = LeaveType::where('branch_id', $branchId)

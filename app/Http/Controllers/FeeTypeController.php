@@ -8,9 +8,6 @@ use Illuminate\Validation\Rule;
 
 class FeeTypeController extends Controller
 {
-    /**
-     * Display fee types - branch wise.
-     */
     public function index()
     {
         $user = auth()->user();
@@ -45,66 +42,66 @@ class FeeTypeController extends Controller
      * Store fee type - current user's branch.
      */
     public function store(Request $request)
-{
-    $branchId = auth()->user()->branch_id;
+    {
+        $branchId = auth()->user()->branch_id;
 
-    // User-এর branch না থাকলে
-    if (!$branchId) {
-        return back()
-            ->withInput()
-            ->with('error', 'Your account is not assigned to any branch.');
+        // User-এর branch না থাকলে
+        if (!$branchId) {
+            return back()
+                ->withInput()
+                ->with('error', 'Your account is not assigned to any branch.');
+        }
+
+        $validated = $request->validate([
+
+            'name' => [
+                'required',
+                'string',
+                'max:100',
+
+                Rule::unique('fee_types', 'name')
+                    ->where(function ($query) use ($branchId) {
+                        return $query->where('branch_id', $branchId);
+                    }),
+            ],
+
+            'code' => [
+                'nullable',
+                'string',
+                'max:50',
+
+                Rule::unique('fee_types', 'code')
+                    ->where(function ($query) use ($branchId) {
+                        return $query->where('branch_id', $branchId);
+                    }),
+            ],
+
+            'description' => [
+                'nullable',
+                'string',
+                'max:1000',
+            ],
+
+            'status' => [
+                'nullable',
+                'boolean',
+            ],
+        ]);
+
+
+        FeeType::create([
+            'branch_id'  => $branchId,
+            'name'       => $validated['name'],
+            'code'       => $validated['code'] ?? null,
+            'description' => $validated['description'] ?? null,
+            'status'     => $request->boolean('status', true),
+        ]);
+
+
+        return redirect()
+            ->route('admin.fee-types.index')
+            ->with('success', 'Fee type created successfully.');
     }
-
-    $validated = $request->validate([
-
-        'name' => [
-            'required',
-            'string',
-            'max:100',
-
-            Rule::unique('fee_types', 'name')
-                ->where(function ($query) use ($branchId) {
-                    return $query->where('branch_id', $branchId);
-                }),
-        ],
-
-        'code' => [
-            'nullable',
-            'string',
-            'max:50',
-
-            Rule::unique('fee_types', 'code')
-                ->where(function ($query) use ($branchId) {
-                    return $query->where('branch_id', $branchId);
-                }),
-        ],
-
-        'description' => [
-            'nullable',
-            'string',
-            'max:1000',
-        ],
-
-        'status' => [
-            'nullable',
-            'boolean',
-        ],
-    ]);
-
-
-    FeeType::create([
-        'branch_id'  => $branchId,
-        'name'       => $validated['name'],
-        'code'       => $validated['code'] ?? null,
-        'description'=> $validated['description'] ?? null,
-        'status'     => $request->boolean('status', true),
-    ]);
-
-
-    return redirect()
-        ->route('admin.fee-types.index')
-        ->with('success', 'Fee type created successfully.');
-}
     /**
      * Show edit form.
      */
@@ -127,20 +124,25 @@ class FeeTypeController extends Controller
                 'string',
                 'max:100',
                 Rule::unique('fee_types', 'name')
-                    ->where(fn ($query) =>
+                    ->where(
+                        fn($query) =>
                         $query->where('branch_id', $user->branch_id)
                     )
                     ->ignore($feeType->id),
             ],
-            'code' => ['nullable', 'string', 'max:50',
+            'code' => [
+                'nullable',
+                'string',
+                'max:50',
                 Rule::unique('fee_types', 'code')
-                    ->where(fn ($query) =>
+                    ->where(
+                        fn($query) =>
                         $query->where('branch_id', $user->branch_id)
                     )
                     ->ignore($feeType->id),
             ],
-            'description' => [  'nullable',  'string',  'max:1000',  ],
-            'status' => [  'nullable', 'boolean',],
+            'description' => ['nullable',  'string',  'max:1000',],
+            'status' => ['nullable', 'boolean',],
         ]);
 
         $feeType->update([

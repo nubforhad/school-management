@@ -1,10 +1,8 @@
-
 <?php
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -14,21 +12,21 @@ return new class extends Migration
         $tableNames = config('permission.table_names');
         $columnNames = config('permission.column_names');
 
-        $pivotRole = $columnNames['role_pivot_key'] ?? 'role_id';
-        $pivotPermission = $columnNames['permission_pivot_key'] ?? 'permission_id';
-
         if (empty($tableNames)) {
-            throw new \Exception(
-                'Permission configuration not loaded. Run php artisan config:clear'
+            throw new RuntimeException(
+                'Permission configuration not loaded. Run php artisan config:clear.'
             );
         }
+        $pivotRole = $columnNames['role_pivot_key'] ?? 'role_id';
+        $pivotPermission = $columnNames['permission_pivot_key'] ?? 'permission_id';
+        $modelMorphKey = $columnNames['model_morph_key'] ?? 'model_id';
+        $teamForeignKey = $columnNames['team_foreign_key'] ?? 'team_id';
 
-        if ($teams && empty($columnNames['team_foreign_key'] ?? null)) {
-            throw new \Exception(
+        if ($teams && empty($columnNames['team_foreign_key'])) {
+            throw new RuntimeException(
                 'team_foreign_key is missing from permission configuration.'
             );
         }
-
         Schema::create($tableNames['permissions'], function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
@@ -40,21 +38,22 @@ return new class extends Migration
 
         Schema::create($tableNames['roles'], function (Blueprint $table) use (
             $teams,
-            $columnNames
+            $teamForeignKey
         ) {
             $table->bigIncrements('id');
 
-            if ($teams || config('permission.testing')) {
-                $table->unsignedBigInteger($columnNames['team_foreign_key'])->nullable();
-                $table->index($columnNames['team_foreign_key']);
+            if ($teams) {
+                $table->unsignedBigInteger($teamForeignKey)->nullable();
+                $table->index($teamForeignKey);
             }
+
             $table->string('name');
             $table->string('guard_name');
             $table->timestamps();
 
-            if ($teams || config('permission.testing')) {
+            if ($teams) {
                 $table->unique([
-                    $columnNames['team_foreign_key'],
+                    $teamForeignKey,
                     'name',
                     'guard_name',
                 ]);
@@ -65,17 +64,19 @@ return new class extends Migration
 
         Schema::create($tableNames['model_has_permissions'], function (Blueprint $table) use (
             $tableNames,
-            $columnNames,
             $pivotPermission,
-            $teams
+            $modelMorphKey,
+            $teams,
+            $teamForeignKey
         ) {
             $table->unsignedBigInteger($pivotPermission);
             $table->string('model_type');
-            $table->unsignedBigInteger($columnNames['model_morph_key']);
-            $table->index([
-                $columnNames['model_morph_key'],
-                'model_type',
-            ], 'model_has_permissions_model_id_model_type_index');
+            $table->unsignedBigInteger($modelMorphKey);
+
+            $table->index(
+                [$modelMorphKey, 'model_type'],
+                'model_has_permissions_model_id_model_type_index'
+            );
 
             $table->foreign($pivotPermission)
                 ->references('id')
@@ -83,20 +84,19 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             if ($teams) {
-                $table->unsignedBigInteger($columnNames['team_foreign_key']);
-
-                $table->index($columnNames['team_foreign_key']);
+                $table->unsignedBigInteger($teamForeignKey);
+                $table->index($teamForeignKey);
 
                 $table->primary([
-                    $columnNames['team_foreign_key'],
+                    $teamForeignKey,
                     $pivotPermission,
-                    $columnNames['model_morph_key'],
+                    $modelMorphKey,
                     'model_type',
                 ], 'model_has_permissions_permission_model_type_primary');
             } else {
                 $table->primary([
                     $pivotPermission,
-                    $columnNames['model_morph_key'],
+                    $modelMorphKey,
                     'model_type',
                 ], 'model_has_permissions_permission_model_type_primary');
             }
@@ -104,18 +104,18 @@ return new class extends Migration
 
         Schema::create($tableNames['model_has_roles'], function (Blueprint $table) use (
             $tableNames,
-            $columnNames,
             $pivotRole,
-            $teams
+            $modelMorphKey,
+            $teams,
+            $teamForeignKey
         ) {
             $table->unsignedBigInteger($pivotRole);
             $table->string('model_type');
-            $table->unsignedBigInteger($columnNames['model_morph_key']);
-
-            $table->index([
-                $columnNames['model_morph_key'],
-                'model_type',
-            ], 'model_has_roles_model_id_model_type_index');
+            $table->unsignedBigInteger($modelMorphKey);
+            $table->index(
+                [$modelMorphKey, 'model_type'],
+                'model_has_roles_model_id_model_type_index'
+            );
 
             $table->foreign($pivotRole)
                 ->references('id')
@@ -123,20 +123,19 @@ return new class extends Migration
                 ->onDelete('cascade');
 
             if ($teams) {
-                $table->unsignedBigInteger($columnNames['team_foreign_key']);
-
-                $table->index($columnNames['team_foreign_key']);
+                $table->unsignedBigInteger($teamForeignKey);
+                $table->index($teamForeignKey);
 
                 $table->primary([
-                    $columnNames['team_foreign_key'],
+                    $teamForeignKey,
                     $pivotRole,
-                    $columnNames['model_morph_key'],
+                    $modelMorphKey,
                     'model_type',
                 ], 'model_has_roles_role_model_type_primary');
             } else {
                 $table->primary([
                     $pivotRole,
-                    $columnNames['model_morph_key'],
+                    $modelMorphKey,
                     'model_type',
                 ], 'model_has_roles_role_model_type_primary');
             }
@@ -160,10 +159,10 @@ return new class extends Migration
                 ->on($tableNames['roles'])
                 ->onDelete('cascade');
 
-            $table->primary([
-                $pivotPermission,
-                $pivotRole,
-            ], 'role_has_permissions_permission_id_role_id_primary');
+            $table->primary(
+                [$pivotPermission, $pivotRole],
+                'role_has_permissions_permission_id_role_id_primary'
+            );
         });
 
         app('cache')
@@ -178,7 +177,7 @@ return new class extends Migration
         $tableNames = config('permission.table_names');
 
         if (empty($tableNames)) {
-            throw new \Exception(
+            throw new RuntimeException(
                 'Permission configuration not found.'
             );
         }

@@ -11,25 +11,21 @@
         <h1 class="text-2xl font-bold text-slate-800">
             General Settings
         </h1>
-
         <p class="mt-1 text-sm text-slate-500">
             Manage global information of your ERP.
         </p>
     </div>
 </div>
-
 {{-- Success Message --}}
 @if(session('success'))
     <div class="rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
         {{ session('success') }}
     </div>
 @endif
-
 {{-- Validation Errors --}}
 @if($errors->any())
     <div class="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
         <div class="font-semibold">Please fix the following errors:</div>
-
         <ul class="mt-2 list-disc space-y-1 pl-5">
             @foreach($errors->all() as $error)
                 <li>{{ $error }}</li>
@@ -38,135 +34,70 @@
     </div>
 @endif
 
-<form
-    action="{{ route('admin.settings.general.update') }}"
-    method="POST"
-    enctype="multipart/form-data"
-    class="space-y-6"
->
-
+<form action="{{ route('admin.settings.general.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
     @csrf
     @method('PUT')
-
     {{-- Institute Information --}}
     <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-
         <div class="border-b border-slate-200 bg-slate-50 px-5 py-4">
-            <h2 class="text-lg font-semibold text-slate-800">
-                Institute Information
-            </h2>
-
+            <h2 class="text-lg font-semibold text-slate-800"> Institute Information </h2>
             <p class="mt-1 text-sm text-slate-500">
                 Basic information of your institute.
             </p>
         </div>
-
         <div class="grid grid-cols-1 gap-5 p-5 md:grid-cols-2">
-
             {{-- Institute Name --}}
             <div>
                 <label class="mb-1 block text-sm font-medium text-slate-700">
                     Institute Name <span class="text-red-500">*</span>
                 </label>
-
-                <input
-                    type="text"
-                    name="institute_name"
-                    value="{{ old('institute_name', $settings['institute_name'] ?? '') }}"
-                    required
-                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                    placeholder="ABC School & College"
-                >
-
+                <input type="text" name="institute_name" value="{{ old('institute_name', $settings['institute_name'] ?? '') }}" required
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" placeholder="ABC School & College">
                 @error('institute_name')
                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                 @enderror
             </div>
-
-            {{-- Short Name --}}
             <div>
-                <label class="mb-1 block text-sm font-medium text-slate-700">
-                    Short Name
-                </label>
-
-                <input
-                    type="text"
-                    name="short_name"
-                    value="{{ old('short_name', $settings['short_name'] ?? '') }}"
-                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                    placeholder="ABC"
-                >
-
+                <label class="mb-1 block text-sm font-medium text-slate-700">  Short Name </label>
+                <input type="text" name="short_name" value="{{ old('short_name', $settings['short_name'] ?? '') }}" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" placeholder="ABC" >
                 @error('short_name')
                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                 @enderror
             </div>
-
-            {{-- EIIN --}}
             <div>
-                <label class="mb-1 block text-sm font-medium text-slate-700">
-                    EIIN / Registration No
-                </label>
-
-                <input
-                    type="text"
-                    name="eiin"
-                    value="{{ old('eiin', $settings['eiin'] ?? '') }}"
-                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                    placeholder="123456"
-                >
-
+                <label class="mb-1 block text-sm font-medium text-slate-700">  EIIN / Registration No </label>
+                <input type="text" name="eiin" value="{{ old('eiin', $settings['eiin'] ?? '') }}" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                    placeholder="123456">
                 @error('eiin')
                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                 @enderror
             </div>
-
-            {{-- Tagline --}}
             <div>
-                <label class="mb-1 block text-sm font-medium text-slate-700">
-                    Tagline
-                </label>
-
-                <input
-                    type="text"
-                    name="tagline"
-                    value="{{ old('tagline', $settings['tagline'] ?? '') }}"
-                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                    placeholder="Quality Education"
-                >
-
+                <label class="mb-1 block text-sm font-medium text-slate-700"> Tagline </label>
+                <input type="text" name="tagline" value="{{ old('tagline', $settings['tagline'] ?? '') }}" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" placeholder="Quality Education">
                 @error('tagline')
                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                 @enderror
             </div>
-
         </div>
     </div>
 
     {{-- Contact Information --}}
     <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
-
         <div class="border-b border-slate-200 bg-slate-50 px-5 py-4">
             <h2 class="text-lg font-semibold text-slate-800">
                 Contact Information
             </h2>
         </div>
-
         <div class="grid grid-cols-1 gap-5 p-5 md:grid-cols-2">
-
             {{-- Address --}}
             <div class="md:col-span-2">
                 <label class="mb-1 block text-sm font-medium text-slate-700">
                     Address
                 </label>
-
-                <textarea
-                    name="address"
-                    rows="3"
-                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                <textarea name="address" rows="3" class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                     placeholder="Dhaka, Bangladesh"
                 >{{ old('address', $settings['address'] ?? '') }}</textarea>
-
                 @error('address')
                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                 @enderror
@@ -177,15 +108,8 @@
                 <label class="mb-1 block text-sm font-medium text-slate-700">
                     Phone
                 </label>
-
-                <input
-                    type="text"
-                    name="phone"
-                    value="{{ old('phone', $settings['phone'] ?? '') }}"
-                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                    placeholder="017XXXXXXXX"
-                >
-
+                <input type="text" name="phone" value="{{ old('phone', $settings['phone'] ?? '') }}"
+                    class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100" placeholder="017XXXXXXXX">
                 @error('phone')
                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                 @enderror
@@ -197,32 +121,23 @@
                     Email
                 </label>
 
-                <input
-                    type="email"
-                    name="email"
-                    value="{{ old('email', $settings['email'] ?? '') }}"
+                <input type="email" name="email" value="{{ old('email', $settings['email'] ?? '') }}"
                     class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                    placeholder="info@example.com"
-                >
-
+                    placeholder="info@example.com">
                 @error('email')
                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
                 @enderror
             </div>
-
             {{-- Website --}}
             <div class="md:col-span-2">
                 <label class="mb-1 block text-sm font-medium text-slate-700">
                     Website
                 </label>
 
-                <input
-                    type="text"
-                    name="website"
+                <input type="text" name="website"
                     value="{{ old('website', $settings['website'] ?? '') }}"
                     class="w-full rounded-lg border border-slate-300 px-3 py-2.5 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
-                    placeholder="www.example.com"
-                >
+                    placeholder="www.example.com" >
 
                 @error('website')
                     <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
