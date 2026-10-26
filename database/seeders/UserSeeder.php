@@ -62,7 +62,7 @@ class UserSeeder extends Seeder
                 [
                     'name' => $item['name'],
                     'branch_id' => $item['branch_id'],
-                    'password' => Hash::make('ChangeMe123!'),
+                    'password' => Hash::make('12345678'),
                 ]
             );
 

@@ -48,6 +48,52 @@ use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\UserController;
 
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserRoleController;
+
+ 
+
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+        // Dynamic Role Management
+        Route::middleware('permission:roles.view')->group(function () {
+            Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+        });
+
+        Route::middleware('permission:roles.create')->group(function () {
+            Route::get('/roles/create', [RoleController::class, 'create'])
+                ->name('roles.create');
+
+            Route::post('/roles', [RoleController::class, 'store'])
+                ->name('roles.store');
+        });
+
+        Route::middleware('permission:roles.edit')->group(function () {
+            Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])
+                ->name('roles.edit');
+
+            Route::put('/roles/{role}', [RoleController::class, 'update'])
+                ->name('roles.update');
+        });
+
+        Route::middleware('permission:roles.delete')->group(function () {
+            Route::delete('/roles/{role}', [RoleController::class, 'destroy'])
+                ->name('roles.destroy');
+        });
+
+        // User Role Assignment
+        Route::middleware('permission:users.view')->group(function () {
+            Route::get('/user-roles', [UserRoleController::class, 'index'])
+                ->name('user-roles.index');
+        });
+
+        Route::middleware('permission:users.edit')->group(function () {
+            Route::get('/user-roles/{user}/edit', [UserRoleController::class, 'edit'])
+                ->name('user-roles.edit');
+
+            Route::put('/user-roles/{user}', [UserRoleController::class, 'update'])
+                ->name('user-roles.update');
+        });
+    });
 
 Route::get('/', [UserController::class, 'index'])->name('index');
 
