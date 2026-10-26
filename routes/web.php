@@ -60,11 +60,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
         });
 
         Route::middleware('permission:roles.create')->group(function () {
-            Route::get('/roles/create', [RoleController::class, 'create'])
-                ->name('roles.create');
-
-            Route::post('/roles', [RoleController::class, 'store'])
-                ->name('roles.store');
+            Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+            Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
         });
 
         Route::middleware('permission:roles.edit')->group(function () {
