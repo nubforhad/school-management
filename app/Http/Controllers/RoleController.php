@@ -15,8 +15,7 @@ class RoleController extends Controller
     public function index()
     {
         $roles = Role::where('guard_name', 'web')
-            ->withCount('permissions')
-            ->with('permissions')
+            ->withCount(['permissions', 'users'])
             ->orderBy('name')
             ->paginate(15);
 
@@ -48,6 +47,7 @@ class RoleController extends Controller
             ],
             'permissions' => ['sometimes', 'array'],
             'permissions.*' => [
+                'required',
                 'integer',
                 'distinct',
                 Rule::exists('permissions', 'id')
@@ -63,11 +63,11 @@ class RoleController extends Controller
 
             $permissionIds = $validated['permissions'] ?? [];
 
-            $role->syncPermissions(
-                Permission::where('guard_name', 'web')
-                    ->whereIn('id', $permissionIds)
-                    ->get()
-            );
+            $permissions = Permission::where('guard_name', 'web')
+                ->whereIn('id', $permissionIds)
+                ->get();
+
+            $role->syncPermissions($permissions);
         });
 
         app(PermissionRegistrar::class)->forgetCachedPermissions();
@@ -89,8 +89,8 @@ class RoleController extends Controller
                 '.'
             ));
 
-        $selectedPermissions = $role->permissions
-            ->pluck('id')
+        $selectedPermissions = $role->permissions()
+            ->pluck('permissions.id')
             ->map(fn ($id) => (int) $id)
             ->all();
 
@@ -105,11 +105,16 @@ class RoleController extends Controller
     {
         abort_unless($role->guard_name === 'web', 404);
 
-        if (
-            $role->name === 'Super Admin'
-            && ! $request->user()->hasRole('Super Admin')
-        ) {
+        $isSuperAdmin = $request->user()->hasRole('Super Admin');
+
+        // Only Super Admin may modify the Super Admin role.
+        if ($role->name === 'Super Admin' && ! $isSuperAdmin) {
             abort(403, 'You cannot modify the Super Admin role.');
+        }
+
+        // The protected role name cannot be changed.
+        if ($role->name === 'Super Admin') {
+            $request->merge(['name' => 'Super Admin']);
         }
 
         $validated = $request->validate([
@@ -123,6 +128,7 @@ class RoleController extends Controller
             ],
             'permissions' => ['sometimes', 'array'],
             'permissions.*' => [
+                'required',
                 'integer',
                 'distinct',
                 Rule::exists('permissions', 'id')
@@ -131,15 +137,17 @@ class RoleController extends Controller
         ]);
 
         DB::transaction(function () use ($validated, $role) {
-            $role->update(['name' => $validated['name']]);
+            $role->update([
+                'name' => $validated['name'],
+            ]);
 
             $permissionIds = $validated['permissions'] ?? [];
 
-            $role->syncPermissions(
-                Permission::where('guard_name', 'web')
-                    ->whereIn('id', $permissionIds)
-                    ->get()
-            );
+            $permissions = Permission::where('guard_name', 'web')
+                ->whereIn('id', $permissionIds)
+                ->get();
+
+            $role->syncPermissions($permissions);
         });
 
         app(PermissionRegistrar::class)->forgetCachedPermissions();
@@ -149,15 +157,12 @@ class RoleController extends Controller
             ->with('success', 'Role and permissions updated successfully.');
     }
 
-    public function destroy(Role $role)
+    public function destroy(Request $request, Role $role)
     {
         abort_unless($role->guard_name === 'web', 404);
 
         if ($role->name === 'Super Admin') {
-            return back()->with(
-                'error',
-                'The Super Admin role cannot be deleted.'
-            );
+            abort(403, 'The Super Admin role cannot be deleted.');
         }
 
         if ($role->users()->exists()) {
@@ -175,4 +180,34 @@ class RoleController extends Controller
             ->route('admin.roles.index')
             ->with('success', 'Role deleted successfully.');
     }
+
+
+    private function ensurePermissionsAssignable(
+            Request $request,
+            array $permissionIds
+        ): void {
+            if ($request->user()->hasRole('Super Admin')) {
+                return;
+            }
+
+            $requestedPermissions = Permission::where('guard_name', 'web')
+                ->whereIn('id', $permissionIds)
+                ->pluck('name')
+                ->all();
+
+            $allowedPermissions = $request->user()
+                ->getAllPermissions()
+                ->pluck('name')
+                ->all();
+
+            abort_if(
+                count(array_diff(
+                    $requestedPermissions,
+                    $allowedPermissions
+                )) > 0,
+                403,
+                'You cannot assign permissions that you do not have.'
+            );
+        }
+
 }

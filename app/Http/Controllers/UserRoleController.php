@@ -12,10 +12,9 @@ class UserRoleController extends Controller
 {
     private function usersQuery(Request $request)
     {
-        $query = User::query()->with('roles', 'branch');
+        $query = User::query()
+            ->with(['roles', 'branch']);
 
-        // Super Admin can manage users across branches.
-        // Other users are restricted to their own branch.
         if (! $request->user()->hasRole('Super Admin')) {
             $query->where(
                 'branch_id',
@@ -40,11 +39,12 @@ class UserRoleController extends Controller
         $this->ensureUserInScope($request, $user);
 
         $roles = Role::where('guard_name', 'web')
+            ->withCount('permissions')
             ->orderBy('name')
             ->get();
 
-        $selectedRoles = $user->roles
-            ->pluck('id')
+        $selectedRoles = $user->roles()
+            ->pluck('roles.id')
             ->map(fn ($id) => (int) $id)
             ->all();
 
@@ -62,6 +62,7 @@ class UserRoleController extends Controller
         $validated = $request->validate([
             'roles' => ['sometimes', 'array'],
             'roles.*' => [
+                'required',
                 'integer',
                 'distinct',
                 Rule::exists('roles', 'id')
@@ -73,11 +74,14 @@ class UserRoleController extends Controller
 
         $roles = Role::where('guard_name', 'web')
             ->whereIn('id', $roleIds)
+            ->with('permissions')
             ->get();
+
+        $actor = $request->user();
 
         // Only Super Admin may assign the Super Admin role.
         if (
-            ! $request->user()->hasRole('Super Admin')
+            ! $actor->hasRole('Super Admin')
             && $roles->contains('name', 'Super Admin')
         ) {
             return back()
@@ -85,6 +89,32 @@ class UserRoleController extends Controller
                     'roles' => 'Only Super Admin can assign this role.',
                 ])
                 ->withInput();
+        }
+
+        // Prevent privilege escalation through custom roles.
+        if (! $actor->hasRole('Super Admin')) {
+            $actorPermissions = $actor->getAllPermissions()
+                ->pluck('name')
+                ->all();
+
+            foreach ($roles as $role) {
+                $rolePermissions = $role->permissions
+                    ->pluck('name')
+                    ->all();
+
+                $unauthorizedPermissions = array_diff(
+                    $rolePermissions,
+                    $actorPermissions
+                );
+
+                if (! empty($unauthorizedPermissions)) {
+                    return back()
+                        ->withErrors([
+                            'roles' => "You cannot assign the {$role->name} role because it contains permissions you do not have.",
+                        ])
+                        ->withInput();
+                }
+            }
         }
 
         $user->syncRoles($roles);
@@ -96,15 +126,20 @@ class UserRoleController extends Controller
             ->with('success', 'User roles updated successfully.');
     }
 
-    private function ensureUserInScope(Request $request, User $user): void
-    {
-        if ($request->user()->hasRole('Super Admin')) {
+    private function ensureUserInScope(
+        Request $request,
+        User $user
+    ): void {
+        $actor = $request->user();
+
+        if ($actor->hasRole('Super Admin')) {
             return;
         }
 
         abort_unless(
-            $user->branch_id !== null
-            && $user->branch_id === $request->user()->branch_id,
+            $actor->branch_id !== null
+            && $user->branch_id !== null
+            && (int) $user->branch_id === (int) $actor->branch_id,
             403,
             'You cannot manage users from another branch.'
         );

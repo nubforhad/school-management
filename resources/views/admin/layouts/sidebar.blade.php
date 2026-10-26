@@ -867,6 +867,24 @@
                 <span> Settings </span>
 
             </a>
+
+            {{-- Role Management --}}
+            @can('roles.view')
+                <a href="{{ route('admin.roles.index') }}"
+                    class="nav-link group
+                    {{ request()->routeIs('admin.roles.*') ? 'nav-link-active' : '' }}">
+
+                    <span class="nav-icon
+                        {{ request()->routeIs('admin.roles.*')
+                            ? 'bg-white/15 text-white'
+                            : 'bg-slate-800 text-indigo-400' }}">
+                        <i class="bi bi-shield-lock"></i>
+                    </span>
+
+                    <span>Roles & Permissions</span>
+                </a>
+            @endcan
+
         </nav>
     </div>
 
