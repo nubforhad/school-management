@@ -8,7 +8,7 @@
              <img src="{{ asset('asset/image/imagelogo.png') }}" alt="logo">
             <!-- <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M12 2 L12 22 M4 8 Q12 2 20 8 M4 8 L4 20 Q12 24 20 20 L20 8" stroke="#e3c988" stroke-width="1.4" fill="none"/></svg> -->
           </div>
-          <span>নিদারুল মাদরাসা</span>
+          <span style="font-size: 20px;"> {{ $settings->get('institute_name') ?? 'Nidaul Quran Madrasah' }}  </span>
         </div>
         <p>দ্বীন ও দুনিয়ার সুষম শিক্ষার এক আদর্শ প্রতিষ্ঠান। কুরআন, হাদিস ও নৈতিক শিক্ষার মাধ্যমে আমরা গড়ে তুলি আগামীর নির্ভরযোগ্য নেতৃত্ব।</p>
       </div>
@@ -33,15 +33,15 @@
       <div>
         <h5>যোগাযোগ</h5>
         <ul>
-          <li>📍 Nidaul Quran Madrasah (General Campus), Momotaz Tower, Road 1, New Town R/A, Matuail, Dhaka 1362 </li>
-          <li>📞 01713-260111</li>
-          <li>✉️ info@nidarul-madrasha.edu.bd</li>
+          <li>📍 {{ $settings->get('address') ?? 'Nidaul Quran Madrasah (General Campus), Momotaz Tower, Road 1, New Town R/A, Matuail, Dhaka 1362' }} </li>
+          <li>📞 {{ $settings->get('phone') ?? '01713-260111' }} </li>
+          <li>✉️ {{ $settings->get('email') ?? 'info@nidarul-madrasha.edu.bd' }} </li>
         </ul>
       </div>
     </div>
   </div>
   <div class="star-divider dark"></div>
   <div class="bottom-bar">
-    © ২০২৬ Nidaul Quran Madrasah। সর্বস্বত্ব সংরক্ষিত।
+    {{ $settings->get('footer_text') ?? '© 2024 Nidaul Quran Madrasahh. All rights reserved.' }}
   </div>
 </footer>
