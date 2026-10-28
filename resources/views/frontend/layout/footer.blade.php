@@ -5,7 +5,8 @@
       <div>
         <div class="foot-brand">
           <div class="mark">
-             <img src="{{ asset('asset/image/imagelogo.png') }}" alt="logo">
+             {{-- <img src="{{ asset('asset/image/imagelogo.png') }}" alt="logo"> --}}
+             <img src="{{ $settings->get('logo') ?? asset('asset/image/imagelogo.png') }}" alt="logo" style="width: 40px; height: 40px; object-fit: contain; border-radius: 8px; background-color: var(--brand-tint); padding: 4px;">
             <!-- <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M12 2 L12 22 M4 8 Q12 2 20 8 M4 8 L4 20 Q12 24 20 20 L20 8" stroke="#e3c988" stroke-width="1.4" fill="none"/></svg> -->
           </div>
           <span style="font-size: 20px;"> {{ $settings->get('institute_name') ?? 'Nidaul Quran Madrasah' }}  </span>

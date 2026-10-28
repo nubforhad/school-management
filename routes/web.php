@@ -152,7 +152,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('/settings/general', [SettingController::class, 'general'])->name('settings.general');
         Route::put('/settings/general', [SettingController::class, 'updateGeneral'])->name('settings.general.update');
-       
+
         // bulk enrollment      
         Route::get( 'student-enrollments/bulk/create', [StudentEnrollmentController::class, 'bulkCreate'])->name('student-enrollments.bulk.create');
         Route::get( 'student-enrollments/bulk/students', [StudentEnrollmentController::class, 'bulkStudents'])->name('student-enrollments.bulk.students');
@@ -248,6 +248,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('expense-categories', ExpenseCategoryController::class)->names('expense-categories');
         Route::resource('expenses', ExpenseController::class)->names('expenses');
         Route::get('finance', [FinanceController::class, 'index'])->name('finance.index'); 
+
+
+
+        
+
+        Route::get('/users', [UserController::class, 'adminUsers'])->name('users.index');
+        Route::get('/users/create', [UserController::class, 'createUser'])->name('users.create');
+        Route::post('/users', [UserController::class, 'storeUser'])->name('users.store');
+        Route::get('/users/{user}/edit', [UserController::class, 'editUser'])->name('users.edit');
+        Route::put('/users/{user}', [UserController::class, 'updateUser'])->name('users.update');
+        Route::delete('/users/{user}', [UserController::class, 'deleteUser'])->name('users.destroy');
+
 
 });
 

@@ -253,6 +253,7 @@
       <div class="gtile gt2"><span>হিফয বিভাগ</span></div>
       <div class="gtile gt3"><span>অভিভাবক সমাবেশ</span></div>
       <div class="gtile gt4"><span>সাংস্কৃতিক ও ক্রীড়া প্রতিযোগিতা</span></div>
+      <div class="gtile gt4"><span>ক্রীড়া প্রতিযোগিতা</span></div>
       <div class="gtile gt5"><span>চিত্রাঙ্কন ও ল্যাঙ্গুয়েজ ক্লাস</span></div>
     </div>
   </div>

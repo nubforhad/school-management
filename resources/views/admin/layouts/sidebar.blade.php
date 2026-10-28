@@ -885,6 +885,26 @@
                 </a>
             @endcan
 
+
+            @if(auth()->check() && auth()->user()->hasAnyRole([
+                'Super Admin',
+                'super-admin',
+                'super_admin'
+            ]))
+                <a href="{{ route('admin.users.index') }}"
+                class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H2v-2a4 4 0 015-3.87m10-7a4 4 0 11-8 0 4 4 0 018 0zm5 3a4 4 0 10-8 0 4 4 0 008 0z"/>
+                    </svg>
+
+                    <span>User Management</span>
+                </a>
+            @endif
+
         </nav>
     </div>
 

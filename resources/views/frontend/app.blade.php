@@ -5,6 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title> {{ $settings->get('institute_name') ?? 'Nidaul Quran Madrasah' }} </title>
+
+  <link rel="icon" href="{{ $settings->get('favicon') ?? asset('asset/image/imagelogo.png') }}" type="image/png">
+  {{-- Tailwind CDN --}}
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -171,7 +174,7 @@ nav.main > ul > li:focus-within > a::after{transform:scaleX(1)}
 .tag{display:inline-block;background:var(--brand-tint);color:var(--brand);font-size:.78rem;font-weight:600;padding:2px 12px;border-radius:999px}
 
 .admission-card{background:linear-gradient(160deg,var(--brand),var(--brand-dark));color:#fff;border-radius:26px;padding:36px 30px;box-shadow:var(--shadow-lg);position:sticky;top:104px;overflow:hidden}
-.admission-card::after{content:"";position:absolute;right:-50px;top:-50px;width:160px;height:160px;border-radius:50%;background:rgba(226,169,59,.18)}
+.admission-card::after{content:"";position:absolute;right:-2px;top:-50px;width:160px;height:160px;border-radius:50%;background:rgba(226,169,59,.18)}
 .admission-card h4{font-size:1.45rem;color:var(--amber-soft);margin-bottom:10px;position:relative}
 .admission-card p{font-size:.95rem;color:#f6dfe5;margin-bottom:20px;position:relative}
 .admission-card ul{margin-bottom:26px;position:relative}
@@ -189,7 +192,7 @@ nav.main > ul > li:focus-within > a::after{transform:scaleX(1)}
 .gt2{background-image:linear-gradient(135deg,var(--teal),var(--teal-deep))}
 .gt3{background-image:linear-gradient(135deg,#b4832a,var(--brand-dark))}
 .gt4{background-image:linear-gradient(135deg,var(--teal),#1b6b66)}
-.gt5{grid-column:span 2;background-image:linear-gradient(135deg,var(--brand-dark),var(--teal-deep))}
+.gt5{grid-column:span 4;background-image:linear-gradient(135deg,var(--brand-dark),var(--teal-deep))}
 /* ছবি বসাতে: .gt1{background-image:url('/asset/image/g1.jpg')} */
 
 /* ---------- Testimonials ---------- */
