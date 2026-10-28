@@ -1,9 +1,7 @@
 {{-- ====== SIDEBAR ============== --}}
 
-<aside id="sidebar"
-    class="fixed inset-y-0 left-0 z-50 w-64 -translate-x-full lg:translate-x-0 bg-slate-900 text-white border-r border-slate-800 transition-transform duration-300 ease-in-out flex flex-col">
+<aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 -translate-x-full lg:translate-x-0 bg-slate-900 text-white border-r border-slate-800 transition-transform duration-300 ease-in-out flex flex-col">
     {{-- =====  Logo / Header ====== --}}
-
     <div class="flex h-16 shrink-0 items-center justify-between px-4 border-b border-slate-800">
         <a href="{{ route('dashboard') }}" class="flex items-center gap-3 min-w-0">
             {{-- Logo --}}
@@ -30,6 +28,7 @@
         <p class="px-3 mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Main</p>
         <nav class="space-y-1">
             {{-- Dashboard --}}
+            @can('dashboard.view')
             <a href="{{ route('dashboard') }}" class="nav-link group
                       {{ request()->routeIs('dashboard') ? 'nav-link-active' : '' }}">
                 <span class="nav-icon {{ request()->routeIs('dashboard')  ? 'bg-white/15 text-white' : 'bg-slate-800 text-blue-400 group-hover:text-blue-300' }}">
@@ -38,20 +37,33 @@
 
                 <span> Dashboard </span>
             </a>
+            @endcan
 
-            {{-- Branches --}}
-
-            <a href="{{ route('admin.branches.index') }}" class="nav-link group
-                      {{ request()->routeIs('admin.branches.*') ? 'nav-link-active' : '' }}">
+            {{-- Users --}}
+            @can('users.view')
+            <a href="{{ route('admin.users.index') }}" class="nav-link group
+                      {{ request()->routeIs('admin.users.*') ? 'nav-link-active' : '' }}">
                 <span class="nav-icon
-                             {{ request()->routeIs('admin.branches.*')
+                             {{ request()->routeIs('admin.users.*')
     ? 'bg-white/15 text-white'
-    : 'bg-slate-800 text-indigo-400 group-hover:text-indigo-300' }}">
-                    <i class="bi bi-building"></i>
+    : 'bg-slate-800 text-green-400 group-hover:text-green-300' }}">
+                    <i class="bi bi-person-fill"></i>
                 </span>
 
+                <span> Users </span>
+            </a>
+            @endcan
+
+            {{-- Branches --}}
+            @can('branches.view')
+            <a href="{{ route('admin.branches.index') }}" class="nav-link group
+                      {{ request()->routeIs('admin.branches.*') ? 'nav-link-active' : '' }}">
+                <span class="nav-icon  {{ request()->routeIs('admin.branches.*')  ? 'bg-white/15 text-white' : 'bg-slate-800 text-indigo-400 group-hover:text-indigo-300' }}">
+                    <i class="bi bi-building"></i>
+                </span>
                 <span> Branches </span>
             </a>
+            @endcan
         </nav>
         <!-- //  ACADEMIC  -->
 
@@ -59,7 +71,8 @@
 
         <nav class="space-y-1">
             {{-- Academic Sessions --}}
-
+            
+            @can('academic.sessions.view')
             <a href="{{ route('admin.academic.sessions.index') }}" class="nav-link group
                       {{ request()->routeIs('admin.academic.sessions.*') ? 'nav-link-active' : '' }}">
                 <span class="nav-icon
@@ -71,9 +84,9 @@
 
                 <span> Academic Sessions </span>
             </a>
-
+            @endcan
             {{-- Classes --}}
-
+            @can('academic.classes.view')
             <a href="{{ route('admin.academic.classes.index') }}"
                 class="nav-link group {{ request()->routeIs('admin.academic.classes.*') ? 'nav-link-active' : '' }}">
                 <span class="nav-icon
@@ -84,8 +97,9 @@
                 </span>
                 <span> Classes </span>
             </a>
-
+            @endcan
             {{-- Sections --}}
+            @can('academic.sections.view')
             <a href="{{ route('admin.academic.sections.index') }}"
                 class="nav-link group  {{ request()->routeIs('admin.academic.sections.*') ? 'nav-link-active' : '' }}">
                 <span class="nav-icon  {{ request()->routeIs('admin.academic.sections.*')
@@ -94,7 +108,9 @@
                 </span>
                 <span> Sections </span>
             </a>
+            @endcan
             {{-- Subjects --}}
+            @can('academic.subjects.view')
             <a href="{{ route('admin.academic.subjects.index') }}" class="nav-link group
                       {{ request()->routeIs('admin.academic.subjects.*') ? 'nav-link-active' : '' }}">
                 <span class="nav-icon {{ request()->routeIs('admin.academic.subjects.*')
@@ -104,7 +120,9 @@
                 </span>
                 <span> Subjects </span>
             </a>
+            @endcan
             {{-- Class Subjects --}}
+            @can('academic.class-subjects.view')
             <a href="{{ route('admin.academic.class-subjects.index') }}"
                 class="nav-link group   {{ request()->routeIs('admin.academic.class-subjects.*') ? 'nav-link-active' : '' }}">
                 <span
@@ -113,9 +131,10 @@
                 </span>
                 <span> Class Subjects </span>
             </a>
-
+            @endcan
 
             {{-- Class expenses cat --}}
+            @can('academic.expense-categories.view')
             <a href="{{ route('admin.expense-categories.index') }}"
                 class="nav-link group   {{ request()->routeIs('admin.expense-categories.*') ? 'nav-link-active' : '' }}">
                 <span
@@ -124,8 +143,10 @@
                 </span>
                 <span> Expense Category </span>
             </a>
+            @endcan
 
             {{-- Class expenses --}}
+            @can('academic.expenses.view')
             <a href="{{ route('admin.expenses.index') }}"
                 class="nav-link group   {{ request()->routeIs('admin.expenses.*') ? 'nav-link-active' : '' }}">
                 <span
@@ -134,8 +155,10 @@
                 </span>
                 <span> Expense </span>
             </a>
+            @endcan
 
             {{-- Class income categories --}}
+            @can('academic.income-categories.view')
             <a href="{{ route('admin.income-categories.index') }}"
                 class="nav-link group   {{ request()->routeIs('admin.income-categories.*') ? 'nav-link-active' : '' }}">
                 <span
@@ -144,8 +167,10 @@
                 </span>
                 <span> Income Categories </span>
             </a>
+            @endcan
 
             {{-- Class finance --}}
+            @can('academic.finance.view')
             <a href="{{ route('admin.finance.index') }}"
                 class="nav-link group   {{ request()->routeIs('admin.finance.*') ? 'nav-link-active' : '' }}">
                 <span
@@ -154,6 +179,7 @@
                 </span>
                 <span> Finance </span>
             </a>
+            @endcan
         </nav>
 
         <!-- STUDENT MANAGEMENT  -->
@@ -163,6 +189,7 @@
         </p>
         <nav class="space-y-1">
             {{-- Students --}}
+            @can('academic.students.view')
             <a href="{{ route('admin.students.index') }}"
                 class="nav-link group  {{ request()->routeIs('admin.students.*') ? 'nav-link-active' : '' }}">
                 <span
@@ -171,7 +198,9 @@
                 </span>
                 <span> Students </span>
             </a>
+            @endcan
             {{-- guardians --}}
+            @can('academic.guardians.view')
             <a href="{{ route('admin.guardians.index') }}"
                 class="nav-link group  {{ request()->routeIs('admin.guardians.*') ? 'nav-link-active' : '' }}">
                 <span
@@ -180,7 +209,10 @@
                 </span>
                 <span> Guardians </span>
             </a>
+            @endcan
             {{-- class-routines --}}
+            @can('academic.class-routines.view')
+            
             <a href="{{ route('admin.class-routines.index') }}"
                 class="nav-link group  {{ request()->routeIs('admin.class-routines.*') ? 'nav-link-active' : '' }}">
                 <span
@@ -189,7 +221,9 @@
                 </span>
                 <span> Class Routines </span>
             </a>
+            @endcan
             {{-- Enrollments --}}
+            @can('academic.student-enrollments.view')
             <a href="{{ route('admin.student-enrollments.bulk.create') }}"
                 class="nav-link group {{ request()->routeIs('admin.student-enrollments.*') ? 'nav-link-active' : '' }}">
                 <span
@@ -198,6 +232,7 @@
                 </span>
                 <span> Enrollments </span>
             </a>
+            @endcan
         </nav>
 
         {{-- ====== ATTENDANCE ===== --}}
@@ -221,6 +256,7 @@
             <!-- Submenu -->
             <div class="nav-submenu hidden">
                 <!-- Take Attendance -->
+                @can('academic.attendance.view')
                 <a href="{{ route('admin.attendance.index') }}" class="nav-link group">
                     <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
                         <i class="bi bi-check2-square"></i>
@@ -228,8 +264,10 @@
 
                     <span> Take Attendance </span>
                 </a>
+                @endcan
 
                 <!-- Attendance Report -->
+                @can('academic.attendance-reports.view')
                 <a href="{{ route('admin.attendances.report') }}" class="nav-link group">
                     <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
                         <i class="bi bi-file-earmark-bar-graph"></i>
@@ -237,8 +275,10 @@
 
                     <span> Attendance Report </span>
                 </a>
+                @endcan
 
                 <!-- Analytics -->
+                @can('academic.attendance-analytics.view')
                 <a href="{{ route('admin.attendance.analytics') }}" class="nav-link group">
                     <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
                         <i class="bi bi-graph-up-arrow"></i>
@@ -246,8 +286,9 @@
 
                     <span> Analytics </span>
                 </a>
-
+                @endcan
                 <!-- Student History -->
+                @can('academic.student-history.view')
                 <a href="{{ route('admin.attendance.student-history') }}" class="nav-link group">
                     <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
                         <i class="bi bi-person-lines-fill"></i>
@@ -255,8 +296,10 @@
 
                     <span> Student History </span>
                 </a>
+                @endcan
 
                 <!-- Monthly Report -->
+                @can('academic.monthly-reports.view')
                 <a href="{{ route('admin.attendance.monthly-report') }}" class="nav-link group">
                     <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
                         <i class="bi bi-calendar3"></i>
@@ -264,6 +307,7 @@
 
                     <span> Monthly Report </span>
                 </a>
+                @endcan
             </div>
         </div>
 
@@ -402,6 +446,7 @@
                 {{-- Submenu --}}
                 <div class="nav-submenu hidden">
                     {{-- Fee Types --}}
+                    @can('academic.fee-types.view')
                     <a href="{{ route('admin.fee-types.index') }}" class="nav-link group
                        {{ request()->routeIs('admin.fee-types.*')
     ? 'active'
@@ -417,8 +462,10 @@
 
                         <span> Fee Types </span>
                     </a>
+                    @endcan
 
                     {{-- Student Fees --}}
+                    @can('academic.student-fees.view')
                     <a href="{{ route('admin.student-fees.index') }}" class="nav-link group
                        {{ request()->routeIs('admin.student-fees.*')
     ? 'active'
@@ -434,8 +481,10 @@
 
                         <span> Student Fees </span>
                     </a>
+                    @endcan
 
                     {{-- Fee Collection --}}
+                    @can('academic.fee-collection.view')
                     <a href="{{ route('admin.fee-collection.index') }}" class="nav-link group
                        {{ request()->routeIs('admin.fee-collection.*')
     ? 'active'
@@ -451,8 +500,9 @@
 
                         <span> Fee Collection </span>
                     </a>
-
+                    @endcan
                     {{-- Payment History --}}
+                    @can('academic.fee-payment-history.view')
                     <a href="{{ route('admin.fee-payment-history.index') }}" class="nav-link group
                        {{ request()->routeIs('admin.fee-payment-history.*')
     ? 'active'
@@ -468,8 +518,9 @@
 
                         <span> Payment History </span>
                     </a>
-
+                    @endcan
                     {{-- Fee Collection Report --}}
+                    @can('academic.fee-collection.report.view')
                     <a href="{{ route('admin.fee-collection.report') }}" class="nav-link group
                        {{ request()->routeIs('admin.fee-collection.report')
     ? 'active'
@@ -485,8 +536,9 @@
 
                         <span> Fee Collection Report </span>
                     </a>
-
+                    @endcan
                     {{-- Fee Collection Due Report --}}
+                    @can('academic.fee-collection.due-report.view')
                     <a href="{{ route('admin.fee-collection.due-report') }}" class="nav-link group
                        {{ request()->routeIs('admin.fee-collection.due-report')
     ? 'active'
@@ -502,6 +554,7 @@
 
                         <span> Fee Collection Due Report </span>
                     </a>
+                    @endcan
                 </div>
             </div>
         </nav>
@@ -528,6 +581,7 @@
                 {{-- Submenu --}}
                 <div class="nav-submenu hidden">
                     {{-- Exams --}}
+                    @can('academic.exams.view')
                     <a href="{{ route('admin.exams.index') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -535,8 +589,9 @@
                         </span>
                         <span> Exams </span>
                     </a>
-
+                    @endcan
                     {{-- Exam Schedules --}}
+                    @can('academic.exam-schedules.view')
                     <a href="{{ route('admin.exam-schedules.index') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -544,8 +599,10 @@
                         </span>
                         <span> Exam Schedules </span>
                     </a>
+                    @endcan
 
                     {{-- Exam Marks --}}
+                    @can('academic.exam-marks.view')
                     <a href="{{ route('admin.exam-marks.index') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -553,8 +610,10 @@
                         </span>
                         <span> Exam Marks </span>
                     </a>
+                    @endcan
 
                     {{-- Exam Subjects --}}
+                    @can('academic.exam-subjects.view')
                     <a href="{{ route('admin.exam-subjects.index') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -562,8 +621,10 @@
                         </span>
                         <span> Exam Subjects </span>
                     </a>
+                    @endcan
 
                     {{-- Student Result --}}
+                    @can('academic.student-results.view')
                     <a href="{{ route('admin.student-results.index') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -572,8 +633,10 @@
 
                         <span> Student Result </span>
                     </a>
+                    @endcan
 
                     {{-- Result Sheets --}}
+                    @can('academic.result-sheets.view')
                     <a href="{{ route('admin.result-sheets.show') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -581,8 +644,10 @@
                         </span>
                         <span> Result Sheets </span>
                     </a>
+                    @endcan
 
                     {{-- Class Result --}}
+                    @can('academic.class-results.view')
                     <a href="{{ route('admin.class-results.index') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -591,6 +656,7 @@
 
                         <span> Class Result </span>
                     </a>
+                    @endcan
                 </div>
             </div>
         </nav>
@@ -619,6 +685,7 @@
                 <!-- Submenu -->
                 <div class="nav-submenu hidden">
                     <!-- Departments -->
+                    @can('academic.departments.view')
                     <a href="{{ route('admin.departments.index') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -627,8 +694,9 @@
 
                         <span> Departments </span>
                     </a>
-
+                    @endcan
                     <!-- Designations -->
+                    @can('academic.designations.view')
                     <a href="{{ route('admin.designations.index') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -636,7 +704,9 @@
                         </span>
                         <span> Designations </span>
                     </a>
+                    @endcan
                     <!-- Teachers & Staff -->
+                    @can('academic.teacher-staff.view')
                     <a href="{{ route('admin.teacher-staff.index') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -644,8 +714,10 @@
                         </span>
                         <span> Teachers & Staff </span>
                     </a>
+                    @endcan
 
                     <!-- Teacher Assignment -->
+                    @can('academic.teacher-assignment.view')
                     <a href="{{ route('admin.teacher-assignment.index') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -657,8 +729,10 @@
 
                         <span> Teacher Assignment </span>
                     </a>
+                    @endcan
 
                     <!-- salary structures -->
+                    @can('academic.salary-structures.view')
                     <a href="{{ route('admin.salary-structures.index') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -670,8 +744,10 @@
 
                         <span> salary structures </span>
                     </a>
+                    @endcan
 
                     <!-- salary structures -->
+                    @can('academic.salary-payments.view')
                     <a href="{{ route('admin.salary-payments.index') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -682,6 +758,7 @@
                         </span>
                         <span> salary payments </span>
                     </a>
+                    @endcan
                 </div>
             </div>
 
@@ -704,6 +781,7 @@
                 <!-- Submenu -->
                 <div class="nav-submenu hidden">
                     <!-- Departments -->
+                    @can('academic.leave-types.view')
                     <a href="{{ route('admin.leave-types.index') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -711,26 +789,27 @@
                         </span>
                         <span> leave Types </span>
                     </a>
-
+                    @endcan
                     <!-- Designations -->
+                    @can('academic.leave-allocations.view')
                     <a href="{{ route('admin.leave-allocations.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
+                        <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
                             <i class="bi bi-person-badge"></i>
                         </span>
                         <span> leave Allocations </span>
                     </a>
-
+                    @endcan
                     <!-- Designations -->
+                    @can('academic.leave-applications.view')
                     <a href="{{ route('admin.leave-applications.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
+                        <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
                             <i class="bi bi-person-badge"></i>
                         </span>
                         <span> Leave Applications </span>
                     </a>
-
+                    @endcan
                     <!-- salary structures -->
+                    @can('academic.teacher-staff-attendance.view')
                     <a href="{{ route('admin.teacher-staff-attendance.index') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -739,11 +818,11 @@
                                 <i class="bi bi-person-lines-fill"></i>
                             </span>
                         </span>
-
                         <span> Teacher Staff Attendance </span>
                     </a>
-
+                    @endcan
                     <!-- salary structures -->
+                    @can('academic.teacher-staff-attendance.report')
                     <a href="{{ route('admin.teacher-staff-attendance.report') }}" class="nav-link group">
                         <span
                             class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
@@ -754,6 +833,7 @@
                         </span>
                         <span> Teacher Staff Attendance Report </span>
                     </a>
+                    @endcan
                 </div>
             </div>
             <style>
@@ -856,31 +936,22 @@
                     }
                 }
             </style>
-
             {{-- Accounts --}}
-
             <a href="{{ route('admin.settings.general') }}" class="nav-link  group">
                 <span class="nav-icon bg-slate-800 text-slate-500">
                     <i class="bi bi-wallet2"></i>
                 </span>
-
                 <span> Settings </span>
-
             </a>
 
             {{-- Role Management --}}
             @can('roles.view')
-                <a href="{{ route('admin.roles.index') }}"
-                    class="nav-link group
-                    {{ request()->routeIs('admin.roles.*') ? 'nav-link-active' : '' }}">
-
-                    <span class="nav-icon
-                        {{ request()->routeIs('admin.roles.*')
+                <a href="{{ route('admin.roles.index') }}"  class="nav-link group {{ request()->routeIs('admin.roles.*') ? 'nav-link-active' : '' }}">
+                    <span class="nav-icon {{ request()->routeIs('admin.roles.*')
                             ? 'bg-white/15 text-white'
                             : 'bg-slate-800 text-indigo-400' }}">
                         <i class="bi bi-shield-lock"></i>
                     </span>
-
                     <span>Roles & Permissions</span>
                 </a>
             @endcan
@@ -926,8 +997,7 @@
 
 {{-- ============== MOBILE OVERLAY ================== --}}
 
-<div id="sidebarOverlay" onclick="closeSidebar()"
-    class="fixed inset-0 z-40 hidden bg-black/50 backdrop-blur-sm lg:hidden"></div>
+<div id="sidebarOverlay" onclick="closeSidebar()"  class="fixed inset-0 z-40 hidden bg-black/50 backdrop-blur-sm lg:hidden"></div>
 
 {{-- ==== SIDEBAR STYLES ===== --}}
 
