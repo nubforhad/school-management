@@ -32,12 +32,12 @@
         <li><a href="{{ route('index') }}">হোম</a></li>
 
         <li class="has-sub">
-          <a href="#about">আমাদের সম্পর্কে <span class="caret">▾</span></a>
+          <a href="{{ route('about') }}">আমাদের সম্পর্কে <span class="caret">▾</span></a>
           <ul class="submenu">
-            <li><a href="#about">প্রতিষ্ঠানের পরিচিতি</a></li>
-            <li><a href="#about">লক্ষ্য ও উদ্দেশ্য</a></li>
-            <li><a href="#about">মুহতামিম ও শিক্ষক মণ্ডলী</a></li>
-            <li><a href="#about">প্রতিষ্ঠার ইতিহাস</a></li>
+            <li><a href="{{ route('about') }}">প্রতিষ্ঠানের পরিচিতি</a></li>
+            <li><a href="{{ route('about') }}">লক্ষ্য ও উদ্দেশ্য</a></li>
+            <li><a href="{{ route('about') }}">মুহতামিম ও শিক্ষক মণ্ডলী</a></li>
+            <li><a href="{{ route('about') }}">প্রতিষ্ঠার ইতিহাস</a></li>
           </ul>
         </li>
 

@@ -97,6 +97,7 @@ Route::get('/', [UserController::class, 'index'])->name('index');
 
     Route::get('notices', [UserController::class, 'notice'])->name('notice');
     Route::get('contacts', [UserController::class, 'contact'])->name('contact');
+    Route::get('about', [UserController::class, 'about'])->name('about');
 
     Route::post('/logout', function () {
         Auth::logout();
