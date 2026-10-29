@@ -75,11 +75,11 @@
         <li><a href="#gallery">গ্যালারি</a></li>
 
         <li class="has-sub">
-          <a href="#contact">যোগাযোগ <span class="caret">▾</span></a>
+          <a href="{{ route('contact') }}">যোগাযোগ <span class="caret">▾</span></a>
           <ul class="submenu">
-            <li><a href="#contact">ঠিকানা ও মানচিত্র</a></li>
-            <li><a href="#contact">দাতা ও অনুদান</a></li>
-            <li><a href="#contact">অভিযোগ ও পরামর্শ</a></li>
+            <li><a href="{{ route('contact') }}">ঠিকানা ও মানচিত্র</a></li>
+            <li><a href="{{ route('contact') }}">দাতা ও অনুদান</a></li>
+            <li><a href="{{ route('contact') }}">অভিযোগ ও পরামর্শ</a></li>
           </ul>
         </li>
       </ul>

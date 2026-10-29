@@ -8,7 +8,7 @@
 <div class="w-full space-y-6">
 
     {{-- ============================================================
-         HEADER
+    HEADER
     ============================================================= --}}
 
     <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
@@ -31,16 +31,12 @@
 
 
         {{-- ========================================================
-             BRANCH SELECTOR
+        BRANCH SELECTOR
         ========================================================= --}}
 
-        <form method="GET" action="{{ route('dashboard') }}"
-              class="flex items-center gap-3">
+        <form method="GET" action="{{ route('dashboard') }}" class="flex items-center gap-3">
 
-            <select
-                name="branch_id"
-                onchange="this.form.submit()"
-                class="rounded-xl border border-slate-200 bg-white
+            <select name="branch_id" onchange="this.form.submit()" class="rounded-xl border border-slate-200 bg-white
                        px-4 py-3 text-sm font-medium text-slate-700
                        shadow-sm outline-none focus:border-blue-500
                        focus:ring-2 focus:ring-blue-100">
@@ -51,12 +47,10 @@
 
                 @foreach($branches as $item)
 
-                    <option
-                        value="{{ $item->id }}"
-                        @selected($branchId == $item->id)
+                <option value="{{ $item->id }}" @selected($branchId==$item->id)
                     >
-                        {{ $item->name }}
-                    </option>
+                    {{ $item->name }}
+                </option>
 
                 @endforeach
 
@@ -68,39 +62,39 @@
 
 
     {{-- ============================================================
-         CURRENT BRANCH
+    CURRENT BRANCH
     ============================================================= --}}
 
     @if($branch)
 
-        <div class="flex items-center gap-3 rounded-2xl border
+    <div class="flex items-center gap-3 rounded-2xl border
                     border-blue-100 bg-blue-50 px-5 py-4">
 
-            <div class="flex h-11 w-11 items-center justify-center
+        <div class="flex h-11 w-11 items-center justify-center
                         rounded-xl bg-white text-xl shadow-sm">
-                🏫
-            </div>
+            🏫
+        </div>
 
-            <div>
+        <div>
 
-                <p class="text-xs font-medium uppercase tracking-wide
+            <p class="text-xs font-medium uppercase tracking-wide
                           text-blue-500">
-                    Current Branch
-                </p>
+                Current Branch
+            </p>
 
-                <p class="text-sm font-bold text-slate-900">
-                    {{ $branch->name }}
-                </p>
-
-            </div>
+            <p class="text-sm font-bold text-slate-900">
+                {{ $branch->name }}
+            </p>
 
         </div>
+
+    </div>
 
     @endif
 
 
     {{-- ============================================================
-         MAIN STAT CARDS
+    MAIN STAT CARDS
     ============================================================= --}}
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -240,7 +234,7 @@
 
 
     {{-- ============================================================
-         ATTENDANCE
+    ATTENDANCE
     ============================================================= --}}
 
     <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
@@ -402,7 +396,7 @@
 
 
     {{-- ============================================================
-         FINANCE
+    FINANCE
     ============================================================= --}}
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -481,7 +475,7 @@
                     </p>
 
                     <h2 class="mt-1 text-2xl font-bold text-red-600">
-                        
+
                     </h2>
 
                 </div>
@@ -494,7 +488,7 @@
 
 
     {{-- ============================================================
-         RECENT DATA
+    RECENT DATA
     ============================================================= --}}
 
     <div class="grid grid-cols-1 gap-6 xl:grid-cols-2">
@@ -519,8 +513,7 @@
 
                 </div>
 
-                <a
-                    href="{{ route('admin.students.index') }}"
+                <a href="{{ route('admin.students.index') }}"
                     class="text-xs font-semibold text-blue-600 hover:text-blue-700">
                     View All →
                 </a>
@@ -529,164 +522,95 @@
 
 
             <div class="divide-y divide-slate-100">
-
                 @forelse($recentStudents as $student)
-
-                    <div class="flex items-center gap-3 px-5 py-4">
-
-                        <div class="flex h-10 w-10 shrink-0 items-center
-                                    justify-center rounded-full bg-blue-50
-                                    font-bold text-blue-600">
-
-                            {{ strtoupper(substr($student->name ?? 'S', 0, 1)) }}
-
-                        </div>
-
-
-                        <div class="min-w-0 flex-1">
-
-                            <p class="truncate text-sm font-semibold text-slate-900">
-                                {{ $student->name ?? 'Student' }}
-                            </p>
-
-                            <p class="mt-0.5 text-xs text-slate-500">
-                                ID:
-                                {{ $student->student_id ?? $student->id }}
-                            </p>
-
-                        </div>
-
-
-                        <span class="text-xs text-slate-400">
-                            {{ $student->created_at?->format('d M') }}
-                        </span>
-
+                <div class="flex items-center gap-3 px-5 py-4">
+                    <div class="flex h-10 w-10 shrink-0 items-center  justify-center rounded-full bg-blue-50  font-bold text-blue-600">
+                        {{ strtoupper(substr($student->name ?? 'S', 0, 1)) }}
                     </div>
+                    <div class="min-w-0 flex-1">
+                        <p class="truncate text-sm font-semibold text-slate-900">
+                            {{ $student->name ?? 'Student' }}
+                        </p>
+                        <p class="mt-0.5 text-xs text-slate-500">
+                            ID:
+                            {{ $student->student_id ?? $student->id }}
+                        </p>
+                    </div>
+                    <span class="text-xs text-slate-400">
+                        {{ $student->created_at?->format('d M') }}
+                    </span>
+                </div>
 
                 @empty
-
-                    <div class="px-5 py-10 text-center">
-
-                        <p class="text-sm text-slate-500">
-                            No students found.
-                        </p>
-
-                    </div>
-
+                <div class="px-5 py-10 text-center">
+                    <p class="text-sm text-slate-500">
+                        No students found.
+                    </p>
+                </div>
                 @endforelse
-
             </div>
-
         </div>
-
-
         {{-- Recent Payments --}}
-        <div class="overflow-hidden rounded-2xl border border-slate-200
-                    bg-white shadow-sm">
-
-            <div class="flex items-center justify-between
-                        border-b border-slate-100 px-5 py-4">
-
+        <div class="overflow-hidden rounded-2xl border border-slate-200  bg-white shadow-sm">
+            <div class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
                 <div>
-
                     <h2 class="font-bold text-slate-900">
                         Recent Payments
                     </h2>
-
                     <p class="mt-1 text-xs text-slate-500">
                         Latest fee collections
                     </p>
-
                 </div>
-
-                <a
-                    href="#"
-                    class="text-xs font-semibold text-blue-600 hover:text-blue-700">
+                <a href="#" class="text-xs font-semibold text-blue-600 hover:text-blue-700">
                     View All →
                 </a>
-
             </div>
 
 
             <div class="divide-y divide-slate-100">
-
                 @forelse($recentPayments as $payment)
-
-                    <div class="flex items-center gap-3 px-5 py-4">
-
-                        <div class="flex h-10 w-10 shrink-0 items-center
-                                    justify-center rounded-xl bg-green-50
-                                    text-green-600">
-                            ৳
-                        </div>
-
-
-                        <div class="min-w-0 flex-1">
-
-                            <p class="text-sm font-semibold text-slate-900">
-                                Fee Payment
-                            </p>
-
-                            <p class="mt-0.5 text-xs text-slate-500">
-
-                                {{ $payment->payment_date
-                                    ? \Carbon\Carbon::parse($payment->payment_date)->format('d M Y')
-                                    : $payment->created_at?->format('d M Y') }}
-
-                            </p>
-
-                        </div>
-
-
-                        <p class="text-sm font-bold text-green-600">
-
-                            ৳ {{ number_format($payment->amount ?? 0, 2) }}
-
-                        </p>
-
+                <div class="flex items-center gap-3 px-5 py-4">
+                    <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-green-50 text-green-600">
+                        ৳
                     </div>
-
+                    <div class="min-w-0 flex-1">
+                        <p class="text-sm font-semibold text-slate-900">
+                            Fee Payment
+                        </p>
+                        <p class="mt-0.5 text-xs text-slate-500">
+                            {{ $payment->payment_date
+                            ? \Carbon\Carbon::parse($payment->payment_date)->format('d M Y')
+                            : $payment->created_at?->format('d M Y') }}
+                        </p>
+                    </div>
+                    <p class="text-sm font-bold text-green-600">
+                        ৳ {{ number_format($payment->amount ?? 0, 2) }}
+                    </p>
+                </div>
                 @empty
-
-                    <div class="px-5 py-10 text-center">
-
-                        <p class="text-sm text-slate-500">
-                            No payments found.
-                        </p>
-
-                    </div>
-
+                <div class="px-5 py-10 text-center">
+                    <p class="text-sm text-slate-500">
+                        No payments found.
+                    </p>
+                </div>
                 @endforelse
-
             </div>
-
         </div>
-
     </div>
+    {{-- ============  QUICK ACTIONS ================= --}}
 
-
-    {{-- ============================================================
-         QUICK ACTIONS
-    ============================================================= --}}
-
-    <div class="rounded-2xl border border-slate-200 bg-white
-                p-5 shadow-sm sm:p-6">
-
+    <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
         <div class="mb-5">
-
             <h2 class="font-bold text-slate-900">
                 Quick Actions
             </h2>
-
             <p class="mt-1 text-xs text-slate-500">
                 Frequently used modules
             </p>
-
         </div>
         <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
             {{-- Add Student --}}
-            <a   href="{{ route('admin.students.create') }}"
-                class="group rounded-xl border border-slate-200
+            <a href="{{ route('admin.students.create') }}" class="group rounded-xl border border-slate-200
                        p-4 text-center transition hover:border-blue-300
                        hover:bg-blue-50">
                 <div class="text-2xl">
@@ -696,20 +620,18 @@
                           group-hover:text-blue-700">
                     Add Student
                 </p>
-           </a>
+            </a>
             {{-- Assign Subject --}}
-            <a  href="{{ route('admin.academic.class-subjects.create') }}"
-                class="group rounded-xl border border-slate-200
+            <a href="{{ route('admin.academic.class-subjects.create') }}" class="group rounded-xl border border-slate-200
                        p-4 text-center transition hover:border-blue-300
                        hover:bg-blue-50">
                 <div class="text-2xl">
                     📚
                 </div>
-                <p class="mt-2 text-xs font-semibold text-slate-700 group-hover:text-blue-700">  Assign Subject </p>
+                <p class="mt-2 text-xs font-semibold text-slate-700 group-hover:text-blue-700"> Assign Subject </p>
             </a>
             {{-- Add Subject --}}
-            <a  href="{{ route('admin.academic.subjects.create') }}"
-                class="group rounded-xl border border-slate-200
+            <a href="{{ route('admin.academic.subjects.create') }}" class="group rounded-xl border border-slate-200
                        p-4 text-center transition hover:border-blue-300
                        hover:bg-blue-50">
                 <div class="text-2xl">
@@ -720,11 +642,7 @@
                 </p>
             </a>
             {{-- Add Class --}}
-            <a href="{{ route('admin.academic.classes.create') }}"
-                class="group rounded-xl border border-slate-200
-                       p-4 text-center transition hover:border-blue-300
-                       hover:bg-blue-50">
-
+            <a href="{{ route('admin.academic.classes.create') }}" class="group rounded-xl border border-slate-200  p-4 text-center transition hover:border-blue-300 hover:bg-blue-50">
                 <div class="text-2xl">
                     🏫
                 </div>
@@ -734,9 +652,7 @@
                 </p>
             </a>
             {{-- Add Section --}}
-            <a
-                href="{{ route('admin.academic.sections.create') }}"
-                class="group rounded-xl border border-slate-200
+            <a href="{{ route('admin.academic.sections.create') }}" class="group rounded-xl border border-slate-200
                        p-4 text-center transition hover:border-blue-300
                        hover:bg-blue-50">
                 <div class="text-2xl">
@@ -748,27 +664,16 @@
                 </p>
             </a>
             {{-- Dashboard --}}
-            <a
-                href="{{ route('dashboard') }}"
-                class="group rounded-xl border border-slate-200
-                       p-4 text-center transition hover:border-blue-300
-                       hover:bg-blue-50">
-
+            <a href="{{ route('dashboard') }}" class="group rounded-xl border border-slate-200 p-4 text-center transition hover:border-blue-300  hover:bg-blue-50">
                 <div class="text-2xl">
                     📊
                 </div>
-
-                <p class="mt-2 text-xs font-semibold text-slate-700
-                          group-hover:text-blue-700">
+                <p class="mt-2 text-xs font-semibold text-slate-700 group-hover:text-blue-700">
                     Dashboard
                 </p>
-
             </a>
-
         </div>
-
     </div>
-
 </div>
 
-@endsection 
+@endsection

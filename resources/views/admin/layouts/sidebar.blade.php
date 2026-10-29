@@ -43,10 +43,7 @@
             @can('users.view')
             <a href="{{ route('admin.users.index') }}" class="nav-link group
                       {{ request()->routeIs('admin.users.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon
-                             {{ request()->routeIs('admin.users.*')
-    ? 'bg-white/15 text-white'
-    : 'bg-slate-800 text-green-400 group-hover:text-green-300' }}">
+                <span class="nav-icon {{ request()->routeIs('admin.users.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-green-400 group-hover:text-green-300' }}">
                     <i class="bi bi-person-fill"></i>
                 </span>
 
@@ -75,10 +72,7 @@
             @can('academic.sessions.view')
             <a href="{{ route('admin.academic.sessions.index') }}" class="nav-link group
                       {{ request()->routeIs('admin.academic.sessions.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon
-                             {{ request()->routeIs('admin.academic.sessions.*')
-    ? 'bg-white/15 text-white'
-    : 'bg-slate-800 text-sky-400 group-hover:text-sky-300' }}">
+                <span class="nav-icon {{ request()->routeIs('admin.academic.sessions.*')  ? 'bg-white/15 text-white' : 'bg-slate-800 text-sky-400 group-hover:text-sky-300' }}">
                     <i class="bi bi-calendar-event"></i>
                 </span>
 
@@ -89,10 +83,7 @@
             @can('academic.classes.view')
             <a href="{{ route('admin.academic.classes.index') }}"
                 class="nav-link group {{ request()->routeIs('admin.academic.classes.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon
-                             {{ request()->routeIs('admin.academic.classes.*')
-    ? 'bg-white/15 text-white'
-    : 'bg-slate-800 text-violet-400 group-hover:text-violet-300' }}">
+                <span class="nav-icon  {{ request()->routeIs('admin.academic.classes.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-violet-400 group-hover:text-violet-300' }}">
                     <i class="bi bi-mortarboard-fill"></i>
                 </span>
                 <span> Classes </span>
@@ -102,8 +93,7 @@
             @can('academic.sections.view')
             <a href="{{ route('admin.academic.sections.index') }}"
                 class="nav-link group  {{ request()->routeIs('admin.academic.sections.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon  {{ request()->routeIs('admin.academic.sections.*')
-    ? 'bg-white/15 text-white' : 'bg-slate-800 text-teal-400 group-hover:text-teal-300' }}">
+                <span class="nav-icon  {{ request()->routeIs('admin.academic.sections.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-teal-400 group-hover:text-teal-300' }}">
                     <i class="bi bi-people-fill"></i>
                 </span>
                 <span> Sections </span>
@@ -113,9 +103,7 @@
             @can('academic.subjects.view')
             <a href="{{ route('admin.academic.subjects.index') }}" class="nav-link group
                       {{ request()->routeIs('admin.academic.subjects.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon {{ request()->routeIs('admin.academic.subjects.*')
-    ? 'bg-white/15 text-white'
-    : 'bg-slate-800 text-amber-400 group-hover:text-amber-300' }}">
+                <span class="nav-icon {{ request()->routeIs('admin.academic.subjects.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-amber-400 group-hover:text-amber-300' }}">
                     <i class="bi bi-book-half"></i>
                 </span>
                 <span> Subjects </span>
@@ -660,7 +648,6 @@
                 </div>
             </div>
         </nav>
-
         {{-- ======= OTHER MODULES ==== --}}
 
         <p class="px-3 mb-2 mt-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Other Modules</p>
@@ -763,6 +750,13 @@
             </div>
 
             <!-- Leave  -->
+            @if(
+                auth()->user()->can('academic.leave-types.view') ||
+                auth()->user()->can('academic.leave-allocations.view') ||
+                auth()->user()->can('academic.leave-applications.view') ||
+                auth()->user()->can('academic.teacher-staff-attendance.view') ||
+                auth()->user()->can('academic.teacher-staff-attendance.report')  
+            )
             <div class="nav-group">
                 <!-- Group Header -->
                 <button type="button" onclick="toggleNavGroup(this)"
@@ -836,6 +830,8 @@
                     @endcan
                 </div>
             </div>
+@endif
+
             <style>
                 /* ================================
                         NAV GROUP
@@ -962,20 +958,15 @@
                 'super-admin',
                 'super_admin'
             ]))
-                <a href="{{ route('admin.users.index') }}"
-                class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
-
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor"
-                        viewBox="0 0 24 24">
+                <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor"  viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round"
                             stroke-width="2"
                             d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H2v-2a4 4 0 015-3.87m10-7a4 4 0 11-8 0 4 4 0 018 0zm5 3a4 4 0 10-8 0 4 4 0 008 0z"/>
                     </svg>
-
                     <span>User Management</span>
                 </a>
             @endif
-
         </nav>
     </div>
 

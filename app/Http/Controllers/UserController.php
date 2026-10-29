@@ -32,6 +32,13 @@ class UserController extends Controller
         return view('frontend.notice', compact('settings'));
     }
 
+    public function contact(Request $request)
+    {
+        $settings = Setting::pluck('value', 'key');
+
+        return view('frontend.pages.contact', compact('settings'));
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Role Helpers
