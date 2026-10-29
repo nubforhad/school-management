@@ -36,7 +36,7 @@
           <ul class="submenu">
             <li><a href="{{ route('about') }}">প্রতিষ্ঠানের পরিচিতি</a></li>
             <li><a href="{{ route('about') }}">লক্ষ্য ও উদ্দেশ্য</a></li>
-            <li><a href="{{ route('about') }}">মুহতামিম ও শিক্ষক মণ্ডলী</a></li>
+            <li><a href="{{ route('teachers') }}">মুহতামিম ও শিক্ষক মণ্ডলী</a></li>
             <li><a href="{{ route('about') }}">প্রতিষ্ঠার ইতিহাস</a></li>
           </ul>
         </li>
