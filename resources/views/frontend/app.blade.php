@@ -71,7 +71,7 @@ section{padding:88px 0}
 header.site{position:sticky;top:0;z-index:100;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);box-shadow:0 4px 24px rgba(10,47,46,.08);border-bottom:1px solid var(--line)}
 .nav-wrap{display:flex;align-items:center;gap:18px;min-height:80px}
 .brand{display:flex;align-items:center;gap:12px;margin-right:auto}
-.mark{width:56px;height:56px; background:var(--brand-tint); display:grid;place-items:center;overflow:hidden;flex-shrink:0}
+.mark{width:56px;height:56px;  display:grid;place-items:center;overflow:hidden;flex-shrink:0}
 .mark img{width:100%;height:100%;object-fit:contain;padding:4px}
 .names h1{font-size:1.2rem;color:var(--brand);line-height:1.25}
 .names span{display:block;font-size:.8rem;color:var(--muted)}

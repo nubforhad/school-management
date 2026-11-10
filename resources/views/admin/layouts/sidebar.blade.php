@@ -997,11 +997,9 @@
         scrollbar-width: thin;
         scrollbar-color: #334155 transparent;
     }
-
     .sidebar-scroll::-webkit-scrollbar {
         width: 5px;
     }
-
     .sidebar-scroll::-webkit-scrollbar-track {
         background: transparent;
     }
