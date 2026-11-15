@@ -1,1005 +1,754 @@
-{{-- ====== SIDEBAR ============== --}}
 
-<aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 -translate-x-full lg:translate-x-0 bg-slate-900 text-white border-r border-slate-800 transition-transform duration-300 ease-in-out flex flex-col">
-    {{-- =====  Logo / Header ====== --}}
+{{-- =========================================================
+    MADRASAH ERP SIDEBAR
+    Existing Seeder Permission Names are Preserved
+========================================================= --}}
+
+@php
+    $user = auth()->user();
+
+    // Academic section
+    $hasAcademicMenu =
+        $user->can('academic-sessions.view') ||
+        $user->can('classes.view') ||
+        $user->can('sections.view') ||
+        $user->can('subjects.view') ||
+        $user->can('class-subjects.view');
+
+    // Student section
+    $hasStudentMenu =
+        $user->can('students.view') ||
+        $user->can('student-enrollments.view') ||
+        $user->can('guardians.view') ||
+        $user->can('class-routines.view');
+
+    // Attendance section
+    $hasAttendanceMenu = $user->can('attendance.view');
+
+    // Fee section
+    $hasFeeMenu =
+        $user->can('fee-types.view') ||
+        $user->can('student-fees.view') ||
+        $user->can('fee-collection.view') ||
+        $user->can('fee-payment-history.view') ||
+        $user->can('fee-reports.view');
+
+    // Examination section
+    $hasExamMenu =
+        $user->can('exams.view') ||
+        $user->can('exam-schedules.view') ||
+        $user->can('exam-subjects.view') ||
+        $user->can('exam-marks.view') ||
+        $user->can('student-results.view') ||
+        $user->can('result-sheets.view') ||
+        $user->can('class-results.view');
+
+    // Teachers and Staff section
+    $hasStaffMenu =
+        $user->can('departments.view') ||
+        $user->can('designations.view') ||
+        $user->can('teacher-staff.view') ||
+        $user->can('teacher-assignment.view') ||
+        $user->can('salary-structures.view') ||
+        $user->can('salary-payments.view');
+
+    // Leave section
+    $hasLeaveMenu =
+        $user->can('leave-types.view') ||
+        $user->can('leave-allocations.view') ||
+        $user->can('leave-applications.view') ||
+        $user->can('teacher-staff-attendance.view');
+
+    // Finance section
+    $hasFinanceMenu =
+        $user->can('income-categories.view') ||
+        $user->can('expense-categories.view') ||
+        $user->can('expenses.view') ||
+        $user->can('accounts.view') ||
+        $user->can('finance.view');
+@endphp
+
+<aside id="sidebar"
+    class="fixed inset-y-0 left-0 z-50 w-64 -translate-x-full lg:translate-x-0 bg-slate-900 text-white border-r border-slate-800 transition-transform duration-300 ease-in-out flex flex-col">
+
+    {{-- Logo / Header --}}
     <div class="flex h-16 shrink-0 items-center justify-between px-4 border-b border-slate-800">
+
         <a href="{{ route('dashboard') }}" class="flex items-center gap-3 min-w-0">
-            {{-- Logo --}}
+
             <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 shadow-lg shadow-blue-900/40 ring-1 ring-white/10">
-                <span class="text-sm font-bold tracking-tight"> <img src="{{ asset('asset/image/imagelogo.png') }}"
-                        alt="logo"> </span>
+                <img src="{{ asset('asset/image/imagelogo.png') }}" alt="logo">
             </div>
+
             <div class="min-w-0">
                 <h1 class="font-semibold text-sm text-white truncate">Madrasah ERP</h1>
                 <p class="text-[11px] text-slate-500 truncate">Administration</p>
             </div>
+
         </a>
-        {{-- Mobile Close --}}
+
         <button type="button" onclick="closeSidebar()"
             class="lg:hidden flex h-8 w-8 items-center justify-center rounded-lg text-slate-400 hover:bg-slate-800 hover:text-white transition">
             <i class="bi bi-x-lg text-sm"></i>
         </button>
+
     </div>
 
-    {{-- ====== Scrollable Navigation ===== --}}
-
+    {{-- Navigation --}}
     <div class="flex-1 overflow-y-auto px-3 py-4 sidebar-scroll">
-        {{-- ================================================= MAIN ================================================== --}}
-        <p class="px-3 mb-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Main</p>
-        <nav class="space-y-1">
-            {{-- Dashboard --}}
-            @can('dashboard.view')
-            <a href="{{ route('dashboard') }}" class="nav-link group
-                      {{ request()->routeIs('dashboard') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon {{ request()->routeIs('dashboard')  ? 'bg-white/15 text-white' : 'bg-slate-800 text-blue-400 group-hover:text-blue-300' }}">
-                    <i class="bi bi-grid-1x2-fill"></i>
-                </span>
 
-                <span> Dashboard </span>
-            </a>
-            @endcan
+        {{-- ================= MAIN ================= --}}
+        @if(
+            $user->can('dashboard.view') ||
+            $user->can('users.view') ||
+            $user->can('branches.view')
+        )
 
-            {{-- Users --}}
-            @can('users.view')
-            <a href="{{ route('admin.users.index') }}" class="nav-link group
-                      {{ request()->routeIs('admin.users.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon {{ request()->routeIs('admin.users.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-green-400 group-hover:text-green-300' }}">
-                    <i class="bi bi-person-fill"></i>
-                </span>
+            <p class="sidebar-heading">Main</p>
 
-                <span> Users </span>
-            </a>
-            @endcan
+            <nav class="space-y-1">
 
-            {{-- Branches --}}
-            @can('branches.view')
-            <a href="{{ route('admin.branches.index') }}" class="nav-link group
-                      {{ request()->routeIs('admin.branches.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon  {{ request()->routeIs('admin.branches.*')  ? 'bg-white/15 text-white' : 'bg-slate-800 text-indigo-400 group-hover:text-indigo-300' }}">
-                    <i class="bi bi-building"></i>
-                </span>
-                <span> Branches </span>
-            </a>
-            @endcan
-        </nav>
-        <!-- //  ACADEMIC  -->
-
-        <p class="px-3 mb-2 mt-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Academic</p>
-
-        <nav class="space-y-1">
-            {{-- Academic Sessions --}}
-            
-            @can('academic.sessions.view')
-            <a href="{{ route('admin.academic.sessions.index') }}" class="nav-link group
-                      {{ request()->routeIs('admin.academic.sessions.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon {{ request()->routeIs('admin.academic.sessions.*')  ? 'bg-white/15 text-white' : 'bg-slate-800 text-sky-400 group-hover:text-sky-300' }}">
-                    <i class="bi bi-calendar-event"></i>
-                </span>
-
-                <span> Academic Sessions </span>
-            </a>
-            @endcan
-            {{-- Classes --}}
-            @can('academic.classes.view')
-            <a href="{{ route('admin.academic.classes.index') }}"
-                class="nav-link group {{ request()->routeIs('admin.academic.classes.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon  {{ request()->routeIs('admin.academic.classes.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-violet-400 group-hover:text-violet-300' }}">
-                    <i class="bi bi-mortarboard-fill"></i>
-                </span>
-                <span> Classes </span>
-            </a>
-            @endcan
-            {{-- Sections --}}
-            @can('academic.sections.view')
-            <a href="{{ route('admin.academic.sections.index') }}"
-                class="nav-link group  {{ request()->routeIs('admin.academic.sections.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon  {{ request()->routeIs('admin.academic.sections.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-teal-400 group-hover:text-teal-300' }}">
-                    <i class="bi bi-people-fill"></i>
-                </span>
-                <span> Sections </span>
-            </a>
-            @endcan
-            {{-- Subjects --}}
-            @can('academic.subjects.view')
-            <a href="{{ route('admin.academic.subjects.index') }}" class="nav-link group
-                      {{ request()->routeIs('admin.academic.subjects.*') ? 'nav-link-active' : '' }}">
-                <span class="nav-icon {{ request()->routeIs('admin.academic.subjects.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-amber-400 group-hover:text-amber-300' }}">
-                    <i class="bi bi-book-half"></i>
-                </span>
-                <span> Subjects </span>
-            </a>
-            @endcan
-            {{-- Class Subjects --}}
-            @can('academic.class-subjects.view')
-            <a href="{{ route('admin.academic.class-subjects.index') }}"
-                class="nav-link group   {{ request()->routeIs('admin.academic.class-subjects.*') ? 'nav-link-active' : '' }}">
-                <span
-                    class="nav-icon {{ request()->routeIs('admin.academic.class-subjects.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}">
-                    <i class="bi bi-diagram-3"></i>
-                </span>
-                <span> Class Subjects </span>
-            </a>
-            @endcan
-
-            {{-- Class expenses cat --}}
-            @can('academic.expense-categories.view')
-            <a href="{{ route('admin.expense-categories.index') }}"
-                class="nav-link group   {{ request()->routeIs('admin.expense-categories.*') ? 'nav-link-active' : '' }}">
-                <span
-                    class="nav-icon {{ request()->routeIs('admin.expense-categories.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}">
-                    <i class="bi bi-diagram-3"></i>
-                </span>
-                <span> Expense Category </span>
-            </a>
-            @endcan
-
-            {{-- Class expenses --}}
-            @can('academic.expenses.view')
-            <a href="{{ route('admin.expenses.index') }}"
-                class="nav-link group   {{ request()->routeIs('admin.expenses.*') ? 'nav-link-active' : '' }}">
-                <span
-                    class="nav-icon {{ request()->routeIs('admin.expenses.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}">
-                    <i class="bi bi-diagram-3"></i>
-                </span>
-                <span> Expense </span>
-            </a>
-            @endcan
-
-            {{-- Class income categories --}}
-            @can('academic.income-categories.view')
-            <a href="{{ route('admin.income-categories.index') }}"
-                class="nav-link group   {{ request()->routeIs('admin.income-categories.*') ? 'nav-link-active' : '' }}">
-                <span
-                    class="nav-icon {{ request()->routeIs('admin.income-categories.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}">
-                    <i class="bi bi-diagram-3"></i>
-                </span>
-                <span> Income Categories </span>
-            </a>
-            @endcan
-
-            {{-- Class finance --}}
-            @can('academic.finance.view')
-            <a href="{{ route('admin.finance.index') }}"
-                class="nav-link group   {{ request()->routeIs('admin.finance.*') ? 'nav-link-active' : '' }}">
-                <span
-                    class="nav-icon {{ request()->routeIs('admin.finance.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-rose-400 group-hover:text-rose-300' }}">
-                    <i class="bi bi-diagram-3"></i>
-                </span>
-                <span> Finance </span>
-            </a>
-            @endcan
-        </nav>
-
-        <!-- STUDENT MANAGEMENT  -->
-
-        <p class="px-3 mb-2 mt-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">
-            Student Management
-        </p>
-        <nav class="space-y-1">
-            {{-- Students --}}
-            @can('academic.students.view')
-            <a href="{{ route('admin.students.index') }}"
-                class="nav-link group  {{ request()->routeIs('admin.students.*') ? 'nav-link-active' : '' }}">
-                <span
-                    class="nav-icon   {{ request()->routeIs('admin.students.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-cyan-400 group-hover:text-cyan-300' }}">
-                    <i class="bi bi-people"></i>
-                </span>
-                <span> Students </span>
-            </a>
-            @endcan
-            {{-- guardians --}}
-            @can('academic.guardians.view')
-            <a href="{{ route('admin.guardians.index') }}"
-                class="nav-link group  {{ request()->routeIs('admin.guardians.*') ? 'nav-link-active' : '' }}">
-                <span
-                    class="nav-icon   {{ request()->routeIs('admin.guardians.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-cyan-400 group-hover:text-cyan-300' }}">
-                    <i class="bi bi-people"></i>
-                </span>
-                <span> Guardians </span>
-            </a>
-            @endcan
-            {{-- class-routines --}}
-            @can('academic.class-routines.view')
-            
-            <a href="{{ route('admin.class-routines.index') }}"
-                class="nav-link group  {{ request()->routeIs('admin.class-routines.*') ? 'nav-link-active' : '' }}">
-                <span
-                    class="nav-icon   {{ request()->routeIs('admin.class-routines.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-cyan-400 group-hover:text-cyan-300' }}">
-                    <i class="bi bi-people"></i>
-                </span>
-                <span> Class Routines </span>
-            </a>
-            @endcan
-            {{-- Enrollments --}}
-            @can('academic.student-enrollments.view')
-            <a href="{{ route('admin.student-enrollments.bulk.create') }}"
-                class="nav-link group {{ request()->routeIs('admin.student-enrollments.*') ? 'nav-link-active' : '' }}">
-                <span
-                    class="nav-icon  {{ request()->routeIs('admin.student-enrollments.*') ? 'bg-white/15 text-white' : 'bg-slate-800 text-emerald-400 group-hover:text-emerald-300' }}">
-                    <i class="bi bi-person-check-fill"></i>
-                </span>
-                <span> Enrollments </span>
-            </a>
-            @endcan
-        </nav>
-
-        {{-- ====== ATTENDANCE ===== --}}
-
-        <!-- Attendance -->
-        <div class="nav-group">
-            <!-- Group Header -->
-            <button type="button" onclick="toggleNavGroup(this)"
-                class="nav-group-title w-full flex items-center justify-between text-left">
-                <div class="flex items-center gap-3">
-                    <span class="nav-icon bg-slate-800 text-slate-300">
-                        <i class="bi bi-calendar-check-fill"></i>
-                    </span>
-
-                    <span> Attendance </span>
-                </div>
-
-                <i class="bi bi-chevron-down nav-group-arrow text-slate-500 transition-transform duration-300"></i>
-            </button>
-
-            <!-- Submenu -->
-            <div class="nav-submenu hidden">
-                <!-- Take Attendance -->
-                @can('academic.attendance.view')
-                <a href="{{ route('admin.attendance.index') }}" class="nav-link group">
-                    <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                        <i class="bi bi-check2-square"></i>
-                    </span>
-
-                    <span> Take Attendance </span>
-                </a>
+                @can('dashboard.view')
+                    <a href="{{ route('dashboard') }}"
+                        class="nav-link {{ request()->routeIs('dashboard') ? 'nav-link-active' : '' }}">
+                        <span class="nav-icon bg-slate-800 text-blue-400">
+                            <i class="bi bi-grid-1x2-fill"></i>
+                        </span>
+                        <span>Dashboard</span>
+                    </a>
                 @endcan
 
-                <!-- Attendance Report -->
-                @can('academic.attendance-reports.view')
-                <a href="{{ route('admin.attendances.report') }}" class="nav-link group">
-                    <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                        <i class="bi bi-file-earmark-bar-graph"></i>
-                    </span>
-
-                    <span> Attendance Report </span>
-                </a>
+                @can('users.view')
+                    <a href="{{ route('admin.users.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.users.*') ? 'nav-link-active' : '' }}">
+                        <span class="nav-icon bg-slate-800 text-green-400">
+                            <i class="bi bi-person-fill"></i>
+                        </span>
+                        <span>Users</span>
+                    </a>
                 @endcan
 
-                <!-- Analytics -->
-                @can('academic.attendance-analytics.view')
-                <a href="{{ route('admin.attendance.analytics') }}" class="nav-link group">
-                    <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                        <i class="bi bi-graph-up-arrow"></i>
-                    </span>
-
-                    <span> Analytics </span>
-                </a>
-                @endcan
-                <!-- Student History -->
-                @can('academic.student-history.view')
-                <a href="{{ route('admin.attendance.student-history') }}" class="nav-link group">
-                    <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                        <i class="bi bi-person-lines-fill"></i>
-                    </span>
-
-                    <span> Student History </span>
-                </a>
+                @can('branches.view')
+                    <a href="{{ route('admin.branches.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.branches.*') ? 'nav-link-active' : '' }}">
+                        <span class="nav-icon bg-slate-800 text-indigo-400">
+                            <i class="bi bi-building"></i>
+                        </span>
+                        <span>Branches</span>
+                    </a>
                 @endcan
 
-                <!-- Monthly Report -->
-                @can('academic.monthly-reports.view')
-                <a href="{{ route('admin.attendance.monthly-report') }}" class="nav-link group">
-                    <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                        <i class="bi bi-calendar3"></i>
-                    </span>
+            </nav>
+        @endif
 
-                    <span> Monthly Report </span>
-                </a>
+
+        {{-- ================= ACADEMIC ================= --}}
+        @if($hasAcademicMenu)
+
+            <p class="sidebar-heading">Academic</p>
+
+            <nav class="space-y-1">
+
+                @can('academic-sessions.view')
+                    <a href="{{ route('admin.academic.sessions.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.academic.sessions.*') ? 'nav-link-active' : '' }}">
+                        <span class="nav-icon bg-slate-800 text-sky-400">
+                            <i class="bi bi-calendar-event"></i>
+                        </span>
+                        <span>Academic Sessions</span>
+                    </a>
                 @endcan
-            </div>
-        </div>
 
-        <style>
-            /* ================================ NAV GROUP ================================ */
-
-            .nav-group-title {
-                border: 0;
-                background: transparent;
-                cursor: pointer;
-                padding: 10px 12px;
-                color: #cbd5e1;
-                transition: all 0.25s ease;
-                border-radius: 10px;
-            }
-
-            .nav-group-title:hover {
-                background: rgba(30, 41, 59, 0.7);
-                color: #fff;
-            }
-
-            /* Arrow */
-
-            .nav-group-arrow {
-                font-size: 12px;
-            }
-
-            /* ================================  SUBMENU ============================= */
-
-            .nav-submenu {
-                margin-left: 12px;
-                padding-left: 14px;
-                border-left: 1px solid rgba(148, 163, 184, 0.15);
-
-                overflow: hidden;
-
-                transition:
-                    max-height 0.3s ease,
-                    opacity 0.25s ease;
-
-                animation: submenuOpen 0.25s ease;
-            }
-
-            /* Submenu links */
-
-            .nav-submenu .nav-link {
-                position: relative;
-                margin-top: 3px;
-                padding-left: 10px;
-            }
-
-            /* Small line before submenu item */
-
-            .nav-submenu .nav-link::before {
-                content: "";
-                position: absolute;
-                left: -15px;
-                top: 50%;
-
-                width: 8px;
-                height: 1px;
-
-                background: rgba(148, 163, 184, 0.25);
-
-                transition: all 0.2s ease;
-            }
-
-            .nav-submenu .nav-link:hover::before {
-                width: 14px;
-                background: #3b82f6;
-            }
-
-            /* Open arrow */
-
-            .nav-group-title.active .nav-group-arrow {
-                transform: rotate(180deg);
-            }
-
-            /* Active group */
-
-            .nav-group-title.active {
-                background: rgba(30, 41, 59, 0.8);
-                color: #fff;
-            }
-
-            /* Animation */
-
-            @keyframes submenuOpen {
-                from {
-                    opacity: 0;
-                    transform: translateY(-5px);
-                }
-
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-        </style>
-
-        {{-- ========================================================= Fee Management
-        ========================================================= --}}
-        <p class="px-3 mb-2 mt-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">
-            Fee Management
-        </p>
-
-        <nav class="space-y-1">
-            {{-- Fee Management --}}
-            <div class="nav-group">
-                {{-- Parent Button --}}
-                <button type="button" onclick="toggleNavGroup(this)" class="nav-group-title w-full flex items-center justify-between text-left
-                   {{ request()->routeIs('admin.fee-types.*')
-    || request()->routeIs('admin.student-fees.*')
-    || request()->routeIs('admin.fee-collection.*')
-    || request()->routeIs('admin.fee-payment-history.*')
-    ? 'active'
-    : '' }}">
-                    <div class="flex items-center gap-3">
-                        <span class="nav-icon
-                    {{ request()->routeIs('admin.fee-types.*')
-    || request()->routeIs('admin.student-fees.*')
-    || request()->routeIs('admin.fee-collection.*')
-    || request()->routeIs('admin.fee-payment-history.*')
-    ? 'bg-white/15 text-white'
-    : 'bg-slate-800 text-orange-400' }}">
-                            <i class="bi bi-cash-stack"></i>
+                @can('classes.view')
+                    <a href="{{ route('admin.academic.classes.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.academic.classes.*') ? 'nav-link-active' : '' }}">
+                        <span class="nav-icon bg-slate-800 text-violet-400">
+                            <i class="bi bi-mortarboard-fill"></i>
                         </span>
-
-                        <span> Fee Management </span>
-                    </div>
-
-                    {{-- Arrow --}}
-                    <i class="bi bi-chevron-down nav-group-arrow text-slate-500 transition-transform duration-300"></i>
-                </button>
-
-                {{-- Submenu --}}
-                <div class="nav-submenu hidden">
-                    {{-- Fee Types --}}
-                    @can('academic.fee-types.view')
-                    <a href="{{ route('admin.fee-types.index') }}" class="nav-link group
-                       {{ request()->routeIs('admin.fee-types.*')
-    ? 'active'
-    : '' }}">
-                        <span class="nav-icon bg-slate-800 text-slate-400
-                           group-hover:bg-blue-600
-                           group-hover:text-white
-                           {{ request()->routeIs('admin.fee-types.*')
-    ? 'bg-blue-600 text-white'
-    : '' }}">
-                            <i class="bi bi-tags"></i>
-                        </span>
-
-                        <span> Fee Types </span>
+                        <span>Classes</span>
                     </a>
-                    @endcan
+                @endcan
 
-                    {{-- Student Fees --}}
-                    @can('academic.student-fees.view')
-                    <a href="{{ route('admin.student-fees.index') }}" class="nav-link group
-                       {{ request()->routeIs('admin.student-fees.*')
-    ? 'active'
-    : '' }}">
-                        <span class="nav-icon bg-slate-800 text-slate-400
-                           group-hover:bg-blue-600
-                           group-hover:text-white
-                           {{ request()->routeIs('admin.student-fees.*')
-    ? 'bg-blue-600 text-white'
-    : '' }}">
-                            <i class="bi bi-person-check"></i>
+                @can('sections.view')
+                    <a href="{{ route('admin.academic.sections.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.academic.sections.*') ? 'nav-link-active' : '' }}">
+                        <span class="nav-icon bg-slate-800 text-teal-400">
+                            <i class="bi bi-people-fill"></i>
                         </span>
-
-                        <span> Student Fees </span>
+                        <span>Sections</span>
                     </a>
-                    @endcan
+                @endcan
 
-                    {{-- Fee Collection --}}
-                    @can('academic.fee-collection.view')
-                    <a href="{{ route('admin.fee-collection.index') }}" class="nav-link group
-                       {{ request()->routeIs('admin.fee-collection.*')
-    ? 'active'
-    : '' }}">
-                        <span class="nav-icon bg-slate-800 text-slate-400
-                           group-hover:bg-blue-600
-                           group-hover:text-white
-                           {{ request()->routeIs('admin.fee-collection.*')
-    ? 'bg-blue-600 text-white'
-    : '' }}">
-                            <i class="bi bi-wallet2"></i>
+                @can('subjects.view')
+                    <a href="{{ route('admin.academic.subjects.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.academic.subjects.*') ? 'nav-link-active' : '' }}">
+                        <span class="nav-icon bg-slate-800 text-amber-400">
+                            <i class="bi bi-book-half"></i>
                         </span>
-
-                        <span> Fee Collection </span>
+                        <span>Subjects</span>
                     </a>
-                    @endcan
-                    {{-- Payment History --}}
-                    @can('academic.fee-payment-history.view')
-                    <a href="{{ route('admin.fee-payment-history.index') }}" class="nav-link group
-                       {{ request()->routeIs('admin.fee-payment-history.*')
-    ? 'active'
-    : '' }}">
-                        <span class="nav-icon bg-slate-800 text-slate-400
-                           group-hover:bg-blue-600
-                           group-hover:text-white
-                           {{ request()->routeIs('admin.fee-payment-history.*')
-    ? 'bg-blue-600 text-white'
-    : '' }}">
-                            <i class="bi bi-clock-history"></i>
-                        </span>
+                @endcan
 
-                        <span> Payment History </span>
-                    </a>
-                    @endcan
-                    {{-- Fee Collection Report --}}
-                    @can('academic.fee-collection.report.view')
-                    <a href="{{ route('admin.fee-collection.report') }}" class="nav-link group
-                       {{ request()->routeIs('admin.fee-collection.report')
-    ? 'active'
-    : '' }}">
-                        <span class="nav-icon bg-slate-800 text-slate-400
-                           group-hover:bg-blue-600
-                           group-hover:text-white
-                           {{ request()->routeIs('admin.fee-collection.report')
-    ? 'bg-blue-600 text-white'
-    : '' }}">
-                            <i class="bi bi-file-earmark-bar-graph"></i>
-                        </span>
-
-                        <span> Fee Collection Report </span>
-                    </a>
-                    @endcan
-                    {{-- Fee Collection Due Report --}}
-                    @can('academic.fee-collection.due-report.view')
-                    <a href="{{ route('admin.fee-collection.due-report') }}" class="nav-link group
-                       {{ request()->routeIs('admin.fee-collection.due-report')
-    ? 'active'
-    : '' }}">
-                        <span class="nav-icon bg-slate-800 text-slate-400
-                           group-hover:bg-blue-600
-                           group-hover:text-white
-                           {{ request()->routeIs('admin.fee-collection.due-report')
-    ? 'bg-blue-600 text-white'
-    : '' }}">
-                            <i class="bi bi-hourglass-split"></i>
-                        </span>
-
-                        <span> Fee Collection Due Report </span>
-                    </a>
-                    @endcan
-                </div>
-            </div>
-        </nav>
-
-        <p class="px-3 mb-2 mt-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Examination</p>
-
-        <nav class="space-y-1">
-            {{-- Exams --}}
-            <div class="nav-group">
-                {{-- Parent Button --}}
-                <button type="button" onclick="toggleNavGroup(this)"
-                    class="nav-group-title w-full flex items-center justify-between text-left">
-                    <div class="flex items-center gap-3">
-                        <span class="nav-icon bg-slate-800 text-slate-300">
-                            <i class="bi bi-journal-text"></i>
-                        </span>
-
-                        <span> Exams </span>
-                    </div>
-
-                    <i class="bi bi-chevron-down nav-group-arrow text-slate-500 transition-transform duration-300"></i>
-                </button>
-
-                {{-- Submenu --}}
-                <div class="nav-submenu hidden">
-                    {{-- Exams --}}
-                    @can('academic.exams.view')
-                    <a href="{{ route('admin.exams.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <i class="bi bi-journal-text"></i>
-                        </span>
-                        <span> Exams </span>
-                    </a>
-                    @endcan
-                    {{-- Exam Schedules --}}
-                    @can('academic.exam-schedules.view')
-                    <a href="{{ route('admin.exam-schedules.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <i class="bi bi-calendar2-week"></i>
-                        </span>
-                        <span> Exam Schedules </span>
-                    </a>
-                    @endcan
-
-                    {{-- Exam Marks --}}
-                    @can('academic.exam-marks.view')
-                    <a href="{{ route('admin.exam-marks.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <i class="bi bi-pencil-square"></i>
-                        </span>
-                        <span> Exam Marks </span>
-                    </a>
-                    @endcan
-
-                    {{-- Exam Subjects --}}
-                    @can('academic.exam-subjects.view')
-                    <a href="{{ route('admin.exam-subjects.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <i class="bi bi-book"></i>
-                        </span>
-                        <span> Exam Subjects </span>
-                    </a>
-                    @endcan
-
-                    {{-- Student Result --}}
-                    @can('academic.student-results.view')
-                    <a href="{{ route('admin.student-results.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <i class="bi bi-person-vcard"></i>
-                        </span>
-
-                        <span> Student Result </span>
-                    </a>
-                    @endcan
-
-                    {{-- Result Sheets --}}
-                    @can('academic.result-sheets.view')
-                    <a href="{{ route('admin.result-sheets.show') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <i class="bi bi-file-earmark-spreadsheet"></i>
-                        </span>
-                        <span> Result Sheets </span>
-                    </a>
-                    @endcan
-
-                    {{-- Class Result --}}
-                    @can('academic.class-results.view')
-                    <a href="{{ route('admin.class-results.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <i class="bi bi-clipboard-data"></i>
-                        </span>
-
-                        <span> Class Result </span>
-                    </a>
-                    @endcan
-                </div>
-            </div>
-        </nav>
-        {{-- ======= OTHER MODULES ==== --}}
-
-        <p class="px-3 mb-2 mt-7 text-[10px] font-semibold uppercase tracking-[0.12em] text-slate-500">Other Modules</p>
-
-        <nav class="space-y-1">
-            <!-- Teachers & Staff -->
-            <div class="nav-group">
-                <!-- Group Header -->
-                <button type="button" onclick="toggleNavGroup(this)"
-                    class="nav-group-title w-full flex items-center justify-between text-left">
-                    <div class="flex items-center gap-3">
-                        <span class="nav-icon bg-slate-800 text-slate-300">
-                            <i class="bi bi-person-workspace"></i>
-                        </span>
-
-                        <span> Teachers & Staff </span>
-                    </div>
-
-                    <i class="bi bi-chevron-down nav-group-arrow text-slate-500 transition-transform duration-300"></i>
-                </button>
-
-                <!-- Submenu -->
-                <div class="nav-submenu hidden">
-                    <!-- Departments -->
-                    @can('academic.departments.view')
-                    <a href="{{ route('admin.departments.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
+                @can('class-subjects.view')
+                    <a href="{{ route('admin.academic.class-subjects.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.academic.class-subjects.*') ? 'nav-link-active' : '' }}">
+                        <span class="nav-icon bg-slate-800 text-rose-400">
                             <i class="bi bi-diagram-3"></i>
                         </span>
+                        <span>Class Subjects</span>
+                    </a>
+                @endcan
 
-                        <span> Departments </span>
-                    </a>
-                    @endcan
-                    <!-- Designations -->
-                    @can('academic.designations.view')
-                    <a href="{{ route('admin.designations.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <i class="bi bi-person-badge"></i>
-                        </span>
-                        <span> Designations </span>
-                    </a>
-                    @endcan
-                    <!-- Teachers & Staff -->
-                    @can('academic.teacher-staff.view')
-                    <a href="{{ route('admin.teacher-staff.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
+            </nav>
+        @endif
+
+
+        {{-- ================= STUDENT MANAGEMENT ================= --}}
+        @if($hasStudentMenu)
+
+            <p class="sidebar-heading">Student Management</p>
+
+            <nav class="space-y-1">
+
+                @can('students.view')
+                    <a href="{{ route('admin.students.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.students.*') ? 'nav-link-active' : '' }}">
+                        <span class="nav-icon bg-slate-800 text-cyan-400">
                             <i class="bi bi-people"></i>
                         </span>
-                        <span> Teachers & Staff </span>
+                        <span>Students</span>
                     </a>
-                    @endcan
+                @endcan
 
-                    <!-- Teacher Assignment -->
-                    @can('academic.teacher-assignment.view')
-                    <a href="{{ route('admin.teacher-assignment.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <span
-                                class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                                <i class="bi bi-person-lines-fill"></i>
-                            </span>
+                @can('guardians.view')
+                    <a href="{{ route('admin.guardians.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.guardians.*') ? 'nav-link-active' : '' }}">
+                        <span class="nav-icon bg-slate-800 text-cyan-400">
+                            <i class="bi bi-people-fill"></i>
                         </span>
-
-                        <span> Teacher Assignment </span>
+                        <span>Guardians</span>
                     </a>
-                    @endcan
+                @endcan
 
-                    <!-- salary structures -->
-                    @can('academic.salary-structures.view')
-                    <a href="{{ route('admin.salary-structures.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <span
-                                class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                                <i class="bi bi-person-lines-fill"></i>
-                            </span>
+                @can('class-routines.view')
+                    <a href="{{ route('admin.class-routines.index') }}"
+                        class="nav-link {{ request()->routeIs('admin.class-routines.*') ? 'nav-link-active' : '' }}">
+                        <span class="nav-icon bg-slate-800 text-cyan-400">
+                            <i class="bi bi-calendar-week"></i>
                         </span>
-
-                        <span> salary structures </span>
+                        <span>Class Routines</span>
                     </a>
-                    @endcan
+                @endcan
 
-                    <!-- salary structures -->
-                    @can('academic.salary-payments.view')
-                    <a href="{{ route('admin.salary-payments.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <span
-                                class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                                <i class="bi bi-person-lines-fill"></i>
-                            </span>
+                @can('student-enrollments.view')
+                    <a href="{{ route('admin.student-enrollments.bulk.create') }}"
+                        class="nav-link {{ request()->routeIs('admin.student-enrollments.*') || request()->routeIs('admin.students.enrollments.*') ? 'nav-link-active' : '' }}">
+                        <span class="nav-icon bg-slate-800 text-emerald-400">
+                            <i class="bi bi-person-check-fill"></i>
                         </span>
-                        <span> salary payments </span>
+                        <span>Enrollments</span>
                     </a>
-                    @endcan
-                </div>
-            </div>
+                @endcan
 
-            <!-- Leave  -->
-            @if(
-                auth()->user()->can('academic.leave-types.view') ||
-                auth()->user()->can('academic.leave-allocations.view') ||
-                auth()->user()->can('academic.leave-applications.view') ||
-                auth()->user()->can('academic.teacher-staff-attendance.view') ||
-                auth()->user()->can('academic.teacher-staff-attendance.report')  
-            )
+            </nav>
+        @endif
+
+
+        {{-- ================= ATTENDANCE ================= --}}
+        @if($hasAttendanceMenu)
+
             <div class="nav-group">
-                <!-- Group Header -->
+
                 <button type="button" onclick="toggleNavGroup(this)"
-                    class="nav-group-title w-full flex items-center justify-between text-left">
+                    class="nav-group-title w-full flex items-center justify-between text-left
+                    {{ request()->routeIs('admin.attendance.*') || request()->routeIs('admin.attendances.*') ? 'active' : '' }}">
+
                     <div class="flex items-center gap-3">
                         <span class="nav-icon bg-slate-800 text-slate-300">
-                            <i class="bi bi-person-workspace"></i>
+                            <i class="bi bi-calendar-check-fill"></i>
                         </span>
-
-                        <span> Leave Management </span>
+                        <span>Attendance</span>
                     </div>
 
-                    <i class="bi bi-chevron-down nav-group-arrow text-slate-500 transition-transform duration-300"></i>
+                    <i class="bi bi-chevron-down nav-group-arrow"></i>
+
                 </button>
 
-                <!-- Submenu -->
                 <div class="nav-submenu hidden">
-                    <!-- Departments -->
-                    @can('academic.leave-types.view')
-                    <a href="{{ route('admin.leave-types.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <i class="bi bi-diagram-3"></i>
-                        </span>
-                        <span> leave Types </span>
-                    </a>
-                    @endcan
-                    <!-- Designations -->
-                    @can('academic.leave-allocations.view')
-                    <a href="{{ route('admin.leave-allocations.index') }}" class="nav-link group">
-                        <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <i class="bi bi-person-badge"></i>
-                        </span>
-                        <span> leave Allocations </span>
-                    </a>
-                    @endcan
-                    <!-- Designations -->
-                    @can('academic.leave-applications.view')
-                    <a href="{{ route('admin.leave-applications.index') }}" class="nav-link group">
-                        <span class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <i class="bi bi-person-badge"></i>
-                        </span>
-                        <span> Leave Applications </span>
-                    </a>
-                    @endcan
-                    <!-- salary structures -->
-                    @can('academic.teacher-staff-attendance.view')
-                    <a href="{{ route('admin.teacher-staff-attendance.index') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <span
-                                class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                                <i class="bi bi-person-lines-fill"></i>
+
+                    @can('attendance.view')
+                        <a href="{{ route('admin.attendance.index') }}" class="nav-link group">
+                            <span class="nav-icon bg-slate-800 text-slate-400">
+                                <i class="bi bi-check2-square"></i>
                             </span>
-                        </span>
-                        <span> Teacher Staff Attendance </span>
-                    </a>
+                            <span>Take Attendance</span>
+                        </a>
                     @endcan
-                    <!-- salary structures -->
-                    @can('academic.teacher-staff-attendance.report')
-                    <a href="{{ route('admin.teacher-staff-attendance.report') }}" class="nav-link group">
-                        <span
-                            class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                            <span
-                                class="nav-icon bg-slate-800 text-slate-400 group-hover:bg-blue-600 group-hover:text-white">
-                                <i class="bi bi-person-lines-fill"></i>
+
+                </div>
+
+            </div>
+        @endif
+
+
+        {{-- ================= FEE MANAGEMENT ================= --}}
+        @if($hasFeeMenu)
+
+            <div class="nav-group">
+
+                <button type="button" onclick="toggleNavGroup(this)"
+                    class="nav-group-title w-full flex items-center justify-between text-left
+                    {{ request()->routeIs('admin.fee-types.*') ||
+                       request()->routeIs('admin.student-fees.*') ||
+                       request()->routeIs('admin.fee-collection.*') ||
+                       request()->routeIs('admin.fee-payment-history.*') ||
+                       request()->routeIs('admin.fee-reports.*') ? 'active' : '' }}">
+
+                    <div class="flex items-center gap-3">
+                        <span class="nav-icon bg-slate-800 text-orange-400">
+                            <i class="bi bi-cash-stack"></i>
+                        </span>
+                        <span>Fee Management</span>
+                    </div>
+
+                    <i class="bi bi-chevron-down nav-group-arrow"></i>
+
+                </button>
+
+                <div class="nav-submenu hidden">
+
+                    @can('fee-types.view')
+                        <a href="{{ route('admin.fee-types.index') }}" class="nav-link group">
+                            <span class="nav-icon bg-slate-800 text-slate-400">
+                                <i class="bi bi-tags"></i>
                             </span>
-                        </span>
-                        <span> Teacher Staff Attendance Report </span>
-                    </a>
+                            <span>Fee Types</span>
+                        </a>
                     @endcan
+
+                    @can('student-fees.view')
+                        <a href="{{ route('admin.student-fees.index') }}" class="nav-link group">
+                            <span class="nav-icon bg-slate-800 text-slate-400">
+                                <i class="bi bi-person-check"></i>
+                            </span>
+                            <span>Student Fees</span>
+                        </a>
+                    @endcan
+
+                    @can('fee-collection.view')
+                        <a href="{{ route('admin.fee-collection.index') }}" class="nav-link group">
+                            <span class="nav-icon bg-slate-800 text-slate-400">
+                                <i class="bi bi-wallet2"></i>
+                            </span>
+                            <span>Fee Collection</span>
+                        </a>
+                    @endcan
+
+                    @can('fee-payment-history.view')
+                        <a href="{{ route('admin.fee-payment-history.index') }}" class="nav-link group">
+                            <span class="nav-icon bg-slate-800 text-slate-400">
+                                <i class="bi bi-clock-history"></i>
+                            </span>
+                            <span>Payment History</span>
+                        </a>
+                    @endcan
+
+                    @can('fee-reports.view')
+                        <a href="{{ route('admin.fee-reports.collection') }}" class="nav-link group">
+                            <span class="nav-icon bg-slate-800 text-slate-400">
+                                <i class="bi bi-file-earmark-bar-graph"></i>
+                            </span>
+                            <span>Fee Reports</span>
+                        </a>
+                    @endcan
+
                 </div>
             </div>
-@endif
-
-            <style>
-                /* ================================
-                        NAV GROUP
-                        ================================ */
-
-                .nav-group-title {
-                    border: 0;
-                    background: transparent;
-                    cursor: pointer;
-                    padding: 10px 12px;
-                    color: #cbd5e1;
-                    transition: all 0.25s ease;
-                    border-radius: 10px;
-                }
-
-                .nav-group-title:hover {
-                    background: rgba(30, 41, 59, 0.7);
-                    color: #fff;
-                }
-
-                /* Arrow */
-
-                .nav-group-arrow {
-                    font-size: 12px;
-                }
-
-                /* ================================
-                        SUBMENU
-                        ================================ */
-
-                .nav-submenu {
-                    margin-left: 12px;
-                    padding-left: 14px;
-                    border-left: 1px solid rgba(148, 163, 184, 0.15);
-
-                    overflow: hidden;
-
-                    transition:
-                        max-height 0.3s ease,
-                        opacity 0.25s ease;
-
-                    animation: submenuOpen 0.25s ease;
-                }
-
-                /* Submenu links */
-
-                .nav-submenu .nav-link {
-                    position: relative;
-                    margin-top: 3px;
-                    padding-left: 10px;
-                }
-
-                /* Small line before submenu item */
-
-                .nav-submenu .nav-link::before {
-                    content: "";
-                    position: absolute;
-                    left: -15px;
-                    top: 50%;
-
-                    width: 8px;
-                    height: 1px;
-
-                    background: rgba(148, 163, 184, 0.25);
-
-                    transition: all 0.2s ease;
-                }
-
-                .nav-submenu .nav-link:hover::before {
-                    width: 14px;
-                    background: #3b82f6;
-                }
-
-                /* Open arrow */
-
-                .nav-group-title.active .nav-group-arrow {
-                    transform: rotate(180deg);
-                }
-
-                /* Active group */
-
-                .nav-group-title.active {
-                    background: rgba(30, 41, 59, 0.8);
-                    color: #fff;
-                }
-
-                /* Animation */
-
-                @keyframes submenuOpen {
-                    from {
-                        opacity: 0;
-                        transform: translateY(-5px);
-                    }
-
-                    to {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
-                }
-            </style>
-            {{-- Accounts --}}
-            <a href="{{ route('admin.settings.general') }}" class="nav-link  group">
-                <span class="nav-icon bg-slate-800 text-slate-500">
-                    <i class="bi bi-wallet2"></i>
-                </span>
-                <span> Settings </span>
-            </a>
-
-            {{-- Role Management --}}
-            @can('roles.view')
-                <a href="{{ route('admin.roles.index') }}"  class="nav-link group {{ request()->routeIs('admin.roles.*') ? 'nav-link-active' : '' }}">
-                    <span class="nav-icon {{ request()->routeIs('admin.roles.*')
-                            ? 'bg-white/15 text-white'
-                            : 'bg-slate-800 text-indigo-400' }}">
-                        <i class="bi bi-shield-lock"></i>
-                    </span>
-                    <span>Roles & Permissions</span>
-                </a>
-            @endcan
+        @endif
 
 
-            @if(auth()->check() && auth()->user()->hasAnyRole([
-                'Super Admin',
-                'super-admin',
-                'super_admin'
-            ]))
-                <a href="{{ route('admin.users.index') }}" class="flex items-center gap-3 rounded-lg px-3 py-2 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
-                    <svg class="h-5 w-5" fill="none" stroke="currentColor"  viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M17 20h5v-2a4 4 0 00-5-3.87M9 20H2v-2a4 4 0 015-3.87m10-7a4 4 0 11-8 0 4 4 0 018 0zm5 3a4 4 0 10-8 0 4 4 0 008 0z"/>
-                    </svg>
-                    <span>User Management</span>
-                </a>
+        {{-- ================= EXAMINATION ================= --}}
+        @if($hasExamMenu)
+
+            <div class="nav-group">
+
+                <button type="button" onclick="toggleNavGroup(this)"
+                    class="nav-group-title w-full flex items-center justify-between text-left
+                    {{ request()->routeIs('admin.exams.*') ||
+                       request()->routeIs('admin.exam-schedules.*') ||
+                       request()->routeIs('admin.exam-subjects.*') ||
+                       request()->routeIs('admin.exam-marks.*') ||
+                       request()->routeIs('admin.student-results.*') ||
+                       request()->routeIs('admin.result-sheets.*') ||
+                       request()->routeIs('admin.class-results.*') ? 'active' : '' }}">
+
+                    <div class="flex items-center gap-3">
+                        <span class="nav-icon bg-slate-800 text-slate-300">
+                            <i class="bi bi-journal-text"></i>
+                        </span>
+                        <span>Examination</span>
+                    </div>
+
+                    <i class="bi bi-chevron-down nav-group-arrow"></i>
+
+                </button>
+
+                <div class="nav-submenu hidden">
+
+                    @can('exams.view')
+                        <a href="{{ route('admin.exams.index') }}" class="nav-link group">
+                            <span class="nav-icon bg-slate-800 text-slate-400">
+                                <i class="bi bi-journal-text"></i>
+                            </span>
+                            <span>Exams</span>
+                        </a>
+                    @endcan
+
+                    @can('exam-schedules.view')
+                        <a href="{{ route('admin.exam-schedules.index') }}" class="nav-link group">
+                            <span class="nav-icon bg-slate-800 text-slate-400">
+                                <i class="bi bi-calendar2-week"></i>
+                            </span>
+                            <span>Exam Schedules</span>
+                        </a>
+                    @endcan
+
+                    @can('exam-subjects.view')
+                        <a href="{{ route('admin.exam-subjects.index') }}" class="nav-link group">
+                            <span class="nav-icon bg-slate-800 text-slate-400">
+                                <i class="bi bi-book"></i>
+                            </span>
+                            <span>Exam Subjects</span>
+                        </a>
+                    @endcan
+
+                    @can('exam-marks.view')
+                        <a href="{{ route('admin.exam-marks.index') }}" class="nav-link group">
+                            <span class="nav-icon bg-slate-800 text-slate-400">
+                                <i class="bi bi-pencil-square"></i>
+                            </span>
+                            <span>Exam Marks</span>
+                        </a>
+                    @endcan
+
+                    @can('student-results.view')
+                        <a href="{{ route('admin.student-results.index') }}" class="nav-link group">
+                            <span class="nav-icon bg-slate-800 text-slate-400">
+                                <i class="bi bi-person-vcard"></i>
+                            </span>
+                            <span>Student Results</span>
+                        </a>
+                    @endcan
+
+                    @can('result-sheets.view')
+                        <a href="{{ route('admin.result-sheets.show') }}" class="nav-link group">
+                            <span class="nav-icon bg-slate-800 text-slate-400">
+                                <i class="bi bi-file-earmark-spreadsheet"></i>
+                            </span>
+                            <span>Result Sheets</span>
+                        </a>
+                    @endcan
+
+                    @can('class-results.view')
+                        <a href="{{ route('admin.class-results.index') }}" class="nav-link group">
+                            <span class="nav-icon bg-slate-800 text-slate-400">
+                                <i class="bi bi-clipboard-data"></i>
+                            </span>
+                            <span>Class Results</span>
+                        </a>
+                    @endcan
+
+                </div>
+            </div>
+        @endif
+
+
+        {{-- ================= OTHER MODULES ================= --}}
+        @if($hasStaffMenu || $hasLeaveMenu || $hasFinanceMenu)
+
+            <p class="sidebar-heading">Other Modules</p>
+
+            @if($hasStaffMenu)
+
+                <div class="nav-group">
+
+                    <button type="button" onclick="toggleNavGroup(this)"
+                        class="nav-group-title w-full flex items-center justify-between text-left">
+
+                        <div class="flex items-center gap-3">
+                            <span class="nav-icon bg-slate-800 text-slate-300">
+                                <i class="bi bi-person-workspace"></i>
+                            </span>
+                            <span>Teachers & Staff</span>
+                        </div>
+
+                        <i class="bi bi-chevron-down nav-group-arrow"></i>
+
+                    </button>
+
+                    <div class="nav-submenu hidden">
+
+                        @can('departments.view')
+                            <a href="{{ route('admin.departments.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-diagram-3"></i>
+                                </span>
+                                <span>Departments</span>
+                            </a>
+                        @endcan
+
+                        @can('designations.view')
+                            <a href="{{ route('admin.designations.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-person-badge"></i>
+                                </span>
+                                <span>Designations</span>
+                            </a>
+                        @endcan
+
+                        @can('teacher-staff.view')
+                            <a href="{{ route('admin.teacher-staff.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-people"></i>
+                                </span>
+                                <span>Teachers & Staff</span>
+                            </a>
+                        @endcan
+
+                        @can('teacher-assignment.view')
+                            <a href="{{ route('admin.teacher-assignment.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-person-lines-fill"></i>
+                                </span>
+                                <span>Teacher Assignment</span>
+                            </a>
+                        @endcan
+
+                        @can('salary-structures.view')
+                            <a href="{{ route('admin.salary-structures.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-cash"></i>
+                                </span>
+                                <span>Salary Structures</span>
+                            </a>
+                        @endcan
+
+                        @can('salary-payments.view')
+                            <a href="{{ route('admin.salary-payments.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-wallet"></i>
+                                </span>
+                                <span>Salary Payments</span>
+                            </a>
+                        @endcan
+
+                    </div>
+                </div>
             @endif
-        </nav>
+
+
+            {{-- Leave Management --}}
+            @if($hasLeaveMenu)
+
+                <div class="nav-group">
+
+                    <button type="button" onclick="toggleNavGroup(this)"
+                        class="nav-group-title w-full flex items-center justify-between text-left">
+
+                        <div class="flex items-center gap-3">
+                            <span class="nav-icon bg-slate-800 text-slate-300">
+                                <i class="bi bi-calendar2-check"></i>
+                            </span>
+                            <span>Leave Management</span>
+                        </div>
+
+                        <i class="bi bi-chevron-down nav-group-arrow"></i>
+
+                    </button>
+
+                    <div class="nav-submenu hidden">
+
+                        @can('leave-types.view')
+                            <a href="{{ route('admin.leave-types.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-list-check"></i>
+                                </span>
+                                <span>Leave Types</span>
+                            </a>
+                        @endcan
+
+                        @can('leave-allocations.view')
+                            <a href="{{ route('admin.leave-allocations.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-calendar-plus"></i>
+                                </span>
+                                <span>Leave Allocations</span>
+                            </a>
+                        @endcan
+
+                        @can('leave-applications.view')
+                            <a href="{{ route('admin.leave-applications.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-envelope-paper"></i>
+                                </span>
+                                <span>Leave Applications</span>
+                            </a>
+                        @endcan
+
+                        @can('teacher-staff-attendance.view')
+                            <a href="{{ route('admin.teacher-staff-attendance.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-person-check"></i>
+                                </span>
+                                <span>Teacher Staff Attendance</span>
+                            </a>
+                        @endcan
+
+                    </div>
+                </div>
+            @endif
+
+
+            {{-- Finance --}}
+            @if($hasFinanceMenu)
+
+                <div class="nav-group">
+
+                    <button type="button" onclick="toggleNavGroup(this)"
+                        class="nav-group-title w-full flex items-center justify-between text-left">
+
+                        <div class="flex items-center gap-3">
+                            <span class="nav-icon bg-slate-800 text-slate-300">
+                                <i class="bi bi-calculator"></i>
+                            </span>
+                            <span>Finance</span>
+                        </div>
+
+                        <i class="bi bi-chevron-down nav-group-arrow"></i>
+
+                    </button>
+
+                    <div class="nav-submenu hidden">
+
+                        @can('income-categories.view')
+                            <a href="{{ route('admin.income-categories.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-tags"></i>
+                                </span>
+                                <span>Income Categories</span>
+                            </a>
+                        @endcan
+
+                        @can('expense-categories.view')
+                            <a href="{{ route('admin.expense-categories.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-tags"></i>
+                                </span>
+                                <span>Expense Categories</span>
+                            </a>
+                        @endcan
+
+                        @can('expenses.view')
+                            <a href="{{ route('admin.expenses.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-receipt"></i>
+                                </span>
+                                <span>Expenses</span>
+                            </a>
+                        @endcan
+
+                        @can('accounts.view')
+                            <a href="{{ route('admin.accounts.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-bank"></i>
+                                </span>
+                                <span>Accounts</span>
+                            </a>
+                        @endcan
+
+                        @can('finance.view')
+                            <a href="{{ route('admin.finance.index') }}" class="nav-link group">
+                                <span class="nav-icon bg-slate-800 text-slate-400">
+                                    <i class="bi bi-graph-up"></i>
+                                </span>
+                                <span>Finance Report</span>
+                            </a>
+                        @endcan
+
+                    </div>
+                </div>
+            @endif
+
+        @endif
+
+
+        {{-- ================= SETTINGS ================= --}}
+        @can('settings.view')
+            <a href="{{ route('admin.settings.general') }}"
+                class="nav-link {{ request()->routeIs('admin.settings.*') ? 'nav-link-active' : '' }}">
+                <span class="nav-icon bg-slate-800 text-slate-400">
+                    <i class="bi bi-gear"></i>
+                </span>
+                <span>Settings</span>
+            </a>
+        @endcan
+
+
+        {{-- ================= ROLE MANAGEMENT ================= --}}
+        @can('roles.view')
+            <a href="{{ route('admin.roles.index') }}"
+                class="nav-link {{ request()->routeIs('admin.roles.*') ? 'nav-link-active' : '' }}">
+                <span class="nav-icon bg-slate-800 text-indigo-400">
+                    <i class="bi bi-shield-lock"></i>
+                </span>
+                <span>Roles & Permissions</span>
+            </a>
+        @endcan
+
     </div>
 
-    {{-- ========= Sidebar Footer ===== --}}
 
+    {{-- Sidebar Footer --}}
     <div class="shrink-0 border-t border-slate-800 p-3">
+
         <div class="flex items-center gap-3 rounded-xl bg-slate-800/60 px-3 py-2.5 ring-1 ring-white/5">
-            <div
-                class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md shadow-blue-900/30">
+
+            <div class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md shadow-blue-900/30">
                 <i class="bi bi-person-fill text-sm"></i>
             </div>
+
             <div class="min-w-0">
-                <p class="text-xs font-medium text-white truncate">Administrator</p>
+                <p class="text-xs font-medium text-white truncate">
+                    {{ $user->name }}
+                </p>
                 <p class="text-[10px] text-slate-500">Madrasah ERP</p>
             </div>
+
         </div>
+
     </div>
+
 </aside>
 
-{{-- ============== MOBILE OVERLAY ================== --}}
 
-<div id="sidebarOverlay" onclick="closeSidebar()"  class="fixed inset-0 z-40 hidden bg-black/50 backdrop-blur-sm lg:hidden"></div>
+{{-- Mobile Overlay --}}
+<div id="sidebarOverlay"
+    onclick="closeSidebar()"
+    class="fixed inset-0 z-40 hidden bg-black/50 backdrop-blur-sm lg:hidden">
+</div>
 
-{{-- ==== SIDEBAR STYLES ===== --}}
 
+{{-- Sidebar CSS --}}
 <style>
     .sidebar-scroll {
         scrollbar-width: thin;
         scrollbar-color: #334155 transparent;
     }
+
     .sidebar-scroll::-webkit-scrollbar {
         width: 5px;
     }
+
     .sidebar-scroll::-webkit-scrollbar-track {
         background: transparent;
     }
@@ -1009,7 +758,16 @@
         border-radius: 10px;
     }
 
-    /* ---- Nav links ---- */
+    .sidebar-heading {
+        padding-left: 12px;
+        margin-bottom: 8px;
+        margin-top: 28px;
+        font-size: 10px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #64748b;
+    }
 
     .nav-link {
         display: flex;
@@ -1020,21 +778,12 @@
         font-size: 0.875rem;
         font-weight: 500;
         color: #cbd5e1;
-        /* slate-300 */
-        transition:
-            background-color 0.15s ease,
-            color 0.15s ease,
-            transform 0.1s ease;
+        transition: background-color 0.15s ease, color 0.15s ease;
     }
 
     .nav-link:hover {
         background-color: #1e293b;
-        /* slate-800 */
         color: #ffffff;
-    }
-
-    .nav-link:active {
-        transform: scale(0.98);
     }
 
     .nav-link-active {
@@ -1047,19 +796,6 @@
         background: linear-gradient(135deg, #2563eb, #4f46e5);
     }
 
-    .nav-link-disabled {
-        color: #64748b;
-        /* slate-500 */
-        cursor: not-allowed;
-    }
-
-    .nav-link-disabled:hover {
-        background-color: transparent;
-        color: #94a3b8;
-    }
-
-    /* ---- Icon chip ---- */
-
     .nav-icon {
         display: flex;
         align-items: center;
@@ -1069,78 +805,111 @@
         height: 2rem;
         border-radius: 0.55rem;
         font-size: 0.95rem;
-        transition:
-            background-color 0.15s ease,
-            color 0.15s ease;
+        transition: background-color 0.15s ease, color 0.15s ease;
     }
 
-    /* ---- Sub links (submenu) ---- */
-
-    .sub-link {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-        border-radius: 0.5rem;
-        padding: 0.45rem 0.6rem;
-        font-size: 0.8125rem;
-        color: #94a3b8;
-        /* slate-400 */
-        transition:
-            background-color 0.15s ease,
-            color 0.15s ease;
+    .nav-group-title {
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        padding: 10px 12px;
+        color: #cbd5e1;
+        transition: all 0.25s ease;
+        border-radius: 10px;
     }
 
-    .sub-link:hover {
-        background-color: #1e293b;
+    .nav-group-title:hover,
+    .nav-group-title.active {
+        background: rgba(30, 41, 59, 0.8);
         color: #ffffff;
     }
 
-    .sub-link-active {
-        background-color: #2563eb;
-        color: #ffffff;
+    .nav-group-arrow {
+        font-size: 12px;
+        transition: transform 0.3s ease;
     }
 
-    /* ---- Soon badge ---- */
+    .nav-group-title.active .nav-group-arrow {
+        transform: rotate(180deg);
+    }
 
-    .soon-badge {
-        margin-left: auto;
-        font-size: 9px;
-        border-radius: 9999px;
-        background-color: #1e293b;
-        padding: 0.15rem 0.45rem;
-        color: #64748b;
-        letter-spacing: 0.02em;
+    .nav-submenu {
+        margin-left: 12px;
+        padding-left: 14px;
+        border-left: 1px solid rgba(148, 163, 184, 0.15);
+        overflow: hidden;
+        transition: max-height 0.3s ease, opacity 0.25s ease;
+        animation: submenuOpen 0.25s ease;
+    }
+
+    .nav-submenu .nav-link {
+        position: relative;
+        margin-top: 3px;
+        padding-left: 10px;
+    }
+
+    .nav-submenu .nav-link::before {
+        content: "";
+        position: absolute;
+        left: -15px;
+        top: 50%;
+        width: 8px;
+        height: 1px;
+        background: rgba(148, 163, 184, 0.25);
+        transition: all 0.2s ease;
+    }
+
+    .nav-submenu .nav-link:hover::before {
+        width: 14px;
+        background: #3b82f6;
+    }
+
+    @keyframes submenuOpen {
+        from {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 </style>
 
-<!-- SIDEBAR JS  -->
 
+{{-- Sidebar JavaScript --}}
 <script>
     function openSidebar() {
         const sidebar = document.getElementById("sidebar");
         const overlay = document.getElementById("sidebarOverlay");
-        if (sidebar) {
-            sidebar.classList.remove("-translate-x-full");
-        }
-        if (overlay) {
-            overlay.classList.remove("hidden");
-        }
+
+        if (sidebar) sidebar.classList.remove("-translate-x-full");
+        if (overlay) overlay.classList.remove("hidden");
+
         document.body.classList.add("overflow-hidden");
     }
 
     function closeSidebar() {
         const sidebar = document.getElementById("sidebar");
         const overlay = document.getElementById("sidebarOverlay");
-        if (sidebar) {
-            sidebar.classList.add("-translate-x-full");
-        }
-        if (overlay) {
-            overlay.classList.add("hidden");
-        }
+
+        if (sidebar) sidebar.classList.add("-translate-x-full");
+        if (overlay) overlay.classList.add("hidden");
+
         document.body.classList.remove("overflow-hidden");
     }
 
-    // Close mobile sidebar after clicking a link
+    function toggleNavGroup(button) {
+        const submenu = button.nextElementSibling;
+
+        if (!submenu) return;
+
+        const isOpen = !submenu.classList.contains("hidden");
+
+        submenu.classList.toggle("hidden");
+        button.classList.toggle("active", !isOpen);
+    }
 
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll("#sidebar a").forEach(function (link) {
@@ -1149,6 +918,21 @@
                     closeSidebar();
                 }
             });
+        });
+
+        // Automatically open active submenu
+        document.querySelectorAll("#sidebar .nav-group").forEach(function (group) {
+            const activeLink = group.querySelector(".nav-link-active");
+
+            if (activeLink) {
+                const submenu = activeLink.closest(".nav-submenu");
+                const button = submenu ? submenu.previousElementSibling : null;
+
+                if (submenu && button) {
+                    submenu.classList.remove("hidden");
+                    button.classList.add("active");
+                }
+            }
         });
     });
 </script>

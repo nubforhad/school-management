@@ -92,13 +92,13 @@
       <div class="pillar">
         <div class="icon">📞</div>
         <h4>ফোন</h4>
-        <p><a href="tel:+8801XXXXXXXXX">+880 1XXX-XXXXXX</a></p>
-        <p><a href="tel:+8801XXXXXXXXX">+880 1XXX-XXXXXX</a></p>
+        <p><a href="tel:+8801713260111">+880 17132 60111</a></p>
+        <p><a href="tel:+8801713260111">+880 17132 60111</a></p>
       </div>
       <div class="pillar">
         <div class="icon">✉️</div>
         <h4>ইমেইল</h4>
-        <p><a href="mailto:{{ $settings->get('email') ?? 'info@nidaulquran.com' }}">{{ $settings->get('email') ?? 'info@nidaulquran.com' }}</a></p>
+        <p><a href="mailto:{{ $settings->get('email') ?? 'info.nqm@gmail.com' }}">{{ $settings->get('email') ?? 'info.nqm@gmail.com' }}</a></p>
         <p>২৪ ঘণ্টার মধ্যে উত্তর দেওয়া হয়</p>
       </div>
       <div class="pillar">
@@ -239,7 +239,7 @@
       <h3>আপনার সন্তানের দ্বীনি ও নৈতিক ভবিষ্যৎ গড়তে আজই যোগাযোগ করুন</h3>
       <p>ভর্তি সংক্রান্ত যেকোনো তথ্যের জন্য কল করুন অথবা সরাসরি ক্যাম্পাসে চলে আসুন।</p>
     </div>
-    <a href="tel:+8801XXXXXXXXX" class="btn btn-gold">এখনই কল করুন →</a>
+    <a href="tel:+8801713260111" class="btn btn-gold">এখনই কল করুন →</a>
   </div>
 </section>
 

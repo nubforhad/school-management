@@ -259,6 +259,354 @@
   </div>
 </section>
 
+
+{{-- =====================================================================
+     NEW SECTIONS — এই ফাইলের কোড আপনার welcome.blade.php তে বসান।
+     ১) "বাণী" সেকশন  → #about সেকশনের ঠিক পরে (</section> এর পর)
+     ২) "শিক্ষক ও টিম" সেকশন → #departments সেকশনের পরে / ADMISSION BAND এর আগে
+     ৩) নিচের <style> ব্লকটি আপনার মূল CSS ফাইলে সরিয়ে নিন
+     ছবি দিতে: asset('images/team/...') পাথে ছবি রাখুন, নাম/পদবি বদলান।
+     ===================================================================== --}}
+
+     {{-- =====================================================================
+     NEW SECTIONS — এই ফাইলের কোড আপনার welcome.blade.php তে বসান।
+     ১) "বাণী" সেকশন  → #about সেকশনের ঠিক পরে (</section> এর পর)
+     ২) "শিক্ষক ও টিম" সেকশন → #departments সেকশনের পরে / ADMISSION BAND এর আগে
+     ৩) responsive.css ফাইলটি আপনার মূল CSS এর পরে লোড করুন
+     ছবি দিতে: asset('images/team/...') পাথে ছবি রাখুন, নাম/পদবি বদলান।
+     ===================================================================== --}}
+<style>
+  /* =====================================================================
+   responsive.css — মূল CSS ফাইলের পরে লোড করুন (সবার শেষে)।
+   layout এ <head> এর ভেতরে নিশ্চিত করুন:
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   Breakpoints: 1024px (ট্যাবলেট ল্যান্ডস্কেপ) · 768px (ট্যাবলেট) · 480px (মোবাইল)
+   ===================================================================== */
+
+/* ---------- সাধারণ নিরাপত্তা ---------- */
+ 
+/* ---------- নতুন সেকশন: বাণী ---------- */
+.message-stack { display: grid; gap: 28px; max-width: 980px; margin: 0 auto; }
+.message-card {
+  display: grid; grid-template-columns: 220px 1fr; gap: 32px; align-items: start;
+  background: var(--paper-2, #f6f1e4); border-radius: 20px; padding: 28px;
+  border: 1px solid rgba(0,0,0,.08);
+}
+.message-card.reverse { grid-template-columns: 1fr 220px; }
+.message-card.reverse .message-photo { order: 2; }
+.message-photo { margin: 0; text-align: center; }
+.message-photo img,
+.message-photo .avatar-fallback {
+  width: 180px; height: 220px; object-fit: cover; margin: 0 auto 14px;
+  border-radius: 90px 90px 14px 14px; display: flex;
+}
+.message-photo figcaption strong { display: block; font-size: 1.05rem; }
+.message-photo figcaption span { display: block; font-size: .88rem; opacity: .7; margin-top: 2px; }
+.message-body h4 { margin: 0 0 12px; font-size: clamp(1.15rem, 3vw, 1.35rem); }
+.message-body p { line-height: 1.9; margin: 0 0 12px; }
+.message-body .signoff { font-weight: 600; margin-top: 16px; opacity: .85; }
+
+/* ---------- নতুন সেকশন: টিম ---------- */
+.team-group {
+  margin: 36px 0 18px; font-size: clamp(1.05rem, 2.8vw, 1.2rem);
+  padding-bottom: 8px; border-bottom: 2px solid var(--gold, #c9a24b); display: inline-block;
+}
+.team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 22px; }
+.team-card { text-align: center; background: #fff; border-radius: 16px; padding: 22px 16px; border: 1px solid rgba(0,0,0,.08); }
+.team-photo { width: 120px; height: 120px; margin: 0 auto 14px; }
+.team-photo img,
+.team-photo .avatar-fallback { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+.team-card h5 { margin: 0 0 4px; font-size: 1.02rem; }
+.team-card span { font-size: .88rem; opacity: .7; }
+.avatar-fallback {
+  display: flex; align-items: center; justify-content: center;
+  background: var(--green, #0f4c3a); color: var(--gold, #e6c36a);
+  font-size: 2rem; font-weight: 700;
+}
+
+/* =====================================================================
+   ট্যাবলেট ল্যান্ডস্কেপ ও ছোট ল্যাপটপ  ≤ 1024px
+   ===================================================================== */
+@media (max-width: 1024px) {
+  section { padding-top: 64px; padding-bottom: 64px; }
+  .hero .container { display: grid; grid-template-columns: 1fr; gap: 40px; text-align: center; }
+  .hero .actions { justify-content: center; }
+  .hero .arch-frame { max-width: 420px; margin-inline: auto; }
+  .pillars, .dept-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .notice-wrap { grid-template-columns: 1fr !important; }
+  .gallery-grid { grid-template-columns: repeat(3, 1fr) !important; grid-auto-rows: 180px; }
+}
+
+/* =====================================================================
+   ট্যাবলেট  ≤ 768px
+   ===================================================================== */
+@media (max-width: 768px) {
+  section { padding-top: 52px; padding-bottom: 52px; }
+  .section-head { margin-bottom: 28px; }
+  .section-head h3 { font-size: clamp(1.4rem, 5vw, 1.8rem); }
+
+  /* হিরো */
+  .hero h2 { font-size: clamp(1.7rem, 7vw, 2.4rem); line-height: 1.35; }
+  .hero .lead { font-size: 1rem; line-height: 1.85; }
+  .stat-chip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .stat-chip > div { min-width: 0; }
+
+  /* বাণী */
+  .message-card, .message-card.reverse { grid-template-columns: 1fr; gap: 20px; padding: 22px; }
+  .message-card.reverse .message-photo { order: 0; }
+  .message-photo img, .message-photo .avatar-fallback { width: 150px; height: 185px; border-radius: 75px 75px 12px 12px; }
+  .message-body { text-align: left; }
+
+  /* টিম */
+  .team-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .team-card { padding: 18px 10px; }
+  .team-photo { width: 96px; height: 96px; }
+  .team-card h5 { font-size: .96rem; }
+
+  /* ডিপার্টমেন্ট কার্ড */
+  .dept-card { flex-direction: column; gap: 10px; }
+  .dept-card .num { align-self: flex-start; }
+
+  /* ব্যান্ড */
+  .band .container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; text-align: center; }
+
+  /* গ্যালারি */
+  .gallery-grid { grid-template-columns: repeat(2, 1fr) !important; grid-auto-rows: 160px; gap: 12px; }
+  .gallery-grid .gtile { grid-column: auto !important; grid-row: auto !important; }
+
+  /* CTA */
+  .cta-banner { flex-direction: column; text-align: center; gap: 18px; padding: 28px 20px; }
+  .cta-banner .btn { width: 100%; text-align: center; }
+}
+
+/* =====================================================================
+   মোবাইল  ≤ 480px
+   ===================================================================== */
+@media (max-width: 480px) {
+  section { padding-top: 40px; padding-bottom: 40px; }
+
+  .pillars, .dept-grid { grid-template-columns: 1fr !important; gap: 14px; }
+
+  /* হিরো বাটন: পূর্ণ প্রস্থ */
+  .hero .actions { flex-direction: column; align-items: stretch; gap: 10px; }
+  .hero .actions .btn { width: 100%; text-align: center; justify-content: center; }
+  .hero .arch-frame { max-width: 300px; }
+  .stat-chip strong { font-size: 1rem; }
+  .stat-chip span { font-size: .72rem; }
+
+  /* নোটিশ */
+  .notice-item { gap: 12px; padding: 14px; }
+  .notice-date { min-width: 54px; }
+  .admission-card { padding: 22px 18px; }
+  .admission-card ul li { flex-direction: column; align-items: flex-start; gap: 2px; }
+  .admission-card .btn { width: 100%; text-align: center; }
+
+  /* গ্যালারি */
+  .gallery-grid { grid-auto-rows: 130px; gap: 10px; }
+
+  /* বাণী */
+  .message-card, .message-card.reverse { padding: 18px; border-radius: 16px; }
+  .message-body p { line-height: 1.8; font-size: .97rem; }
+
+  /* টিম — মোবাইলেও ২ কলাম, কিন্তু আরও কম্প্যাক্ট */
+  .team-grid { gap: 10px; }
+  .team-photo { width: 80px; height: 80px; }
+  .avatar-fallback { font-size: 1.4rem; }
+  .team-card span { font-size: .8rem; }
+}
+
+/* ছোট মোবাইল (৩৬০px এর নিচে) */
+@media (max-width: 360px) {
+  .team-grid { grid-template-columns: 1fr; }
+  .band .container { grid-template-columns: 1fr; }
+}
+
+/* মোশন কমানোর পছন্দ মান্য করা */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+
+{{-- ================= ১) চেয়ারম্যান ও অন্যান্য বাণী ================= --}}
+<section id="messages">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">বাণী</span>
+      <h3>কর্তৃপক্ষের বক্তব্য</h3>
+    </div>
+
+    <div class="message-stack">
+
+      {{-- চেয়ারম্যান --}}
+      <article class="message-card">
+        <figure class="message-photo">
+          {{-- ছবি থাকলে নিচের লাইনটি চালু করুন --}}
+          {{-- <img src="{{ asset('images/team/chairman.jpg') }}" alt="চেয়ারম্যান"> --}}
+          <div class="avatar-fallback">
+            <img src="{{ asset('asset/image/chair.jpeg') }}" alt="চেয়ারম্যান" style="width:100%; height:100%; object-fit:cover; border-radius:90px 90px 14px 14px;">
+          </div>
+          <figcaption>
+            <strong>মাহমুদুল হাসান</strong>
+            <span>চেয়ারম্যান, নিদাউল কুরআন মাদরাসা</span>
+          </figcaption>
+        </figure>
+        <div class="message-body">
+          <h4>চেয়ারম্যানের বাণী</h4>
+          <p>আলহামদুলিল্লাহ। নিদাউল কুরআন মাদরাসা কেবল একটি শিক্ষাপ্রতিষ্ঠান নয়; এটি একটি আমানত। আমরা চাই প্রতিটি শিশু কুরআনের আলোয় বেড়ে উঠুক এবং একই সাথে আধুনিক বিশ্বে নিজের যোগ্যতা প্রমাণ করুক।</p>
+          <p>ইলমের পাশাপাশি আমল ও আখলাকের চর্চা আমাদের শিক্ষাব্যবস্থার কেন্দ্রে। অভিভাবকদের আস্থা ও দোয়াই আমাদের সবচেয়ে বড় শক্তি। আল্লাহ আমাদের এই প্রচেষ্টা কবুল করুন।</p>
+          <p class="signoff">— মাহমুদুল হাসান</p>
+        </div>
+      </article>
+
+      {{-- অধ্যক্ষ / প্রিন্সিপাল --}}
+      <article class="message-card reverse">
+        <figure class="message-photo">
+          {{-- <img src="{{ asset('images/team/principal.jpg') }}" alt="অধ্যক্ষ"> --}}
+          <div class="avatar-fallback">অ</div>
+          <figcaption>
+            <strong>অধ্যক্ষের নাম</strong>
+            <span>অধ্যক্ষ, নিদাউল কুরআন মাদরাসা</span>
+          </figcaption>
+        </figure>
+        <div class="message-body">
+          <h4>অধ্যক্ষের বাণী</h4>
+          <p>প্লে থেকে ৮ম শ্রেণি পর্যন্ত প্রতিটি স্তরে আমরা শিক্ষার্থীর বয়স ও সামর্থ্য অনুযায়ী পাঠদান নিশ্চিত করি। শুদ্ধ তিলাওয়াত, হিফয, বাংলা-আরবি-ইংরেজি ভাষা এবং নৈতিক শিক্ষা একসাথে এগিয়ে চলে।</p>
+          <p>অভিভাবকদের সাথে নিয়মিত যোগাযোগ রেখে প্রতিটি শিক্ষার্থীর অগ্রগতি আমরা পর্যবেক্ষণ করি।</p>
+          <p class="signoff">— অধ্যক্ষের নাম</p>
+        </div>
+      </article>
+
+      {{-- সেক্রেটারি / সভাপতি — প্রয়োজন না হলে এই ব্লকটি মুছে দিন --}}
+      <article class="message-card">
+        <figure class="message-photo">
+          {{-- <img src="{{ asset('images/team/secretary.jpg') }}" alt="সেক্রেটারি"> --}}
+          <div class="avatar-fallback">
+            <img src="{{ asset('asset/image/md.jpg') }}" alt="সেক্রেটারি" style="width:100%; height:100%; object-fit:cover; border-radius:90px 90px 14px 14px;">
+          </div>
+          <figcaption>
+            <strong>আবু সালমান মুহাম্মদ আম্মার</strong>
+            <span>সেক্রেটারি, পরিচালনা কমিটি</span>
+          </figcaption>
+        </figure>
+        <div class="message-body">
+          <h4>সেক্রেটারির বক্তব্য</h4>
+          <p>মাদরাসার উন্নয়ন ও শিক্ষার্থীদের মানোন্নয়নে পরিচালনা কমিটি নিরলস কাজ করছে। শিক্ষক, অভিভাবক ও শুভানুধ্যায়ীদের সম্মিলিত সহযোগিতায় আমরা আরও এগিয়ে যেতে চাই।</p>
+          <p class="signoff">— আবু সালমান মুহাম্মদ আম্মার</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+
+{{-- ================= ২) শিক্ষক ও টিম ================= --}}
+<section id="team" style="background:var(--paper-2);">
+  <div class="container">
+    <div class="section-head">
+      <span class="kicker">আমাদের টিম</span>
+      <h3>শিক্ষকমণ্ডলী ও পরিচালনা পর্ষদ</h3>
+      <p>দেশ ও বিদেশের প্রতিষ্ঠান থেকে উচ্চতর ডিগ্রিপ্রাপ্ত, নৈতিক ও চারিত্রিক মানসম্পন্ন শিক্ষকগণ আপনার সন্তানের পাশে আছেন।</p>
+    </div>
+
+    {{-- পরিচালনা পর্ষদ --}}
+    <h4 class="team-group">পরিচালনা পর্ষদ</h4>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-photo"><div class="avatar-fallback">
+          <img src="{{ asset('asset/image/chair.jpeg') }}" alt="চেয়ারম্যান" style="width:100%; height:100%; object-fit:cover; border-radius:90px 90px 14px 14px;">
+        </div></div>
+        <h5>মাহমুদুল হাসান</h5>
+        <span>চেয়ারম্যান</span>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><div class="avatar-fallback">অ</div></div>
+        <h5>অধ্যক্ষের নাম</h5>
+        <span>অধ্যক্ষ</span>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><div class="avatar-fallback">
+          <img src="{{ asset('asset/image/md.jpg') }}" alt="সেক্রেটারি" style="width:100%; height:100%; object-fit:cover; border-radius:90px 90px 14px 14px;">
+        </div></div>
+        <h5>আবু সালমান মুহাম্মদ আম্মার</h5>
+        <span>সেক্রেটারি</span>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><div class="avatar-fallback">সদ</div></div>
+        <h5>সদস্যের নাম</h5>
+        <span>সদস্য</span>
+      </div>
+    </div>
+
+    {{-- শিক্ষকবৃন্দ --}}
+    <h4 class="team-group">শিক্ষকবৃন্দ</h4>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-photo"><div class="avatar-fallback">ক্বা</div></div>
+        <h5>শিক্ষকের নাম</h5>
+        <span>প্রধান ক্বারী, হিফয বিভাগ</span>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><div class="avatar-fallback">হি</div></div>
+        <h5>শিক্ষকের নাম</h5>
+        <span>হিফয শিক্ষক</span>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><div class="avatar-fallback">না</div></div>
+        <h5>শিক্ষকের নাম</h5>
+        <span>নুরানি ও নাযেরা বিভাগ</span>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><div class="avatar-fallback">আ</div></div>
+        <h5>শিক্ষকের নাম</h5>
+        <span>আরবি ভাষা শিক্ষক</span>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><div class="avatar-fallback">ই</div></div>
+        <h5>শিক্ষকের নাম</h5>
+        <span>ইংরেজি শিক্ষক</span>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><div class="avatar-fallback">বা</div></div>
+        <h5>শিক্ষকের নাম</h5>
+        <span>বাংলা ও জেনারেল বিভাগ</span>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><div class="avatar-fallback">শি</div></div>
+        <h5>শিক্ষিকার নাম</h5>
+        <span>বালিকা শাখা</span>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><div class="avatar-fallback">চি</div></div>
+        <h5>শিক্ষকের নাম</h5>
+        <span>চিত্রাঙ্কন ও হাতের লেখা</span>
+      </div>
+    </div>
+
+    {{-- ডাইনামিক করতে চাইলে (Controller থেকে $teachers পাঠান):
+    <div class="team-grid">
+      @foreach($teachers as $t)
+        <div class="team-card">
+          <div class="team-photo">
+            @if($t->photo)
+              <img src="{{ asset('storage/'.$t->photo) }}" alt="{{ $t->name }}">
+            @else
+              <div class="avatar-fallback">{{ mb_substr($t->name, 0, 1) }}</div>
+            @endif
+          </div>
+          <h5>{{ $t->name }}</h5>
+          <span>{{ $t->designation }}</span>
+        </div>
+      @endforeach
+    </div>
+    --}}
+  </div>
+</section>
+
+
+{{-- CSS এখন responsive.css ফাইলে আছে — মূল CSS এর পরে লোড করুন --}}
+ 
+
 <!-- ===== CTA BANNER ===== -->
 <section style="padding-top:0;">
   <div class="cta-banner">

@@ -15,26 +15,16 @@ class FeeReportController extends Controller
     public function collection(Request $request)
     {
         $user = auth()->user();
-
         if (!$user || !$user->branch_id) {
             abort(403, 'Your account is not assigned to any branch.');
         }
-
         $branchId = $user->branch_id;
-
-        /*
-        |--------------------------------------------------------------------------
-        | Payment Query
-        |--------------------------------------------------------------------------
-        */
-
         $query = FeePayment::with([
             'student',
             'feeType',
             'branch',
             'collector',
-        ])
-            ->where('branch_id', $branchId);
+        ])->where('branch_id', $branchId);
 
         /*
         |--------------------------------------------------------------------------
@@ -97,42 +87,13 @@ class FeeReportController extends Controller
             );
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Get Payments
-        |--------------------------------------------------------------------------
-        */
-
-        $payments = $query
-            ->latest('payment_date')
-            ->latest('id')
-            ->get();
-
-        /*
-        |--------------------------------------------------------------------------
-        | Summary
-        |--------------------------------------------------------------------------
-        */
-
+        $payments = $query->latest('payment_date')->latest('id')->get();
         $totalCollection = $payments->sum('amount');
-
         $totalTransactions = $payments->count();
-
-        $cashCollection = $payments
-            ->where('payment_method', 'cash')
-            ->sum('amount');
-
-        $bankCollection = $payments
-            ->where('payment_method', 'bank')
-            ->sum('amount');
-
-        $mobileBankingCollection = $payments
-            ->where('payment_method', 'mobile_banking')
-            ->sum('amount');
-
-        $otherCollection = $payments
-            ->where('payment_method', 'other')
-            ->sum('amount');
+        $cashCollection = $payments->where('payment_method', 'cash')->sum('amount');
+        $bankCollection = $payments->where('payment_method', 'bank')->sum('amount');
+        $mobileBankingCollection = $payments->where('payment_method', 'mobile_banking')->sum('amount');
+        $otherCollection = $payments->where('payment_method', 'other')->sum('amount');
 
         /*
         |--------------------------------------------------------------------------
@@ -150,26 +111,10 @@ class FeeReportController extends Controller
         $feeTypes = FeeType::where(
             'branch_id',
             $branchId
-        )
-            ->orderBy('name')
+        )->orderBy('name')
             ->get();
-
-        /*
-        |--------------------------------------------------------------------------
-        | Branch
-        |--------------------------------------------------------------------------
-        */
-
         $branch = $user->branch;
-
-        /*
-        |--------------------------------------------------------------------------
-        | View
-        |--------------------------------------------------------------------------
-        */
-
-        return view(
-            'admin.fee-reports.collection',
+        return view( 'admin.fee-collection.report',
             compact(
                 'payments',
                 'students',
@@ -282,25 +227,12 @@ class FeeReportController extends Controller
     |--------------------------------------------------------------------------
     */
 
-        $totalCollected = $payments->sum('amount');
-
+        $totalCollection = $payments->sum('amount');
         $totalTransactions = $payments->count();
-
-        $cashTotal = $payments
-            ->where('payment_method', 'cash')
-            ->sum('amount');
-
-        $bankTotal = $payments
-            ->where('payment_method', 'bank')
-            ->sum('amount');
-
-        $mobileBankingTotal = $payments
-            ->where('payment_method', 'mobile_banking')
-            ->sum('amount');
-
-        $otherTotal = $payments
-            ->where('payment_method', 'other')
-            ->sum('amount');
+        $cashCollection = $payments->where('payment_method', 'cash')->sum('amount');
+        $bankCollection = $payments->where('payment_method', 'bank')->sum('amount');
+        $mobileBankingCollection = $payments->where('payment_method', 'mobile_banking')->sum('amount');
+        $otherCollection = $payments->where('payment_method', 'other')->sum('amount');
 
         return view(
             'admin.fee-collection.report',
@@ -308,12 +240,12 @@ class FeeReportController extends Controller
                 'payments',
                 'students',
                 'feeTypes',
-                'totalCollected',
+                'totalCollection',
                 'totalTransactions',
-                'cashTotal',
-                'bankTotal',
-                'mobileBankingTotal',
-                'otherTotal'
+                'cashCollection',
+                'bankCollection',
+                'mobileBankingCollection',
+                'otherCollection'
             )
         );
     }

@@ -4,7 +4,7 @@
     <span class="bismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
     <div class="contacts">
       <span>📞 {{ $settings->get('phone') ?? '01713-260111' }} </span>
-      <span>✉️ {{ $settings->get('email') ?? 'info@nidarul-madrasha.edu.bd'  }} </span>
+      <span>✉️ {{ $settings->get('email') ?? 'info.nqm@gmail.com'  }} </span>
       <span>📍 ঢাকা, বাংলাদেশ</span>
     </div>
   </div>

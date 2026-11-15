@@ -12,67 +12,70 @@ use Illuminate\Validation\Rule;
 class StudentFeeController extends Controller
 {
     /**
+     * Check whether user can access all branches.
+     */
+    private function canAccessAllBranches(): bool
+    {
+        return auth()->user()->hasAnyRole([
+            'Super Admin',
+            'Admin',
+        ]);
+    }
+
+    /**
+     * Get current user branch ID.
+     */
+    private function getUserBranchId()
+    {
+        $user = auth()->user();
+
+        if (!$this->canAccessAllBranches() && !$user->branch_id) {
+            abort(403, 'Your account is not assigned to any branch.');
+        }
+
+        return $user->branch_id;
+    }
+
+    /**
      * Student Fee Assignment List
      */
     public function index(Request $request)
     {
-        $branchId = auth()->user()->branch_id;
-
-        if (!$branchId) {
-            abort(403, 'Your account is not assigned to any branch.');
-        }
+        $user = auth()->user();
+        $allBranches = $this->canAccessAllBranches();
 
         $query = StudentFee::with([
             'student',
             'feeType',
             'academicSession',
             'branch',
-        ])
-            ->where('branch_id', $branchId);
+        ]);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Search Student
-        |--------------------------------------------------------------------------
-        */
+        // Branch restriction
+        if (!$allBranches) {
+            $query->where('branch_id', $this->getUserBranchId());
+        } elseif ($request->filled('branch_id')) {
+            $query->where('branch_id', $request->branch_id);
+        }
 
+        // Student Search
         if ($request->filled('search')) {
-
             $search = $request->search;
 
             $query->whereHas('student', function ($q) use ($search) {
-
                 $q->where('name', 'like', "%{$search}%")
                     ->orWhere('student_id', 'like', "%{$search}%");
             });
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Fee Type Filter
-        |--------------------------------------------------------------------------
-        */
-
+        // Fee Type Filter
         if ($request->filled('fee_type_id')) {
-
-            $query->where(
-                'fee_type_id',
-                $request->fee_type_id
-            );
+            $query->where('fee_type_id', $request->fee_type_id);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Status Filter
-        |--------------------------------------------------------------------------
-        */
-
+        // Status Filter
         if ($request->filled('status')) {
-
-            $query->where(
-                'status',
-                $request->status
-            );
+            $query->where('status', $request->status);
         }
 
         $studentFees = $query
@@ -80,20 +83,25 @@ class StudentFeeController extends Controller
             ->paginate(20)
             ->withQueryString();
 
-        $feeTypes = FeeType::where('branch_id', $branchId)
+        $feeTypes = FeeType::query()
+            ->when(!$allBranches, function ($q) use ($user) {
+                $q->where('branch_id', $user->branch_id);
+            })
+            ->when(
+                $allBranches && $request->filled('branch_id'),
+                function ($q) use ($request) {
+                    $q->where('branch_id', $request->branch_id);
+                }
+            )
             ->where('status', true)
             ->orderBy('name')
             ->get();
 
         return view(
             'admin.student-fees.index',
-            compact(
-                'studentFees',
-                'feeTypes'
-            )
+            compact('studentFees', 'feeTypes')
         );
     }
-
 
     /**
      * Create Assignment
@@ -101,44 +109,29 @@ class StudentFeeController extends Controller
     public function create()
     {
         $user = auth()->user();
+        $allBranches = $this->canAccessAllBranches();
 
-        $branchId = $user->branch_id;
+        $branchId = $this->getUserBranchId();
 
-        if (!$branchId) {
-            abort(403, 'Your account is not assigned to any branch.');
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Students
-        |--------------------------------------------------------------------------
-        */
-
-        $students = Student::where('branch_id', $branchId)
+        $students = Student::query()
+            ->when(!$allBranches, function ($q) use ($branchId) {
+                $q->where('branch_id', $branchId);
+            })
             ->orderBy('name')
             ->get();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Fee Types
-        |--------------------------------------------------------------------------
-        */
-
-        $feeTypes = FeeType::where('branch_id', $branchId)
+        $feeTypes = FeeType::query()
+            ->when(!$allBranches, function ($q) use ($branchId) {
+                $q->where('branch_id', $branchId);
+            })
             ->where('status', true)
             ->orderBy('name')
             ->get();
 
-        /*
-        |--------------------------------------------------------------------------
-        | Academic Sessions
-        |--------------------------------------------------------------------------
-        */
-
-        $academicSessions = AcademicSession::where(
-            'branch_id',
-            $branchId
-        )
+        $academicSessions = AcademicSession::query()
+            ->when(!$allBranches, function ($q) use ($branchId) {
+                $q->where('branch_id', $branchId);
+            })
             ->orderByDesc('id')
             ->get();
 
@@ -152,6 +145,40 @@ class StudentFeeController extends Controller
         );
     }
 
+    /**
+     * Validate student, fee type and academic session
+     * must belong to the same branch.
+     */
+    private function validateRelatedBranch(array $validated): int
+    {
+        $student = Student::findOrFail($validated['student_id']);
+
+        $branchId = $student->branch_id;
+
+        // Non-privileged users can only use their own branch
+        if (
+            !$this->canAccessAllBranches() &&
+            $branchId != auth()->user()->branch_id
+        ) {
+            abort(403, 'Unauthorized branch access.');
+        }
+
+        $feeType = FeeType::findOrFail($validated['fee_type_id']);
+
+        $academicSession = AcademicSession::findOrFail(
+            $validated['academic_session_id']
+        );
+
+        if ($feeType->branch_id != $branchId) {
+            abort(422, 'Selected fee type does not belong to the student branch.');
+        }
+
+        if ($academicSession->branch_id != $branchId) {
+            abort(422, 'Selected academic session does not belong to the student branch.');
+        }
+
+        return $branchId;
+    }
 
     /**
      * Store Assignment
@@ -159,12 +186,9 @@ class StudentFeeController extends Controller
     public function store(Request $request)
     {
         $user = auth()->user();
+        $allBranches = $this->canAccessAllBranches();
 
-        $branchId = $user->branch_id;
-
-        if (!$branchId) {
-            abort(403, 'Your account is not assigned to any branch.');
-        }
+        $branchId = $this->getUserBranchId();
 
         $validated = $request->validate([
 
@@ -172,8 +196,8 @@ class StudentFeeController extends Controller
                 'required',
                 'integer',
                 Rule::exists('students', 'id')
-                    ->where(function ($query) use ($branchId) {
-                        $query->where('branch_id', $branchId);
+                    ->when(!$allBranches, function ($rule) use ($branchId) {
+                        $rule->where('branch_id', $branchId);
                     }),
             ],
 
@@ -181,8 +205,8 @@ class StudentFeeController extends Controller
                 'required',
                 'integer',
                 Rule::exists('fee_types', 'id')
-                    ->where(function ($query) use ($branchId) {
-                        $query->where('branch_id', $branchId);
+                    ->when(!$allBranches, function ($rule) use ($branchId) {
+                        $rule->where('branch_id', $branchId);
                     }),
             ],
 
@@ -190,8 +214,8 @@ class StudentFeeController extends Controller
                 'required',
                 'integer',
                 Rule::exists('academic_sessions', 'id')
-                    ->where(function ($query) use ($branchId) {
-                        $query->where('branch_id', $branchId);
+                    ->when(!$allBranches, function ($rule) use ($branchId) {
+                        $rule->where('branch_id', $branchId);
                     }),
             ],
 
@@ -232,12 +256,13 @@ class StudentFeeController extends Controller
             ],
         ]);
 
-        $amount = (float) $validated['amount'];
+        // Verify same branch
+        $branchId = $this->validateRelatedBranch($validated);
 
+        $amount = (float) $validated['amount'];
         $discount = (float) ($validated['discount'] ?? 0);
 
         if ($discount > $amount) {
-
             return back()
                 ->withInput()
                 ->withErrors([
@@ -247,34 +272,20 @@ class StudentFeeController extends Controller
 
         $payableAmount = $amount - $discount;
 
-        /*
-        |--------------------------------------------------------------------------
-        | Duplicate Check
-        |--------------------------------------------------------------------------
-        |
-        | Same student + same fee type + same session + same month/year
-        | should not accidentally be assigned twice.
-        |
-        */
-
+        // Duplicate Check
         $exists = StudentFee::where('branch_id', $branchId)
             ->where('student_id', $validated['student_id'])
             ->where('fee_type_id', $validated['fee_type_id'])
-            ->where(
-                'academic_session_id',
-                $validated['academic_session_id']
-            )
+            ->where('academic_session_id', $validated['academic_session_id'])
             ->where('fee_month', $validated['fee_month'] ?? null)
             ->where('fee_year', $validated['fee_year'] ?? null)
             ->exists();
 
         if ($exists) {
-
             return back()
                 ->withInput()
                 ->withErrors([
-                    'student_id' =>
-                        'This fee has already been assigned to this student for the selected period.',
+                    'student_id' => 'This fee has already been assigned to this student for the selected period.',
                 ]);
         }
 
@@ -282,48 +293,33 @@ class StudentFeeController extends Controller
 
             'branch_id' => $branchId,
 
-            'student_id' =>
-                $validated['student_id'],
+            'student_id' => $validated['student_id'],
 
-            'fee_type_id' =>
-                $validated['fee_type_id'],
+            'fee_type_id' => $validated['fee_type_id'],
 
-            'academic_session_id' =>
-                $validated['academic_session_id'],
+            'academic_session_id' => $validated['academic_session_id'],
 
-            'fee_month' =>
-                $validated['fee_month'] ?? null,
+            'fee_month' => $validated['fee_month'] ?? null,
 
-            'fee_year' =>
-                $validated['fee_year'] ?? null,
+            'fee_year' => $validated['fee_year'] ?? null,
 
-            'amount' =>
-                $amount,
+            'amount' => $amount,
 
-            'discount' =>
-                $discount,
+            'discount' => $discount,
 
-            'payable_amount' =>
-                $payableAmount,
+            'payable_amount' => $payableAmount,
 
-            'due_date' =>
-                $validated['due_date'] ?? null,
+            'due_date' => $validated['due_date'] ?? null,
 
-            'status' =>
-                'unpaid',
+            'status' => 'unpaid',
 
-            'remarks' =>
-                $validated['remarks'] ?? null,
+            'remarks' => $validated['remarks'] ?? null,
         ]);
 
         return redirect()
             ->route('admin.student-fees.index')
-            ->with(
-                'success',
-                'Student fee assigned successfully.'
-            );
+            ->with('success', 'Student fee assigned successfully.');
     }
-
 
     /**
      * Show Assignment
@@ -345,31 +341,62 @@ class StudentFeeController extends Controller
         );
     }
 
-
     /**
      * Edit Assignment
      */
     public function edit(StudentFee $studentFee)
     {
         $this->authorizeBranch($studentFee);
-        $branchId = auth()->user()->branch_id;
-        $students = Student::where('branch_id', $branchId)->orderBy('name')->get();
-        $feeTypes = FeeType::where('branch_id', $branchId)->where('status', true)->orderBy('name')->get();
-        $academicSessions = AcademicSession::where('branch_id',  $branchId )->orderByDesc('id')->get();
 
-        return view( 'admin.student-fees.edit', compact( 'studentFee', 'students', 'feeTypes', 'academicSessions'));
+        $user = auth()->user();
+        $allBranches = $this->canAccessAllBranches();
+
+        $branchId = $this->getUserBranchId();
+
+        $students = Student::query()
+            ->when(!$allBranches, function ($q) use ($branchId) {
+                $q->where('branch_id', $branchId);
+            })
+            ->orderBy('name')
+            ->get();
+
+        $feeTypes = FeeType::query()
+            ->when(!$allBranches, function ($q) use ($branchId) {
+                $q->where('branch_id', $branchId);
+            })
+            ->where('status', true)
+            ->orderBy('name')
+            ->get();
+
+        $academicSessions = AcademicSession::query()
+            ->when(!$allBranches, function ($q) use ($branchId) {
+                $q->where('branch_id', $branchId);
+            })
+            ->orderByDesc('id')
+            ->get();
+
+        return view(
+            'admin.student-fees.edit',
+            compact(
+                'studentFee',
+                'students',
+                'feeTypes',
+                'academicSessions'
+            )
+        );
     }
 
     /**
      * Update Assignment
      */
-    public function update(
-        Request $request,
-        StudentFee $studentFee
-    ) {
+    public function update(Request $request, StudentFee $studentFee)
+    {
         $this->authorizeBranch($studentFee);
 
-        $branchId = auth()->user()->branch_id;
+        $user = auth()->user();
+        $allBranches = $this->canAccessAllBranches();
+
+        $branchId = $this->getUserBranchId();
 
         $validated = $request->validate([
 
@@ -377,8 +404,8 @@ class StudentFeeController extends Controller
                 'required',
                 'integer',
                 Rule::exists('students', 'id')
-                    ->where(function ($query) use ($branchId) {
-                        $query->where('branch_id', $branchId);
+                    ->when(!$allBranches, function ($rule) use ($branchId) {
+                        $rule->where('branch_id', $branchId);
                     }),
             ],
 
@@ -386,8 +413,8 @@ class StudentFeeController extends Controller
                 'required',
                 'integer',
                 Rule::exists('fee_types', 'id')
-                    ->where(function ($query) use ($branchId) {
-                        $query->where('branch_id', $branchId);
+                    ->when(!$allBranches, function ($rule) use ($branchId) {
+                        $rule->where('branch_id', $branchId);
                     }),
             ],
 
@@ -395,8 +422,8 @@ class StudentFeeController extends Controller
                 'required',
                 'integer',
                 Rule::exists('academic_sessions', 'id')
-                    ->where(function ($query) use ($branchId) {
-                        $query->where('branch_id', $branchId);
+                    ->when(!$allBranches, function ($rule) use ($branchId) {
+                        $rule->where('branch_id', $branchId);
                     }),
             ],
 
@@ -437,61 +464,67 @@ class StudentFeeController extends Controller
             ],
         ]);
 
-        $amount = (float) $validated['amount'];
+        // Verify same branch
+        $branchId = $this->validateRelatedBranch($validated);
 
+        $amount = (float) $validated['amount'];
         $discount = (float) ($validated['discount'] ?? 0);
 
         if ($discount > $amount) {
-
             return back()
                 ->withInput()
                 ->withErrors([
-                    'discount' =>
-                        'Discount cannot be greater than the fee amount.',
+                    'discount' => 'Discount cannot be greater than the fee amount.',
+                ]);
+        }
+
+        // Duplicate Check (excluding current record)
+        $exists = StudentFee::where('branch_id', $branchId)
+            ->where('student_id', $validated['student_id'])
+            ->where('fee_type_id', $validated['fee_type_id'])
+            ->where('academic_session_id', $validated['academic_session_id'])
+            ->where('fee_month', $validated['fee_month'] ?? null)
+            ->where('fee_year', $validated['fee_year'] ?? null)
+            ->where('id', '!=', $studentFee->id)
+            ->exists();
+
+        if ($exists) {
+            return back()
+                ->withInput()
+                ->withErrors([
+                    'student_id' => 'This fee has already been assigned to this student for the selected period.',
                 ]);
         }
 
         $studentFee->update([
 
-            'student_id' =>
-                $validated['student_id'],
+            'branch_id' => $branchId,
 
-            'fee_type_id' =>
-                $validated['fee_type_id'],
+            'student_id' => $validated['student_id'],
 
-            'academic_session_id' =>
-                $validated['academic_session_id'],
+            'fee_type_id' => $validated['fee_type_id'],
 
-            'fee_month' =>
-                $validated['fee_month'] ?? null,
+            'academic_session_id' => $validated['academic_session_id'],
 
-            'fee_year' =>
-                $validated['fee_year'] ?? null,
+            'fee_month' => $validated['fee_month'] ?? null,
 
-            'amount' =>
-                $amount,
+            'fee_year' => $validated['fee_year'] ?? null,
 
-            'discount' =>
-                $discount,
+            'amount' => $amount,
 
-            'payable_amount' =>
-                $amount - $discount,
+            'discount' => $discount,
 
-            'due_date' =>
-                $validated['due_date'] ?? null,
+            'payable_amount' => $amount - $discount,
 
-            'remarks' =>
-                $validated['remarks'] ?? null,
+            'due_date' => $validated['due_date'] ?? null,
+
+            'remarks' => $validated['remarks'] ?? null,
         ]);
 
         return redirect()
             ->route('admin.student-fees.index')
-            ->with(
-                'success',
-                'Student fee updated successfully.'
-            );
+            ->with('success', 'Student fee updated successfully.');
     }
-
 
     /**
      * Delete Assignment
@@ -500,24 +533,12 @@ class StudentFeeController extends Controller
     {
         $this->authorizeBranch($studentFee);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Later:
-        | If payment has already been collected,
-        | deletion should be blocked.
-        |--------------------------------------------------------------------------
-        */
-
         $studentFee->delete();
 
         return redirect()
             ->route('admin.student-fees.index')
-            ->with(
-                'success',
-                'Student fee deleted successfully.'
-            );
+            ->with('success', 'Student fee deleted successfully.');
     }
-
 
     /**
      * Branch Authorization
@@ -526,8 +547,16 @@ class StudentFeeController extends Controller
     {
         $user = auth()->user();
 
+        if (!$user) {
+            abort(403, 'Unauthorized access.');
+        }
+        // Super Admin and Admin: All branches
+        if ($this->canAccessAllBranches()) {
+            return;
+        }
+
+        // Other users: Own branch only
         if (
-            !$user ||
             !$user->branch_id ||
             $studentFee->branch_id != $user->branch_id
         ) {

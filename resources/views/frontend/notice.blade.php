@@ -11,6 +11,8 @@
     --ink:#1b1a17;
     --paper:#f6f1e4;
     --paper-2:#efe7d3;
+    --brand:#7f1531;
+    --brand-dark: #5a0f23;
     --teal-900:#0a2e26;
     --teal-800:#0d3d32;
     --teal-700:#145c46;
@@ -49,9 +51,9 @@
   /* ===== Page banner ===== */
   .page-banner{
     position:relative;
-    background:
-      radial-gradient(ellipse at 15% 20%, rgba(119, 125, 126, 0.15), transparent 45%),
-      linear-gradient(180deg, var(--teal-900), var(--teal-800));
+    background: radial-gradient(480px 240px at 100% 0, rgba(226, 169, 59, .28), transparent 65%), linear-gradient(135deg, var(--brand), var(--brand-dark));
+      /* radial-gradient(ellipse at 15% 20%, rgba(119, 125, 126, 0.15), transparent 45%),
+      linear-gradient(180deg, var(--brand-dark), var(--brand-dark)); */
     color:var(--paper);
     padding:64px 0 54px;
     text-align:center;
@@ -159,7 +161,7 @@
 
   /* ===== CTA banner ===== */
   .cta-banner{
-    background:radial-gradient(ellipse at 30% 30%, rgba(198,161,91,.25), transparent 60%), var(--teal-900);
+    background: radial-gradient(480px 240px at 100% 0, rgba(226, 169, 59, .28), transparent 65%), linear-gradient(135deg, var(--brand), var(--brand-dark));
     border-radius:24px;padding:60px 50px;
     display:flex;justify-content:space-between;align-items:center;
     gap:30px;flex-wrap:wrap;color:var(--paper);

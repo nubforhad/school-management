@@ -21,28 +21,19 @@
         </div>
     @endif
 
-    <form action="{{ route('admin.roles.update', $role) }}"
-          method="POST" class="space-y-5">
+    <form action="{{ route('admin.roles.update', $role) }}" method="POST" class="space-y-5">
         @csrf
         @method('PUT')
-
         <div class="rounded-xl border border-slate-200 bg-white p-5">
             <label for="name" class="mb-2 block text-sm font-medium text-slate-700">
                 Role Name <span class="text-red-500">*</span>
             </label>
-
-            <input type="text" id="name" name="name"
-                   value="{{ old('name', $role->name) }}"
-                   maxlength="100" required
-                   @disabled($role->name === 'Super Admin')
-                   class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none">
-
+            <input type="text" id="name" name="name" value="{{ old('name', $role->name) }}" maxlength="100" required  @disabled($role->name === 'Super Admin') class="w-full rounded-lg border border-slate-300 px-3 py-2 focus:border-blue-500 focus:outline-none">
             @if($role->name === 'Super Admin')
                 <p class="mt-2 text-sm text-amber-700">
                     The Super Admin role name cannot be changed here.
                 </p>
             @endif
-
             @error('name')
                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
             @enderror
@@ -56,17 +47,11 @@
                         Checked permissions are currently assigned to this role.
                     </p>
                 </div>
-
                 <div class="flex gap-2">
-                    <button type="button"
-                            onclick="document.querySelectorAll('.permission-checkbox').forEach(el => el.checked = true)"
-                            class="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm">
+                    <button type="button" onclick="document.querySelectorAll('.permission-checkbox').forEach(el => el.checked = true)" class="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm">
                         Select All
                     </button>
-
-                    <button type="button"
-                            onclick="document.querySelectorAll('.permission-checkbox').forEach(el => el.checked = false)"
-                            class="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm">
+                    <button type="button" onclick="document.querySelectorAll('.permission-checkbox').forEach(el => el.checked = false)" class="rounded-md border border-slate-300 bg-white px-3 py-2 text-sm">
                         Clear All
                     </button>
                 </div>

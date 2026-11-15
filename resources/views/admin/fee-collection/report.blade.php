@@ -8,7 +8,7 @@
 <div class="max-w-screen-2xl mx-auto px-3 sm:px-4 lg:px-6 py-4 sm:py-6">
 
     {{-- =========================================================
-        HEADER
+    HEADER
     ========================================================== --}}
 
     <div class="mb-5 sm:mb-6">
@@ -31,8 +31,7 @@
 
             <div class="flex flex-col sm:flex-row gap-2">
 
-                <a href="{{ route('admin.fee-collection.index') }}"
-                   class="inline-flex items-center justify-center gap-2
+                <a href="{{ route('admin.fee-collection.index') }}" class="inline-flex items-center justify-center gap-2
                           rounded-lg border border-slate-300
                           bg-white px-4 py-2.5
                           text-sm font-medium text-slate-700
@@ -45,9 +44,7 @@
                 </a>
 
 
-                <button type="button"
-                        onclick="window.print()"
-                        class="inline-flex items-center justify-center gap-2
+                <button type="button" onclick="window.print()" class="inline-flex items-center justify-center gap-2
                                rounded-lg bg-blue-600
                                px-4 py-2.5
                                text-sm font-semibold text-white
@@ -67,7 +64,7 @@
 
 
     {{-- =========================================================
-        FILTER
+    FILTER
     ========================================================== --}}
 
     <div class="bg-white rounded-xl
@@ -108,8 +105,7 @@
         </div>
 
 
-        <form method="GET"
-              action="{{ route('admin.fee-collection.report') }}">
+        <form method="GET" action="{{ route('admin.fee-collection.report') }}">
 
             <div class="p-4 sm:p-5">
 
@@ -122,19 +118,14 @@
 
                     <div>
 
-                        <label for="from_date"
-                               class="block text-sm font-medium
+                        <label for="from_date" class="block text-sm font-medium
                                       text-slate-700 mb-1.5">
 
                             From Date
 
                         </label>
 
-                        <input type="date"
-                               name="from_date"
-                               id="from_date"
-                               value="{{ request('from_date') }}"
-                               class="w-full rounded-lg
+                        <input type="date" name="from_date" id="from_date" value="{{ request('from_date') }}" class="w-full rounded-lg
                                       border border-slate-300
                                       bg-white
                                       px-3 py-2.5
@@ -151,19 +142,14 @@
 
                     <div>
 
-                        <label for="to_date"
-                               class="block text-sm font-medium
+                        <label for="to_date" class="block text-sm font-medium
                                       text-slate-700 mb-1.5">
 
                             To Date
 
                         </label>
 
-                        <input type="date"
-                               name="to_date"
-                               id="to_date"
-                               value="{{ request('to_date') }}"
-                               class="w-full rounded-lg
+                        <input type="date" name="to_date" id="to_date" value="{{ request('to_date') }}" class="w-full rounded-lg
                                       border border-slate-300
                                       bg-white
                                       px-3 py-2.5
@@ -180,17 +166,14 @@
 
                     <div>
 
-                        <label for="student_id"
-                               class="block text-sm font-medium
+                        <label for="student_id" class="block text-sm font-medium
                                       text-slate-700 mb-1.5">
 
                             Student
 
                         </label>
 
-                        <select name="student_id"
-                                id="student_id"
-                                class="w-full rounded-lg
+                        <select name="student_id" id="student_id" class="w-full rounded-lg
                                        border border-slate-300
                                        bg-white
                                        px-3 py-2.5
@@ -206,18 +189,17 @@
 
                             @foreach($students as $student)
 
-                                <option value="{{ $student->id }}"
-                                    {{ request('student_id') == $student->id
-                                        ? 'selected'
-                                        : '' }}>
+                            <option value="{{ $student->id }}" {{ request('student_id')==$student->id
+                                ? 'selected'
+                                : '' }}>
 
-                                    {{ $student->name }}
+                                {{ $student->name }}
 
-                                    @if($student->student_id)
-                                        — {{ $student->student_id }}
-                                    @endif
+                                @if($student->student_id)
+                                — {{ $student->student_id }}
+                                @endif
 
-                                </option>
+                            </option>
 
                             @endforeach
 
@@ -230,17 +212,14 @@
 
                     <div>
 
-                        <label for="fee_type_id"
-                               class="block text-sm font-medium
+                        <label for="fee_type_id" class="block text-sm font-medium
                                       text-slate-700 mb-1.5">
 
                             Fee Type
 
                         </label>
 
-                        <select name="fee_type_id"
-                                id="fee_type_id"
-                                class="w-full rounded-lg
+                        <select name="fee_type_id" id="fee_type_id" class="w-full rounded-lg
                                        border border-slate-300
                                        bg-white
                                        px-3 py-2.5
@@ -256,18 +235,17 @@
 
                             @foreach($feeTypes as $feeType)
 
-                                <option value="{{ $feeType->id }}"
-                                    {{ request('fee_type_id') == $feeType->id
-                                        ? 'selected'
-                                        : '' }}>
+                            <option value="{{ $feeType->id }}" {{ request('fee_type_id')==$feeType->id
+                                ? 'selected'
+                                : '' }}>
 
-                                    {{ $feeType->name }}
+                                {{ $feeType->name }}
 
-                                    @if($feeType->code)
-                                        — {{ $feeType->code }}
-                                    @endif
+                                @if($feeType->code)
+                                — {{ $feeType->code }}
+                                @endif
 
-                                </option>
+                            </option>
 
                             @endforeach
 
@@ -280,17 +258,14 @@
 
                     <div>
 
-                        <label for="payment_method"
-                               class="block text-sm font-medium
+                        <label for="payment_method" class="block text-sm font-medium
                                       text-slate-700 mb-1.5">
 
                             Payment Method
 
                         </label>
 
-                        <select name="payment_method"
-                                id="payment_method"
-                                class="w-full rounded-lg
+                        <select name="payment_method" id="payment_method" class="w-full rounded-lg
                                        border border-slate-300
                                        bg-white
                                        px-3 py-2.5
@@ -304,37 +279,26 @@
                                 All Methods
                             </option>
 
-                            <option value="cash"
-                                {{ request('payment_method') === 'cash'
-                                    ? 'selected'
-                                    : '' }}>
+                            <option value="cash" {{ request('payment_method')==='cash' ? 'selected' : '' }}>
 
                                 Cash
 
                             </option>
 
-                            <option value="bank"
-                                {{ request('payment_method') === 'bank'
-                                    ? 'selected'
-                                    : '' }}>
+                            <option value="bank" {{ request('payment_method')==='bank' ? 'selected' : '' }}>
 
                                 Bank
 
                             </option>
 
-                            <option value="mobile_banking"
-                                {{ request('payment_method') === 'mobile_banking'
-                                    ? 'selected'
-                                    : '' }}>
+                            <option value="mobile_banking" {{ request('payment_method')==='mobile_banking' ? 'selected'
+                                : '' }}>
 
                                 Mobile Banking
 
                             </option>
 
-                            <option value="other"
-                                {{ request('payment_method') === 'other'
-                                    ? 'selected'
-                                    : '' }}>
+                            <option value="other" {{ request('payment_method')==='other' ? 'selected' : '' }}>
 
                                 Other
 
@@ -352,8 +316,7 @@
                 <div class="flex flex-col sm:flex-row
                             gap-2 mt-5">
 
-                    <button type="submit"
-                            class="inline-flex items-center
+                    <button type="submit" class="inline-flex items-center
                                    justify-center gap-2
                                    rounded-lg
                                    bg-blue-600
@@ -370,8 +333,7 @@
                     </button>
 
 
-                    <a href="{{ route('admin.fee-collection.report') }}"
-                       class="inline-flex items-center
+                    <a href="{{ route('admin.fee-collection.report') }}" class="inline-flex items-center
                               justify-center gap-2
                               rounded-lg
                               border border-slate-300
@@ -398,7 +360,7 @@
 
 
     {{-- =========================================================
-        PRINT AREA
+    PRINT AREA
     ========================================================== --}}
 
     <div id="print-area">
@@ -420,23 +382,23 @@
 
                 @if(request('from_date') || request('to_date'))
 
-                    <p class="text-sm text-slate-500 mt-1">
+                <p class="text-sm text-slate-500 mt-1">
 
-                        Period:
+                    Period:
 
-                        {{ request('from_date')
-                            ? \Carbon\Carbon::parse(request('from_date'))->format('d M Y')
-                            : 'Beginning'
-                        }}
+                    {{ request('from_date')
+                    ? \Carbon\Carbon::parse(request('from_date'))->format('d M Y')
+                    : 'Beginning'
+                    }}
 
-                        -
+                    -
 
-                        {{ request('to_date')
-                            ? \Carbon\Carbon::parse(request('to_date'))->format('d M Y')
-                            : 'Today'
-                        }}
+                    {{ request('to_date')
+                    ? \Carbon\Carbon::parse(request('to_date'))->format('d M Y')
+                    : 'Today'
+                    }}
 
-                    </p>
+                </p>
 
                 @endif
 
@@ -448,7 +410,7 @@
 
 
         {{-- =====================================================
-            SUMMARY CARDS
+        SUMMARY CARDS
         ====================================================== --}}
 
         <div class="grid grid-cols-1
@@ -483,7 +445,7 @@
 
                         <p class="mt-1 text-xl font-bold text-blue-800">
 
-                            ৳ {{ number_format($totalCollected, 2) }}
+                            ৳ {{ number_format($totalCollection, 2) }}
 
                         </p>
 
@@ -559,7 +521,7 @@
 
                         <p class="mt-1 text-xl font-bold text-green-700">
 
-                            ৳ {{ number_format($cashTotal, 2) }}
+                            ৳ {{ number_format($cashCollection, 2) }}
 
                         </p>
 
@@ -598,8 +560,8 @@
                         <p class="mt-1 text-xl font-bold text-purple-700">
 
                             ৳ {{ number_format(
-                                $bankTotal + $mobileBankingTotal,
-                                2
+                            $bankCollection + $mobileBankingCollection,
+                            2
                             ) }}
 
                         </p>
@@ -614,7 +576,7 @@
 
 
         {{-- =====================================================
-            PAYMENT METHOD SUMMARY
+        PAYMENT METHOD SUMMARY
         ====================================================== --}}
 
         <div class="bg-white rounded-xl
@@ -649,7 +611,7 @@
 
                     <p class="mt-1 text-lg font-bold text-slate-800">
 
-                        ৳ {{ number_format($cashTotal, 2) }}
+                        ৳ {{ number_format($cashCollection, 2) }}
 
                     </p>
 
@@ -669,7 +631,7 @@
 
                     <p class="mt-1 text-lg font-bold text-slate-800">
 
-                        ৳ {{ number_format($bankTotal, 2) }}
+                        ৳ {{ number_format($bankCollection, 2) }}
 
                     </p>
 
@@ -689,7 +651,7 @@
 
                     <p class="mt-1 text-lg font-bold text-slate-800">
 
-                        ৳ {{ number_format($mobileBankingTotal, 2) }}
+                        ৳ {{ number_format($mobileBankingCollection, 2) }}
 
                     </p>
 
@@ -706,7 +668,7 @@
 
                     <p class="mt-1 text-lg font-bold text-slate-800">
 
-                        ৳ {{ number_format($otherTotal, 2) }}
+                        ৳ {{ number_format($otherCollection, 2) }}
 
                     </p>
 
@@ -718,7 +680,7 @@
 
 
         {{-- =====================================================
-            PAYMENT TABLE
+        PAYMENT TABLE
         ====================================================== --}}
 
         <div class="bg-white rounded-xl
@@ -827,40 +789,40 @@
 
                         @forelse($payments as $payment)
 
-                            <tr class="hover:bg-slate-50 transition">
+                        <tr class="hover:bg-slate-50 transition">
 
 
-                                {{-- # --}}
+                            {{-- # --}}
 
-                                <td class="px-4 py-3 text-slate-500">
+                            <td class="px-4 py-3 text-slate-500">
 
-                                    {{ $loop->iteration }}
+                                {{ $loop->iteration }}
 
-                                </td>
-
-
-                                {{-- Date --}}
-
-                                <td class="px-4 py-3">
-
-                                    <span class="font-medium text-slate-700">
-
-                                        {{ \Carbon\Carbon::parse(
-                                            $payment->payment_date
-                                        )->format('d M Y') }}
-
-                                    </span>
-
-                                </td>
+                            </td>
 
 
-                                {{-- Student --}}
+                            {{-- Date --}}
 
-                                <td class="px-4 py-3">
+                            <td class="px-4 py-3">
 
-                                    <div class="flex items-center gap-3">
+                                <span class="font-medium text-slate-700">
 
-                                        <div class="flex h-9 w-9
+                                    {{ \Carbon\Carbon::parse(
+                                    $payment->payment_date
+                                    )->format('d M Y') }}
+
+                                </span>
+
+                            </td>
+
+
+                            {{-- Student --}}
+
+                            <td class="px-4 py-3">
+
+                                <div class="flex items-center gap-3">
+
+                                    <div class="flex h-9 w-9
                                                     shrink-0
                                                     items-center justify-center
                                                     rounded-full
@@ -868,103 +830,103 @@
                                                     text-blue-600
                                                     font-semibold">
 
-                                            {{
-                                                strtoupper(
-                                                    substr(
-                                                        $payment->student->name ?? 'S',
-                                                        0,
-                                                        1
-                                                    )
-                                                )
-                                            }}
-
-                                        </div>
-
-                                        <div>
-
-                                            <p class="font-semibold text-slate-800">
-
-                                                {{ $payment->student->name ?? 'N/A' }}
-
-                                            </p>
-
-                                            <p class="text-xs text-slate-400">
-
-                                                ID:
-
-                                                {{ $payment->student->student_id
-                                                    ?? $payment->student_id }}
-
-                                            </p>
-
-                                        </div>
+                                        {{
+                                        strtoupper(
+                                        substr(
+                                        $payment->student->name ?? 'S',
+                                        0,
+                                        1
+                                        )
+                                        )
+                                        }}
 
                                     </div>
 
-                                </td>
+                                    <div>
 
+                                        <p class="font-semibold text-slate-800">
 
-                                {{-- Fee Type --}}
-
-                                <td class="px-4 py-3">
-
-                                    <p class="font-medium text-slate-700">
-
-                                        {{ $payment->feeType->name ?? 'N/A' }}
-
-                                    </p>
-
-                                    @if($payment->feeType?->code)
-
-                                        <p class="text-xs text-slate-400">
-
-                                            {{ $payment->feeType->code }}
+                                            {{ $payment->student->name ?? 'N/A' }}
 
                                         </p>
 
-                                    @endif
+                                        <p class="text-xs text-slate-400">
 
-                                </td>
+                                            ID:
 
+                                            {{ $payment->student->student_id
+                                            ?? $payment->student_id }}
 
-                                {{-- Payment Method --}}
+                                        </p>
 
-                                <td class="px-4 py-3">
+                                    </div>
 
-                                    @php
+                                </div>
 
-                                        $methodClasses = [
-
-                                            'cash' =>
-                                                'bg-green-50 text-green-700 border-green-200',
-
-                                            'bank' =>
-                                                'bg-blue-50 text-blue-700 border-blue-200',
-
-                                            'mobile_banking' =>
-                                                'bg-purple-50 text-purple-700 border-purple-200',
-
-                                            'other' =>
-                                                'bg-slate-50 text-slate-700 border-slate-200',
-
-                                        ];
-
-                                        $methodLabels = [
-
-                                            'cash' => 'Cash',
-
-                                            'bank' => 'Bank',
-
-                                            'mobile_banking' => 'Mobile Banking',
-
-                                            'other' => 'Other',
-
-                                        ];
-
-                                    @endphp
+                            </td>
 
 
-                                    <span class="inline-flex
+                            {{-- Fee Type --}}
+
+                            <td class="px-4 py-3">
+
+                                <p class="font-medium text-slate-700">
+
+                                    {{ $payment->feeType->name ?? 'N/A' }}
+
+                                </p>
+
+                                @if($payment->feeType?->code)
+
+                                <p class="text-xs text-slate-400">
+
+                                    {{ $payment->feeType->code }}
+
+                                </p>
+
+                                @endif
+
+                            </td>
+
+
+                            {{-- Payment Method --}}
+
+                            <td class="px-4 py-3">
+
+                                @php
+
+                                $methodClasses = [
+
+                                'cash' =>
+                                'bg-green-50 text-green-700 border-green-200',
+
+                                'bank' =>
+                                'bg-blue-50 text-blue-700 border-blue-200',
+
+                                'mobile_banking' =>
+                                'bg-purple-50 text-purple-700 border-purple-200',
+
+                                'other' =>
+                                'bg-slate-50 text-slate-700 border-slate-200',
+
+                                ];
+
+                                $methodLabels = [
+
+                                'cash' => 'Cash',
+
+                                'bank' => 'Bank',
+
+                                'mobile_banking' => 'Mobile Banking',
+
+                                'other' => 'Other',
+
+                                ];
+
+                                @endphp
+
+
+                                <span class="inline-flex
                                                  items-center
                                                  rounded-full
                                                  border
@@ -974,106 +936,105 @@
                                                      ?? 'bg-slate-50 text-slate-700 border-slate-200'
                                                  }}">
 
-                                        {{ $methodLabels[$payment->payment_method]
-                                            ?? ucfirst($payment->payment_method) }}
+                                    {{ $methodLabels[$payment->payment_method]
+                                    ?? ucfirst($payment->payment_method) }}
 
-                                    </span>
+                                </span>
 
-                                </td>
-
-
-                                {{-- Reference --}}
-
-                                <td class="px-4 py-3">
-
-                                    @if($payment->reference_no)
-
-                                        <span class="text-slate-600">
-
-                                            {{ $payment->reference_no }}
-
-                                        </span>
-
-                                    @else
-
-                                        <span class="text-slate-400">
-                                            —
-                                        </span>
-
-                                    @endif
-
-                                </td>
+                            </td>
 
 
-                                {{-- Collector --}}
+                            {{-- Reference --}}
 
-                                <td class="px-4 py-3">
+                            <td class="px-4 py-3">
 
-                                    {{ $payment->collector->name ?? 'N/A' }}
+                                @if($payment->reference_no)
 
-                                </td>
+                                <span class="text-slate-600">
+
+                                    {{ $payment->reference_no }}
+
+                                </span>
+
+                                @else
+
+                                <span class="text-slate-400">
+                                    —
+                                </span>
+
+                                @endif
+
+                            </td>
 
 
-                                {{-- Amount --}}
+                            {{-- Collector --}}
 
-                                <td class="px-4 py-3 text-right">
+                            <td class="px-4 py-3">
 
-                                    <span class="font-bold text-green-600">
+                                {{ $payment->collector->name ?? 'N/A' }}
 
-                                        ৳ {{ number_format(
-                                            $payment->amount,
-                                            2
-                                        ) }}
+                            </td>
 
-                                    </span>
 
-                                </td>
+                            {{-- Amount --}}
 
-                            </tr>
+                            <td class="px-4 py-3 text-right">
+
+                                <span class="font-bold text-green-600">
+
+                                    ৳ {{ number_format(
+                                    $payment->amount,
+                                    2
+                                    ) }}
+
+                                </span>
+
+                            </td>
+
+                        </tr>
 
                         @empty
 
-                            <tr>
+                        <tr>
 
-                                <td colspan="8"
-                                    class="px-4 py-14 text-center">
+                            <td colspan="8" class="px-4 py-14 text-center">
 
-                                    <div class="flex flex-col
+                                <div class="flex flex-col
                                                 items-center">
 
-                                        <div class="flex h-16 w-16
+                                    <div class="flex h-16 w-16
                                                     items-center justify-center
                                                     rounded-full
                                                     bg-blue-50
                                                     text-blue-600">
 
-                                            <i class="bi bi-receipt
+                                        <i class="bi bi-receipt
                                                       text-3xl"></i>
 
-                                        </div>
+                                    </div>
 
-                                        <h3 class="mt-4
+                                    <h3 class="mt-4
                                                    text-sm sm:text-base
                                                    font-semibold
                                                    text-slate-700">
 
-                                            No Payment Transactions Found
+                                        No Payment Transactions Found
 
-                                        </h3>
+                                    </h3>
 
-                                        <p class="mt-1
+                                    <p class="mt-1
                                                   text-xs sm:text-sm
                                                   text-slate-500">
 
-                                            No fee payments match the selected filters.
+                                        No fee payments match the selected filters.
 
-                                        </p>
+                                    </p>
 
-                                    </div>
+                                </div>
 
-                                </td>
+                            </td>
 
-                            </tr>
+                        </tr>
 
                         @endforelse
 
@@ -1084,36 +1045,35 @@
 
                     @if($payments->count() > 0)
 
-                        <tfoot>
+                    <tfoot>
 
-                            <tr class="bg-slate-50
+                        <tr class="bg-slate-50
                                        border-t-2 border-slate-200">
 
-                                <td colspan="7"
-                                    class="px-4 py-4 text-right
+                            <td colspan="7" class="px-4 py-4 text-right
                                            font-bold text-slate-700">
 
-                                    Total Collection
+                                Total Collection
 
-                                </td>
+                            </td>
 
-                                <td class="px-4 py-4 text-right">
+                            <td class="px-4 py-4 text-right">
 
-                                    <span class="text-lg font-bold
+                                <span class="text-lg font-bold
                                                  text-green-600">
 
-                                        ৳ {{ number_format(
-                                            $totalCollected,
-                                            2
-                                        ) }}
+                                    ৳ {{ number_format(
+                                    $cashCollection,
+                                    2
+                                    ) }}
 
-                                    </span>
+                                </span>
 
-                                </td>
+                            </td>
 
-                            </tr>
+                        </tr>
 
-                        </tfoot>
+                    </tfoot>
 
                     @endif
 
@@ -1125,7 +1085,7 @@
 
 
         {{-- =====================================================
-            PRINT FOOTER
+        PRINT FOOTER
         ====================================================== --}}
 
         <div class="hidden print:flex
@@ -1150,53 +1110,58 @@
 
 
 {{-- =============================================================
-    PRINT CSS
+PRINT CSS
 ============================================================= --}}
 
 <style>
+    @media print {
 
-@media print {
+        body {
+            background: #ffffff !important;
+        }
 
-    body {
-        background: #ffffff !important;
-    }
-    body * {
-        visibility: hidden;
-    }
-    #print-area,
-    #print-area * {
-        visibility: visible;
-    }
-    #print-area {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        border: none !important;
-        box-shadow: none !important;
-        border-radius: 0 !important;
-    }
-    #print-area .bg-white {
-        background: #ffffff !important;
-    }
-    #print-area table {
-        width: 100%;
-    }
-    #print-area tr {
-        page-break-inside: avoid;
-    }
-    @page {
+        body * {
+            visibility: hidden;
+        }
 
-        size: A4 landscape;
+        #print-area,
+        #print-area * {
+            visibility: visible;
+        }
 
-        margin: 10mm;
+        #print-area {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+        }
+
+        #print-area .bg-white {
+            background: #ffffff !important;
+        }
+
+        #print-area table {
+            width: 100%;
+        }
+
+        #print-area tr {
+            page-break-inside: avoid;
+        }
+
+        @page {
+
+            size: A4 landscape;
+
+            margin: 10mm;
+
+        }
 
     }
-
-}
-
 </style>
 
 @endsection

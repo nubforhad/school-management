@@ -36,7 +36,7 @@
         <ul>
           <li>📍 {{ $settings->get('address') ?? 'Nidaul Quran Madrasah (General Campus), Momotaz Tower, Road 1, New Town R/A, Matuail, Dhaka 1362' }} </li>
           <li>📞 {{ $settings->get('phone') ?? '01713-260111' }} </li>
-          <li>✉️ {{ $settings->get('email') ?? 'info@nidarul-madrasha.edu.bd' }} </li>
+          <li>✉️ {{ $settings->get('email') ?? 'info.nqm@gmail.com' }} </li>
         </ul>
       </div>
     </div>
