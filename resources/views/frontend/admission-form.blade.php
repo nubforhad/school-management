@@ -13,8 +13,8 @@
     --ink:#1b1a17;
     --paper:#f6f1e4;
     --paper-2:#efe7d3;
-    --teal-900:#0a2e26;
-    --teal-800:#0d3d32;
+    --teal-900:#521404;
+    --teal-800:#721414;
     --teal-700:#145c46;
     --teal-600:#1b7a5c;
     --gold:#c6a15b;
