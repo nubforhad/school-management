@@ -72,7 +72,7 @@
         </li> --}}
 
         <li><a href="{{ route('notice') }}"> নোটিশ বোর্ড </a></li>
-        <li><a href="#gallery">গ্যালারি</a></li>
+        <li><a href="{{ route('gallery') }}">গ্যালারি</a></li>
 
         <li class="has-sub">
           <a href="{{ route('contact') }}">যোগাযোগ <span class="caret">▾</span></a>

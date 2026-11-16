@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        @yield('title', 'Dashboard')  - {{ config('app.name') }}
+        @yield('title', 'Dashboard')
     </title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <script>
         tailwind.config = {
             theme: {
@@ -34,9 +34,7 @@
 </head>
 
 <body class="bg-slate-100 text-slate-800">
-
     <div class="min-h-screen">
-
         {{-- Sidebar --}}
         @include('admin.layouts.sidebar')
 
@@ -55,34 +53,27 @@
     </div>
 
     @stack('scripts')
-<script>
+    <script>
+        function toggleNavGroup(button) {
 
-function toggleNavGroup(button) {
+            const submenu = button.nextElementSibling;
+            const isOpen = !submenu.classList.contains('hidden');
 
-    const submenu = button.nextElementSibling;
-    const isOpen = !submenu.classList.contains('hidden');
+            // Close all other groups
+            document.querySelectorAll('.nav-submenu').forEach(menu => {
+                menu.classList.add('hidden');
+            });
+            document.querySelectorAll('.nav-group-title').forEach(title => {
+                title.classList.remove('active');
+            });
+            // Open selected group
+            if (!isOpen) {
+                submenu.classList.remove('hidden');
+                button.classList.add('active');
+            }
+        }
 
-    // Close all other groups
-    document.querySelectorAll('.nav-submenu').forEach(menu => {
-        menu.classList.add('hidden');
-    });
-
-    document.querySelectorAll('.nav-group-title').forEach(title => {
-        title.classList.remove('active');
-    });
-
-
-    // Open selected group
-    if (!isOpen) {
-
-        submenu.classList.remove('hidden');
-
-        button.classList.add('active');
-
-    }
-
-}
-
-</script>
+    </script>
 </body>
+
 </html>

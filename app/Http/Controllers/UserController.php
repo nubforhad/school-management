@@ -60,6 +60,13 @@ class UserController extends Controller
         return view('frontend.pages.objectives', compact('settings'));
     }
 
+    public function gallery(Request $request)
+    {
+        $settings = Setting::pluck('value', 'key');
+
+        return view('frontend.pages.gallery', compact('settings'));
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Role Helpers

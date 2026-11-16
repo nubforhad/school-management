@@ -21,13 +21,10 @@
             </p>
         </div>
 
-        <a
-            href="{{ route('admin.students.index') }}"
-            class="inline-flex items-center justify-center gap-2 rounded-xl
+        <a href="{{ route('admin.students.index') }}" class="inline-flex items-center justify-center gap-2 rounded-xl
                    border border-slate-300 bg-white px-5 py-2.5
                    text-sm font-semibold text-slate-700
-                   transition hover:bg-slate-50"
-        >
+                   transition hover:bg-slate-50 >
             <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                     stroke-linecap="round"
@@ -135,26 +132,17 @@
                                 d="M5 12v5c3 2 9 2 14 0v-5"
                             />
                         </svg>
-
                     </div>
-
                     <div>
-
                         <h2 class="font-semibold text-slate-800">
                             Academic Information
                         </h2>
-
                         <p class="text-xs text-slate-500">
                             Branch, session, class and admission details
                         </p>
-
                     </div>
-
                 </div>
-
             </div>
-
-
             <div class="grid grid-cols-1 gap-5 p-5 md:grid-cols-2 lg:grid-cols-3">
 
 
@@ -172,19 +160,13 @@
                                px-4 py-2.5 text-sm text-slate-800
                                outline-none transition
                                focus:border-blue-500
-                               focus:ring-2 focus:ring-blue-500/20"
-                    >
-
+                               focus:ring-2 focus:ring-blue-500/20" >
                         <option value="">
                             Select Branch
                         </option>
-
                         @foreach($branches as $branch)
 
-                            <option
-                                value="{{ $branch->id }}"
-                                @selected(old('branch_id') == $branch->id)
-                            >
+                            <option  value="{{ $branch->id }}"  @selected(old('branch_id') == $branch->id)>
                                 {{ $branch->name }}
                             </option>
 
@@ -734,8 +716,8 @@
                     <input
                         type="text"
                         name="religion"
-                        value="{{ old('religion') }}"
-                        placeholder="Religion"
+                        value="muslim"
+                        readonly 
                         class="w-full rounded-xl border border-slate-300
                                px-4 py-2.5 text-sm
                                outline-none transition

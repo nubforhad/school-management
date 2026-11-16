@@ -286,7 +286,7 @@
 /* ---------- সাধারণ নিরাপত্তা ---------- */
  
 /* ---------- নতুন সেকশন: বাণী ---------- */
-.message-stack { display: grid; gap: 28px; max-width: 980px; margin: 0 auto; }
+.message-stack { display: grid; gap: 28px;  margin: 0 auto; }
 .message-card {
   display: grid; grid-template-columns: 220px 1fr; gap: 32px; align-items: start;
   background: var(--paper-2, #f6f1e4); border-radius: 20px; padding: 28px;
@@ -459,9 +459,8 @@
       </article>
 
       {{-- অধ্যক্ষ / প্রিন্সিপাল --}}
-      <article class="message-card reverse">
-        <figure class="message-photo">
-          {{-- <img src="{{ asset('images/team/principal.jpg') }}" alt="অধ্যক্ষ"> --}}
+      {{-- <article class="message-card reverse">
+        <figure class="message-photo"> 
           <div class="avatar-fallback">অ</div>
           <figcaption>
             <strong>অধ্যক্ষের নাম</strong>
@@ -474,10 +473,10 @@
           <p>অভিভাবকদের সাথে নিয়মিত যোগাযোগ রেখে প্রতিটি শিক্ষার্থীর অগ্রগতি আমরা পর্যবেক্ষণ করি।</p>
           <p class="signoff">— অধ্যক্ষের নাম</p>
         </div>
-      </article>
+      </article> --}}
 
       {{-- সেক্রেটারি / সভাপতি — প্রয়োজন না হলে এই ব্লকটি মুছে দিন --}}
-      <article class="message-card">
+      <article class="message-card reverse">
         <figure class="message-photo">
           {{-- <img src="{{ asset('images/team/secretary.jpg') }}" alt="সেক্রেটারি"> --}}
           <div class="avatar-fallback">
@@ -519,17 +518,18 @@
         <h5>মাহমুদুল হাসান</h5>
         <span>চেয়ারম্যান</span>
       </div>
-      <div class="team-card">
-        <div class="team-photo"><div class="avatar-fallback">অ</div></div>
-        <h5>অধ্যক্ষের নাম</h5>
-        <span>অধ্যক্ষ</span>
-      </div>
+      
       <div class="team-card">
         <div class="team-photo"><div class="avatar-fallback">
           <img src="{{ asset('asset/image/md.jpg') }}" alt="সেক্রেটারি" style="width:100%; height:100%; object-fit:cover; border-radius:90px 90px 14px 14px;">
         </div></div>
         <h5>আবু সালমান মুহাম্মদ আম্মার</h5>
         <span>সেক্রেটারি</span>
+      </div>
+      <div class="team-card">
+        <div class="team-photo"><div class="avatar-fallback">অ</div></div>
+        <h5>অধ্যক্ষের নাম</h5>
+        <span>অধ্যক্ষ</span>
       </div>
       <div class="team-card">
         <div class="team-photo"><div class="avatar-fallback">সদ</div></div>

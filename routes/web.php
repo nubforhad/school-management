@@ -100,6 +100,7 @@ Route::get('/', [UserController::class, 'index'])->name('index');
     Route::get('about', [UserController::class, 'about'])->name('about');
     Route::get('teachers', [UserController::class, 'teachers'])->name('teachers');
     Route::get('objectives', [UserController::class, 'objective'])->name('objectives');
+    Route::get('galleries', [UserController::class, 'gallery'])->name('gallery');
 
     Route::post('/logout', function () {
         Auth::logout();
